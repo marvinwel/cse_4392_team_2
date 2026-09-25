@@ -1,0 +1,20 @@
+{
+  "source": "ntss-underlined-1.doc (underlined phrases, grouped by superscript rule number); converted, read-only",
+  "notes": [
+    "Items with a superscript but no underline are included (promote, contact, promoting, creation, each, status).",
+    "The underlined word 'is' in the first sentence has no superscript and is excluded.",
+    "Grammatical variants of one phrase are merged with ' / ' as in the library file (e.g., create / creates).",
+    "Rule 8 has no phrases in this description."
+  ],
+  "categories": {
+    "1 Nouns / noun phrases": ["NTSS", "service provider", "business customers", "customer", "services", "design", "theme", "slogan", "location", "duration", "advertisement", "creation", "promotion", "speakers", "participants", "exhibitors", "registration", "booths", "conference rooms", "seminars", "reception", "trade show materials", "account", "service charges", "payments received", "balances", "trade shows / trade show", "event", "organizer", "person", "organization", "contact information", "website", "domains", "organization staff", "keynote address", "evaluation", "proposals / proposal", "review", "committee", "reviewers", "fee", "status", "products", "observers"],
+    "2 X of Y": ["types of", "size of the booth", "duration of the event"],
+    "3 Transitive verbs": ["create / creates", "promote / promoting", "organize / organizing", "run / runs / running", "contact", "inviting", "register / registering", "setting up", "distributing", "record", "belong to", "added", "removed", "attended by", "prepares", "give", "reviewed by", "exhibit", "pay", "requested", "rented", "visit"],
+    "4 Adjectives, enumeration": ["national", "international", "invited and/or selected", "invited", "selected", "pending", "accepted", "rejected", "large, medium, or small"],
+    "5 Numeric, quantity": ["each", "one or more"],
+    "6 Possession": ["has"],
+    "7 Consist of / part of": ["involves", "including"],
+    "8 (no rule 8 phrases)": [],
+    "9 X is a Y": ["can be regarded as"]
+  }
+}

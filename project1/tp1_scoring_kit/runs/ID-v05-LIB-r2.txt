@@ -1,0 +1,82 @@
+# ID-v05-LIB-r2  (answer section only; analysis block not archived)
+
+Nouns / noun phrases
+- library
+- loan item / loan items
+- customer / customers
+- member
+- membership card
+- member number
+- membership number
+- details
+- name
+- address
+- date of birth
+- subject sections / section
+- classification mark
+- bar code
+- language tape / language tapes
+- book / books
+- title language
+- level
+- title
+- author(s)
+- item / items
+- current loan
+- membership
+- number
+- bar code reader
+- facility
+- records
+
+X of Y Expressions
+- date of birth
+- types of loan items
+- number of items
+- update of records
+
+Transitive verbs
+- issues
+- shows
+- kept
+- denoted
+- identified
+- borrow
+- borrowed
+- reserved
+- renewed
+- extend
+- issued
+- scanned
+- entered
+- read
+- stamped
+- searched
+- support
+
+Adjectives, enumeration
+- unique
+- French
+- beginner
+- current
+- valid
+- daily
+- two
+
+Numeric, Quantity
+- a number of subject sections
+- two types of loan items
+- up to a maximum of 8 items
+- less than 8
+
+Possession Expressions
+- A language tape has a title language (e.g. French), and level (e.g. beginner)
+- A book has a title, and author(s)
+
+Consist of / Part of Expressions
+- The library is made up of a number of subject sections
+
+X is a Y generalization / specialization
+- Each customer is known as a member
+- language tapes, and books are two types of loan items
+

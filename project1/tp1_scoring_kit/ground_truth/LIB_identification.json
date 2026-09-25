@@ -1,0 +1,13 @@
+{
+  "source": "Library-domain-phrases-1.docx (converted, read-only)",
+  "categories": {
+    "1 Nouns / noun phrases": ["library", "loan items / item", "customers / customer", "member", "membership card", "member number / membership number", "details", "name", "address", "date of birth", "subject sections / section", "classification mark", "bar code", "language tapes / language tape", "books / book", "title language", "level", "title", "author(s)", "current loan", "bar code reader", "membership", "book bar code", "records"],
+    "2 X of Y": ["date of birth", "number of subject sections", "types of loan items", "number of items", "update of records"],
+    "3 Transitive verbs": ["issues / issued", "shows", "kept", "denoted", "borrow", "reserved", "renewed", "extend", "scanned", "entered", "read", "stamped", "searched", "identified"],
+    "4 Adjectives, enumeration": ["French", "beginner", "daily", "valid"],
+    "5 Numeric, quantity": ["two", "8 / maximum of 8", "less than 8", "a number of"],
+    "6 Possession": ["has a title language", "has a title, and author(s)"],
+    "7 Consist of / part of": ["made up of"],
+    "8 X is a Y": ["customer is known as a member", "language tapes, and books [are] two types of loan items"]
+  }
+}

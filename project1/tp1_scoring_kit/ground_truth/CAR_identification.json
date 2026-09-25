@@ -1,0 +1,21 @@
+{
+  "source": "4392-crclassified.doc, Brainstorming List column (phrases grouped by superscript rule number); converted, read-only",
+  "notes": [
+    "The Rule column in the file (1(a), 2(b), ...) refers to classification rules and is not used here.",
+    "Cells holding two marked phrases are split: 'car, passenger car', 'available, not available', 'two or four doors'.",
+    "'file cabinet' is included; its '(not used)' note refers to the classification.",
+    "'process' and 'processed' are merged as grammatical variants, as the library file does with issues / issued.",
+    "Rules 6, 7, 8 and 9 have no phrases in this list."
+  ],
+  "categories": {
+    "1 Nouns / noun phrases": ["vehicle", "manufacturer", "price class", "rental price", "car", "passenger car", "transmission", "doors", "sedan", "hatchback", "options", "additional charge", "location", "other forms of vehicle", "customer", "rental plan", "daily unlimited miles plan", "weekend savings plan", "reservation", "salesperson", "reservation form", "file cabinet", "contract", "block reservation", "invoice", "rentals", "company", "rental charge", "credit card", "credit card processing company"],
+    "2 X of Y": ["makes of car", "model of car", "depreciation of the rental cars", "time of reservation", "period of time"],
+    "3 Transitive verbs": ["taken from", "returned to", "select", "reserving", "process / processed", "archive", "sign", "make", "cover", "checked out", "pay", "sent to"],
+    "4 Adjectives, enumeration": ["available", "not available", "rented out", "purchase", "repair", "maintenance", "disposal", "automatic", "manual", "in person", "by phone", "voided", "opened"],
+    "5 Numeric, quantity": ["two", "four", "one or more", "several"],
+    "6 Possession": [],
+    "7 Consist of / part of": [],
+    "8 (no rule 8 phrases)": [],
+    "9 X is a Y": []
+  }
+}

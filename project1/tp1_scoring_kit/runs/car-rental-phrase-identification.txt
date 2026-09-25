@@ -1,0 +1,185 @@
+<analysis>
+customer-friendly | service | service type | self-service -> keep
+different | rental plan | plan type | standard -> keep
+single | rental plan | plan type | daily -> keep
+daily | rental plan | frequency | weekly -> keep
+unlimited | miles plan | mileage allowance | limited -> keep
+weekend | discount plan | time period | weekday -> keep
+automatic | gear change | gear-change type | manual -> keep
+manual | gear change | gear-change type | automatic -> keep
+two | doors | number of doors | four -> keep
+four | doors | number of doors | two -> keep
+sedan | car body style | hatchback -> keep
+hatchback | car body style | sedan -> keep
+frequent | maintenance | frequency | occasional -> keep
+preventive | maintenance | maintenance type | corrective -> keep
+available | car availability | unavailable -> keep
+rented out | car availability | available -> keep
+credit | payment method | cash -> keep
+several | quantity | few -> keep
+
+taken, returned, select, display, telling, let, suggest, process, archive, require, honor, make, checked out, opened, cover, settle, sent, pays, processed, keep, repair, and disposal-related action words are used as verbs or passive participles in the document.
+</analysis>
+
+<answer>
+Nouns / noun phrases
+- car rental company
+- rental locations
+- metropolitan area
+- company
+- business model
+- customer-friendly service
+- business
+- costs
+- job market
+- labor cost
+- solution
+- operating cost
+- business operation
+- improvement proposals
+- vehicles
+- location
+- additional charge
+- passenger cars
+- forms of vehicle rentals
+- reservation system
+- makes of cars
+- rental fleet
+- manufacturers
+- make
+- models
+- Toyota
+- Corolla
+- Camry
+- price classes
+- customer
+- system
+- message
+- rental plans
+- daily unlimited miles plan
+- weekend 10% discount plan
+- information
+- car
+- gear change
+- doors
+- sedan
+- hatchback
+- rental prices
+- options
+- reservations
+- person
+- phone
+- salesperson
+- reservation form
+- file cabinet
+- deposit
+- time
+- reservation
+- contract
+- request
+- block reservation
+- invoices
+- rental
+- checkout
+- invoice
+- company
+- employer
+- credit card
+- credit card processing company
+- rental charge
+- rental cars
+- day
+- preventive maintenance
+- damage
+- rental car purchase
+- repair
+- maintenance
+- disposal information
+- business
+- tax purposes
+- depreciation
+
+X of Y Expressions
+- number of rental locations
+- operation of the company
+- forms of vehicle rentals
+- number of price classes
+- models of a different make
+- number of different rental plans
+- information on the models of car
+- time of reservation
+- number of rentals
+- purchase of the rental cars
+- depreciation of the rental cars
+
+Transitive verbs
+- provides
+- reduce
+- taken
+- returned
+- use
+- select
+- display
+- telling
+- let
+- suggest
+- grouped
+- process
+- archive
+- required
+- honored
+- make
+- checked out
+- opened
+- cover
+- settle
+- sent
+- pays
+- processed
+- keep
+- repair
+
+Adjectives, enumeration
+- customer-friendly
+- different
+- single
+- daily
+- unlimited
+- weekend
+- 10%
+- automatic
+- manual
+- two
+- four
+- sedan
+- hatchback
+- frequent
+- preventive
+- available
+- rented out
+- credit
+- several
+
+Numeric, Quantity
+- a number of rental locations
+- the last several years
+- several different makes
+- several models
+- a small number of price classes
+- a number of different rental plans
+- 10%
+- two or four doors
+- one or more rentals
+- a given period of time
+- several cars
+
+Possession Expressions
+- the company has a great business model
+- The company has several different makes of cars in its rental fleet
+- Each make may have several models
+- The company has a number of different rental plans available to customers
+
+Consist of / Part of Expressions
+
+X is a Y generalization / specialization
+</answer>
