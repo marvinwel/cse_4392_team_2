@@ -1,14 +1,11 @@
 """
-Four scoring rulesets for identification, used to show the team how the same
-LLM output scores under each. Ruleset A is the official protocol scorer
-(score_identification.py); B-D are comparisons.
+Four scoring rulesets for identification.
 
 A  Protocol (exact)          exact match after normalization, categories ignored
-B  Chat rule                 containment (GT inside output), per category
+B  Per-category containment  containment (GT inside output), per category
 C  Containment, no categories containment (GT inside output), categories ignored
 D  Clause-only containment   exact everywhere; for GT phrases of rules 6, 7, 9
-                             a match if either phrase contains the other (whole
-                             words), one output phrase per GT phrase
+                             a match if either phrase contains the other
 """
 import json, re
 import score_identification as S
@@ -16,8 +13,8 @@ import score_identification as S
 KEYS = ("N", "XY", "V", "ADJ", "NUM", "POS", "CON", "GEN")
 CATMAP = {"N": "1 Nouns / noun phrases", "XY": "2 X of Y", "V": "3 Transitive verbs",
           "ADJ": "4 Adjectives, enumeration", "NUM": "5 Numeric, quantity",
-          "POS": "6 Possession", "CON": "7 Consist of / part of", "GEN": "8 X is a Y"}
-CLAUSE = {"6 Possession", "7 Consist of / part of", "8 X is a Y"}
+          "POS": "6 Possession", "CON": "7 Consist of / part of", "GEN": "9 X is a Y"}
+CLAUSE = {"6 Possession", "7 Consist of / part of", "9 X is a Y"}
 
 
 def norm(p, drop_commas=False):
@@ -36,7 +33,7 @@ def f1(p, r):
 
 
 def gt_items(gt_path):
-    return S.load_gt(gt_path)  # key -> alts, key -> categories
+    return S.load_gt(gt_path)
 
 
 def ruleset_A(run, gt, cats):
@@ -53,14 +50,12 @@ def ruleset_D(run, gt, cats):
 
 
 def _pooled(run, gt, cats, allow_contain, one2one=False, both_ways=False):
-    """Categories ignored. Returns detail rows and totals (protocol-style single TP)."""
     out = {}
     for k in KEYS:
         for e in run[k]:
             for a in S.split_alternates(e):
                 out.setdefault(norm(a), f"{e}  [{k}]")
-    used, rows = set(), []
-    status = {}
+    used, status = set(), {}
     for key, alts in gt.items():                      # pass 1: exact
         hit = sorted(alts & set(out))
         if hit:
@@ -87,13 +82,12 @@ def _pooled(run, gt, cats, allow_contain, one2one=False, both_ways=False):
 
 
 def ruleset_B(run, gt_path):
-    """Chat rule: per category; containment of GT inside output; commas ignored.
-    Output lines and GT lines are counted separately (TP_out for precision, TP_gt for recall)."""
+    """Per category; containment of GT inside output; commas ignored."""
     gtc = json.load(open(gt_path))["categories"]
     D = TPd = G = TPg = 0
     detail = {}
     for k, cat in CATMAP.items():
-        g_lines = gtc[cat]
+        g_lines = gtc.get(cat, [])
         g_alts = [[norm(a, True) for a in S.split_alternates(e)] for e in g_lines]
         o_lines = run[k]
         o_alts = [[norm(a, True) for a in S.split_alternates(e)] for e in o_lines]
@@ -101,5 +95,6 @@ def ruleset_B(run, gt_path):
         g_ok = [any(contains(o, a) for oa in o_alts for o in oa for a in ga) for ga in g_alts]
         D += len(o_lines); TPd += sum(o_ok); G += len(g_lines); TPg += sum(g_ok)
         detail[k] = dict(o=list(zip(o_lines, o_ok)), g=list(zip(g_lines, g_ok)))
-    p, r = TPd / D, TPg / G
+    p = TPd / D if D else 0.0
+    r = TPg / G if G else 0.0
     return dict(D=D, TPd=TPd, G=G, TPg=TPg, p=p, r=r, f1=f1(p, r), detail=detail)
