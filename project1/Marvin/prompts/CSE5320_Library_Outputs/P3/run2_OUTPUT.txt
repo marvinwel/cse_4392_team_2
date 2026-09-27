@@ -1,0 +1,104 @@
+### Nouns / noun phrases
+- library
+- loan items
+- customers
+- customer
+- member
+- membership card
+- member number
+- membership number
+- name
+- address
+- date of birth
+- subject sections
+- section
+- classification mark
+- bar code
+- language tapes
+- books
+- language tape
+- title language
+- level
+- French
+- beginner
+- title
+- author(s)
+- items
+- current loan
+- bar code reader
+- book bar code
+- records
+- daily update
+
+### “X of Y” expressions
+- number of subject sections
+- member number
+- membership number
+- date of birth
+- number of items on loan
+
+### Transitive verbs
+- issues
+- shows
+- kept
+- denotes
+- identifies
+- has
+- borrow
+- reserved
+- renewed
+- extend
+- scanned
+- entered
+- read
+- issued
+- stamped
+- searched
+- support
+
+### Adjectives / enumeration
+- unique
+- subject
+- language
+- beginner
+- current
+- valid
+- reserved
+- daily
+- manually
+- two types of loan items
+- language tapes
+- books
+
+### Numeric / quantity expressions
+- a number of subject sections
+- two types of loan items
+- up to a maximum of 8 items
+- maximum of 8
+- less than 8
+- 8 items
+- daily
+
+### Possession expressions
+- a membership card that shows a unique member number
+- other details on a customer must be kept
+- a language tape has a title language
+- a language tape has a level
+- a book has a title
+- a book has author(s)
+
+### “Consist of / part of” expressions
+- library is made up of a number of subject sections
+
+### Containment / containing expressions
+- other details on a customer
+- membership number
+- title language
+- author(s)
+- number of items on loan
+
+### “X is a Y” expressions (generalization/specialization)
+- customer is known as a member
+- two types of loan items, language tapes, and books
+- language tapes
+- books

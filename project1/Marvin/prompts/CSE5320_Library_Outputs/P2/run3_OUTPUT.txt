@@ -1,0 +1,102 @@
+Using the Library domain description as the source and the AUM brainstorming categories from the provided methodology, the following phrases are explicitly supported. The AUM material specifically instructs brainstorming for nouns/noun phrases, “X of Y” expressions, transitive verbs, adjectives/enumeration, numeric/quantity expressions, possession, “consist of/part of,” containment, and “X is a Y” expressions. 
+1. Nouns / noun phrases
+- library
+- loan item / loan items
+- customer / customers
+- member
+- membership card
+- member number
+- membership number
+- details
+- name
+- address
+- date of birth
+- subject sections
+- section
+- classification mark
+- bar code
+- types of loan items
+- language tapes
+- language tape
+- books
+- book
+- title language
+- level
+- title
+- author / authors
+- items
+- loan
+- membership
+- bar code reader
+- item
+- current loan
+- number of items on loan
+- book bar code
+- facility
+- records
+- daily update
+2. “X of Y” expressions
+- number of subject sections
+- types of loan items
+- date of birth
+- number of items on loan
+- daily update of records
+- maximum of 8 items
+3. Transitive verbs
+- issues loan items
+- issues a membership card
+- shows a unique member number
+- shows other details
+- kept such as a name, address, and date of birth
+- denotes a classification mark
+- identifies a loan item
+- has a title language
+- has a title
+- borrow items
+- reserve an item / reserved
+- renew an item / renewed
+- extend a current loan
+- scans the membership number
+- reads the book bar code
+- enters the membership number
+- enters the book bar code
+- stamps the item
+- issues the item
+- search for an item
+- update records
+4. Adjectives / enumeration
+- unique
+- subject
+- language
+- French
+- beginner
+- current
+- valid
+- reserved
+- daily
+- two types
+- language tapes
+- books
+5. Numeric / quantity expressions
+- a number of subject sections
+- two types of loan items
+- up to a maximum of 8 items
+- a maximum of 8 items
+- less than 8
+- number of items on loan
+6. Possession expressions
+- a language tape has a title language
+- a language tape has a level
+- a book has a title
+- a book has author(s)
+7. “Consist of / part of” expressions
+- the library is made up of a number of subject sections
+8. Containment / containing expressions
+- a membership card that shows a unique member number
+- other details on a customer
+- number of items on loan
+9. “X is a Y” expressions — generalization/specialization
+- each customer is known as a member
+- There are two types of loan items, language tapes, and books
+The second expression explicitly identifies language tapes and books as types of loan items, supporting the AUM generalization/specialization category. 
+Note: I have not added concepts that are merely implied by the description. For example, I did not introduce “Member” as a separate class beyond the explicitly stated phrase member, nor did I invent relationships or attributes not stated in the text.

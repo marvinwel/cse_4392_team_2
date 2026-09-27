@@ -1,0 +1,108 @@
+"Using the Library domain description as the source and the AUM brainstorming categories from the provided methodology, the following domain-specific phrases can be identified. The AUM material explicitly lists these brainstorming categories, including nouns/noun phrases, “X of Y” expressions, transitive verbs, adjectives/enumeration, numeric/quantity expressions, possession, “consist of / part of,” containment, and “X is a Y” generalization/specialization. 
+1. Nouns / noun phrases
+- library
+- loan items / loan item
+- customers / customer
+- member
+- membership card
+- member number
+- membership number
+- details
+- name
+- address
+- date of birth
+- subject sections / section
+- classification mark
+- bar code
+- language tapes / language tape
+- books / book
+- title language
+- level
+- title
+- author(s)
+- items / item
+- loan
+- current loan
+- membership
+- bar code reader
+- facility
+- records
+- daily update
+- number of items on loan
+- book bar code
+The source states, for example, that a library issues loan items to customers, customers are known as members, and a membership card shows a unique member number.  It also identifies subject sections, classification marks, bar codes, language tapes, books, titles, levels, and authors. 
+2. “X of Y” expressions
+- date of birth
+- number of items on loan
+The second expression is particularly relevant because the AUM material gives “number of seats” as an example of an X of Y expression. 
+3. Transitive verbs
+- issues loan items
+- shows a unique member number
+- keeps other details
+- is denoted by a classification mark
+- is identified by a bar code
+- has a title language
+- has a level
+- has a title
+- has author(s)
+- borrow items
+- reserved
+- renewed
+- extend a current loan
+- scanned
+- entered manually
+- read the book bar code
+- stamped
+- issued
+- searched
+- update records
+- support the facility
+The AUM material specifically explains that domain-specific transitive verbs can lead to association relationships. 
+4. Adjectives / enumeration
+- unique
+- subject
+- language
+- valid
+- reserved
+- daily
+- manual / manually
+- two types
+- language tapes
+- books
+- French
+- beginner
+- maximum
+The enumeration language tapes and books is explicitly introduced as the two types of loan items. 
+5. Numeric / quantity expressions
+- a number of subject sections
+- two types of loan items
+- up to a maximum of 8 items
+- less than 8
+- 8 items
+The quantity constraint is stated directly: a customer may borrow up to a maximum of 8 items, and the issue process checks whether the number of items on loan is less than 8. 
+6. Possession expressions
+- a language tape has a title language
+- a language tape has a level
+- a book has a title
+- a book has author(s)
+- the customer’s membership number
+- the library must support the facility
+These correspond to the AUM category “possession expressions (has/have, possess, etc.)”. 
+7. “Consist of / part of” expressions
+- library is made up of a number of subject sections
+This is the explicit structural expression in the domain description: the library is made up of subject sections. 
+8. Containment / containing expressions
+- library contains subject sections
+- membership card contains / shows membership information
+- book contains a title and author(s)
+- language tape contains a title language and level
+Note: These are structural interpretations of the domain description rather than exact phrases stated with the words contains/containing. Under the user's requirement to preserve source wording, the exact source wording should therefore be preferred during classification—for example, “library is made up of a number of subject sections” and “a book has a title, and author(s)”. 
+9. “X is a Y” expressions — generalization/specialization
+- customer is a member
+- language tape is a loan item
+- book is a loan item
+The source explicitly says “Each customer is known as a member” and later states that there are “two types of loan items, language tapes, and books.” 
+These correspond to the AUM inheritance / IS-A category, where one concept is a generalization or specialization of another. 
+Important AUM classification note
+I have kept the phrases in the wording used by the Library description rather than inventing synonyms. The AUM material says brainstorming is intended to identify important domain concepts and phrases, which are subsequently classified into classes, attributes, and relationships. 
+Also, the noun/noun-phrase list is intentionally broader than the eventual class list: AUM explains that a noun/noun phrase may ultimately become either a class or an attribute, depending on whether it has independent existence in the domain."

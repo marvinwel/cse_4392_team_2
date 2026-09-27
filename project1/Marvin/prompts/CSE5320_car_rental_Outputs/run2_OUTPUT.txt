@@ -1,0 +1,219 @@
+Nouns / noun phrases
+car rental company
+rental locations
+metropolitan area
+customer-friendly service
+operating cost
+business operation
+vehicles
+location
+additional charge
+passenger cars
+vehicle rentals
+reservation system
+makes of cars
+rental fleet
+manufacturers
+make
+models
+price classes
+customer
+selected car
+message
+another make and model
+similar models
+rental plans
+customers
+daily unlimited miles plan
+weekend 10% discount plan
+information
+models of car
+automatic gear change
+manual gear change
+doors
+sedan
+hatchback
+rental prices
+options
+reservations
+salespersons
+reservation form
+file cabinet
+deposit
+time of reservation
+reservation
+contract
+period of time
+cars available
+request
+block reservation
+invoices
+rentals
+car
+customer
+invoice
+company
+customer’s employer
+credit card
+rental charge
+credit card processing company
+rental
+day
+rental cars
+preventive maintenance
+damage
+working condition
+EPA’s emission requirements
+rental car purchase
+repair
+maintenance
+disposal information
+business purposes
+tax purposes
+depreciation
+rental cars
+“X of Y” expressions
+number of rental locations
+cost of running its business
+labor cost
+one location
+the same location
+a different location
+forms of vehicle rentals
+same reservation system
+makes of cars
+models of car
+number of price classes
+number of different rental plans
+time of reservation
+period of time
+cars available to satisfy the request
+invoices for all rentals
+all rentals on the reservation
+purchase, repair, maintenance, and disposal information
+tax purposes
+depreciation of the rental cars
+Transitive verbs
+operates
+provides
+reduce
+taken
+returned
+branch out
+use
+has
+have
+grouped
+select
+rent
+display
+telling
+let
+suggest
+have
+know
+make
+process
+archive
+sign
+satisfy
+make
+handled
+checked out
+opened
+cover
+settle
+returned
+sent
+pays
+processed
+repaired
+inspected
+ensure
+satisfy
+keep track of
+Adjectives / enumeration
+rental
+metropolitan
+different
+additional
+passenger
+same
+other
+several
+selected
+available
+similar
+daily
+unlimited
+weekend
+discount
+automatic
+manual
+two
+four
+sedan
+hatchback
+directly
+in person
+phone
+given
+block
+single
+one or more
+credit
+frequent
+preventive
+annual
+good
+current
+Numeric / quantity expressions
+a number of rental locations
+several different makes of cars
+several models
+a small number of price classes
+a number of different rental plans
+10% discount
+two or four doors
+more than a given period of time
+several cars
+all rentals
+one or more rentals
+a given day
+annually
+Possession expressions
+the company has a great business model
+the company has several different makes of cars
+each make may have several models
+Toyota has Corolla, Camry, and more
+the company has a number of different rental plans
+a customer will want to know such information
+the salesperson has to ensure
+the driver(s) has a valid driver license
+the driver(s) has up-to-date state-required liability insurance
+a customer has a block reservation
+a single invoice may cover one or more rentals
+“Consist of / part of” expressions
+models are grouped into a small number of price classes
+information available on the models of car
+invoices for all rentals on the reservation
+purchase, repair, maintenance, and disposal information
+Containment / containing expressions
+rental fleet
+price classes
+reservation system
+reservation form
+file cabinet
+invoices for all rentals on the reservation
+credit card processing company
+“X is a Y” expressions (generalization/specialization)
+passenger cars → vehicles
+Toyota → make
+Corolla → model
+Camry → model
+sedan → model of car
+hatchback → model of car
+automatic gear change → gear change
+manual gear change → gear change
+daily unlimited miles plan → rental plan
+weekend 10% discount plan → rental plan

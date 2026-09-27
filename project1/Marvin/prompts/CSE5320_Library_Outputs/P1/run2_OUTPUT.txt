@@ -1,0 +1,114 @@
+"Using the Library description as the source text and the AUM brainstorming categories from the methodology material, the following domain-specific phrases can be identified. The AUM material specifically directs brainstorming to nouns/noun phrases, “X of Y” expressions, transitive verbs, adjectives/enumerations, numeric/quantity expressions, possession, part-of/consist-of, containment, and “X is a Y” expressions. 
+1. Nouns / noun phrases
+- library
+- loan item / items
+- customer / customers
+- member
+- membership card
+- member number
+- membership number
+- name
+- address
+- date of birth
+- subject sections
+- section
+- classification mark
+- bar code
+- language tapes / language tape
+- books / book
+- title language
+- level
+- title
+- author(s)
+- current loan
+- item
+- membership
+- number of items on loan
+- bar code reader
+- item
+- records
+- facility
+2. “X of Y” expressions
+- date of birth
+- number of items on loan
+3. Transitive verbs
+- issues loan items
+- is issued a membership card
+- shows a unique member number
+- shows
+- must be kept
+- is denoted by a classification mark
+- is uniquely identified by a bar code
+- has a title language
+- has a title
+- has an author
+- borrow
+- reserved
+- renewed
+- extend a current loan
+- is scanned
+- entered manually
+- is read
+- be issued
+- is stamped
+- issued
+- searched
+- support the facility
+- update records
+4. Adjectives / enumeration
+- unique
+- subject
+- classification
+- language
+- beginner
+- current
+- valid
+- daily
+- French
+- language tapes
+- books
+- reserved
+Enumerations:
+- language tapes, and books
+- French
+- beginner
+- borrowed, reserved or renewed
+- via a bar code reader or entered manually
+The source explicitly gives “French” and “beginner” as examples of the language and level values, respectively. 
+5. Numeric / quantity expressions
+- a number of subject sections
+- two types of loan items
+- up to a maximum of 8 items
+- less than 8
+- a daily update
+The two explicit multiplicity/quantity constraints are that the library has a “number of subject sections” and a customer may borrow “up to a maximum of 8 items.” 
+6. Possession expressions
+- customer has a membership card
+- language tape has a title language
+- language tape has a level
+- book has a title
+- book has author(s)
+These correspond to the AUM possession category (“has/have, possess, etc.”). 
+7. “Consist of / part of” expressions
+- library is made up of a number of subject sections
+- subject sections are part of the library
+The first is explicitly stated in the source; the second is the corresponding part-of relationship represented by that statement. 
+8. Containment / containing expressions
+- library contains subject sections
+- membership card contains a member number
+- book contains a title
+- book contains author(s)
+- language tape contains a title language
+- language tape contains a level
+These express containment relationships represented by the domain description's structural statements.
+9. “X is a Y” expressions — generalization/specialization
+- language tapes are types of loan items
+- books are types of loan items
+- customer is known as a member
+The key generalization/specialization statement in the source is:
+- loan items → language tapes, books
+The description explicitly says, “There are two types of loan items, language tapes, and books.” 
+Consolidated core domain concepts
+The strongest domain concepts for subsequent AUM classification are therefore:
+Library, Loan Item, Customer, Member, Membership Card, Member Number, Subject Section, Classification Mark, Bar Code, Bar Code Reader, Language Tape, Book, Title Language, Level, Title, Author, Membership, Current Loan, Records.
+The AUM material states that the brainstorming results are subsequently classified into classes, attributes, and relationships, including inheritance and aggregation."

@@ -1,0 +1,46 @@
+"Based strictly on the terminology used in the domain description, the domain-specific phrases are:
+Nouns / noun phrases
+- library
+- loan item / loan items
+- customer / customers
+- member
+- membership card
+- member number
+- membership number
+- name
+- address
+- date of birth
+- subject sections
+- section
+- classification mark
+- bar code
+- language tapes
+- books / book
+- title language
+- level
+- title
+- author / authors
+- item
+- membership
+- current loan
+- bar code reader
+- records
+X of Y Expressions
+- number of subject sections
+- number of items on loan
+- maximum of 8 items
+- daily update of records
+Domain-specific actions / processes
+- issues loan items
+- is issued
+- borrow
+- reserved
+- renewed
+- extend a current loan
+- membership is scanned
+- book bar code is read
+- item can be issued
+- item is stamped
+- item is searched
+- daily update of records
+These phrases are taken from the supplied domain description without adding terminology not present in the source. "

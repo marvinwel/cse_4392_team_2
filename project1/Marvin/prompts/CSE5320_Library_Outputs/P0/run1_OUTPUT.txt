@@ -1,0 +1,76 @@
+Based strictly on the terminology explicitly stated in the domain description, the domain-specific phrases are:
+1. Nouns / noun phrases
+- library
+- loan items / item
+- customers / customer
+- member
+- membership card
+- member number
+- membership number
+- name
+- address
+- date of birth
+- subject sections / section
+- classification mark
+- bar code
+- types of loan items
+- language tapes / language tape
+- books / book
+- title language
+- level
+- title
+- author(s)
+- current loan
+- membership
+- bar code reader
+- records
+- daily update of records
+2. X of Y Expressions
+- date of birth
+- number of subject sections
+- types of loan items
+- number of items on loan
+- maximum of 8 items
+3. Transitive Verbs
+- issues
+- shows
+- keeps
+- denotes
+- identifies
+- has
+- borrow
+- reserved
+- renewed
+- extend
+- issued
+- scanned
+- read
+- entered
+- stamped
+- searched
+- support
+4. Adjectives / Enumeration Values
+- unique
+- language
+- beginner
+- French
+- valid
+- reserved
+- manual / manually
+- daily
+5. Numeric / Quantity Expressions
+- a number of subject sections
+- up to a maximum of 8 items
+- less than 8
+6. Possession Expressions
+- customer's membership number
+- a language tape's title language
+- a language tape's level
+- a book's title
+- a book's author(s)
+7. Consist of / Part of Expressions
+- library → subject sections
+- library → loan items
+- loan items → language tapes
+- loan items → books
+The source states that the library is made up of a number of subject sections and distinguishes two types of loan items: language tapes and books.

@@ -1,0 +1,172 @@
+Nouns / noun phrases
+National Trade Show Services (NTSS)
+service provider
+business customers
+national and international trade shows
+services
+trade shows
+design
+professional services
+theme
+slogan
+location
+duration
+advertisement activities
+activities
+speakers
+participants
+exhibitors
+on site registration
+booths
+conference rooms
+seminars
+reception
+trade show materials
+account
+customer
+service charges
+payments
+account balances
+event
+Consumer Electronics Show (CES)
+Las Vegas Convention Center
+MacWorld Conference
+Moscone Center
+organizer
+person
+organization
+contact information
+website
+predefined domains
+Technology
+Consumer Electronics
+event organization staff
+invited speakers
+selected speakers
+observers
+NTSS staff
+event organizer
+participants
+registration
+registration charges
+fee
+trade show event
+domain
+keynote address
+evaluation
+proposals
+committee of reviewers
+reviewers
+experts
+status
+exhibitors
+products
+services
+size
+booths
+trade show
+purposes
+"X of Y" expressions
+selection of a theme
+selection of a slogan
+duration of the event
+list of predefined domains
+types of participants
+event organization staff
+evaluation of their proposals
+committee of reviewers
+size of the booth
+Transitive verbs
+create
+promote
+organize
+run
+contact
+design
+select
+include
+invite
+register
+set up
+distribute
+record
+maintain
+regard
+attend
+change
+add
+remove
+provide
+register
+charge
+create
+prepare
+invite
+give
+evaluate
+review
+help
+exhibit
+pay
+request
+rent
+visit
+Adjectives / enumeration
+national
+international
+professional
+on site
+predefined
+new
+outdated
+different
+invited
+selected
+famous
+pending review
+accepted
+rejected
+large
+medium
+small
+whole
+various
+Numeric / quantity expressions
+each customer
+all activities
+one or more predefined domains
+2008
+January 7-10, 2008
+January 14-18, 2008
+one or more
+different types
+all of the other participants
+each customer
+large, medium, or small
+Possession expressions
+An event has an organizer
+An event has contact information
+An event has ... a website
+The NTSS creates an account for each customer
+The invited speakers are famous figures in the domain
+The selected speakers are invited
+The exhibitors have to pay for the booths
+“Consist of / part of” expressions
+Organizing a trade show includes all activities before the trade show except creation and promotion
+Running a trade show is the activity of on site registration, setting up the booths, conference rooms for seminars, reception, and distributing trade show materials
+Containment / containing expressions
+Creating a trade show involves the design for the trade show
+professional services ranging from selection of a theme and a slogan to location and duration
+Promoting a trade show includes advertisement activities
+Organizing a trade show includes all activities before the trade show except creation and promotion
+Running a trade show is the activity of on site registration, setting up the booths, conference rooms for seminars, reception, and distributing trade show materials
+An event can belong to one or more predefined domains
+A trade show is attended by different types of participants including the event organization staff, the invited and/or selected speakers, exhibitors, and observers
+The status of a proposal includes pending review, accepted, and rejected
+“X is a Y” expressions
+A trade show can be regarded as an event
+An event has an organizer, which can be a person or an organization
+The invited speakers are famous figures in the domain
+The selected speakers are invited to speak at the event based on the evaluation of their proposals
+The exhibitors come to the trade show to exhibit their products or services
+The observers come to visit the trade show for various purposes

@@ -1,0 +1,159 @@
+Nouns / noun phrases
+car rental company
+rental locations
+metropolitan area
+business model
+customer-friendly service
+business
+costs of running its business
+labor cost
+operating cost
+Vehicles
+location
+passenger cars
+vehicle rentals
+reservation system
+makes of cars
+rental fleet
+manufacturers
+make
+models
+price classes
+customer
+selected car
+message
+rental plans
+daily unlimited miles plan
+weekend 10% discount plan
+information
+models of car
+automatic gear change
+manual gear change
+doors
+sedan
+hatchback
+rental prices
+options
+reservations
+reservation form
+file cabinet
+deposit
+time of reservation
+reservation
+contract
+cars
+request
+block reservation
+invoices
+rentals
+invoice
+company
+customer’s employer
+credit card
+rental charge
+credit card processing company
+day
+rental cars
+preventive maintenance
+damage
+rental car
+purchase
+repair
+maintenance
+disposal information
+business purposes
+tax purposes
+depreciation of the rental cars
+“X of Y” expressions
+number of rental locations
+costs of running its business
+forms of vehicle rentals
+makes of cars
+number of price classes
+models of car
+time of reservation
+invoices for all rentals on the reservation
+depreciation of the rental cars
+Transitive verbs
+operates
+provides
+take
+returned
+use
+has
+grouped
+select
+rent
+display
+let
+suggest
+have
+make
+process
+archive
+required
+sign
+satisfy
+make
+handle
+checked out
+opened
+cover
+settle
+returned
+sent
+pays
+processed
+repaired
+inspected
+ensure
+keep track of
+Adjectives / enumeration
+passenger
+different
+selected
+similar
+daily
+unlimited
+weekend
+automatic
+manual
+two
+four
+sedan
+hatchback
+available
+valid
+frequent
+preventive
+annual
+Numeric / quantity expressions
+a number of rental locations
+several different makes of cars
+several models
+a small number of price classes
+a number of different rental plans
+10%
+two or four doors
+several cars
+one or more rentals
+a given period of time
+Possession expressions
+the company has a great business model
+the company has several different makes of cars
+each make may have several models
+Toyota has Corolla, Camry, and more
+the company has a number of different rental plans
+a customer will want to know such information
+the customer’s employer
+“Consist of / part of” expressions
+models are grouped into a small number of price classes
+Containment / containing expressions
+rental fleet
+invoices for all rentals on the reservation
+a single invoice may cover one or more rentals
+file cabinet
+“X is a Y” expressions (generalization/specialization)
+passenger cars are forms of vehicle rentals
+sedan or hatchback
+automatic or manual gear change

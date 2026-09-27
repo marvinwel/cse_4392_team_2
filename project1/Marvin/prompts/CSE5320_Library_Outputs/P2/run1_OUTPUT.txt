@@ -1,0 +1,95 @@
+"Using the AUM brainstorming categories from the provided methodology—especially the instruction to identify domain-specific nouns/noun phrases, “X of Y” expressions, transitive verbs, adjectives/enumerations, numeric/quantity expressions, possession, part-of, containment, and “X is a Y” expressions. 
+The following phrases are explicitly supported by the Library domain description. I have preserved the wording from the description and have not added inferred concepts. 
+1. Nouns / noun phrases
+- library
+- loan items / loan item
+- customers / customer
+- member
+- membership card
+- member number
+- membership number
+- name
+- address
+- date of birth
+- subject sections / section
+- classification mark
+- bar code
+- language tapes / language tape
+- books / book
+- title language
+- level
+- title
+- author(s)
+- item
+- current loan
+- membership
+- bar code reader
+- records
+2. “X of Y” expressions
+- number of subject sections
+- number of items on loan
+- date of birth
+3. Transitive verbs
+- issues loan items to customers
+- is issued a membership card
+- shows a unique member number
+- shows a unique member number
+- must be kept
+- is denoted by a classification mark
+- is uniquely identified by a bar code
+- has a title language
+- has a title
+- has a title language and level
+- has a title and author(s)
+- borrow items
+- borrowed
+- reserved
+- renewed
+- extend a current loan
+- is scanned
+- entered manually
+- is read
+- can be issued
+- stamped
+- issued
+- be searched
+- update of records
+4. Adjectives / enumeration
+- unique
+- subject
+- language
+- beginner
+- two types
+- French
+- valid
+- reserved
+- daily
+- manually
+The explicit enumeration of the two loan-item types is “language tapes, and books.” 
+5. Numeric / quantity expressions
+- a number of subject sections
+- two types of loan items
+- e.g. French
+- e.g. beginner
+- up to a maximum of 8 items
+- 8
+- less than 8
+- a number of items on loan
+The description explicitly states that a customer may borrow “up to a maximum of 8 items” and later uses “less than 8.” 
+6. Possession expressions
+- a language tape has a title language
+- a language tape has a level
+- a book has a title
+- a book has author(s)
+These are explicit possession/attribute constructions in the description. 
+7. “Consist of / part of” expressions
+- library is made up of a number of subject sections
+This is the explicit part/aggregation-style expression in the description. 
+8. Containment / containing expressions
+- None explicitly stated.
+The description does not use an explicit containment construction such as “contains,” “containing,” or equivalent wording. I therefore do not add one by inference.
+9. “X is a Y” expressions — generalization / specialization
+- each customer is known as a member
+- there are two types of loan items, language tapes, and books
+The first explicitly relates customer and member; the second explicitly identifies language tapes and books as the two types of loan items. 
+Note: I have not converted phrases into cleaner UML terminology such as “customer is a member” or “book is a loan item,” because the task requires preserving phrases actually supported by the domain description."

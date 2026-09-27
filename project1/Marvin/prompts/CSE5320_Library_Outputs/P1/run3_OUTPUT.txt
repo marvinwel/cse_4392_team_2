@@ -1,0 +1,109 @@
+"Using the Library domain description as the source and the AUM brainstorming categories specified in the methodology, the following domain-specific phrases can be identified. The AUM material explicitly instructs the team to brainstorm nouns/noun phrases, “X of Y” expressions, transitive verbs, adjectives/enumerations, numeric/quantity expressions, possession, consist-of/part-of, containment, and “X is a Y” expressions. 
+1. Nouns / noun phrases
+- library
+- loan item / loan items
+- customer / customers
+- member
+- membership card
+- member number
+- membership number
+- details
+- name
+- address
+- date of birth
+- subject section / subject sections
+- section
+- classification mark
+- bar code
+- type of loan items
+- language tape / language tapes
+- book / books
+- title language
+- level
+- French
+- beginner
+- title
+- author / authors
+- item
+- current loan
+- bar code reader
+- membership
+- book bar code
+- facility
+- records
+These are taken directly from the Library description; for example, the description identifies customers, members, membership cards, member numbers, subject sections, classification marks, loan items, language tapes, books, titles, authors, and bar codes. 
+2. “X of Y” expressions
+- date of birth
+- number of items on loan
+The second expression is particularly important because AUM treats an expression such as “number of seats” as an attribute-style domain phrase. 
+3. Transitive verbs
+- issues
+- shows
+- keep
+- denotes
+- identified
+- borrow
+- reserved
+- renewed
+- extend
+- scanned
+- entered
+- read
+- stamped
+- issued
+- support
+- searched
+- update
+Examples from the description include “issues loan items,” “borrow,” “reserved,” “renewed,” “scanned,” “entered,” “read,” “stamped,” and “update of records.”  AUM notes that domain-specific transitive verbs can become association relationships. 
+4. Adjectives / enumeration
+- unique
+- subject
+- language
+- current
+- valid
+- reserved
+- French
+- beginner
+- two types
+- language tapes
+- books
+Here, French and beginner are domain values/examples associated with a language tape's attributes, while language tapes and books enumerate the two types of loan items. The source explicitly states that there are two types of loan items. 
+5. Numeric / quantity expressions
+- a number of subject sections
+- two types of loan items
+- up to a maximum of 8 items
+- a maximum of 8 items
+- less than 8
+- number of items on loan
+The description explicitly states that a customer may borrow “up to a maximum of 8 items” and that the number of items on loan must be “less than 8.” 
+6. Possession expressions
+- a language tape has a title language
+- a language tape has a level
+- a book has a title
+- a book has author(s)
+AUM specifically identifies possession expressions such as has/have as one of the brainstorming categories.  The Library description contains these possession relationships directly. 
+7. “Consist of / part of” expressions
+- library is made up of a number of subject sections
+- subject sections are part of the library
+The first is the exact expression appearing in the source. The second is the corresponding part-of relationship expressed using AUM terminology; AUM defines aggregation as the relationship where one object is part of another. 
+8. Containment / containing expressions
+- library contains subject sections
+- library contains a number of subject sections
+These represent the containment relationship implied by the source's statement that the library is “made up of” subject sections. 
+9. “X is a Y” expressions — generalization / specialization
+- customer is a member
+- language tape is a loan item
+- book is a loan item
+The first is stated directly as “Each customer is known as a member.” The latter two are supported by the statement that there are two types of loan items: language tapes and books. 
+AUM defines this category as an IS-A/generalization-specialization relationship, where one concept is more general or specialized than another. 
+Consolidated list of the strongest domain concepts
+If the goal is to produce the brainstorming list before classification, the most important phrases are:
+- Nouns / noun phrases: library; loan item / loan items; customer / customers; member; membership card; member number; membership number; name; address; date of birth; subject section / subject sections; classification mark; bar code; language tape / language tapes; book / books; title language; level; title; author / authors; current loan; bar code reader; membership; book bar code; facility; records.
+- X of Y: date of birth; number of items on loan.
+- Transitive verbs: issue; show; keep; denote; identify; borrow; reserve; renew; extend; scan; enter; read; stamp; search; update.
+- Adjectives / enumeration: unique; subject; language; current; valid; reserved; French; beginner; two types.
+- Numeric / quantity: a number of subject sections; two types of loan items; up to a maximum of 8 items; a maximum of 8 items; less than 8.
+- Possession: language tape has a title language; language tape has a level; book has a title; book has author(s).
+- Consist-of / part-of: library is made up of a number of subject sections.
+- Containment: library contains subject sections.
+- IS-A: customer is a member; language tape is a loan item; book is a loan item. "

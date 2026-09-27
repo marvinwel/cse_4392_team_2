@@ -1,0 +1,186 @@
+Nouns / noun phrases
+car rental company
+rental locations
+metropolitan area
+business model
+customer-friendly service
+business
+operating cost
+business operation
+vehicles
+location
+passenger cars
+vehicle rentals
+reservation system
+makes of cars
+rental fleet
+manufacturers
+models
+Toyota
+Corolla
+Camry
+price classes
+customer
+car
+message
+rental plans
+daily unlimited miles plan
+weekend 10% discount plan
+information
+models of car
+automatic gear change
+manual gear change
+doors
+sedan
+hatchback
+rental prices
+options
+reservations
+car rental company
+salespersons
+reservation form
+file cabinet
+deposit
+time of reservation
+reservation
+customer
+contract
+period of time
+cars
+request
+block reservation
+invoices
+rentals
+invoice
+company
+customer’s employer
+credit card
+rental charge
+credit card processing company
+rental
+day
+rental cars
+preventive maintenance
+damage
+working condition
+EPA
+emission requirements
+rental car purchase
+repair
+maintenance
+disposal information
+business purposes
+tax purposes
+depreciation of the rental cars
+"X of Y" expressions
+costs of running its business
+makes of cars
+models of car
+time of reservation
+depreciation of the rental cars
+Transitive verbs
+operates
+provides
+find
+reduce
+take
+return
+use
+select
+rent
+display
+suggest
+have
+know
+make
+process
+archive
+require
+sign
+honor
+satisfy
+make
+handle
+check out
+open
+cover
+settle
+send
+pay
+process
+repair
+inspect
+ensure
+satisfy
+keep track of
+Adjectives / enumeration
+rental
+different
+passenger
+other
+several
+small
+daily
+unlimited
+weekend
+discount
+automatic
+manual
+two
+four
+sedan
+hatchback
+additional
+similar
+given
+block
+single
+one or more
+frequent
+preventive
+annual
+valid
+up-to-date
+state-required
+good
+same
+different
+Numeric / quantity expressions
+a number of rental locations
+several different makes of cars
+several models
+a small number of price classes
+a number of different rental plans
+10% discount
+two or four doors
+a number of rental plans
+several cars
+a block reservation for several cars
+one or more rentals
+more than a given period of time
+annually
+Possession expressions
+the company has a number of rental locations
+the company has several different makes of cars in its rental fleet
+each make may have several models
+Toyota has Corolla, Camry, and more
+the company has a number of different rental plans available to customers
+a car has to be repaired
+the driver has a valid driver license
+the driver has up-to-date state-required liability insurance
+"Consist of / part of" expressions
+the models are grouped into a small number of price classes
+Containment / containing expressions
+cars in its rental fleet
+reservations in the file cabinet
+invoices for all rentals on the reservation
+rental charge through a credit card processing company
+"X is a Y" expressions
+passenger cars are vehicle rentals
+Toyota is a make
+Corolla is a model
+Camry is a model
+sedan is a car type
+hatchback is a car type
+a rental car is a car
+a credit card processing company is a company
