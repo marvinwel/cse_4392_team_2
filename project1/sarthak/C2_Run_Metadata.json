@@ -1,0 +1,26 @@
+{
+  "iteration": "C2",
+  "status": "evaluated",
+  "prepared_utc": "2026-09-28T04:48:51.994708+00:00",
+  "parent": "C1",
+  "model": "DeepSeek web app, DeepThink enabled; exact underlying model version not exposed in UI",
+  "deepthink_enabled": true,
+  "search_toggle_enabled": true,
+  "attachments": [],
+  "input_method": "Full extracted text embedded in prompt",
+  "prompt_sha256": "c671c6e958ffb3f55fe8d7719ec4ebb34babd247d3f4566e627f490363e13ab2",
+  "ground_truth_sent": false,
+  "hypothesis": "Resolving aliases before classification and separating persistent domain structure from procedural actions will reduce false-positive classes/relationships and repair attribute ownership.",
+  "change": "Adds seven general checks on aliases, naming consistency, domain scope, ownership, active/passive participants, state, and association classes. Fixed source text and inventory are unchanged.",
+  "decision": "Accept C2 over C1: F1 rises from 33.33% to 44.44%; retain as incumbent while testing C3.",
+  "submitted_utc": "2026-09-28T04:49:42.025Z",
+  "conversation_url": "https://chat.deepseek.com/a/chat/s/9a5cde4f-1ebe-40b9-8024-4504a3a7e663",
+  "browser_prompt_match": {
+    "characters": 11251,
+    "verified_against_saved_file": true
+  },
+  "completed_utc": "2026-09-28T04:51:53.160Z",
+  "visible_search_activity": "No search-results panel or source citations observed.",
+  "raw_output_capture": "Unedited rendered final-answer innerText; full visible response preserved separately.",
+  "raw_output_sha256": "f8af3298ed35422cb32b7ddfae34e47a39a7ad0b98a26fc40fa516e0d23794ac"
+}

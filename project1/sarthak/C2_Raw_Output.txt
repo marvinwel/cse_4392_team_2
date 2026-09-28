@@ -1,0 +1,61 @@
+CLASSES:
+
+Library
+
+Customer
+
+MembershipCard
+
+Section
+
+Item
+
+LanguageTape
+
+Book
+
+ATTRIBUTES:
+
+Customer.membershipNumber
+
+Customer.name
+
+Customer.address
+
+Customer.dateOfBirth
+
+Customer.membershipValid
+
+Section.classificationMark
+
+Item.barCode
+
+Item.reserved
+
+LanguageTape.titleLanguage
+
+LanguageTape.level
+
+Book.title
+
+Book.author
+
+Loan.current
+
+RELATIONSHIPS:
+
+as(issues, Library, Item)
+
+as(borrows, Customer, Item)
+
+as(has, Customer, MembershipCard)
+
+ag(Library, Section)
+
+isa(LanguageTape, Item)
+
+isa(Book, Item)
+
+ASSOCIATION CLASSES:
+
+Loan(Customer, Item)

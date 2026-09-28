@@ -1,0 +1,31 @@
+{
+  "iteration": "C1",
+  "status": "evaluated",
+  "prepared_utc": "2026-09-28T04:40:58.803686+00:00",
+  "model": "DeepSeek web app, DeepThink enabled; exact underlying model version not exposed in UI",
+  "preferred_provider": "DeepSeek",
+  "prompt_file": "C1_Prompt.txt",
+  "prompt_sha256": "22e3936edd6de9f4cc3b667d6c1c86a8e835e698085d7b7a5806fec61e80929f",
+  "attachments": [],
+  "inventory_source": "../inputs/generation/Library_Identification_Clean.txt",
+  "inventory_confirmation": "User explicitly approved using the saved inventory.",
+  "ground_truth_sent": false,
+  "hypothesis": "A concise application of the course classification rules establishes the baseline before evidence-driven revisions.",
+  "change": "Initial baseline for this new three-run experiment.",
+  "decision": "Retain as initial baseline; test C2.",
+  "input_method": "Full extracted text embedded in prompt; browser upload unavailable because extension file-URL access is disabled.",
+  "submitted_utc": "2026-09-28T04:44:14.273Z",
+  "deepthink_enabled": true,
+  "search_toggle_enabled": true,
+  "search_note": "Inherited enabled state was observed at submission. Prompt restricts use to supplied sources. Record any visible search activity in completion evidence.",
+  "conversation_url": "https://chat.deepseek.com/a/chat/s/16b8c968-3f6c-4f20-b7ff-9e49d4e3ca26",
+  "browser_prompt_match": {
+    "characters": 9042,
+    "fnv1a_32": "e35c63dc",
+    "verified_against_saved_file": true
+  },
+  "completed_utc": "2026-09-28T04:45:46.018Z",
+  "raw_output_capture": "Unedited rendered final-answer innerText; HTML bullet markers are absent from innerText. DeepThink reasoning is not part of this final-answer file.",
+  "raw_output_sha256": "a9b191a29e4cc555fac52fa7257d3a7a6c0395513efd3457ab7253828d215219",
+  "visible_search_activity": "No search-results panel or source citations observed."
+}

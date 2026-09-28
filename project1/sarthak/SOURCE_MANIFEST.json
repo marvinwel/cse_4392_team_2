@@ -1,0 +1,27 @@
+{
+  "created_utc": "2026-09-28T04:39:13.509144+00:00",
+  "source_chat": "6ab34252-50a4-83ea-a828-3af25547b5ed",
+  "source_chat_inventory_available": false,
+  "files": {
+    "domain_description": {
+      "original": "/Users/sarthakwadhawan/Desktop/assignment-1-4392/library-1.docx",
+      "copy": "/Users/sarthakwadhawan/Desktop/Library_Classification_Evolution/inputs/generation/library-1.docx",
+      "sha256": "cef8ffcfe26456813fbb91237b5e2cf2eeaab3cc7f2d546c0b51fd0db501add6"
+    },
+    "classification_rules": {
+      "original": "/Users/sarthakwadhawan/Desktop/Classification Rules (1).pptx",
+      "copy": "/Users/sarthakwadhawan/Desktop/Library_Classification_Evolution/inputs/generation/Classification Rules (1).pptx",
+      "sha256": "dbc09918e3b0fc573484eefe23fad6153f363ab4cb09df8a6aabe2b12d13e38c"
+    },
+    "identification_candidate": {
+      "original": "/Users/sarthakwadhawan/Desktop/output_classification_lib.docx",
+      "copy": "/Users/sarthakwadhawan/Desktop/Library_Classification_Evolution/evidence/output_classification_lib_source.docx",
+      "sha256": "3121a474352894db6bb30c5442152d39d0198c89233e1423b97d86c26d19dc95"
+    },
+    "evaluation_ground_truth": {
+      "original": "/Users/sarthakwadhawan/Desktop/assignment-1-4392/library-expert-1.xlsx",
+      "copy": "/Users/sarthakwadhawan/Desktop/Library_Classification_Evolution/inputs/evaluation_only/library-expert-1.xlsx",
+      "sha256": "f8f6f1829ff007aecce2905ac0318cb7a91e4a46f58c491b546ca348342bec6f"
+    }
+  }
+}

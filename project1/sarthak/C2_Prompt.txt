@@ -1,0 +1,313 @@
+Library Classification C2 — Alias resolution and domain scope
+
+Perform the classification activity of Agile Unified Methodology domain modeling.
+
+Use only these three inputs:
+1. The domain description transcribed below from library-1.docx.
+2. The classification rules transcribed below from Classification Rules (1).pptx.
+3. The clean identification inventory below.
+
+Classify the identified phrases into classes, attributes, and relationships. Use the domain description to determine their meanings and participants. Follow the supplied classification rules: distinguish independently existing domain objects from scalar descriptive attributes; interpret transitive verbs, possession, part-of expressions, and generalization appropriately. Values and quantities need not become separate model elements. Avoid unsupported concepts and duplicate elements.
+
+Include an association class only when a many-to-many association requires information about that association to be recorded. Give its participating classes. Do not invent record fields absent from the supplied sources.
+
+Use consistent class names based on the source wording. Every attribute must name its owner. Every relationship must name its actual participating classes. Use singular names and concise verb labels. Do not include multiplicities as separately scored elements.
+
+Return only the final classification using the following four headings and one element per line. Write NONE under a heading if it has no elements. Do not include explanations, a diagram, or evaluation scores.
+
+CLASSES:
+- <class>
+
+ATTRIBUTES:
+- <class>.<attribute>
+
+RELATIONSHIPS:
+- as(<label>, <source class>, <target class>)
+- isa(<child class>, <parent class>)
+- ag(<whole class>, <part class>)
+
+ASSOCIATION CLASSES:
+- <association class name>(<class A>, <class B>)
+
+ADDITIONAL CLASSIFICATION CHECKS
+
+1. Resolve synonyms, naming phrases, and short/full forms before classifying. A statement that one concept is "known as" another name does not establish a subclass. Keep one canonical class unless the description establishes distinct objects. Prefer the noun used as the subject of domain facts over a term introduced only as another name. If both a modified noun and its shorter head noun refer unambiguously to the same object, use the shorter source form consistently.
+2. Model the core domain. Input hardware, entry methods, and generic processing words do not require classes merely because they are nouns. Include them only when the description requires their independent domain identity or stored information.
+3. Assign each descriptive attribute to the concept actually described by its sentence, after resolving aliases. Do not move attributes to a duplicate role class. If a verb's object is a scalar attribute, do not create an association to the attribute owner's class as a substitute.
+4. For active and passive clauses, resolve the actor, recipient, and thing acted upon separately. Distinguish the actor's action from a persistent possession relationship created for the recipient. Include only relationships between supported classes; procedural scanning, entry, and update steps do not automatically imply persistent domain relationships.
+5. Audit all state and quantity phrases as well as nouns. A verb can describe a stored state or relationship-specific fact rather than another association. Give such a fact to the object or association whose state it describes, when the source requires that information. Values and multiplicity limits are not separate classes.
+6. Review every association for the two association-class conditions: many-to-many participation and information about the relationship that must be retained. Use only source-supported state or data. Do not invent conventional fields to justify an association class.
+7. Audit coverage of the fixed inventory, including omissions, but output only the final classification in the required format. Do not force every phrase into an element or rely on outside domain conventions.
+
+<domain_specific_phrases>
+Nouns / noun phrases
+- library
+- loan item / loan items
+- item / items
+- customer / customers
+- member
+- membership card
+- member number
+- membership number
+- details
+- name
+- address
+- date of birth
+- subject sections
+- section
+- classification mark
+- bar code
+- language tape / language tapes
+- book / books
+- title language
+- level
+- title
+- author(s)
+- current loan
+- loan
+- bar code reader
+- membership
+- book bar code
+- records
+- update
+X of Y Expressions
+- date of birth
+- number of subject sections
+- types of loan items
+- maximum of 8 items
+- number of items
+- update of records
+Transitive verbs
+- issues
+- issued
+- shows
+- kept
+- denoted by
+- identified by
+- borrow
+- borrowed
+- reserved
+- renewed
+- extend
+- scanned
+- entered
+- read
+- stamped
+- support
+- searched
+Adjectives, enumeration
+- French
+- beginner
+- daily
+- valid
+Numeric, Quantity
+- two
+- maximum of 8
+- less than 8
+- a number of
+Possession Expressions
+- A language tape has a title language (e.g. French), and level (e.g. beginner)
+- A book has a title, and author(s)
+Consist of / Part of Expressions
+- The library is made up of a number of subject sections
+X is a Y generalization / specialization
+- Each customer is known as a member
+- language tapes, and books are two types of loan items
+</domain_specific_phrases>
+
+<domain_description source="library-1.docx">
+A library issues loan items to customers. Each customer is known as a member and is issued a membership card that shows a unique member number. Along with the membership number other details on a customer must be kept such as a name, address, and date of birth. The library is made up of a number of subject sections. Each section is denoted by a classification mark. A loan item is uniquely identified by a bar code. There are two types of loan items, language tapes, and books. A language tape has a title language (e.g. French), and level (e.g. beginner). A book has a title, and author(s). A customer may borrow up to   a maximum of 8 items. An item can be borrowed, reserved or renewed to extend a current loan. When an item is issued the customer's membership number is scanned via a bar code reader or entered manually. If the membership is still valid and the number of items on loan less than 8, the book bar code is read, either via the bar code reader or entered manually. If the item can be issued (e.g. not reserved) the item is stamped and then issued. The library must support the facility for an item to be searched and for a daily update of records.
+</domain_description>
+
+<classification_rules source="Classification Rules (1).pptx">
+SLIDE 1
+Step 3. Classifying Brainstorming Result
+The domain-specific phrases identified during brainstorming step are classified as
+classes
+attributes of classes, and
+relationships between classes
+inheritance relationships
+aggregation relationships
+association relationships
+Copyright © The McGraw-Hill Companies, Inc.
+1
+
+SLIDE 2
+Copyright © The McGraw-Hill Companies, Inc.
+2
+Class and Attribute? How to Classify
+A noun/noun phrase can be a class or an attribute, how do we distinguish?
+This is often a challenge for beginners.
+Rules to apply:
+An object has an "independent existence" in the
+application/application domain, an attribute does not.
+Example: "Number of seats", class or attribute?
+Attribute, because "number of seats" cannot exist without
+referring to a car, airplane, or classroom as in
+    "number of seats of a car"
+    "number of seats of a classroom"
+
+SLIDE 3
+Copyright © The McGraw-Hill Companies, Inc.
+3
+Class or Attribute? More Rules to Apply
+Rules to apply:
+Attributes describe objects or store state information of objects.
+Attributes are of scalar types such as int, double, string, char and boolean; classes are not.
+You can enter attribute values from the keyboard, but you cannot do so for objects.
+Objects must are created by invoking a constructor.
+The rules presented in these two slides are used to classify the domain specific phrases in the next slide!
+
+SLIDE 4
+Copyright © The McGraw-Hill Companies, Inc.
+4
+Classifying Brainstorming Result
+Noun/noun phrase
+"X of Y" expression
+Transitive verb
+Adjective, enumeration 
+Numeric, quantity
+Possession expressions (has/have, possess, etc.)
+“Consist of/part of" expression
+Containment / containing expression
+"X is a Y" expression
+ class or attribute
+ X is an attribute of Y
+ X is part of Y
+ X is a role in an association
+ association relationship
+ attribute value
+ attribute value / multiplicity value
+ aggregation, association or attribute
+ aggregation relationship
+ association or aggregation
+ inheritance
+Remember:
+Objects have independent existence, attributes do not.
+Attributes are scalar types, classes are not.
+
+SLIDE 5
+Copyright © The McGraw-Hill Companies, Inc.
+5
+Inheritance Relationship
+It expresses the generalization/specialization relations between concepts.
+One concept is more general/specialized than the other.
+Example: vehicle is a generalization of car, car is a specialization of vehicle.
+It is also called IS-A relation.
+Vehicle
+model#
+horse power
+manufacturer
+start()
+Car
+drive()
+Boat
+sail()
+UML class diagram
+
+SLIDE 6
+Copyright © The McGraw-Hill Companies, Inc.
+6
+Two Tests for Inheritance
+Engine
+model#
+horse power
+manufacturer
+start()
+stop()
+Car
+drive()
+IS-A test: every instance of a subclass is also an instance of the superclass.
+Conformance test: relationships of a superclass are also relationships of subclasses.
+Professor
+name
+phone
+teach(...)
+Visiting Professor
+signContract()
+Retirement Plan
+enroll
+Visiting professors cannot enroll in a retirement plan at the host university.
+ Car is not an engine. 
+
+SLIDE 7
+Copyright © The McGraw-Hill Companies, Inc.
+7
+Aggregation Relationship
+It expresses the fact that one object is part of another object.
+Example: engine is part of a car.
+It is also called part-of relationship.
+Car
+model#
+horse power
+manufacturer
+start()
+stop()
+Engine
+model#
+horse power
+manufacturer
+start()
+stop()
+part-of relationship
+
+SLIDE 8
+Association Relationship
+It expresses a general relationship other than inheritance and aggregation.
+It is an application-specific relationship between two concepts.
+Example: “faculty teach course,” “user has account.”
+Often derived from a domain-specific transitive verb.
+Copyright © The McGraw-Hill Companies, Inc.
+8
+Professor
+name
+phone
+teach(...)
+Retirement Plan
+enroll
+Enroll is not an inheritance or aggregation relationship.
+
+SLIDE 9
+Copyright © The McGraw-Hill Companies, Inc.
+9
+Step 3. Classification: Examples
+program
+search criteria
+user
+Domain specific 
+nouns/noun phrases
+search for (programs)
+transitive verbs
+Rule: transitive verbs Þ 
+          association relationships
+Rule: noun/noun phrase  
+class or attribute
+(c)
+(c)
+(c)
+search for
+Because they exist
+independently in the application domain.
+
+SLIDE 10
+Classification: Example
+Copyright © The McGraw-Hill Companies, Inc.
+10
+A car has make, model, horse power, number of seats ...
+(c) car
+(a) make
+(a) model
+(a) horse power
+(a) number of seats
+A customer can rent one or more cars.
+(c) customer
+(c) car
+rent
+1+
+Car has independent existence.
+Make, model, horse power, and
+number of seats do not; they are scalar types.
+noun/noun phrases
+numeric
+possession expression
+</classification_rules>

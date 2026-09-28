@@ -1,0 +1,694 @@
+{
+  "run": "C1",
+  "evaluated_utc": "2026-09-28T04:47:53.760964+00:00",
+  "method": "Frozen normalized lexical exact match with category, ownership, kind, and ordered endpoints preserved",
+  "raw_output_sha256": "a9b191a29e4cc555fac52fa7257d3a7a6c0395513efd3457ab7253828d215219",
+  "reference_count": 27,
+  "prediction_count": 33,
+  "TP": 10,
+  "FP": 23,
+  "FN": 17,
+  "precision": 0.30303030303030304,
+  "recall": 0.37037037037037035,
+  "F1": 0.3333333333333333,
+  "by_category": {
+    "class": {
+      "TP": 6,
+      "FP": 3,
+      "FN": 1,
+      "precision": 0.6666666666666666,
+      "recall": 0.8571428571428571,
+      "F1": 0.75
+    },
+    "attr": {
+      "TP": 2,
+      "FP": 8,
+      "FN": 10,
+      "precision": 0.2,
+      "recall": 0.16666666666666666,
+      "F1": 0.18181818181818182
+    },
+    "relation": {
+      "TP": 2,
+      "FP": 11,
+      "FN": 5,
+      "precision": 0.15384615384615385,
+      "recall": 0.2857142857142857,
+      "F1": 0.2
+    },
+    "assclass": {
+      "TP": 0,
+      "FP": 1,
+      "FN": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "F1": 0.0
+    }
+  },
+  "matches": [
+    {
+      "prediction": {
+        "category": "attr",
+        "element": "LanguageTape.level",
+        "line": 37,
+        "normalized_key": [
+          "attr",
+          "languagetape",
+          "level"
+        ]
+      },
+      "reference": {
+        "category": "attr",
+        "element": "language tape.level",
+        "source": "attr!A8",
+        "normalized_key": [
+          "attr",
+          "languagetape",
+          "level"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "attr",
+        "element": "LoanItem.barCode",
+        "line": 31,
+        "normalized_key": [
+          "attr",
+          "loanitem",
+          "barcode"
+        ]
+      },
+      "reference": {
+        "category": "attr",
+        "element": "loan item.bar code",
+        "source": "attr!A1",
+        "normalized_key": [
+          "attr",
+          "loanitem",
+          "barcode"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "class",
+        "element": "Book",
+        "line": 17,
+        "normalized_key": [
+          "class",
+          "book"
+        ]
+      },
+      "reference": {
+        "category": "class",
+        "element": "book",
+        "source": "class!A5",
+        "normalized_key": [
+          "class",
+          "book"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "class",
+        "element": "Customer",
+        "line": 7,
+        "normalized_key": [
+          "class",
+          "customer"
+        ]
+      },
+      "reference": {
+        "category": "class",
+        "element": "customer",
+        "source": "class!A7",
+        "normalized_key": [
+          "class",
+          "customer"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "class",
+        "element": "LanguageTape",
+        "line": 15,
+        "normalized_key": [
+          "class",
+          "languagetape"
+        ]
+      },
+      "reference": {
+        "category": "class",
+        "element": "language tape",
+        "source": "class!A6",
+        "normalized_key": [
+          "class",
+          "languagetape"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "class",
+        "element": "Library",
+        "line": 3,
+        "normalized_key": [
+          "class",
+          "library"
+        ]
+      },
+      "reference": {
+        "category": "class",
+        "element": "library",
+        "source": "class!A1",
+        "normalized_key": [
+          "class",
+          "library"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "class",
+        "element": "LoanItem",
+        "line": 5,
+        "normalized_key": [
+          "class",
+          "loanitem"
+        ]
+      },
+      "reference": {
+        "category": "class",
+        "element": "loan item",
+        "source": "class!A4",
+        "normalized_key": [
+          "class",
+          "loanitem"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "class",
+        "element": "MembershipCard",
+        "line": 11,
+        "normalized_key": [
+          "class",
+          "membershipcard"
+        ]
+      },
+      "reference": {
+        "category": "class",
+        "element": "membership card",
+        "source": "class!A3",
+        "normalized_key": [
+          "class",
+          "membershipcard"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "relation",
+        "element": "isa(Book, LoanItem)",
+        "line": 67,
+        "normalized_key": [
+          "relation",
+          "isa",
+          "book",
+          "loanitem"
+        ]
+      },
+      "reference": {
+        "category": "relation",
+        "element": "isa(book,loan item)",
+        "source": "relation!A5",
+        "normalized_key": [
+          "relation",
+          "isa",
+          "book",
+          "loanitem"
+        ]
+      }
+    },
+    {
+      "prediction": {
+        "category": "relation",
+        "element": "isa(LanguageTape, LoanItem)",
+        "line": 65,
+        "normalized_key": [
+          "relation",
+          "isa",
+          "languagetape",
+          "loanitem"
+        ]
+      },
+      "reference": {
+        "category": "relation",
+        "element": "isa(language tape,loan item)",
+        "source": "relation!A6",
+        "normalized_key": [
+          "relation",
+          "isa",
+          "languagetape",
+          "loanitem"
+        ]
+      }
+    }
+  ],
+  "false_positives": [
+    {
+      "category": "assclass",
+      "element": "Loan(Customer, LoanItem)",
+      "line": 73,
+      "normalized_key": [
+        "assclass",
+        "loan",
+        "customer",
+        "loanitem"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "Book.author",
+      "line": 41,
+      "normalized_key": [
+        "attr",
+        "book",
+        "author"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "Book.title",
+      "line": 39,
+      "normalized_key": [
+        "attr",
+        "book",
+        "title"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "LanguageTape.titleLanguage",
+      "line": 35,
+      "normalized_key": [
+        "attr",
+        "languagetape",
+        "titlelanguage"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "Member.address",
+      "line": 25,
+      "normalized_key": [
+        "attr",
+        "member",
+        "address"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "Member.dateOfBirth",
+      "line": 27,
+      "normalized_key": [
+        "attr",
+        "member",
+        "dateofbirth"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "Member.membershipNumber",
+      "line": 29,
+      "normalized_key": [
+        "attr",
+        "member",
+        "membershipnumber"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "Member.name",
+      "line": 23,
+      "normalized_key": [
+        "attr",
+        "member",
+        "name"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "SubjectSection.classificationMark",
+      "line": 33,
+      "normalized_key": [
+        "attr",
+        "subjectsection",
+        "classificationmark"
+      ]
+    },
+    {
+      "category": "class",
+      "element": "BarCodeReader",
+      "line": 19,
+      "normalized_key": [
+        "class",
+        "barcodereader"
+      ]
+    },
+    {
+      "category": "class",
+      "element": "Member",
+      "line": 9,
+      "normalized_key": [
+        "class",
+        "member"
+      ]
+    },
+    {
+      "category": "class",
+      "element": "SubjectSection",
+      "line": 13,
+      "normalized_key": [
+        "class",
+        "subjectsection"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "ag(Library, SubjectSection)",
+      "line": 63,
+      "normalized_key": [
+        "relation",
+        "ag",
+        "library",
+        "subjectsection"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(borrows, Customer, LoanItem)",
+      "line": 47,
+      "normalized_key": [
+        "relation",
+        "as",
+        "borrow",
+        "customer",
+        "loanitem"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(issued, Customer, MembershipCard)",
+      "line": 53,
+      "normalized_key": [
+        "relation",
+        "as",
+        "issue",
+        "customer",
+        "membershipcard"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(issues, Library, LoanItem)",
+      "line": 45,
+      "normalized_key": [
+        "relation",
+        "as",
+        "issue",
+        "library",
+        "loanitem"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(reads, BarCodeReader, LoanItem)",
+      "line": 59,
+      "normalized_key": [
+        "relation",
+        "as",
+        "read",
+        "barcodereader",
+        "loanitem"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(renews, Customer, LoanItem)",
+      "line": 51,
+      "normalized_key": [
+        "relation",
+        "as",
+        "renew",
+        "customer",
+        "loanitem"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(reserves, Customer, LoanItem)",
+      "line": 49,
+      "normalized_key": [
+        "relation",
+        "as",
+        "reserve",
+        "customer",
+        "loanitem"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(scans, BarCodeReader, Member)",
+      "line": 57,
+      "normalized_key": [
+        "relation",
+        "as",
+        "scan",
+        "barcodereader",
+        "member"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(searches, Library, LoanItem)",
+      "line": 61,
+      "normalized_key": [
+        "relation",
+        "as",
+        "search",
+        "library",
+        "loanitem"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(shows, MembershipCard, Member)",
+      "line": 55,
+      "normalized_key": [
+        "relation",
+        "as",
+        "show",
+        "membershipcard",
+        "member"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "isa(Customer, Member)",
+      "line": 69,
+      "normalized_key": [
+        "relation",
+        "isa",
+        "customer",
+        "member"
+      ]
+    }
+  ],
+  "false_negatives": [
+    {
+      "category": "assclass",
+      "element": "loan transaction(customer,book)",
+      "source": "assclass!A1",
+      "normalized_key": [
+        "assclass",
+        "loantransaction",
+        "customer",
+        "book"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "book.subject",
+      "source": "attr!A6",
+      "normalized_key": [
+        "attr",
+        "book",
+        "subject"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "customer.address",
+      "source": "attr!A4",
+      "normalized_key": [
+        "attr",
+        "customer",
+        "address"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "customer.date of birth",
+      "source": "attr!A5",
+      "normalized_key": [
+        "attr",
+        "customer",
+        "dateofbirth"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "customer.name",
+      "source": "attr!A3",
+      "normalized_key": [
+        "attr",
+        "customer",
+        "name"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "language tape.language",
+      "source": "attr!A7",
+      "normalized_key": [
+        "attr",
+        "languagetape",
+        "language"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "loan item.title",
+      "source": "attr!A2",
+      "normalized_key": [
+        "attr",
+        "loanitem",
+        "title"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "loan transaction.borrow",
+      "source": "attr!A9",
+      "normalized_key": [
+        "attr",
+        "loantransaction",
+        "borrow"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "loan transaction.renew",
+      "source": "attr!A10",
+      "normalized_key": [
+        "attr",
+        "loantransaction",
+        "renew"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "loan transaction.reserve",
+      "source": "attr!A11",
+      "normalized_key": [
+        "attr",
+        "loantransaction",
+        "reserve"
+      ]
+    },
+    {
+      "category": "attr",
+      "element": "membership card.id",
+      "source": "attr!A12",
+      "normalized_key": [
+        "attr",
+        "membershipcard",
+        "id"
+      ]
+    },
+    {
+      "category": "class",
+      "element": "section",
+      "source": "class!A2",
+      "normalized_key": [
+        "class",
+        "section"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "ag(library,section)",
+      "source": "relation!A7",
+      "normalized_key": [
+        "relation",
+        "ag",
+        "library",
+        "section"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(borrow, customer,book)",
+      "source": "relation!A1",
+      "normalized_key": [
+        "relation",
+        "as",
+        "borrow",
+        "customer",
+        "book"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(has,customer,membership card)",
+      "source": "relation!A2",
+      "normalized_key": [
+        "relation",
+        "as",
+        "have",
+        "customer",
+        "membershipcard"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(hold,section,loan item)",
+      "source": "relation!A4",
+      "normalized_key": [
+        "relation",
+        "as",
+        "hold",
+        "section",
+        "loanitem"
+      ]
+    },
+    {
+      "category": "relation",
+      "element": "as(issue,library,membership card)",
+      "source": "relation!A3",
+      "normalized_key": [
+        "relation",
+        "as",
+        "issue",
+        "library",
+        "membershipcard"
+      ]
+    }
+  ],
+  "duplicates_ignored": []
+}

@@ -1,0 +1,73 @@
+CLASSES:
+
+Library
+
+LoanItem
+
+Customer
+
+Member
+
+MembershipCard
+
+SubjectSection
+
+LanguageTape
+
+Book
+
+BarCodeReader
+
+ATTRIBUTES:
+
+Member.name
+
+Member.address
+
+Member.dateOfBirth
+
+Member.membershipNumber
+
+LoanItem.barCode
+
+SubjectSection.classificationMark
+
+LanguageTape.titleLanguage
+
+LanguageTape.level
+
+Book.title
+
+Book.author
+
+RELATIONSHIPS:
+
+as(issues, Library, LoanItem)
+
+as(borrows, Customer, LoanItem)
+
+as(reserves, Customer, LoanItem)
+
+as(renews, Customer, LoanItem)
+
+as(issued, Customer, MembershipCard)
+
+as(shows, MembershipCard, Member)
+
+as(scans, BarCodeReader, Member)
+
+as(reads, BarCodeReader, LoanItem)
+
+as(searches, Library, LoanItem)
+
+ag(Library, SubjectSection)
+
+isa(LanguageTape, LoanItem)
+
+isa(Book, LoanItem)
+
+isa(Customer, Member)
+
+ASSOCIATION CLASSES:
+
+Loan(Customer, LoanItem)
