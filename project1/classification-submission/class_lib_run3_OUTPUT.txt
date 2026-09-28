@@ -1,0 +1,46 @@
+CLASSES:
+
+library
+loan item
+customer
+membership card
+subject section
+language tape
+book
+bar code reader
+membership
+
+ATTRIBUTES:
+
+membership card.member number
+customer.name
+customer.address
+customer.date of birth
+subject section.classification mark
+loan item.bar code
+language tape.title language
+language tape.level
+book.title
+book.author(s)
+
+RELATIONSHIPS:
+
+Association: as(issues, library, loan item)
+Association: as(issues to, library, customer)
+Association: as(has, customer, membership card)
+Association: as(made up of, library, subject section)
+Association: as(borrow, customer, loan item)
+Association: as(reserved, customer, loan item)
+Association: as(renewed, customer, loan item)
+Association: as(scanned, bar code reader, membership card)
+Association: as(read, bar code reader, loan item)
+Association: as(searched, library, loan item)
+Association: as(updated, library, records)
+Generalization: isa(customer, member)
+Generalization: isa(language tape, loan item)
+Generalization: isa(book, loan item)
+Aggregation: ag(library, subject section)
+
+ASSOCIATION CLASSES:
+
+current loan(customer, loan item)

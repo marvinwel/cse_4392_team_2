@@ -1,0 +1,76 @@
+CLASSES:
+
+NTSS
+customer
+service
+trade show
+event
+design
+advertisement
+activity
+participant
+speaker
+exhibitor
+observer
+event organization staff
+registration
+booth
+conference room
+seminar
+reception
+trade show material
+account
+person
+organization
+domain
+proposal
+committee
+reviewer
+product
+
+ATTRIBUTES:
+
+trade show.national
+trade show.international
+design.theme
+design.slogan
+design.location
+design.duration
+account.service charges
+account.payments received
+account.account balances
+event.contact information
+event.website
+registration.fee
+proposal.status
+booth.size
+
+RELATIONSHIPS:
+
+as(creates, NTSS, account)
+as(contacts, customer, NTSS)
+as(needs, customer, service)
+as(creates, customer, trade show)
+as(promotes, customer, trade show)
+as(organizes, customer, trade show)
+as(runs, NTSS, trade show)
+as(has organizer, event, person)
+as(has organizer, event, organization)
+as(belongs to, event, domain)
+as(attended by, trade show, participant)
+as(registers, participant, trade show)
+as(gives, speaker, keynote address)
+as(evaluates, committee, proposal)
+as(reviews, reviewer, proposal)
+as(exhibits, exhibitor, product)
+as(pays for, exhibitor, booth)
+as(requests, exhibitor, booth)
+as(rents, exhibitor, booth)
+as(visits, observer, trade show)
+isa(trade show, event)
+
+ASSOCIATION CLASSES:
+
+registration(participant, trade show)
+review(committee, proposal)
+booth rental(exhibitor, booth)
