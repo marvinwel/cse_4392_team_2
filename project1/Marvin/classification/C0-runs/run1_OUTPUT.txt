@@ -1,0 +1,62 @@
+CLASSES:
+
+library
+loan item
+customer
+member
+membership card
+subject section
+language tape
+book
+bar code reader
+records
+loan
+
+ATTRIBUTES:
+
+membership card.member number
+customer.name
+customer.address
+customer.date of birth
+library.number of subject sections
+subject section.classification mark
+loan item.bar code
+language tape.title language
+language tape.level
+book.title
+book.author(s)
+customer.number of items
+
+RELATIONSHIPS:
+
+as(issues, library, loan item)
+as(shows, membership card, member)
+as(kept, library, records)
+as(denoted, subject section, classification mark)
+as(borrow, customer, loan item)
+as(reserved, customer, loan item)
+as(renewed, customer, loan item)
+as(extend, customer, loan)
+as(scanned, bar code reader, membership card)
+as(entered, bar code reader, membership card)
+as(read, bar code reader, loan item)
+as(stamped, library, loan item)
+as(searched, library, loan item)
+as(identified, loan item, bar code)
+as(has, language tape, title language)
+as(has, language tape, level)
+as(has, book, title)
+as(has, book, author)
+as(made up of, library, subject section)
+as(has, library, loan item)
+as(has, customer, membership card)
+as(has, customer, membership)
+as(update, library, records)
+isa(member, customer)
+isa(language tape, loan item)
+isa(book, loan item)
+
+ASSOCIATION CLASSES:
+
+membership(customer, library)
+loan(customer, loan item)

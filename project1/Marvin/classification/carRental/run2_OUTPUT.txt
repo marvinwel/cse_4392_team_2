@@ -1,0 +1,64 @@
+CLASSES:
+
+vehicle
+manufacturer
+price class
+car
+passenger car
+transmission
+sedan
+hatchback
+options
+location
+customer
+rental plan
+reservation
+salesperson
+reservation form
+file cabinet
+contract
+block reservation
+invoice
+rental
+company
+credit card
+credit card processing company
+
+ATTRIBUTES:
+
+car.make
+car.model
+car.manufacturer
+car.price class
+car.transmission
+car.doors
+car.body type
+car.options
+reservation.time
+reservation.period of time
+rental.depreciation
+rental.rental price
+rental.rental charge
+invoice.number of rentals
+reservation.additional charge
+
+RELATIONSHIPS:
+
+Association: as(taken from, vehicle, location)
+Association: as(returned to, vehicle, location)
+Association: as(select, customer, car)
+Association: as(process, salesperson, reservation)
+Association: as(archive, reservation, file cabinet)
+Association: as(sign, customer, contract)
+Association: as(make, customer, reservation)
+Association: as(cover, invoice, rental)
+Association: as(checked out, car, customer)
+Association: as(pay, customer, invoice)
+Association: as(sent to, invoice, company)
+Association: as(processed through, rental charge, credit card processing company)
+Association: as(uses, customer, credit card)
+
+ASSOCIATION CLASSES:
+
+reservation(customer, car)
+rental(invoice, car)

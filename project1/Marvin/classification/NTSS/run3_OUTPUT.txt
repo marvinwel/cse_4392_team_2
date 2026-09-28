@@ -1,0 +1,82 @@
+CLASSES:
+
+NTSS
+customer
+account
+trade show
+event
+person
+organization
+participant
+event organization staff
+speaker
+exhibitor
+observer
+booth
+conference room
+seminar
+reception
+trade show materials
+service
+design
+advertisement
+domain
+proposal
+committee
+reviewer
+product
+
+ATTRIBUTES:
+
+trade show.national/international
+event.location
+event.duration
+event.contact information
+event.website
+account.service charges
+account.payments received
+account.account balances
+registration.fee
+proposal.status
+booth.size
+participant.type
+
+RELATIONSHIPS:
+
+as(creates, NTSS, customer)
+as(contacts, customer, NTSS)
+as(creates, NTSS, account)
+as(has, customer, account)
+as(organizer, event, person)
+as(organizer, event, organization)
+as(belongs to, event, domain)
+as(attended by, trade show, participant)
+as(exhibits, exhibitor, product)
+as(rents, exhibitor, booth)
+as(invites, trade show, speaker)
+as(gives, speaker, keynote address)
+as(reviewed by, proposal, reviewer)
+as(committee of, committee, reviewer)
+as(creates, NTSS, trade show)
+as(promotes, NTSS, trade show)
+as(organizes, NTSS, trade show)
+as(runs, NTSS, trade show)
+as(sets up, NTSS, booth)
+as(distributes, NTSS, trade show materials)
+as(registered for, participant, trade show)
+as(requested, exhibitor, booth)
+as(visits, observer, trade show)
+isa(trade show, event)
+ag(event, domain)
+ag(trade show, design)
+ag(design, service)
+ag(trade show, advertisement)
+ag(trade show, conference room)
+ag(trade show, seminar)
+ag(trade show, reception)
+ag(trade show, trade show materials)
+
+ASSOCIATION CLASSES:
+
+registration(event, participant)
+evaluation(proposal, reviewer)
