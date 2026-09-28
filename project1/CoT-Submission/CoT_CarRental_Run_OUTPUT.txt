@@ -1,0 +1,154 @@
+IDENTIFIED DOMAIN-SPECIFIC PHRASES:
+
+NOUNS / NOUN PHRASES:
+
+- car rental company
+- rental locations
+- Vehicles
+- passenger cars
+- additional charge
+- reservation system
+- makes
+- rental fleet
+- manufacturers
+- models
+- price classes
+- customer
+- rental plans
+- gear change
+- doors
+- rental prices
+- reservations
+- salespersons
+- reservation form
+- deposit
+- contract
+- block reservation
+- invoice
+- rentals
+- credit card
+- credit card processing company
+- rental charge
+- preventive maintenance
+- repair
+- purchase
+- disposal
+- depreciation
+- rental cars
+- company
+
+"X OF Y" EXPRESSIONS:
+
+- number of rental locations
+- makes of cars
+- models of car
+- small number of price classes
+- period of time
+- depreciation of the rental cars
+
+TRANSITIVE VERBS:
+
+- operate
+- take
+- return
+- select
+- make
+- process
+- archive
+- void
+- honor
+- sign
+- check out
+- open
+- cover
+- settle
+- send
+- repair
+
+ADJECTIVES / ENUMERATION:
+
+- automatic
+- manual
+- sedan
+- hatchback
+- available
+- daily unlimited miles plan
+- weekend 10% discount plan
+
+NUMERIC / QUANTITY:
+
+- several models
+- two or four doors
+- single invoice
+- one or more rentals
+- several cars
+- No deposit
+
+POSSESSION EXPRESSIONS:
+
+- company has a number of different rental plans
+- company has several different makes of cars
+- make may have several models
+
+CONSIST OF / PART OF:
+
+- (none)
+
+CONTAINMENT:
+
+- (none)
+
+"X IS A Y":
+
+- (none)
+
+FINAL CLASSIFICATION:
+
+CLASSES:
+
+- Car rental company
+- Rental location
+- Vehicle
+- Passenger car
+- Make
+- Model
+- Manufacturer
+- Price class
+- Customer
+- Rental plan
+- Reservation
+- Block reservation
+- Reservation form
+- Salesperson
+- Contract
+- Rental
+- Invoice
+- Credit card
+- Credit card processing company
+- Company
+
+ATTRIBUTES:
+
+- Model.gear change
+- Model.doors
+- Model.rental price
+- Rental.additional charge
+- Reservation.deposit
+- Reservation.period of time
+- Invoice.rental charge
+
+RELATIONSHIPS:
+
+- as(operate, Car rental company, Rental location)
+- as(select, Customer, Model)
+- as(select, Customer, Make)
+- as(make, Customer, Reservation)
+- as(process, Salesperson, Reservation)
+- as(archive, Salesperson, Reservation)
+- as(sign, Customer, Contract)
+- as(cover, Invoice, Rental)
+- as(settle, Customer, Invoice)
+
+ASSOCIATION CLASSES:
+
+- (none)

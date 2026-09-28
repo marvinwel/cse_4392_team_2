@@ -1,0 +1,174 @@
+IDENTIFIED DOMAIN-SPECIFIC PHRASES:
+
+NOUNS / NOUN PHRASES:
+
+- service provider
+- business customers
+- trade shows
+- services
+- design
+- theme
+- slogan
+- location
+- duration
+- advertisement activities
+- speakers
+- participants
+- exhibitors
+- on site registration
+- booths
+- conference rooms
+- seminars
+- reception
+- trade show materials
+- account
+- service charges
+- payments received
+- account balances
+- event
+- organizer
+- person
+- organization
+- contact information
+- website
+- predefined domains
+- event organization staff
+- NTSS staff
+- event organizer
+- invited speakers
+- selected speakers
+- observers
+- registration
+- fee
+- keynote address
+- proposals
+- committee
+- reviewers
+- experts
+- status
+- size
+- products
+
+"X OF Y" EXPRESSIONS:
+
+- selection of a theme
+- committee of reviewers
+- status of a proposal
+- size of the booth
+- list of predefined domains
+
+TRANSITIVE VERBS:
+
+- create
+- promote
+- organize
+- run
+- contact
+- invite
+- register
+- set up
+- distribute
+- record
+- maintain
+- attend
+- exhibit
+- pay
+- request
+- rent
+- review
+- visit
+- add
+- remove
+
+ADJECTIVES / ENUMERATION:
+
+- national
+- international
+- pending review
+- accepted
+- rejected
+- large
+- medium
+- small
+
+NUMERIC / QUANTITY:
+
+- one or more predefined domains
+
+POSSESSION EXPRESSIONS:
+
+- event has an organizer
+- event has contact information
+
+CONSIST OF / PART OF:
+
+- (none)
+
+CONTAINMENT:
+
+- (none)
+
+"X IS A Y":
+
+- trade show can be regarded as an event
+- organizer, which can be a person or an organization
+- types of participants
+
+FINAL CLASSIFICATION:
+
+CLASSES:
+
+- Trade Show
+- Business Customer
+- Service
+- Account
+- Event
+- Organizer
+- Person
+- Organization
+- Predefined Domain
+- Participant
+- Event Organization Staff
+- Speaker
+- Exhibitor
+- Observer
+- Registration
+- Proposal
+- Committee
+- Reviewer
+- Booth
+- Product
+
+ATTRIBUTES:
+
+- Trade Show\.theme
+- Trade Show\.slogan
+- Trade Show\.location
+- Trade Show\.duration
+- Account.service charge
+- Account.payment received
+- Account.account balance
+- Event.contact information
+- Event.website
+- Registration.fee
+- Proposal.status
+- Booth.size
+
+RELATIONSHIPS:
+
+- as(attend, Participant, Trade Show)
+- as(exhibit, Exhibitor, Product)
+- as(review, Committee, Proposal)
+- as(visit, Observer, Trade Show)
+- as(organize, Organizer, Event)
+- isa(Trade Show, Event)
+- isa(Person, Organizer)
+- isa(Organization, Organizer)
+- isa(Event Organization Staff, Participant)
+- isa(Speaker, Participant)
+- isa(Exhibitor, Participant)
+- isa(Observer, Participant)
+
+ASSOCIATION CLASSES:
+
+- (none)

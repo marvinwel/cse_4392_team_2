@@ -1,0 +1,283 @@
+<answer>
+Nouns / noun phrases
+- car rental company
+- rental locations
+- location
+- Vehicles
+- additional charge
+- passenger cars
+- vehicle rentals
+- reservation system
+- makes / make
+- manufacturers
+- rental fleet
+- models / model
+- price classes
+- customer / customers
+- car / cars
+- rental plans
+- daily unlimited miles plan
+- weekend 10% discount plan
+- gear change
+- doors
+- rental prices
+- options
+- reservations / reservation
+- salespersons
+- reservation form
+- deposit
+- contract
+- request
+- block reservation
+- invoices / invoice
+- rentals
+- company
+- employer
+- credit card
+- rental charge
+- credit card processing company
+- rental cars
+- preventive maintenance
+- damage
+- information
+- depreciation
+
+X of Y Expressions
+
+number of rental locations
+
+forms of vehicle rentals
+
+makes of cars
+
+number of price classes
+
+number of different rental plans
+
+models of car
+
+depreciation of the rental cars
+
+Transitive verbs
+
+operates
+
+taken from
+
+returned to
+
+use
+
+grouped into
+
+select
+
+rent
+
+suggest
+
+reserving
+
+make
+
+process
+
+archive
+
+required
+
+voided
+
+sign
+
+honored
+
+satisfy
+
+handled
+
+checked out
+
+opened
+
+cover
+
+settle
+
+returned
+
+sent to
+
+processed through
+
+need
+
+repaired
+
+keep track of
+
+Adjectives, enumeration
+
+automatic or manual
+
+sedan or hatchback
+
+in person or through the phone
+
+not available
+
+available
+
+frequent
+
+purchase, repair, maintenance, and disposal
+
+Numeric, Quantity
+
+a number of
+
+several
+
+each
+
+a small number of
+
+two or four
+
+10%
+
+more than a given period of time
+
+all
+
+one or more
+
+single
+
+any
+
+Possession Expressions
+
+The company has several different makes of cars in its rental fleet
+
+Each make may have several models
+
+The company has a number of different rental plans available to customers
+
+Consist of / Part of Expressions
+
+X is a Y generalization / specialization
+</answer>
+
+STEP 2
+
+<classification>
+CLASSES:
+- car rental company
+- location
+- Vehicles
+- vehicle rentals
+- reservation system
+- make
+- manufacturers
+- rental fleet
+- model
+- price classes
+- customer
+- car
+- rental plans
+- daily unlimited miles plan
+- weekend 10% discount plan
+- options
+- reservation
+- salespersons
+- reservation form
+- contract
+- request
+- block reservation
+- invoice
+- rentals
+- company
+- employer
+- credit card
+- credit card processing company
+- preventive maintenance
+- damage
+
+ATTRIBUTES:
+
+vehicle rentals.additional charge
+
+model.gear change
+
+model.doors
+
+model.rental prices
+
+reservation.deposit
+
+rentals.rental charge
+
+rental cars.depreciation
+
+rental cars.information
+
+RELATIONSHIPS:
+
+as(operates, car rental company, location)
+
+as(taken from, Vehicles, location)
+
+as(returned to, Vehicles, location)
+
+as(use, car rental company, reservation system)
+
+as(grouped into, model, price classes)
+
+as(select, customer, make)
+
+as(select, customer, model)
+
+as(rent, customer, car)
+
+as(suggest, reservation system, model)
+
+as(reserving, customer, car)
+
+as(make, customer, reservation)
+
+as(process, salespersons, reservation)
+
+as(archive, salespersons, reservation)
+
+as(sign, customer, contract)
+
+as(satisfy, car, request)
+
+as(checked out, car, customer)
+
+as(cover, invoice, rentals)
+
+as(settle, customer, invoice)
+
+as(returned to, car, location)
+
+as(sent to, invoice, company)
+
+as(processed through, rental charge, credit card processing company)
+
+as(need, rental cars, preventive maintenance)
+
+as(keep track of, car rental company, information)
+
+as(has, car rental company, make)
+
+as(have, make, model)
+
+as(has, car rental company, rental plans)
+
+ASSOCIATION CLASSES:
+
+rentals(customer, car)
+
+</classification>

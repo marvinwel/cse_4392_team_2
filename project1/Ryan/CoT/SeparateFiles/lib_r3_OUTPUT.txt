@@ -1,0 +1,96 @@
+<answer> Nouns / noun phrases - library - loan item / loan items - customer / customers - member - membership card - unique member number - membership number - name - address - date of birth - subject section / subject sections - classification mark - bar code - language tape / language tapes - book / books - title language - level - title - author(s) - item / items - current loan - bar code reader - book bar code - records - daily update
+
+X of Y Expressions
+
+date of birth
+number of subject sections
+types of loan items
+maximum of 8 items
+number of items
+update of records
+
+Transitive verbs
+
+issues
+issued
+shows
+kept
+denoted by
+identified by
+borrow
+borrowed
+reserved
+renewed to
+extend
+scanned
+entered
+read
+stamped
+searched
+support
+
+Adjectives, enumeration
+
+French
+beginner
+valid
+daily
+
+Numeric, Quantity
+
+each
+a number of
+two
+up to a maximum of 8 items
+less than 8
+
+Possession Expressions
+
+A language tape has a title language (e.g. French), and level (e.g. beginner)
+A book has a title, and author(s)
+
+Consist of / Part of Expressions
+
+The library is made up of a number of subject sections
+
+X is a Y generalization / specialization
+
+Each customer is known as a member
+language tapes, and books are two types of loan items</answer>
+<classification> CLASSES: - library - loan item - customer - member - membership card - subject section - language tape - book - current loan - bar code reader - records
+
+ATTRIBUTES:
+
+member.member number
+member.membership number
+member.name
+member.address
+member.date of birth
+subject section.classification mark
+loan item.bar code
+language tape.title language
+language tape.level
+book.title
+book.author(s)
+language tape.title language = French
+language tape.level = beginner
+member.valid = valid
+records.update frequency = daily
+customer.loan item multiplicity = up to a maximum of 8 items
+library.subject section multiplicity = a number of
+loan item.type multiplicity = two
+
+RELATIONSHIPS:
+
+as(issues, library, loan item)
+as(borrow, customer, loan item)
+as(issued, customer, membership card)
+as(extend, loan item, current loan)
+isa(customer, member)
+isa(language tape, loan item)
+isa(book, loan item)
+ag(library, subject section)
+
+ASSOCIATION CLASSES:
+
+None</classification>

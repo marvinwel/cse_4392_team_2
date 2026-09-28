@@ -1,0 +1,120 @@
+IDENTIFIED DOMAIN-SPECIFIC PHRASES:
+
+NOUNS / NOUN PHRASES:
+
+- library
+- loan items
+- customers
+- member
+- membership card
+- member number
+- membership number
+- name
+- address
+- date of birth
+- subject sections
+- classification mark
+- bar code
+- language tapes
+- books
+- title language
+- level
+- title
+- author(s)
+- items
+- loan
+- bar code reader
+- membership
+
+"X OF Y" EXPRESSIONS:
+
+- date of birth
+- number of subject sections
+- types of loan items
+- number of items
+
+TRANSITIVE VERBS:
+
+- issue
+- denote
+- identify
+- borrow
+- reserve
+- renew
+- extend
+- scan
+- read
+- stamp
+- search
+
+ADJECTIVES / ENUMERATION:
+
+- unique
+- current
+- valid
+- reserved
+- language tapes
+- books
+- borrowed
+- renewed
+
+NUMERIC / QUANTITY:
+
+- maximum of 8 items
+- two types of loan items
+
+POSSESSION EXPRESSIONS:
+
+- customer's membership number
+- language tape has a title language
+- book has a title
+
+CONSIST OF / PART OF:
+
+- library is made up of a number of subject sections
+
+CONTAINMENT:
+
+- (none)
+
+"X IS A Y":
+
+- two types of loan items, language tapes, and books
+
+FINAL CLASSIFICATION:
+
+CLASSES:
+
+- Library
+- Loan Item
+- Customer
+- Membership Card
+- Subject Section
+- Language Tape
+- Book
+
+ATTRIBUTES:
+
+- Customer.membership number
+- Customer.name
+- Customer.address
+- Customer.date of birth
+- Membership Card.member number
+- Subject Section.classification mark
+- Loan Item.bar code
+- Language Tape.title language
+- Language Tape.level
+- Book.title
+- Book.author(s)
+
+RELATIONSHIPS:
+
+- isa(Language Tape, Loan Item)
+- isa(Book, Loan Item)
+- ag(Library, Subject Section)
+- as(issue, Library, Loan Item)
+- as(borrow, Customer, Loan Item)
+
+ASSOCIATION CLASSES:
+
+- (none)
