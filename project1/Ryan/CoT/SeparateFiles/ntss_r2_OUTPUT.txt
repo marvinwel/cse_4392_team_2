@@ -1,0 +1,143 @@
+<answer> Nouns / noun phrases - National Trade Show Services (NTSS) - service provider - business customers - services - trade show / trade shows - design - professional services - selection - theme - slogan - location - duration - advertisement activities - creation - promotion - speakers - participants - exhibitors - on site registration - booth / booths - conference rooms - seminars - reception - trade show materials - account - customer - service charges - payments - account balances - event - organizer - person - organization - contact information - website - predefined domains - list - event organization staff - invited speakers - selected speakers - observers - trade show event - registration - fee - NTSS staff - famous figures - domain - keynote address - proposal / proposals - evaluation - committee - reviewers - experts - status - products - size - event organizer
+
+X of Y Expressions
+
+selection of a theme
+list of predefined domains
+types of participants
+evaluation of their proposals
+committee of reviewers
+status of a proposal
+size of the booth
+duration of the event
+
+Transitive verbs
+
+helps
+create
+promote
+organize
+run
+contact
+need
+Creating
+ranging from
+Promoting
+Organizing
+inviting
+registering
+Running
+setting up
+distributing
+creates
+record
+received
+maintain
+organized by
+provides
+belong to
+added
+removed
+attended by
+attend
+charges
+prepares
+runs
+invited
+give
+based on
+reviewed by
+exhibit
+pay for
+depending on
+requested
+rented for
+visit
+
+Adjectives, enumeration
+
+national and international
+pending review, accepted, and rejected
+large, medium, or small
+
+Numeric, Quantity
+
+each
+all
+one or more
+
+Possession Expressions
+
+An event has an organizer
+An event has contact information and possibly a website
+
+Consist of / Part of Expressions
+
+Creating a trade show involves the design for the trade show, including professional services ranging from selection of a theme and a slogan to location and duration
+Promoting a trade show includes advertisement activities
+Organizing a trade show includes all activities before the trade show except creation and promotion
+A trade show is attended by different types of participants including the event organization staff, the invited and/or selected speakers, exhibitors, and observers
+The status of a proposal includes pending review, accepted, and rejected
+
+X is a Y generalization / specialization
+
+The National Trade Show Services (NTSS) is a service provider
+A trade show can be regarded as an event</answer>
+<classification> CLASSES: - National Trade Show Services (NTSS) - service provider - business customers - services - trade show - design - professional services - advertisement activities - creation - promotion - speakers - participants - exhibitors - on site registration - booth - conference rooms - seminars - reception - trade show materials - account - customer - service charges - payments - event - organizer - person - organization - predefined domains - event organization staff - invited speakers - selected speakers - observers - NTSS staff - famous figures - domain - keynote address - proposal - evaluation - committee - reviewers - experts - products - event organizer
+
+ATTRIBUTES:
+
+design.theme
+design.slogan
+trade show.location
+trade show.duration
+trade show.scope
+account.account balances
+event.contact information
+event.website
+registration.fee
+proposal.status
+booth.size
+
+RELATIONSHIPS:
+
+isa(National Trade Show Services (NTSS), service provider)
+isa(trade show, event)
+isa(event organization staff, participants)
+isa(invited speakers, participants)
+isa(selected speakers, participants)
+isa(exhibitors, participants)
+isa(observers, participants)
+isa(NTSS staff, participants)
+isa(invited speakers, speakers)
+isa(selected speakers, speakers)
+isa(invited speakers, famous figures)
+isa(reviewers, experts)
+ag(trade show, design)
+ag(design, professional services)
+ag(committee, reviewers)
+as(contact, business customers, National Trade Show Services (NTSS))
+as(need, business customers, services)
+as(create, business customers, trade show)
+as(promote, business customers, trade show)
+as(organize, business customers, trade show)
+as(run, business customers, trade show)
+as(creates, National Trade Show Services (NTSS), account)
+as(record, account, service charges)
+as(record, account, payments)
+as(has, event, organizer)
+as(belong to, event, predefined domains)
+as(organized by, event, event organizer)
+as(attended by, trade show, participants)
+as(attend, participants, trade show)
+as(creates, NTSS staff, event)
+as(prepares, NTSS staff, event)
+as(runs, NTSS staff, event)
+as(reviewed by, proposal, committee)
+as(exhibit, exhibitors, products)
+as(pay for, exhibitors, booth)
+as(rented for, booth, event)
+
+ASSOCIATION CLASSES:
+
+registration(participants, event)</classification>

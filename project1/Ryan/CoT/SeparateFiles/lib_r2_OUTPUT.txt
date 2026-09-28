@@ -1,0 +1,95 @@
+<answer> Nouns / noun phrases - library - loan item / loan items - customer / customers - member - membership card - unique member number - membership number - name - address - date of birth - subject sections / section - classification mark - bar code - language tapes / language tape - books / book - title language - level - title - author(s) - item / items - current loan - membership - bar code reader - book bar code - update - records
+
+X of Y Expressions
+
+date of birth
+number of subject sections
+types of loan items
+maximum of 8 items
+number of items
+update of records
+
+Transitive verbs
+
+issues
+issued
+shows
+kept
+denoted by
+identified by
+borrow
+borrowed
+reserved
+renewed
+extend
+scanned
+entered
+read
+stamped
+support
+searched
+
+Adjectives, enumeration
+
+French
+beginner
+valid
+daily
+
+Numeric, Quantity
+
+each
+a number of
+two
+up to a maximum of 8 items
+less than 8
+
+Possession Expressions
+
+A language tape has a title language (e.g. French), and level (e.g. beginner)
+A book has a title, and author(s)
+
+Consist of / Part of Expressions
+
+The library is made up of a number of subject sections
+
+X is a Y generalization / specialization
+
+Each customer is known as a member
+language tapes, and books are two types of loan items</answer>
+<classification> CLASSES: - library - customer - member - membership card - subject section - loan item - language tape - book - bar code reader - current loan - update - records
+
+ATTRIBUTES:
+
+customer.membership number
+customer.name
+customer.address
+customer.date of birth
+customer.membership
+membership card.unique member number
+subject section.classification mark
+loan item.bar code
+language tape.title language
+language tape.level
+book.title
+book.author(s)
+book.book bar code
+update.daily
+
+RELATIONSHIPS:
+
+as(issues, library, loan item)
+as(issued, customer, membership card)
+as(borrow, customer, loan item)
+as(extend, loan item, current loan)
+as(scanned, membership number, bar code reader)
+as(read, book, bar code reader)
+as(support, library, update)
+ag(library, subject section)
+isa(customer, member)
+isa(language tape, loan item)
+isa(book, loan item)
+
+ASSOCIATION CLASSES:
+
+None</classification>
