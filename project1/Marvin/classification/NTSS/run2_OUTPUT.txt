@@ -1,0 +1,89 @@
+CLASSES:
+
+NTSS
+service provider
+business customer
+trade show
+service
+design
+advertisement
+event
+person
+organization
+participant
+event organization staff
+speaker
+exhibitor
+observer
+registration
+account
+booth
+conference room
+seminar
+reception
+trade show materials
+predefined domain
+proposal
+committee
+reviewer
+product
+
+ATTRIBUTES:
+
+design.theme
+design.slogan
+design.location
+design.duration
+advertisement.creation
+account.service charges
+account.payments received
+account.account balances
+event.contact information
+event.website
+registration.fee
+proposal.status
+booth.size
+
+RELATIONSHIPS:
+
+Association: as(creates, service provider, trade show)
+Association: as(promotes, service provider, trade show)
+Association: as(organizes, service provider, trade show)
+Association: as(runs, service provider, trade show)
+Association: as(contacts, business customer, service provider)
+Association: as(needs, business customer, service)
+Association: as(has organizer, event, person)
+Association: as(has organizer, event, organization)
+Association: as(belongs to, event, predefined domain)
+Association: as(attended by, trade show, participant)
+Association: as(invites, trade show, speaker)
+Association: as(registers, participant, event)
+Association: as(gives, speaker, event)
+Association: as(exhibits, exhibitor, product)
+Association: as(pays for, exhibitor, booth)
+Association: as(requests, exhibitor, booth)
+Association: as(rents, exhibitor, booth)
+Association: as(visited by, trade show, observer)
+Association: as(reviews, committee, proposal)
+Association: as(based on evaluation, speaker, proposal)
+Association: as(has, event, contact information)
+Association: as(has, event, website)
+Generalization: isa(trade show, event)
+Generalization: isa(event organization staff, participant)
+Generalization: isa(speaker, participant)
+Generalization: isa(exhibitor, participant)
+Generalization: isa(observer, participant)
+Aggregation: ag(trade show, design)
+Aggregation: ag(trade show, advertisement)
+Aggregation: ag(trade show, registration)
+Aggregation: ag(trade show, booth)
+Aggregation: ag(trade show, conference room)
+Aggregation: ag(trade show, seminar)
+Aggregation: ag(trade show, reception)
+Aggregation: ag(trade show, trade show materials)
+
+ASSOCIATION CLASSES:
+
+Registration(participant, event)
+Evaluation(speaker, proposal)
+Rental(exhibitor, booth)
