@@ -1,0 +1,158 @@
+You are performing domain modeling using the Agile Unified Methodology (AUM).
+Perform TWO activities in sequence:
+
+1. IDENTIFY domain-specific phrases from the complete business/domain description.
+2. CLASSIFY the identified phrases into an object-oriented domain model.
+
+GLOBAL RULES
+- Use ONLY the provided business/domain description and the rules in this prompt.
+- Do not use outside knowledge. Do not use or infer information from any ground truth or answer key.
+- Complete all of Step 1 BEFORE Step 2.
+- Step 2 may use only concepts identified in Step 1. Do not introduce new concepts in Step 2.
+
+==================================================
+STEP 1: IDENTIFICATION
+==================================================
+
+Work in two internal passes (do not print them).
+
+PASS 1 - RECALL: Read the ENTIRE description sentence by sentence. For each sentence, note every candidate phrase that matches a category pattern below.
+
+PASS 2 - PRECISION: Test each candidate against the rules in sections A-E. Remove a candidate only when it clearly fails a test. If a candidate passes the domain-role test and matches a category pattern, keep it. Do not remove a legitimate phrase just to make the list shorter.
+
+A. WORDING AND BOUNDARIES
+- Each phrase must be a contiguous span copied exactly from the description (same words, same order, same spelling). Never paraphrase, rename, reorder, or merge words from different places.
+- The only permitted change is converting a transitive verb to its base form.
+- The phrase is the smallest span that is a complete domain phrase. Keep a multi-word phrase whole when the full span is the domain phrase (a noun with its established modifiers, a "X of Y" expression, "maximum of 8 items"). Do not shorten it.
+- Do not add articles, prepositions, verbs, punctuation, or clause fragments that are not part of the phrase.
+- Never copy a full sentence, clause, or comma/"and"-joined list as one entry. A list of values becomes one entry per value.
+
+B. DOMAIN-ROLE TEST (precision)
+Keep a phrase only if, in this description, it does at least one of the following:
+  (a) names a thing, role, or event the business handles or tracks;
+  (b) names a property or value of such a thing;
+  (c) states a quantity, limit, or count on such a thing;
+  (d) states an action or relationship between such things.
+Leave out:
+- words that only serve the sentence or describe the description itself (vague words, generic containers such as records, updates, data, or information when they carry no stated property or relation);
+- verbs that only describe how information is displayed, entered, recorded, or communicated, rather than an action between domain things (auxiliary, modal, and state-of-being verbs are always excluded);
+- a noun naming the overall business or system being described, unless it takes part in a stated pattern (as owner, whole, container, or actor).
+Judge from how the description uses the phrase, not from a fixed word list. Do not add a phrase merely because it is grammatically attached to a domain concept.
+
+C. RECALL PROTECTION
+- A noun is kept if it is a participant in a stated action, has stated properties, is counted or limited, is a stated role, or is a type/whole/part/container in a stated pattern.
+- A noun inside a longer identified phrase may also be listed alone if it works as a domain concept elsewhere in the description.
+- If unsure whether a phrase passes the domain-role test, but it clearly matches a category pattern and appears in a stated action, property, quantity, or structure, keep it.
+- Before finishing, reread every sentence and confirm no phrase that passes B has been skipped.
+
+D. CATEGORY DEFINITIONS (a phrase goes in a category only if the text shows the pattern)
+1. NOUNS / NOUN PHRASES: domain nouns naming things, roles, events, concepts, or property names, exactly as written, including established modifiers. Do not put a full "X of Y" expression here; list X and Y separately here only if each independently works as a domain concept.
+2. "X OF Y" EXPRESSIONS: literal "X of Y" spans in the text. Copy only "X of Y", not the clause around it.
+3. TRANSITIVE VERBS: a verb that has a direct object and links domain things. List the verb alone in base form, with no subject or object. Include passive/participle uses as the base verb only when the action is stated as a domain action.
+4. ADJECTIVES / ENUMERATION: an adjective (or participle) stating a domain-specific state or property, listed alone; and each value of an explicitly listed set of values, types, or options, one entry per value. Do not list adjective + noun spans here (the noun phrase goes in NOUNS if the modifier is part of the established name). Do not list ordinary descriptive adjectives with no domain meaning.
+5. NUMERIC / QUANTITY: the shortest span containing an explicit number, limit word, or count and the thing it counts or limits. No verbs, prepositions, or clause fragments.
+6. POSSESSION EXPRESSIONS: the shortest span containing the owner, the possession cue (has, have, possessive 's, with, etc.), and the owned thing(s). Keep both the owner and the owned thing so the pair can be classified. Do not include the rest of the sentence.
+7. CONSIST OF / PART OF: the shortest span containing the whole, the composition cue (consists of, made up of, comprises, part of, etc.), and the part. Leave out leading quantity words or articles that are not part of the part's name.
+8. CONTAINMENT: the shortest span containing the container, the containment cue (contains, holds, houses, etc.), and the contained thing. Do not list a sentence here that only states composition or possession.
+9. "X IS A Y": only an explicit type/kind statement (is a, is a type/kind of, "types of Y" followed by named kinds, or "can be X or Y" naming kinds). Copy the shortest span that names the parent and the kinds. Do not use it for ordinary descriptions, roles, or attribute values. Never infer it.
+
+E. DUPLICATES AND OVERLAP
+- List each concept once per category. Do not list singular and plural forms of the same concept; use the form that first appears.
+- Do not list a span in a second category merely because it fits loosely. A span may appear in two categories only if the text independently supports each pattern with its own cue (for example, a noun that is also a value in an enumeration, or a number-bearing span that is also the numeric expression).
+- Use each exact wording once. Do not merge different wordings into one, and do not list the same concept under two wordings unless both appear in the description.
+- If a category has no supported phrase, write "- (none)".
+
+==================================================
+STEP 2: CLASSIFICATION
+==================================================
+Use ONLY phrases identified in Step 1.
+
+NAMING: A class or attribute name must be an identified phrase. You may change it to singular form and capitalize class names, but you may not add, remove, or replace words. Use one name per concept.
+
+CLASSES:
+- Take classes only from identified nouns/noun phrases (or identified components of X-of-Y, possession, or composition spans).
+- A noun becomes a class when it is an independent thing that has properties, takes part in an identified relationship, or is a parent, child, whole, or part in an identified pattern.
+- Do not make a class from a verb, adjective, value, quantity, property name, or descriptive term.
+- Do not turn every noun into a class.
+
+ATTRIBUTES:
+Format: <class>.<attribute>
+- The attribute must be an identified phrase (or the property part of an identified "X of Y", possession, or numeric span).
+- The owner must be a class in CLASSES, and must be the owner stated or implied by the same identified span or sentence. Do not attach an attribute to a class the text does not tie it to.
+- Attach each attribute to its stated owner only; do not duplicate one concept across owners unless the text states it for each.
+- Do not create an attribute from an owner noun alone, and do not make something an attribute if the description treats it as an independent thing with its own relationships.
+
+RELATIONSHIPS:
+Association: as(<relationship label>, <class A>, <class B>)
+Generalization: isa(<child>, <parent>)
+Aggregation: ag(<whole>, <part>)
+- as(): the label must be an identified transitive verb (base form). Class A must be the actor and class B the object as stated in the description (including passive forms). Both must be classes in CLASSES. If the description does not state both, do not create the relationship. A verb with no supported pair is skipped.
+- Do not create a relationship because two classes appear in the same sentence, or between a class and its own attribute.
+- isa(): only when an identified "X IS A Y" span explicitly names a kind/type relationship; child and parent must both be classes.
+- ag(): only when an identified CONSIST OF / PART OF or CONTAINMENT span explicitly shows a whole-part relationship; whole and part must both be classes. Otherwise use as() only if an identified verb supports it.
+- No relationship by inference.
+
+ASSOCIATION CLASSES:
+Create one only when BOTH are supported by the text:
+- the relationship is many-to-many (both sides can have multiple), AND
+- an identified phrase names information belonging to the relationship itself (not to either class alone).
+If either is missing, do not create one. If none qualify, write "- (none)".
+
+==================================================
+STEP 3: VALIDATION (silent; do not print)
+==================================================
+- Every identified phrase is verbatim (verbs in base form only), is not a sentence, clause, or list, and has no unneeded context; no legitimate multi-word phrase was shortened.
+- Every phrase passes the domain-role test; no legitimate phrase was dropped just to shorten the list.
+- No singular/plural duplicates; no repeats across categories without independent textual support.
+- Every phrase sits in a category whose pattern the text shows.
+- Every class, attribute, and relationship label traces to an identified phrase; every endpoint is in CLASSES; each verb-based relationship has both endpoints stated in the description.
+- Every isa, ag, and association class has the explicit support required above.
+- Remove unsupported items and duplicates. Add nothing new.
+
+FINAL OUTPUT FORMAT (output exactly this; no explanations, commentary, or extra sections):
+
+IDENTIFIED DOMAIN-SPECIFIC PHRASES:
+
+NOUNS / NOUN PHRASES:
+- ...
+
+"X OF Y" EXPRESSIONS:
+- ...
+
+TRANSITIVE VERBS:
+- ...
+
+ADJECTIVES / ENUMERATION:
+- ...
+
+NUMERIC / QUANTITY:
+- ...
+
+POSSESSION EXPRESSIONS:
+- ...
+
+CONSIST OF / PART OF:
+- ...
+
+CONTAINMENT:
+- ...
+
+"X IS A Y":
+- ...
+
+FINAL CLASSIFICATION:
+
+CLASSES:
+- ...
+
+ATTRIBUTES:
+- ...
+
+RELATIONSHIPS:
+- ...
+
+ASSOCIATION CLASSES:
+- ...
+
+BUSINESS DESCRIPTION:
+[INSERT DESCRIPTION HERE]
