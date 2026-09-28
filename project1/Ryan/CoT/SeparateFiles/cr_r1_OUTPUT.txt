@@ -1,0 +1,126 @@
+<answer> Nouns / noun phrases - car rental company - rental location / rental locations - vehicle / vehicles - location - additional charge - passenger cars - vehicle rentals - reservation system - make / makes - car / cars - manufacturer / manufacturers - rental fleet - model / models - price classes - customer / customers - message - rental plans - daily unlimited miles plan - weekend 10% discount plan - gear change - doors - rental prices - options - reservation / reservations - salespersons - reservation form - deposit - period of time - contract - block reservation - invoices / invoice - rentals - request - company - customer’s employer - credit card - rental charge - credit card processing company - rental car / rental cars - damage - frequent preventive maintenance - rental car purchase - repair - maintenance - disposal information - depreciation
+
+X of Y Expressions
+
+number of rental locations
+forms of vehicle rentals
+makes of cars
+number of price classes
+number of different rental plans
+models of car
+period of time
+depreciation of the rental cars
+
+Transitive verbs
+
+operates
+taken from
+returned to
+use
+grouped into
+select
+rent
+display
+telling
+rented out
+suggest
+reserving
+make
+process
+using
+archive
+required
+voided
+sign
+honored
+satisfy
+handled
+checked out to
+opened
+cover
+settle
+returned
+sent to
+processed through
+need
+repaired
+
+Adjectives, enumeration
+
+automatic or manual
+sedan or hatchback
+available
+not available
+
+Numeric, Quantity
+
+a number of
+several
+Each
+a small number of
+two or four
+10%
+one
+more than a given period of time
+all
+a single
+one or more
+
+Possession Expressions
+
+The company has several different makes of cars in its rental fleet
+Each make may have several models
+The company has a number of different rental plans available to customers
+
+Consist of / Part of Expressions
+
+X is a Y generalization / specialization
+</answer>
+<classification> CLASSES: - car rental company - rental location - vehicle - passenger car - vehicle rental - reservation system - make - car - manufacturer - rental fleet - model - price class - customer - message - rental plan - daily unlimited miles plan - weekend 10% discount plan - option - reservation - salesperson - reservation form - contract - block reservation - invoice - rental - request - company - customer’s employer - credit card - credit card processing company - rental car - damage - frequent preventive maintenance - rental car purchase - repair - maintenance - disposal information
+
+ATTRIBUTES:
+
+rental.additional charge
+model.gear change
+model.doors
+model.rental prices
+model.options
+reservation.deposit
+reservation.period of time
+rental.rental charge
+rental car.depreciation
+car.available
+
+RELATIONSHIPS:
+
+as(operates, car rental company, rental location)
+as(taken from, vehicle, rental location)
+as(returned to, vehicle, rental location)
+as(use, car rental company, reservation system)
+as(grouped into, model, price class)
+as(select, customer, make)
+as(select, customer, model)
+as(rent, customer, car)
+as(display, reservation system, message)
+as(telling, message, customer)
+as(suggest, reservation system, model)
+as(reserving, customer, car)
+as(make, customer, reservation)
+as(process, salesperson, reservation)
+as(using, salesperson, reservation form)
+as(archive, salesperson, reservation)
+as(sign, customer, contract)
+as(satisfy, car, request)
+as(checked out to, car, customer)
+as(cover, invoice, rental)
+as(settle, customer, invoice)
+as(sent to, invoice, company)
+as(need, rental car, maintenance)
+as(has, car rental company, make)
+ag(make, model)
+ag(car rental company, rental plan)
+
+ASSOCIATION CLASSES:
+
+rental(customer, car)
+reservation(customer, car)</classification>
