@@ -1,0 +1,205 @@
+<analysis>
+Adjectives candidates
+national | Trade show | scope | international -> keep
+international | Trade show | scope | national -> keep
+national and international are listed together -> one line "national and international"
+on site | Registration | location/mode | off site -> keep
+professional | Services | service type | administrative -> keep
+predefined | Domain | domain status | custom -> keep
+pending review | Proposal | status | accepted -> keep, but accepted is also used as a verb in the text, so drop
+accepted | Proposal | status | pending review -> drop because it is used as a verb
+rejected | Proposal | status | accepted -> drop because it is used as a verb
+large | Booth | size | medium -> keep
+medium | Booth | size | small -> keep
+small | Booth | size | large -> keep
+large, medium, or small are listed together -> one line "large, medium, or small"
+famous | Speaker | prominence | unknown -> keep
+selected | Speaker | selection status | invited -> drop because it is used as a verb
+invited | Speaker | invitation status | selected -> drop because it is used as a verb
+different | Registration charge | variation | same -> drop; it is a general comparison, not a modeled value
+
+Numeric, Quantity candidates
+each | customer/event participant | count | every -> keep
+one or more | domains | count | two or more -> keep as one quantity expression
+all | activities | count | some -> keep
+various | purposes | count | several -> keep
+whole | duration | amount | partial -> keep
+Dates, years, addresses, and reference examples are not quantities.
+
+Verb candidates
+helps -> business -> helps
+create -> trade show -> create
+promote -> trade show -> promote
+organize -> trade show -> organize
+run -> trade show -> run
+contact -> NTSS -> contact
+need -> services -> need
+involves -> design -> withheld as a Consist of / Part of linking word
+includes -> activities/services -> withheld as a Consist of / Part of linking word
+inviting -> speakers -> inviting
+registering -> participants -> registering
+setting up -> the booths -> setting up
+distributing -> trade show materials -> distributing
+creates -> an account -> creates
+record -> service charges -> record
+received -> (passive participle modifying payments; no action on an object) -> drop
+maintain -> the account balances -> maintain
+took place -> no object -> drop
+organized -> by -> organized by
+provides -> further information -> provides
+belong -> to -> belongs to
+change -> no object -> drop
+added -> (passive participle) -> added
+removed -> (passive participle) -> removed
+attended -> by -> attended by
+register -> to attend -> register
+attend -> a trade show event -> attend
+charges -> a fee -> charges
+creates -> the event -> creates
+prepares -> the event -> prepares
+runs -> the event -> runs
+invited -> to give -> invited
+give -> a keynote address -> give
+reviewed -> by -> reviewed by
+exhibit -> their products or services -> exhibit
+pay -> for -> pay for
+requested -> (passive participle) -> requested
+rented -> for -> rented for
+visit -> the trade show -> visit
+
+<answer>
+Nouns / noun phrases
+- National Trade Show Services (NTSS)
+- service provider
+- business customers
+- services
+- trade show / trade shows
+- design
+- professional services
+- selection
+- theme
+- slogan
+- location
+- duration
+- advertisement activities
+- activities
+- creation
+- promotion
+- speakers
+- participants
+- exhibitors
+- on site registration
+- booths
+- conference rooms
+- seminars
+- reception
+- trade show materials
+- account
+- service charges
+- payments
+- account balances
+- event
+- organizer
+- person
+- organization
+- contact information
+- website
+- predefined domains
+- list
+- staff
+- event organization staff
+- participants
+- invited speakers
+- selected speakers
+- observers
+- registration
+- registration charges
+- fee
+- NTSS staff
+- famous figures
+- domain
+- keynote address
+- proposals
+- committee
+- reviewers
+- experts
+- status
+- products
+- services
+- booth / booths
+- size
+- duration
+- purposes
+
+X of Y Expressions
+- selection of a theme
+- selection of a slogan
+- range of professional services
+- list of predefined domains
+- evaluation of their proposals
+- committee of reviewers
+- size of the booth
+- duration of the event
+
+Transitive verbs
+- helps
+- create
+- promote
+- organize
+- run
+- contact
+- need
+- inviting
+- registering
+- setting up
+- distributing
+- creates
+- record
+- maintain
+- organized by
+- provides
+- belongs to
+- added
+- removed
+- attended by
+- register
+- attend
+- charges
+- prepares
+- runs
+- invited
+- give
+- reviewed by
+- exhibit
+- pay for
+- requested
+- rented for
+- visit
+
+Adjectives, enumeration
+- national and international
+- on site
+- professional
+- predefined
+- famous
+- large, medium, or small
+
+Numeric, Quantity
+- each
+- one or more
+- all
+- various
+- whole
+
+Possession Expressions
+- An event has an organizer
+- An event has contact information and possibly a website
+
+Consist of / Part of Expressions
+- Creating a trade show involves the design for the trade show
+- Promoting a trade show includes advertisement activities
+- Organizing a trade show includes all activities before the trade show except creation and promotion
+
+X is a Y generalization / specialization
+- A trade show can be regarded as an event
+</answer>

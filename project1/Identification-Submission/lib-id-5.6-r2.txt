@@ -1,0 +1,142 @@
+<analysis>
+Adjectives candidates:
+unique | Member number / bar code | identifying characteristic | non-unique -> keep; the text lists "unique member number" and "uniquely identified" separately, but "unique" is kept only as an attribute value candidate
+French | title language | language value | English -> keep
+beginner | level | proficiency level | advanced -> keep
+valid | membership | validity status | expired -> keep
+not reserved | item | reservation status | reserved -> keep with "not"; the text does not also use "reserved" as a status adjective, but "reserved" is used as a verb, so do not list it separately
+language tapes, and books | loan item | item type | magazines -> the text lists these together as types, but they are noun phrases and are handled under Generalization, not Adjectives
+via the bar code reader or entered manually | item-issue method | issue method | scanned electronically -> this is a method alternative, but it is expressed as verb phrases rather than adjective values; drop
+
+Numeric, Quantity candidates:
+a number of | subject sections | quantity | several -> keep
+two | types of loan items | quantity | three -> keep
+up to a maximum of 8 items | items borrowed | quantity limit | 10 items -> keep as a whole quantity expression
+8 | items on loan | quantity limit | 6 -> keep because it answers how many
+less than 8 | items on loan | quantity condition | less than 10 -> keep
+
+Verb candidates:
+issues -> loan -> issues
+is issued -> a -> issued
+shows -> a -> shows
+must be kept -> such -> kept
+denoted -> by -> denoted by
+identified -> by -> identified by
+borrow -> up -> borrow up to
+extend -> a -> extend
+borrowed -> reserved -> borrowed
+reserved -> or -> reserved
+renewed -> to -> renewed; "to extend" introduces the transitive verb "extend", so "to" is not retained
+scanned -> via -> scanned via
+read -> either -> read
+entered -> manually -> entered
+issued -> e.g. -> issued
+stamped -> and -> stamped
+support -> the -> support
+searched -> and -> searched
+updated -> implied by "daily update" as a noun -> drop
+
+Excluded verb/linking checks:
+has and have are Possession linking words; is made up of is a Consist of / Part of linking phrase; is known as is a Generalization linking phrase. "are" in "There are two types" is not listed by itself.
+The verbs "borrowed", "reserved", and "renewed" are retained even though they occur in the same sentence as "can be"; the auxiliaries are omitted. "renewed to" is kept with its infinitive-linking preposition because "to extend" follows, but the listed transitive verb is "renewed" and the object is omitted.
+
+X of Y occurrences:
+date of birth
+number of subject sections
+types of loan items
+number of items on loan
+update of records
+
+Possession clauses:
+A language tape has a title language (e.g. French), and level (e.g. beginner).
+A book has a title, and author(s).
+
+Consist of / Part of clause:
+The library is made up of a number of subject sections.
+
+Generalization / specialization:
+Each customer is known as a member.
+language tapes, and books are types of loan items.
+</analysis>
+
+<answer>
+Nouns / noun phrases
+- library
+- loan items / loan item
+- customers / customer
+- member
+- membership card
+- member number
+- name
+- address
+- date of birth
+- subject sections / section
+- classification mark
+- bar code
+- language tapes / language tape
+- books / book
+- title language
+- level
+- title
+- author(s)
+- loan
+- current loan
+- item
+- bar code reader
+- membership
+- number of items on loan
+- facility
+- records
+- update
+
+X of Y Expressions
+- date of birth
+- number of subject sections
+- types of loan items
+- number of items on loan
+- update of records
+
+Transitive verbs
+- issues
+- issued
+- shows
+- kept
+- denoted by
+- identified by
+- borrow up to
+- extend
+- borrowed
+- reserved
+- renewed
+- scanned via
+- read
+- entered
+- stamped
+- support
+- searched
+
+Adjectives, enumeration
+- unique
+- French
+- beginner
+- valid
+- not reserved
+
+Numeric, Quantity
+- a number of
+- two
+- up to a maximum of 8 items
+- 8
+- less than 8
+
+Possession Expressions
+- A language tape has a title language (e.g. French), and level (e.g. beginner).
+- A book has a title, and author(s).
+
+Consist of / Part of Expressions
+- The library is made up of a number of subject sections.
+
+X is a Y generalization / specialization
+- Each customer is known as a member.
+- language tapes, and books are types of loan items.
+</answer>

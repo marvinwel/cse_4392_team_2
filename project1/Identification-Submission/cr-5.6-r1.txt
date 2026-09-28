@@ -1,0 +1,169 @@
+<analysis>
+Adjectives candidates:
+passenger | Vehicle | vehicleType | commercial -> keep
+different | Location | locationType | same -> keep; the text lists "same" and "different" together -> one line "same or different"
+same or different | Location | locationType | one-way -> keep as a method/value expression
+small | Price class | classSize | large -> keep
+daily unlimited miles | Rental plan | planType | weekend 10% discount -> keep; the text lists the two plans together -> one line "daily unlimited miles plan" and "weekend 10% discount plan" are noun phrases, not adjective values
+automatic or manual | Gear change | gearType | electric -> keep; listed together -> one line "automatic or manual"
+two or four | Car | doorCount | three -> numeric quantity, not Adjectives
+sedan or hatchback | Car | bodyType | coupe -> keep; listed together -> one line "sedan or hatchback"
+available | Car | availability | rented out -> keep; not used as a verb in the document
+rented out | Car | availability | available -> keep; passive/status value
+block | Reservation | reservationType | individual -> keep
+single | Invoice | invoiceCoverage | combined -> keep; not used as a verb in the document
+frequent | Maintenance | maintenanceFrequency | occasional -> keep
+preventive | Maintenance | maintenanceType | corrective -> keep
+one or more | Rental | rentalCount | two or more -> Numeric, Quantity, not Adjectives
+
+Verb candidates:
+returned -> to -> returned to
+select -> the -> select
+wants -> to -> wants (takes an infinitive, not an object; drop)
+display -> a -> display
+telling -> the -> telling
+suggest -> similar -> suggest
+grouped -> into -> grouped into
+provide -> information -> provide
+make -> reservations -> make
+process -> the -> process
+archive -> them -> archive
+voided -> if -> voided
+show -> up -> show up
+sign -> the -> sign
+honored -> only -> honored
+satisfy -> the -> satisfy
+make -> a -> make
+handled -> together -> handled
+checked out -> to -> checked out to
+opened -> an -> opened
+cover -> one -> cover
+settle -> the -> settle
+returned -> but -> returned
+sent -> to -> sent to
+processed -> through -> processed through
+keep -> track -> keep track
+repaired -> as -> repaired
+purchase -> (noun use) -> drop
+disposal -> (noun use) -> drop
+
+The text lists these quantities: "a number of", "several", "a small number of", "one", "two", "more", "several cars", "for several cars", "all rentals", "one or more rentals", and "a given period of time". Dates, years, and reference/page numbers are excluded.
+
+<answer>
+Nouns / noun phrases
+- car / cars
+- car rental company
+- rental location / rental locations
+- metropolitan area
+- vehicle / vehicles
+- passenger car / passenger cars
+- vehicle rental
+- reservation system
+- make / makes
+- rental fleet
+- manufacturer / manufacturers
+- model / models
+- price class / price classes
+- message
+- rental plan / rental plans
+- mile / miles
+- discount
+- gear change
+- door
+- sedan
+- hatchback
+- option / options
+- rental price / rental prices
+- customer
+- reservation / reservations
+- salesperson / salespersons
+- reservation form
+- file cabinet
+- deposit
+- time
+- period
+- contract
+- car availability
+- block reservation
+- invoice / invoices
+- rental / rentals
+- company
+- employer
+- credit card
+- credit card processing company
+- rental charge
+- day
+- rental car / rental cars
+- preventive maintenance
+- damage
+- repair
+- purchase
+- disposal
+- depreciation
+
+X of Y Expressions
+- number of rental locations
+- forms of vehicle rentals
+- models of car
+- time of reservation
+- rental car purchase
+- depreciation of the rental cars
+
+Transitive verbs
+- returned to
+- select
+- display
+- telling
+- suggest
+- grouped into
+- provide
+- make
+- process
+- archive
+- voided
+- sign
+- honored
+- satisfy
+- handled
+- checked out to
+- opened
+- cover
+- settle
+- sent to
+- processed through
+- keep track
+- repaired
+
+Adjectives, enumeration
+- same or different
+- automatic or manual
+- sedan or hatchback
+- available
+- rented out
+- block
+- single
+- frequent
+- preventive
+
+Numeric, Quantity
+- a number of
+- several
+- a small number of
+- one
+- two
+- more
+- several cars
+- all rentals
+- one or more rentals
+- a given period of time
+
+Possession Expressions
+- The company has a great business model and provides customer-friendly service
+- The company has several different makes of cars in its rental fleet
+- Each make may have several models
+- The company has a number of different rental plans available to customers
+
+Consist of / Part of Expressions
+
+X is a Y generalization / specialization
+</answer>

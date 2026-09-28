@@ -1,0 +1,193 @@
+<analysis>
+Adjectives candidates:
+national | Trade show | scope | international -> keep
+international | Trade show | scope | national -> keep
+professional | Service | serviceType | administrative -> keep
+on site | Registration | location/mode | online -> keep
+predefined | Domain | status | emerging -> keep
+pending review | Proposal | status | accepted -> keep; listed with accepted and rejected
+accepted | Proposal | status | pending review -> keep; listed with pending review and rejected
+rejected | Proposal | status | pending review -> keep; listed with pending review and accepted
+large, medium, or small | Booth | size | extra-large -> keep as one listed value line
+invited and/or selected | Speaker | selection status | confirmed -> keep as one line; selected is also used as a verb, so the combined modifier is retained as written
+famous | Figure | prominence | unknown -> keep
+different | Participant/fee | variation | same -> keep where it describes a domain value; the word is also used as a general modifier and is retained only when it names a fee/participant variation
+
+Verb checks:
+helps -> business -> helps
+create -> a -> create
+promote -> a -> promote
+organize -> and -> organize
+run -> national -> run
+contact -> NTSS -> contact
+need -> (end of clause) -> need
+involves -> the -> withheld as Consist of / Part of linking word
+includes -> advertisement -> withheld as Consist of / Part of linking word
+inviting -> speakers -> inviting
+registering -> participants -> registering
+setting -> up -> setting up
+distributing -> trade -> distributing
+creates -> an -> creates
+record -> service -> record
+maintain -> the -> maintain
+regarded -> as -> withheld as Generalization linking phrase
+took -> place -> took place
+organized -> by -> organized by
+provides -> further -> provides
+belong -> to -> belong to
+added -> (passive clause) -> added
+removed -> (passive clause) -> removed
+attended -> by -> attended by
+register -> to -> register
+charges -> a -> charges
+creates -> the -> creates
+prepares -> and -> prepares
+runs -> the -> runs
+invited -> to -> invited
+give -> a -> give
+reviewed -> by -> reviewed by
+pay -> for -> pay for
+exhibit -> their -> exhibit
+requested -> (passive clause) -> requested
+rented -> (passive clause) -> rented
+come -> to -> withheld because it is intransitive here
+visit -> the -> visit
+
+X of Y occurrences: selection of a theme; selection of a slogan; list of predefined domains; types of participants; evaluation of their proposals; size of the booth; duration of the event. Phrases using other prepositions are not included.
+
+Quantities: each; one or more; all; whole duration. Dates, years, addresses, postal codes, and named examples are excluded.
+
+Possession clauses: "The NTSS creates an account for each customer" is not a Possession expression because it uses creates, not has/have/possesses/owns. No qualifying Possession clause occurs.
+
+Consist of / Part of clauses: "Creating a trade show involves the design for the trade show, including professional services ranging from selection of a theme and a slogan to location and duration"; "Promoting a trade show includes advertisement activities"; "Organizing a trade show includes all activities before the trade show except creation and promotion"; "Running a trade show is the activity of on site registration, setting up the booths, conference rooms for seminars, reception, and distributing trade show materials"; "The status of a proposal includes pending review, accepted, and rejected".
+
+Generalization: "A trade show can be regarded as an event".
+</analysis>
+
+<answer>
+Nouns / noun phrases
+- National Trade Show Services / NTSS
+- service provider
+- business customers
+- trade show / trade shows
+- services
+- design
+- theme
+- slogan
+- location
+- duration
+- professional services
+- advertisement activities
+- activities
+- speakers
+- participants
+- exhibitors
+- observers
+- registration
+- booths
+- conference rooms
+- seminars
+- reception
+- trade show materials
+- account
+- customer / customers
+- service charges
+- payments received
+- account balances
+- event
+- organizer
+- person
+- organization
+- contact information
+- website
+- domains
+- list
+- event organization staff
+- NTSS staff
+- fee
+- trade show event
+- proposals
+- committee of reviewers
+- reviewers
+- experts
+- status
+- keynote address
+- products
+- size
+- purposes
+
+X of Y Expressions
+- selection of a theme
+- selection of a slogan
+- list of predefined domains
+- types of participants
+- evaluation of their proposals
+- size of the booth
+- duration of the event
+- activity of on site registration
+- status of a proposal
+
+Transitive verbs
+- helps
+- create
+- promote
+- organize
+- run
+- contact
+- need
+- inviting
+- registering
+- setting up
+- distributing
+- creates
+- record
+- maintain
+- took place
+- organized by
+- provides
+- belong to
+- added
+- removed
+- attended by
+- register
+- charges
+- prepares
+- runs
+- invited
+- give
+- reviewed by
+- pay for
+- exhibit
+- requested
+- rented
+- visit
+
+Adjectives, enumeration
+- national and international
+- professional
+- on site
+- predefined
+- pending review, accepted, and rejected
+- invited and/or selected
+- famous
+- different
+- large, medium, or small
+
+Numeric, Quantity
+- each
+- one or more
+- all
+- whole duration
+
+Possession Expressions
+
+Consist of / Part of Expressions
+- Creating a trade show involves the design for the trade show, including professional services ranging from selection of a theme and a slogan to location and duration
+- Promoting a trade show includes advertisement activities
+- Organizing a trade show includes all activities before the trade show except creation and promotion
+- Running a trade show is the activity of on site registration, setting up the booths, conference rooms for seminars, reception, and distributing trade show materials
+- The status of a proposal includes pending review, accepted, and rejected
+
+X is a Y generalization / specialization
+- A trade show can be regarded as an event
+</answer>

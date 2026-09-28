@@ -1,0 +1,111 @@
+<analysis>
+Adjectives candidates
+language | Language tape | language | French -> keep
+beginner | Language tape | level | advanced -> keep
+valid | Membership | validity | expired -> keep
+not reserved | Loan item | reservation status | reserved -> drop because "reserved" is used as a verb in the document
+daily | Update | frequency | weekly -> keep
+unique | Member number | uniqueness | duplicated -> drop because it describes identification rather than a model value
+
+Kept values listed in the text together
+No adjective-value list contains multiple values that must be copied as one line.
+
+Verb candidates
+issues -> loan -> issues
+is issued -> a -> issued
+shows -> a -> shows
+kept -> such -> kept
+is denoted by -> a -> denoted by
+is identified by -> a -> identified by
+borrow -> up -> borrow
+reserved -> or -> reserved
+renewed -> to -> renewed
+extend -> a -> extend
+is scanned via -> a -> scanned via
+entered -> manually -> entered
+is read -> either -> read
+are issued -> the -> issued
+is stamped -> and -> stamped
+support -> the -> support
+be searched -> and -> searched
+
+The following are omitted as linking words or non-transitive uses: has, have, is made up of, is known as, are types of, can be issued, can be borrowed, and the noun use of update.
+</analysis>
+
+<answer>
+Nouns / noun phrases
+- library
+- loan item / loan items
+- customer / customers
+- member
+- membership card
+- member number
+- name
+- address
+- date of birth
+- subject section / subject sections
+- section
+- classification mark
+- bar code
+- language tape / language tapes
+- book / books
+- title language
+- level
+- title
+- author / authors
+- item
+- loan
+- current loan
+- bar code reader
+- membership
+- facility
+- record / records
+- update
+
+X of Y Expressions
+- date of birth
+- number of subject sections
+- types of loan items
+- number of items on loan
+- update of records
+
+Transitive verbs
+- issues
+- issued
+- shows
+- kept
+- denoted by
+- identified by
+- borrow
+- reserved
+- renewed
+- extend
+- scanned via
+- entered
+- read
+- stamped
+- support
+- searched
+
+Adjectives, enumeration
+- French
+- beginner
+- valid
+- daily
+
+Numeric, Quantity
+- a number of
+- up to a maximum of 8 items
+- less than 8
+
+Possession Expressions
+- A language tape has a title language (e.g. French), and level (e.g. beginner)
+- A book has a title, and author(s)
+
+Consist of / Part of Expressions
+- The library is made up of a number of subject sections
+
+X is a Y generalization / specialization
+- Each customer is known as a member
+- language tapes, and books are types of loan items
+</answer>

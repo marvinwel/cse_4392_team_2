@@ -1,0 +1,199 @@
+<analysis>
+Adjectives candidates:
+professional | Service | serviceType | administrative -> keep
+national and international | Trade show | scope | regional -> keep; listed together as one attribute-value line
+on site | Registration | location/mode | remote -> keep
+predefined | Domain | domainStatus | custom -> keep
+new and outdated | Domain | domainStatus | active -> keep; listed together as one line
+invited and/or selected | Speaker | invitationStatus | keynote-only -> keep; listed together as one line
+famous | Speaker | prominence | emerging -> keep
+pending review, accepted, and rejected | Proposal | status | withdrawn -> keep; listed together as one line
+large, medium, or small | Booth | size | extra-large -> keep; listed together as one line
+various | Purpose | purposeType | educational -> drop; no realistic controlled value set is established by the text
+
+Verb candidates:
+helps -> business -> helps
+create -> promote -> create
+promote -> organize -> promote
+organize -> run -> organize
+run -> national -> run
+contact -> NTSS -> contact
+need -> (end of phrase) -> need
+involves -> the -> excluded: Consist of / Part of linking word
+ranging -> from -> ranging from
+includes -> all -> excluded: Consist of / Part of linking word
+inviting -> speakers -> inviting
+registering -> participants -> registering
+setting -> up -> setting up
+distributing -> trade -> distributing
+creates -> an -> creates
+record -> service -> record
+maintain -> the -> maintain
+regarded -> as -> excluded: Generalization linking word
+has -> an -> excluded: Possession linking word
+organized -> by -> organized by
+provides -> further -> provides
+belong -> to -> belong to
+change -> from -> change
+added -> (end of phrase) -> added
+removed -> (end of phrase) -> removed
+attended -> by -> attended by
+including -> the -> excluded: Consist of / Part of linking word
+register -> to -> register
+charges -> a -> charges
+prepares -> the -> prepares
+runs -> the -> runs
+invited -> to -> invited to
+speak -> at -> speak at
+based -> on -> based on
+reviewed -> by -> reviewed by
+willing -> to -> willing to
+help -> (end of phrase) -> help
+exhibit -> their -> exhibit
+pay -> for -> pay for
+requested -> (end of phrase) -> requested
+rented -> for -> rented for
+come -> to -> come to
+visit -> the -> visit
+
+<answer>
+Nouns / noun phrases
+- National Trade Show Services / NTSS
+- service provider
+- business customers
+- trade shows
+- services
+- trade show
+- design
+- theme
+- slogan
+- location
+- duration
+- advertisement activities
+- activities
+- speakers
+- participants
+- exhibitors
+- event
+- on site registration
+- booths
+- conference rooms
+- seminars
+- reception
+- trade show materials
+- account
+- service charges
+- payments
+- account balances
+- organizer
+- person
+- organization
+- contact information
+- website
+- domains
+- list
+- trade show event
+- types
+- event organization staff
+- event organizer
+- registration
+- fee
+- NTSS staff
+- figures
+- domain
+- keynote address
+- proposals
+- committee
+- reviewers
+- experts
+- status
+- products
+- size
+- observers
+- purposes
+
+X of Y Expressions
+- design of a trade show
+- selection of a theme
+- activities before the trade show
+- registration of participants
+- evaluation of their proposals
+- committee of reviewers
+- list of predefined domains
+- types of participants
+- size of the booth
+
+Transitive verbs
+- helps
+- create
+- promote
+- organize
+- run
+- contact
+- need
+- ranging from
+- inviting
+- registering
+- setting up
+- distributing
+- creates
+- record
+- maintain
+- organized by
+- provides
+- belong to
+- change
+- added
+- removed
+- attended by
+- register
+- charges
+- prepares
+- runs
+- invited to
+- speak at
+- based on
+- reviewed by
+- willing to
+- help
+- exhibit
+- pay for
+- requested
+- rented for
+- come to
+- visit
+
+Adjectives, enumeration
+- professional
+- national and international
+- on site
+- predefined
+- new and outdated
+- invited and/or selected
+- famous
+- pending review, accepted, and rejected
+- large, medium, or small
+
+Numeric, Quantity
+- each
+- one or more
+- all
+- different types
+- various
+
+Possession Expressions
+- An event has an organizer
+- An event has contact information and possibly a website
+
+Consist of / Part of Expressions
+- Creating a trade show involves the design for the trade show, including professional services ranging from selection of a theme and a slogan to location and duration.
+- Promoting a trade show includes advertisement activities.
+- Organizing a trade show includes all activities before the trade show except creation and promotion.
+- Running a trade show is the activity of on site registration, setting up the booths, conference rooms for seminars, reception, and distributing trade show materials.
+- A trade show can be regarded as an event.
+- A trade show is attended by different types of participants including the event organization staff, the invited and/or selected speakers, exhibitors, and observers.
+
+X is a Y generalization / specialization
+- A trade show can be regarded as an event
+</answer>
+

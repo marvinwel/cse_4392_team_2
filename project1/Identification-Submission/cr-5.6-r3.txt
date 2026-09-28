@@ -1,0 +1,173 @@
+<analysis>
+daily unlimited miles | Rental plan | plan type | weekend 10% discount -> keep
+weekend 10% discount | Rental plan | plan type | daily unlimited miles -> keep
+automatic | Gear change | gear-change type | manual -> keep
+manual | Gear change | gear-change type | automatic -> keep
+two or four | Car | door count | three -> numbers -> Numeric, Quantity, not Adjectives
+sedan | Car | body style | hatchback -> keep
+hatchback | Car | body style | sedan -> keep
+in person or through the phone | Reservation method | method | online -> keep as one line
+available | Car | availability status | unavailable -> keep
+not available | Car | availability status | available -> keep with "not"
+additional | Charge | charge type | standard -> keep
+different | Rental plan / option | variation | standard -> keep only where it functions as a modelled value; the repeated generic uses are dropped
+daily unlimited miles and weekend 10% discount are plan examples, but each is already a noun phrase and is not also listed as a bare adjective value
+automatic and manual are listed together in the text -> one line "automatic or manual"
+sedan and hatchback are listed together in the text -> one line "sedan or hatchback"
+
+operates -> a -> operates
+provides -> customer-friendly -> provides
+wants -> to -> wants
+reduce -> its -> reduce
+taken -> from -> taken from
+returned -> to -> returned to
+branch -> out into -> branch out into
+use -> the -> use
+grouped -> into -> grouped into
+select -> the -> select
+rent -> (end of phrase) -> rent
+display -> a -> display
+telling -> the -> telling
+let -> the -> let
+select -> another -> select
+suggest -> similar -> suggest
+make -> reservations -> make
+process -> the -> process
+archive -> them -> archive
+required -> (end of clause) -> required
+voided -> (end of clause) -> voided
+show -> up to -> show up to
+sign -> the -> sign
+honored -> (end of clause) -> honored
+satisfy -> the -> satisfy
+wishes -> to -> wishes
+make -> a -> make
+handled -> together -> handled
+checked -> out to -> checked out to
+opened -> (end of clause) -> opened
+cover -> one -> cover
+sent -> to -> sent to
+pays -> the -> pays
+processed -> through -> processed through
+repaired -> (end of clause) -> repaired
+keep -> track -> keep
+
+The verb candidates above are transitive or passive verbs used with objects, except the linking words excluded by the prompt (has, have, and similar possession/linking uses). Non-transitive or non-object uses such as "show up" and generic linking uses were not included in the final answer.
+</analysis>
+
+<answer>
+Nouns / noun phrases
+- car rental company
+- rental location / rental locations
+- vehicle / vehicles
+- passenger car / passenger cars
+- vehicle rental / vehicle rentals
+- reservation system
+- car
+- make
+- manufacturer / manufacturers
+- rental fleet
+- model / models
+- price class / price classes
+- customer
+- message
+- rental plan / rental plans
+- daily unlimited miles plan
+- weekend 10% discount plan
+- gear change
+- door
+- sedan
+- hatchback
+- rental price / rental prices
+- option / options
+- reservation / reservations
+- salesperson / salespersons
+- reservation form
+- file cabinet
+- deposit
+- contract
+- block reservation
+- invoice / invoices
+- rental / rentals
+- credit card
+- credit card processing company
+- day
+- rental car / rental cars
+- preventive maintenance
+- damage
+- purchase
+- repair
+- maintenance
+- disposal
+- depreciation
+
+X of Y Expressions
+- number of rental locations
+- costs of running its business
+- forms of vehicle rentals
+- makes of cars
+- number of different rental plans
+- models of car
+- time of reservation
+- depreciation of the rental cars
+
+Transitive verbs
+- operates
+- provides
+- wants
+- reduce
+- taken from
+- returned to
+- branch out into
+- use
+- grouped into
+- select
+- rent
+- display
+- telling
+- let
+- suggest
+- make
+- process
+- archive
+- required
+- voided
+- sign
+- honored
+- satisfy
+- handled
+- checked out to
+- opened
+- cover
+- sent to
+- pays
+- processed through
+- repaired
+- keep
+
+Adjectives, enumeration
+- additional
+- automatic or manual
+- sedan or hatchback
+- in person or through the phone
+- available
+- not available
+
+Numeric, Quantity
+- a number of
+- several
+- a small number of
+- one or more
+- two or four
+
+Possession Expressions
+- The company has a great business model
+- The company has several different makes of cars in its rental fleet
+- Each make may have several models
+- The company has a number of different rental plans available to customers
+
+Consist of / Part of Expressions
+
+X is a Y generalization / specialization
+
+</answer>

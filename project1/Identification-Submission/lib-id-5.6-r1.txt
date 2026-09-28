@@ -1,0 +1,121 @@
+<analysis>
+Adjectives candidates
+unique | Member number / bar code | uniqueness | non-unique -> keep
+valid | Membership | status | expired -> keep
+daily | Update | frequency | weekly -> keep
+French | Language | language | Spanish -> keep
+beginner | Language tape | level | advanced -> keep
+not reserved | Item | reservation status | reserved -> drop because "reserved" is used as a verb in the document
+current | Loan | status | completed -> drop because it is a modifier inside a noun phrase, not a separately modeled value established by the text
+language | Title language | language | English -> drop because it is a noun modifier in "title language"
+manually | Entry method | method | automatically -> drop because it is an adverb
+
+The text lists "French" as the example value for language and "beginner" as the example value for level. They are kept as separate values because they belong to different attributes. No together-listed adjective value sequence is present.
+
+Numeric, Quantity candidates
+a number of | answers how many subject sections -> keep
+two | answers how many types of loan items -> keep
+up to a maximum of 8 items | answers how many items a customer may borrow -> keep as a whole expression
+less than 8 | answers how many items are on loan -> keep
+
+Transitive verb candidates
+issues -> a -> issues -> takes "a loan item" as its object
+shows -> a -> shows -> takes "a unique member number" as its object
+kept -> such -> kept -> passive verb taking "other details ..." as its object
+denoted -> by -> denoted by -> passive verb keeps "by"
+identified -> by -> identified by -> passive verb keeps "by"
+borrow -> up -> borrow -> takes "items" as its object; "up to" is a quantity expression, not part of the verb
+extend -> a -> extend -> takes "a current loan" as its object
+issued -> the -> issued -> passive verb taking "the item" as its object
+scanned -> via -> scanned via -> takes "the customer's membership number" as its object and keeps the method preposition
+entered -> manually -> entered -> takes the membership number or bar code as its object; "manually" is an adverb
+read -> either -> read -> takes the book bar code as its object
+stamped -> and -> stamped -> passive verb taking "the item" as its object
+support -> the -> support -> takes "the facility" as its object
+searched -> and -> searched -> passive verb taking "an item" as its object
+
+Excluded linking or non-transitive verbs include "is known as" (Generalization), "is made up of" (Consist of / Part of), "has" (Possession), and "are" in the type-naming sentence. "reserved" and "renewed" are included below as transitive verbs because they are actions in the sentence listing what can happen to an item; "borrowed" is not listed because the document uses "borrow" as the action form.
+</analysis>
+
+<answer>
+Nouns / noun phrases
+- library
+- loan item / loan items
+- customer
+- member
+- membership card
+- member number / membership number
+- name
+- address
+- date of birth
+- details
+- subject sections
+- section
+- classification mark
+- bar code
+- language tape / language tapes
+- book / books
+- title
+- language
+- level
+- author(s)
+- item / items
+- loan
+- reservation
+- membership
+- bar code reader
+- facility
+- records
+- update
+
+X of Y Expressions
+- date of birth
+- number of subject sections
+- types of loan items
+- number of items on loan
+- maximum of 8 items
+- update of records
+
+Transitive verbs
+- issues
+- shows
+- kept
+- denoted by
+- identified by
+- borrow
+- reserved
+- renewed
+- extend
+- issued
+- scanned via
+- entered
+- read
+- stamped
+- support
+- searched
+
+Adjectives, enumeration
+- unique
+- valid
+- daily
+- French
+- beginner
+
+Numeric, Quantity
+- a number of
+- two
+- up to a maximum of 8 items
+- less than 8
+
+Possession Expressions
+- Each customer has a name, address, and date of birth
+- A language tape has a title language, and level
+- A book has a title, and author(s)
+
+Consist of / Part of Expressions
+- The library is made up of a number of subject sections
+
+X is a Y generalization / specialization
+- Each customer is known as a member
+- language tapes, and books are types of loan items
+</answer>

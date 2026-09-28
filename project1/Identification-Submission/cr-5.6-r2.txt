@@ -1,0 +1,171 @@
+<analysis>
+Adjective candidates:
+different | Make, model, location, vehicle, rental plan, option, and other domain entities | variation/type | standard
+passenger | Car | vehicleType | commercial
+daily unlimited miles | Rental plan | planType | weekend 10% discount
+weekend 10% discount | Rental plan | planType | daily unlimited miles
+automatic or manual | Gear change | gearType | electric
+two or four | Door | doorCount | three
+sedan or hatchback | Car | bodyType | convertible
+available | Car / rental request | availability | unavailable
+block | Reservation | reservationType | individual
+given | Period | duration | fixed
+additional | Charge | chargeType | base
+frequent | Maintenance | frequency | occasional
+preventive | Maintenance | maintenanceType | corrective
+one or more | Rental / invoice coverage | quantity | two
+
+Verb checks:
+operates -> a -> operates
+taken -> from -> taken from
+returned -> to -> returned to
+branch -> out -> branch out
+use -> the -> use
+grouped -> into -> grouped into
+select -> the -> select
+rented -> out -> rented out
+display -> a -> display
+telling -> the -> telling
+let -> the -> let
+suggest -> similar -> suggest
+process -> the -> process
+archive -> them -> archive
+voided -> if -> voided
+show -> up -> show up
+sign -> the -> sign
+honored -> only -> honored
+satisfy -> the -> satisfy
+make -> a -> make
+handled -> together -> handled
+checked out -> to -> checked out
+opened -> (end of clause) -> opened
+cover -> one -> cover
+sent -> to -> sent to
+processed -> through -> processed through
+available -> for -> available for
+repaired -> as -> repaired
+keep track of -> the -> keep track of
+
+<answer>
+Nouns / noun phrases
+- car rental company
+- rental location / rental locations
+- vehicle / vehicles
+- location
+- passenger car / passenger cars
+- vehicle rental / vehicle rentals
+- reservation system
+- make / makes
+- car / cars
+- rental fleet
+- manufacturer / manufacturers
+- model / models
+- price class / price classes
+- customer
+- rental plan / rental plans
+- miles
+- discount
+- gear change
+- door / doors
+- sedan
+- hatchback
+- option / options
+- rental price / rental prices
+- reservation / reservations
+- salesperson / salespersons
+- reservation form
+- file cabinet
+- deposit
+- period
+- contract
+- block reservation
+- invoice / invoices
+- rental / rentals
+- credit card
+- credit card processing company
+- rental charge
+- rental day
+- preventive maintenance
+- damage
+- rental car
+- purchase
+- repair
+- disposal
+- depreciation
+
+X of Y Expressions
+- number of rental locations
+- forms of vehicle rentals
+- makes of cars
+- models of car
+- number of price classes
+- period of time
+- invoices for all rentals
+- number of rentals
+- purchase of the rental car
+
+Transitive verbs
+- operates
+- taken from
+- returned to
+- branch out
+- use
+- grouped into
+- select
+- rented out
+- display
+- telling
+- let
+- suggest
+- process
+- archive
+- voided
+- show up
+- sign
+- honored
+- satisfy
+- make
+- handled
+- checked out
+- opened
+- cover
+- sent to
+- processed through
+- available for
+- repaired
+- keep track of
+
+Adjectives, enumeration
+- daily unlimited miles
+- weekend 10% discount
+- automatic or manual
+- two or four
+- sedan or hatchback
+- available
+- not available
+- block
+- given
+- additional
+- frequent
+- preventive
+
+Numeric, Quantity
+- a number of
+- several
+- more
+- a small number of
+- two or four
+- several cars
+- one or more
+
+Possession Expressions
+- The company has several different makes of cars in its rental fleet
+- Each make may have several models
+- The company has a number of different rental plans available to customers
+- A single invoice may cover one or more rentals
+
+Consist of / Part of Expressions
+
+X is a Y generalization / specialization
+- passenger cars are forms of vehicle rentals
+</answer>
