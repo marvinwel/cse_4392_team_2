@@ -1,0 +1,200 @@
+You are performing the CLASSIFICATION activity for an AUM domain-modeling task.
+
+Your task is to convert the supplied domain-specific phrase inventory into an object-oriented domain model.
+
+Use ONLY these sources:
+
+1. The attached Domain Description.
+2. The attached Classification Rules.
+3. The domain-specific phrase inventory supplied below.
+
+Do not use outside knowledge.
+Do not invent concepts, synonyms, classes, attributes, relationships, endpoints, multiplicities, or association classes that are not supported by these sources.
+
+<domain_specific_phrases>
+
+[PASTE IDENTIFICATION OUTPUT HERE]
+
+</domain_specific_phrases>
+
+
+STEP 1 — BUILD A CANDIDATE LEDGER
+
+Review every identified phrase.
+
+For each phrase, decide whether it contributes to:
+
+- Class
+- Attribute
+- Association
+- Inheritance
+- Aggregation
+- Association Class
+- Attribute value / multiplicity only
+- No separate model element
+
+Do not force every identified phrase to become its own class or relationship.
+
+
+STEP 2 — CLASS VS ATTRIBUTE
+
+For every noun or noun phrase, apply the independent-existence test from the Classification Rules.
+
+CLASS:
+- has independent existence in the application domain;
+- represents an identifiable domain object, actor, record, or concept.
+
+ATTRIBUTE:
+- cannot meaningfully exist independently;
+- describes another object;
+- stores scalar or state information.
+
+Do not create two separate classes for terms that the description explicitly presents as two names or roles for the same underlying concept.
+
+If two terms refer to the same concept, choose one canonical class name based on the wording used most consistently as the domain object in the description.
+
+
+STEP 3 — ATTRIBUTE OWNERSHIP
+
+Every attribute must have a supported owner.
+
+Determine the owner from the sentence where the phrase occurs.
+
+For an X-of-Y expression:
+- normally classify X as an attribute of Y when Y is a class.
+
+For other descriptive phrases:
+- attach the attribute only to the class explicitly described by the source text.
+
+Do not guess an attribute owner.
+
+
+STEP 4 — VALUES AND QUANTITIES
+
+Adjectives, enumerations, states, and quantities usually do NOT become classes.
+
+Use them as:
+- attribute values,
+- state values,
+- constraints,
+- or multiplicities
+
+when supported.
+
+Do not output them as separate classes unless the description clearly gives them independent existence.
+
+
+STEP 5 — ASSOCIATIONS
+
+A meaningful transitive verb normally indicates an association.
+
+Format:
+
+as(<label>, <classA>, <classB>)
+
+Determine the two endpoints from the actual sentence in the Domain Description.
+
+Rules:
+- both endpoints must already qualify as classes;
+- use the actual participating domain concepts;
+- do not substitute a related class merely because it seems reasonable;
+- do not create an association from a verb if the source does not establish two supported class participants;
+- use one concise relationship label based on the source wording.
+
+
+STEP 6 — POSSESSION
+
+For each possession expression, decide whether it represents:
+
+1. an Attribute,
+2. an Association, or
+3. an Aggregation.
+
+Use the source meaning, not the word “has” alone.
+
+If the possessed thing has independent existence, consider an Association or Aggregation.
+
+If it is merely descriptive scalar information, classify it as an Attribute.
+
+
+STEP 7 — AGGREGATION
+
+Use aggregation only for an explicit whole-part relationship.
+
+Format:
+
+ag(<whole>, <part>)
+
+The part must be a domain object that can reasonably exist as an object, not merely an attribute value.
+
+
+STEP 8 — INHERITANCE
+
+Use inheritance only when the description provides an explicit IS-A, type-of, specialization, or equivalent relationship.
+
+Format:
+
+isa(<child>, <parent>)
+
+Apply both tests from the Classification Rules:
+
+1. IS-A test:
+   every instance of the child must also be an instance of the parent.
+
+2. Conformance test:
+   relationships applicable to the parent should also make sense for the child.
+
+Do not infer inheritance merely because two concepts are related.
+
+
+STEP 9 — ASSOCIATION CLASS CHECK
+
+Check EVERY association for a possible association class.
+
+Create an association class only when BOTH conditions are true:
+
+1. the underlying association is many-to-many; and
+2. the Domain Description requires information about the relationship itself to be stored.
+
+If both are true, create:
+
+<AssociationClassName>(<ClassA>, <ClassB>)
+
+Relationship-specific information should belong to the association class rather than being incorrectly attached to either endpoint.
+
+Do not omit an association class merely because the same relationship can also be written as an ordinary association.
+
+
+STEP 10 — CONSISTENCY AUDIT
+
+Before answering, verify:
+
+- no two classes represent the same domain concept;
+- every class has independent existence;
+- every attribute has the correct owner;
+- every association uses the correct participants from the source sentence;
+- every inheritance passes the IS-A and conformance tests;
+- every aggregation is truly whole-part;
+- every association has been checked for the two-condition association-class rule;
+- no unsupported model elements were added;
+- no important identified phrase was ignored without a modeling reason.
+
+
+STRICT OUTPUT FORMAT
+
+CLASSES:
+- <class>
+
+ATTRIBUTES:
+- <class>.<attribute>
+
+RELATIONSHIPS:
+- as(<label>, <classA>, <classB>)
+- isa(<child>, <parent>)
+- ag(<whole>, <part>)
+
+ASSOCIATION CLASSES:
+- <name>(<classA>, <classB>)
+
+Return ONLY the final classification.
+Do not include reasoning, explanations, notes, confidence scores, or F1 calculations.
