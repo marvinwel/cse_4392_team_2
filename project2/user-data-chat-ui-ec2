@@ -1,0 +1,23 @@
+#!/bin/bash
+set -euxo pipefail
+
+# Update packages
+dnf update -y
+
+# Install Docker
+dnf install -y docker
+
+# Enable and start Docker
+systemctl enable --now docker
+
+# Allow ec2-user to use Docker
+usermod -aG docker ec2-user
+
+# Ensure SSM Agent is running if installed
+if systemctl list-unit-files amazon-ssm-agent.service --no-legend | grep -q amazon-ssm-agent; then
+    systemctl enable --now amazon-ssm-agent
+fi
+
+# Verify installations
+docker --version
+aws --version
