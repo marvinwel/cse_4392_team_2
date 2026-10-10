@@ -61,7 +61,7 @@ jobs:
               \"docker pull $IMAGE\",
               \"docker rm -f uta-chatui || true\",
               \"docker run -d --name uta-chatui --restart unless-stopped -p 8501:8501 $IMAGE\",
-              \"curl --fail --retry 10 --retry-delay 3 --retry-connrefused http://localhost:8501/_stcore/health\"
+              \"for i in {1..30}; do if curl --fail --silent --show-error --max-time 5 http://localhost:8501/_stcore/health; then exit 0; fi; echo 'Waiting for Streamlit...'; sleep 5; done; exit 1\"
             ]" \
             --query "Command.CommandId" \
             --output text)
