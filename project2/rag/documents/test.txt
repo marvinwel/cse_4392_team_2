@@ -1,1 +1,1 @@
-CSE 4308 is a course used to testing academic document retrieval.
+CSE 4308 is a course used to test academic document retrieval.
