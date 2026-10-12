@@ -1,2 +1,15 @@
 # AWS Lambda Layer installed dependencies
-/project2/rag/lambda/python-library/python/
+/rag/lambda/python-library/python/
+
+# Python virtual environment
+project2/chat-ui/.venv/
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables and secrets
+.env
+.env.*
