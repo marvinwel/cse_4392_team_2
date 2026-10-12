@@ -166,18 +166,24 @@ html, body, [data-testid="stApp"],
     font-weight: 600;
     white-space: nowrap;
 }
-.st-key-logout { padding-left: 12px; }
+.st-key-logout { padding-left: 14px; }
 .st-key-logout button {
-    background: #0064D9 !important;
-    color: white !important;
-    border: 1px solid #0064D9 !important;
+    background: #ffffff !important;
+    color: #07478c !important;
+    border: 1.5px solid #07478c !important;
     border-radius: 8px !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    letter-spacing: .2px;
     min-height: 42px !important;
     margin-top: 22px !important;
+    box-shadow: none !important;
+    transition: background-color .15s ease, color .15s ease !important;
 }
-.st-key-logout button:hover { background: #004AAB !important; }
-.st-key-logout button p { color: white !important; }
+.st-key-logout button p { color: #07478c !important; transition: color .15s ease; }
+.st-key-logout button:hover { background: #07478c !important; border-color: #07478c !important; }
+.st-key-logout button:hover p { color: #ffffff !important; }
+.st-key-logout button:focus-visible { outline: 2px solid #f59b36 !important; outline-offset: 2px; }
 
 /* ------------------------------------------
    CHAT HEADING
@@ -492,7 +498,7 @@ with main_col:
             )
 
         with header_logout:
-            if st.button("⇥  Logout", key="logout", type="primary", use_container_width=True):
+            if st.button("Log out", key="logout", type="secondary", use_container_width=True):
                 new_chat()
                 st.session_state.signed_out_preview = True
                 st.rerun()
