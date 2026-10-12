@@ -7,6 +7,8 @@ import streamlit.components.v1 as components
 from pathlib import Path
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
+from concurrent.futures import ThreadPoolExecutor
 
 from html import escape
 
@@ -438,6 +440,68 @@ html, body, [data-testid="stApp"] {
 
 }
 
+
+/* Responsive chat layout: fill the available viewport instead of a fixed 500px. */
+.st-key-chat_area {
+    min-height: 0;
+    margin-bottom: 0 !important;
+}
+.st-key-chat_area iframe {
+    display: block;
+    width: 100% !important;
+    height: clamp(220px, calc(100dvh - 300px), 1200px) !important;
+    border: 0;
+}
+/* Streamlit wraps component iframes in fixed-height elements; resize those too. */
+.st-key-chat_area [data-testid="stElementContainer"]:has(iframe),
+.st-key-chat_area [data-testid="stCustomComponentV1"]:has(iframe) {
+    height: clamp(220px, calc(100dvh - 300px), 1200px) !important;
+    min-height: 0 !important;
+}
+/* Quick prompts remain above the chat input as viewport size changes. */
+.st-key-quick_actions {
+    position: fixed;
+    bottom: 85px;
+    left: calc(245px + 1.65rem);
+    right: 1.65rem;
+    z-index: 90;
+    background: rgba(255, 255, 255, 0.97);
+    padding: 6px 0;
+}
+.st-key-quick_actions [data-testid="stHorizontalBlock"] {
+    flex-wrap: wrap;
+    gap: 6px !important;
+}
+.st-key-quick_actions [data-testid="column"] {
+    min-width: 135px !important;
+    flex: 1 1 135px !important;
+}
+.st-key-quick_actions [data-testid="column"]:last-child {
+    min-width: 48px !important;
+    flex: 0 0 48px !important;
+}
+@media (max-width: 900px) {
+    .st-key-quick_actions {
+        left: 1rem;
+        right: 1rem;
+    }
+    .st-key-chat_area iframe,
+    .st-key-chat_area [data-testid="stElementContainer"]:has(iframe),
+    .st-key-chat_area [data-testid="stCustomComponentV1"]:has(iframe) {
+        height: clamp(220px, calc(100dvh - 340px), 1200px) !important;
+    }
+}
+@media (max-width: 600px) {
+    .block-container { padding-left: .8rem !important; padding-right: .8rem !important; }
+    .st-key-quick_actions { bottom: 84px; left: .8rem; right: .8rem; }
+    .st-key-quick_actions [data-testid="column"] { min-width: 110px !important; }
+    .st-key-chat_area iframe,
+    .st-key-chat_area [data-testid="stElementContainer"]:has(iframe),
+    .st-key-chat_area [data-testid="stCustomComponentV1"]:has(iframe) {
+        height: clamp(200px, calc(100dvh - 390px), 1200px) !important;
+    }
+}
+
 </style>
 
 """, unsafe_allow_html=True)
@@ -462,10 +526,11 @@ WELCOME = (
 
 def timestamp_now():
 
-    return datetime.now().strftime("%I:%M %p")
+    return datetime.now(ZoneInfo("America/Chicago")).strftime("%I:%M %p")
 
 def new_chat():
 
+    st.session_state.pop("pending_requests", None)
     st.session_state.messages = [
 
         {
@@ -495,9 +560,19 @@ if "signed_out_preview" not in st.session_state:
 # ==========================================
 
 def render_message_text(content):
-    """Safely render basic bold Markdown inside HTML chat bubbles."""
+    """Render chat messages without unnecessary blank lines."""
     content = escape(str(content))
-    content = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", content, flags=re.DOTALL)
+
+    # Remove extra blank lines
+    content = re.sub(r"\n\s*\n+", "\n", content)
+
+    # Convert Markdown bold to HTML bold
+    content = re.sub(
+        r"\*\*(.+?)\*\*",
+        r"<strong>\1</strong>",
+        content,
+        flags=re.DOTALL
+    )
     return content.replace("\n", "<br>")
 
 
@@ -529,14 +604,13 @@ def get_advisor_avatar():
 
     return "🎓"
 
-def reply_to(prompt):
-    """Send the student question to LangChain and append the response."""
-    st.session_state.messages.append({
-        "role": "user",
-        "content": prompt,
-        "timestamp": timestamp_now(),
-    })
+@st.cache_resource
+def get_request_executor():
+    # Shared worker pool; no Streamlit UI calls inside worker threads.
+    return ThreadPoolExecutor(max_workers=4)
 
+
+def ask_langchain(prompt):
     try:
         api_response = requests.post(
             f"{LANGCHAIN_API_URL.rstrip('/')}/chat",
@@ -545,17 +619,26 @@ def reply_to(prompt):
         )
         api_response.raise_for_status()
         data = api_response.json()
-        response = data.get("answer") or "The AI Advisor did not return an answer."
+        return data.get("answer") or "The AI Advisor did not return an answer."
     except requests.exceptions.RequestException:
-        response = "I'm having trouble connecting to the AI Advisor backend. Please try again shortly."
+        return "I'm having trouble connecting to the AI Advisor backend. Please try again shortly."
     except ValueError:
-        response = "The AI Advisor returned an invalid response."
+        return "The AI Advisor returned an invalid response."
 
+
+def reply_to(prompt):
+    """Display a message immediately and process each request independently."""
     st.session_state.messages.append({
-        "role": "assistant",
-        "content": response,
-        "timestamp": timestamp_now(),
+        "role": "user", "content": prompt, "timestamp": timestamp_now()
     })
+    st.session_state.messages.append({
+        "role": "assistant", "content": "", "timestamp": "", "loading": True
+    })
+    index = len(st.session_state.messages) - 1
+    future = get_request_executor().submit(ask_langchain, prompt)
+    if "pending_requests" not in st.session_state:
+        st.session_state.pending_requests = []
+    st.session_state.pending_requests.append({"future": future, "index": index})
 
 
 # ==========================================
@@ -626,9 +709,9 @@ with st.sidebar:
 
         '<div class="sidebar-note">'
 
-        'Chat UI • Cognito login and AI backend '
+        'Chat UI • Cognito login '
 
-        'will be connected later.'
+        'will be connected later; AI backend is connected.'
 
         '</div>',
 
@@ -776,411 +859,454 @@ else:
 
     # ==========================================
 
-    chat_items = []
+    @st.fragment(run_every="1s")
+    def render_chat():
+        remaining = []
+        for pending in st.session_state.get("pending_requests", []):
+            if not pending["future"].done():
+                remaining.append(pending)
+                continue
+            try:
+                answer = pending["future"].result()
+            except Exception:
+                answer = "The AI Advisor encountered an unexpected error. Please try again."
+            index = pending["index"]
+            if index < len(st.session_state.messages) and st.session_state.messages[index].get("loading"):
+                st.session_state.messages[index] = {
+                    "role": "assistant",
+                    "content": answer,
+                    "timestamp": timestamp_now(),
+                }
+        st.session_state.pending_requests = remaining
 
-    advisor_avatar = get_advisor_avatar()
+        chat_items = []
 
-    for msg in st.session_state.messages:
+        advisor_avatar = get_advisor_avatar()
 
-        role = msg["role"]
+        for msg in st.session_state.messages:
 
-        content = render_message_text(msg["content"])
+            role = msg["role"]
 
-        timestamp = escape(msg.get("timestamp", ""))
+            content = render_message_text(msg["content"])
+            if msg.get("loading"):
+                content = '<span class="typing-indicator"><span></span><span></span><span></span></span>' 
 
-        if role == "user":
+            timestamp = escape(msg.get("timestamp", ""))
 
-            chat_items.append(f"""
+            if role == "user":
 
-                <div class="message-row user-row">
+                chat_items.append(f"""
 
-                    <div class="message-group">
+                    <div class="message-row user-row">
 
-                        <div class="bubble user-bubble">
+                        <div class="message-group">
 
-                            {content}
+                            <div class="bubble user-bubble">
 
-                        </div>
+                                {content}
 
-                        <div class="timestamp user-time">
+                            </div>
 
-                            {timestamp}
+                            <div class="timestamp user-time">
 
-                        </div>
+                                {timestamp}
 
-                    </div>
-
-                    <div class="avatar user-avatar">
-
-                        👤
-
-                    </div>
-
-                </div>
-
-            """)
-
-        else:
-
-            chat_items.append(f"""
-
-                <div class="message-row assistant-row">
-
-                    <div class="avatar assistant-avatar">
-
-                        {advisor_avatar}
-
-                    </div>
-
-                    <div class="message-group">
-
-                        <div class="bubble assistant-bubble">
-
-                            {content}
+                            </div>
 
                         </div>
 
-                        <div class="timestamp assistant-time">
+                        <div class="avatar user-avatar">
 
-                            {timestamp}
+                            👤
 
                         </div>
 
                     </div>
 
-                </div>
+                """)
 
-            """)
+            else:
 
-    chat_html = "\n".join(chat_items)
+                chat_items.append(f"""
 
-    # ==========================================
+                    <div class="message-row assistant-row">
 
-    # SCROLLABLE CHAT WITH AUTO-SCROLL
+                        <div class="avatar assistant-avatar">
 
-    # ==========================================
+                            {advisor_avatar}
 
-    components.html(
+                        </div>
 
-        f"""
+                        <div class="message-group">
 
-        <!DOCTYPE html>
+                            <div class="bubble assistant-bubble">
 
-        <html>
+                                {content}
 
-        <head>
+                            </div>
 
-        <meta charset="UTF-8">
+                            <div class="timestamp assistant-time">
 
-        <style>
+                                {timestamp}
 
-            * {{
+                            </div>
 
-                box-sizing: border-box;
+                        </div>
 
-            }}
+                    </div>
 
-            html, body {{
+                """)
 
-                margin: 0;
+        chat_html = "\n".join(chat_items)
 
-                padding: 0;
+        # ==========================================
 
-                height: 100%;
+        # SCROLLABLE CHAT WITH AUTO-SCROLL
 
-                overflow: hidden;
+        # ==========================================
 
-                font-family: Inter, Arial, sans-serif;
+        components.html(
 
-                background: white;
+            f"""
 
-            }}
+            <!DOCTYPE html>
 
-            #chat-container {{
+            <html>
 
-                height: 100vh;
+            <head>
 
-                overflow-y: auto;
+            <meta charset="UTF-8">
 
-                overflow-x: hidden;
+            <style>
+                .typing-indicator {{
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                    height: 22px;
+                }}
+                .typing-indicator span {{
+                    width: 7px;
+                    height: 7px;
+                    background: #8291a6;
+                    border-radius: 50%;
+                    animation: typing 1.2s infinite ease-in-out;
+                }}
+                .typing-indicator span:nth-child(2) {{ animation-delay: .2s; }}
+                .typing-indicator span:nth-child(3) {{ animation-delay: .4s; }}
+                @keyframes typing {{
+                    0%, 60%, 100% {{ transform: translateY(0); opacity: .4; }}
+                    30% {{ transform: translateY(-5px); opacity: 1; }}
+                }}
 
-                padding: 12px 10px 20px 0;
 
-                scrollbar-width: thin;
+                * {{
 
-                scrollbar-color: #a8bdd6 transparent;
-
-                scroll-behavior: auto;
-
-            }}
-
-            .message-row {{
-
-                display: flex;
-
-                align-items: flex-start;
-
-                gap: 12px;
-
-                margin-bottom: 20px;
-
-                width: 100%;
-
-            }}
-
-            .user-row {{
-
-                justify-content: flex-end;
-
-            }}
-
-            .assistant-row {{
-
-                justify-content: flex-start;
-
-            }}
-
-            .message-group {{
-
-                max-width: 55%;
-
-                min-width: 0;
-
-            }}
-
-            .bubble {{
-
-                padding: 13px 17px;
-
-                border-radius: 13px;
-
-                font-size: 14px;
-
-                line-height: 1.6;
-
-                overflow-wrap: anywhere;
-
-            }}
-
-            .user-bubble {{
-
-                background: #0064D9;
-
-                color: white;
-
-            }}
-
-            .assistant-bubble {{
-
-                background: #F0F3F8;
-
-                color: #17243A;
-
-            }}
-
-            .avatar {{
-
-                width: 36px;
-
-                height: 36px;
-
-                flex-shrink: 0;
-
-                display: flex;
-
-                align-items: center;
-
-                justify-content: center;
-
-                font-size: 23px;
-
-            }}
-
-            .assistant-avatar img {{
-
-                width: 32px;
-
-                height: 32px;
-
-                object-fit: contain;
-
-                border-radius: 50%;
-
-            }}
-
-            .timestamp {{
-
-                color: #8291a6;
-
-                font-size: 11px;
-
-                margin-top: 5px;
-
-                line-height: 1.4;
-
-            }}
-
-            .user-time {{
-
-                text-align: right;
-
-            }}
-
-            .assistant-time {{
-
-                text-align: left;
-
-            }}
-
-            @media (max-width: 700px) {{
-
-                .message-group {{
-
-                    max-width: 80%;
+                    box-sizing: border-box;
 
                 }}
 
-            }}
+                html, body {{
 
-        </style>
+                    margin: 0;
 
-        </head>
+                    padding: 0;
 
-        <body>
+                    height: 100%;
 
-            <div id="chat-container">
+                    overflow: hidden;
 
-                {chat_html}
+                    font-family: Inter, Arial, sans-serif;
 
-                <div id="chat-bottom"></div>
+                    background: white;
 
-            </div>
+                }}
 
-            <script>
+                #chat-container {{
 
-                function scrollToBottom() {{
+                    height: 100vh;
 
-                    const chat = document.getElementById(
+                    overflow-y: auto;
 
-                        "chat-container"
+                    overflow-x: hidden;
 
-                    );
+                    padding: 12px 10px 20px 0;
 
-                    if (chat) {{
+                    scrollbar-width: thin;
 
-                        chat.scrollTop = chat.scrollHeight;
+                    scrollbar-color: #a8bdd6 transparent;
+
+                    scroll-behavior: auto;
+
+                }}
+
+                .message-row {{
+
+                    display: flex;
+
+                    align-items: flex-start;
+
+                    gap: 12px;
+
+                    margin-bottom: 20px;
+
+                    width: 100%;
+
+                }}
+
+                .user-row {{
+
+                    justify-content: flex-end;
+
+                }}
+
+                .assistant-row {{
+
+                    justify-content: flex-start;
+
+                }}
+
+                .message-group {{
+
+                    max-width: 55%;
+
+                    min-width: 0;
+
+                }}
+
+                .bubble {{
+
+                    padding: 13px 17px;
+
+                    border-radius: 13px;
+
+                    font-size: 14px;
+
+                    line-height: 1.6;
+
+                    overflow-wrap: anywhere;
+
+                }}
+
+                .user-bubble {{
+
+                    background: #0064D9;
+
+                    color: white;
+
+                }}
+
+                .assistant-bubble {{
+
+                    background: #F0F3F8;
+
+                    color: #17243A;
+
+                }}
+
+                .avatar {{
+
+                    width: 36px;
+
+                    height: 36px;
+
+                    flex-shrink: 0;
+
+                    display: flex;
+
+                    align-items: center;
+
+                    justify-content: center;
+
+                    font-size: 23px;
+
+                }}
+
+                .assistant-avatar img {{
+
+                    width: 32px;
+
+                    height: 32px;
+
+                    object-fit: contain;
+
+                    border-radius: 50%;
+
+                }}
+
+                .timestamp {{
+
+                    color: #8291a6;
+
+                    font-size: 11px;
+
+                    margin-top: 5px;
+
+                    line-height: 1.4;
+
+                }}
+
+                .user-time {{
+
+                    text-align: right;
+
+                }}
+
+                .assistant-time {{
+
+                    text-align: left;
+
+                }}
+
+                @media (max-width: 700px) {{
+
+                    .message-group {{
+
+                        max-width: 80%;
 
                     }}
 
                 }}
 
-                // Scroll as soon as the component renders.
+            </style>
 
-                scrollToBottom();
+            </head>
 
-                window.addEventListener(
+            <body>
 
-                    "load",
+                <div id="chat-container">
 
-                    scrollToBottom
+                    {chat_html}
 
-                );
+                    <div id="chat-bottom"></div>
 
-                requestAnimationFrame(
+                </div>
 
-                    scrollToBottom
+                <script>
 
-                );
+                    function scrollToBottom() {{
 
-                setTimeout(scrollToBottom, 100);
+                        const chat = document.getElementById(
 
-                setTimeout(scrollToBottom, 300);
+                            "chat-container"
 
-            </script>
+                        );
 
-        </body>
+                        if (chat) {{
 
-        </html>
+                            chat.scrollTop = chat.scrollHeight;
 
-        """,
+                        }}
 
-        height=500,
+                    }}
 
-        scrolling=False
+                    // Scroll as soon as the component renders.
 
-    )
+                    scrollToBottom();
 
-    # ==========================================
+                    window.addEventListener(
 
-    # SUGGESTION BUTTONS
+                        "load",
 
-    # ==========================================
+                        scrollToBottom
 
-    st.markdown(
+                    );
 
-        '<div style="height:8px"></div>',
+                    requestAnimationFrame(
 
-        unsafe_allow_html=True
+                        scrollToBottom
 
-    )
+                    );
 
-    cols = st.columns(
+                    setTimeout(scrollToBottom, 100);
 
-        [1.15, 1.2, 1.35, 0.4],
+                    setTimeout(scrollToBottom, 300);
 
-        gap="small"
+                </script>
 
-    )
+            </body>
 
-    suggestions = [
+            </html>
 
-        "Can I take this course?",
+            """,
 
-        "What are the prerequisites?",
+            height=650,
 
-        "Show available sections"
+            scrolling=False
 
-    ]
+        )
 
-    for i, (col, suggestion) in enumerate(
+        # ==========================================
 
-        zip(cols[:3], suggestions)
+        # SUGGESTION BUTTONS
 
-    ):
+        # ==========================================
 
-        with col:
 
-            if st.button(
+    with st.container(key="chat_area"):
+        render_chat()
 
-                suggestion,
+    # with st.container(key="quick_actions"):
+    #     cols = st.columns(
 
-                key=f"suggestion_{i}",
+    #     [1.15, 1.2, 1.35, 0.4],
 
-                use_container_width=True
+    #     gap="small"
 
-            ):
+    # )
 
-                reply_to(suggestion)
+    #     suggestions = [
 
-                st.rerun()
+    #         "Can I take this course?",
 
-    with cols[3]:
+    #         "What are the prerequisites?",
 
-        if st.button(
+    #         "Show available sections"
 
-            "↻",
+    #     ]
 
-            key="refresh_chat",
+    #     for i, (col, suggestion) in enumerate(
 
-            use_container_width=True,
+    #         zip(cols[:3], suggestions)
 
-            help="Start a new chat"
+    #     ):
 
-        ):
+    #         with col:
 
-            new_chat()
+    #             if st.button(
 
-            st.rerun()
+    #                 suggestion,
+
+    #                 key=f"suggestion_{i}",
+
+
+    #                 use_container_width=True
+
+    #             ):
+
+    #                 reply_to(suggestion)
+
+    #                 st.rerun()
+
+    #     with cols[3]:
+
+    #         if st.button(
+
+    #             "↻",
+
+    #             key="refresh_chat",
+
+    #             use_container_width=True,
+
+    #             help="Start a new chat"
+
+    #         ):
+
+    #             new_chat()
+
+    #             st.rerun()
+
+
+
 
     # ==========================================
 
@@ -1190,7 +1316,9 @@ else:
 
     if prompt := st.chat_input(
 
-        "Type your message here..."
+        "Type your message here...",
+
+        disabled=False
 
     ):
 
