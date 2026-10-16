@@ -9,6 +9,9 @@ from langchain_aws import ChatBedrockConverse
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from app.advisor_tools import fetch_courses
+from app.extract import codes_in
+
 
 AWS_REGION = os.getenv("AWS_REGION", "us-east-2")
 
@@ -108,6 +111,44 @@ def search_chromadb(embedding: list[float]) -> dict:
     return response.json()
 
 
+def describe_course(course: dict) -> str:
+    prereqs = "; and ".join(
+        " or ".join(
+            option["course_id"]
+            + (f" ({option['min_grade']} or better)" if option.get("min_grade") else "")
+            for option in group
+        )
+        for group in course["prereqs"]
+    ) or "none"
+
+    offered = ", ".join(course["terms_offered"]) or "not specified"
+
+    return (
+        f"Catalog record for {course['course_id']} {course['title']}: "
+        f"{course['credits']} credit hours. "
+        f"Prerequisites: {prereqs}. "
+        f"Terms offered: {offered}."
+    )
+
+
+def exact_course_records(question: str) -> list[dict]:
+    """
+    Similarity search can confuse CSE 3318 with CSE 3315, so when the question names
+    course codes, fetch those exact records by ID and put them first in the context.
+    """
+    codes = codes_in(question)
+
+    if not codes:
+        return []
+
+    try:
+        found = fetch_courses(codes)
+    except Exception:
+        return []
+
+    return [found[code] for code in codes if code in found]
+
+
 def answer_course_question(question: str) -> dict:
     embedding = embed_question(question)
 
@@ -116,14 +157,19 @@ def answer_course_question(question: str) -> dict:
     documents = results.get("documents", [[]])[0]
     metadatas = results.get("metadatas", [[]])[0]
 
-    if not documents:
+    exact = exact_course_records(question)
+
+    if not documents and not exact:
         return {
             "answer": "I could not find relevant information in the catalog.",
             "sources": []
         }
 
-    context_parts = []
-    sources = []
+    context_parts = [
+        f"Source: course catalog\n{describe_course(course)}"
+        for course in exact
+    ]
+    sources = ["course catalog"] if exact else []
 
     for index, document in enumerate(documents):
         metadata = metadatas[index] or {}

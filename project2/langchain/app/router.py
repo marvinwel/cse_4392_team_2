@@ -16,19 +16,44 @@ Classify the student's question into exactly one route.
 
 course_information:
 - Course descriptions and topics
-- Course prerequisites and corequisites
+- Course prerequisites and corequisites in general
 - Course credit hours
-- Academic catalog information
+- Academic catalog information and policies
 - General degree requirements
+Example: "What is CSE 3318 about?" / "What are the prerequisites for CSE 3320?"
+
+student_record:
+- The student's own transcript, grades, completed courses, or credits
+- What the student still has left to finish their degree
+Example: "What courses have I taken?" / "How many credits do I have left?"
+
+course_eligibility:
+- Whether THIS student can take a specific course, now or in a given term
+Example: "Can I take CSE 3318 next spring?" / "Am I eligible for Operating Systems?"
+
+degree_plan:
+- Making or changing a semester-by-semester plan to graduate
+- Changes to a plan: number of classes, summers, start term, electives, switching majors
+Example: "Make me a degree plan" / "What about only 3 classes a semester?"
+
+compare_plans:
+- Comparing two of the student's degree plans
+Example: "Compare my two plans" / "Which plan finishes sooner?"
 
 unsupported:
-- Checking a specific student's eligibility
-- Checking completed courses or transcripts
-- Generating personalized degree plans
+- Registration actions, financial aid, housing, anything else
 - Unrelated questions
+
+The previous route in this conversation was: {previous_route}
+Short follow-ups like "what about 3 classes?" or "and in the fall?" usually
+continue the previous route.
 
 Return ONLY one of these exact values:
 course_information
+student_record
+course_eligibility
+degree_plan
+compare_plans
 unsupported
 
 Do not answer the student's question.
@@ -57,23 +82,35 @@ router_chain = (
 )
 
 
+VALID_ROUTES = (
+    "course_information",
+    "student_record",
+    "course_eligibility",
+    "degree_plan",
+    "compare_plans",
+    "unsupported"
+)
+
+
 # Classify the student's question
-def route_question(question: str) -> str:
+def route_question(question: str, previous_route: str | None = None) -> str:
 
     decision = router_chain.invoke({
-        "question": question
+        "question": question,
+        "previous_route": previous_route or "none"
     })
 
-    route = decision.strip().lower().strip("`'\" ")
+    route = decision.strip().lower().strip("`'\" .")
 
-    valid_routes = (
-        "course_information",
-        "unsupported"
+    if route in VALID_ROUTES:
+        return route
+
+    # Small models sometimes add words around the label; accept it if exactly one label appears.
+    found = [r for r in VALID_ROUTES if r in route]
+
+    if len(found) == 1:
+        return found[0]
+
+    raise ValueError(
+        f"Invalid route returned by model: {route}"
     )
-
-    if route not in valid_routes:
-        raise ValueError(
-            f"Invalid route returned by model: {route}"
-        )
-
-    return route

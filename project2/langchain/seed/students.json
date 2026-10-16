@@ -1,0 +1,381 @@
+[
+  {
+    "student_id": "1002000101",
+    "first_name": "Maya",
+    "last_name": "Okafor",
+    "program_id": "BS-CS",
+    "catalog_year": 2026,
+    "start_term_id": "2026-FA",
+    "scenario": "First-semester freshman; nothing completed yet.",
+    "transcript": []
+  },
+  {
+    "student_id": "1002000102",
+    "first_name": "Diego",
+    "last_name": "Ramirez",
+    "program_id": "BS-CS",
+    "catalog_year": 2025,
+    "start_term_id": "2025-FA",
+    "scenario": "Sophomore on track.",
+    "transcript": [
+      {
+        "course_id": "CSE 1310",
+        "term_id": "2025-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term_id": "2025-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term_id": "2026-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term_id": "2026-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 2425",
+        "term_id": "2026-SP",
+        "grade": "C"
+      }
+    ]
+  },
+  {
+    "student_id": "1002000103",
+    "first_name": "Priya",
+    "last_name": "Natarajan",
+    "program_id": "BS-CS",
+    "catalog_year": 2024,
+    "start_term_id": "2024-FA",
+    "scenario": "Junior with strong grades; ready for upper-division courses.",
+    "transcript": [
+      {
+        "course_id": "CSE 1310",
+        "term_id": "2024-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term_id": "2024-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term_id": "2025-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term_id": "2025-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 2425",
+        "term_id": "2025-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1325",
+        "term_id": "2025-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 2312",
+        "term_id": "2025-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "IE 3301",
+        "term_id": "2025-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 3318",
+        "term_id": "2026-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 3310",
+        "term_id": "2026-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 3330",
+        "term_id": "2026-SP",
+        "grade": "B"
+      }
+    ]
+  },
+  {
+    "student_id": "1002000104",
+    "first_name": "Jordan",
+    "last_name": "Lee",
+    "program_id": "BS-CS",
+    "catalog_year": 2025,
+    "start_term_id": "2025-FA",
+    "scenario": "D in CSE 1320, which blocks CSE 1325 and CSE 2312 (they need a C); must retake CSE 1320.",
+    "transcript": [
+      {
+        "course_id": "CSE 1310",
+        "term_id": "2025-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term_id": "2025-FA",
+        "grade": "C"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term_id": "2026-SP",
+        "grade": "D"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term_id": "2026-SP",
+        "grade": "B"
+      }
+    ]
+  },
+  {
+    "student_id": "1002000105",
+    "first_name": "Aisha",
+    "last_name": "Rahman",
+    "program_id": "BS-SE",
+    "catalog_year": 2023,
+    "start_term_id": "2023-FA",
+    "scenario": "Software Engineering senior; needs only Senior Design II and one elective.",
+    "transcript": [
+      {
+        "course_id": "CSE 1310",
+        "term_id": "2023-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term_id": "2023-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term_id": "2024-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term_id": "2024-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 2425",
+        "term_id": "2024-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1325",
+        "term_id": "2024-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 2312",
+        "term_id": "2024-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "IE 3301",
+        "term_id": "2024-FA",
+        "grade": "C"
+      },
+      {
+        "course_id": "CSE 3310",
+        "term_id": "2025-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 3318",
+        "term_id": "2025-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 3320",
+        "term_id": "2025-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 4321",
+        "term_id": "2025-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 4308",
+        "term_id": "2025-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 4316",
+        "term_id": "2026-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 4322",
+        "term_id": "2026-SP",
+        "grade": "A"
+      }
+    ]
+  },
+  {
+    "student_id": "1002000106",
+    "first_name": "Ethan",
+    "last_name": "Brooks",
+    "program_id": "BS-CS",
+    "catalog_year": 2024,
+    "start_term_id": "2024-FA",
+    "scenario": "Failed CSE 3318 once and passed the retake; withdrew from MATH 3330.",
+    "transcript": [
+      {
+        "course_id": "CSE 1310",
+        "term_id": "2024-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term_id": "2024-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term_id": "2025-SP",
+        "grade": "C"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term_id": "2025-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 2425",
+        "term_id": "2025-SP",
+        "grade": "C"
+      },
+      {
+        "course_id": "CSE 1325",
+        "term_id": "2025-SU",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 3318",
+        "term_id": "2025-FA",
+        "grade": "F"
+      },
+      {
+        "course_id": "CSE 2312",
+        "term_id": "2025-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "IE 3301",
+        "term_id": "2025-FA",
+        "grade": "C"
+      },
+      {
+        "course_id": "CSE 3318",
+        "term_id": "2026-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 3310",
+        "term_id": "2026-SP",
+        "grade": "C"
+      },
+      {
+        "course_id": "MATH 3330",
+        "term_id": "2026-SP",
+        "grade": "W"
+      }
+    ]
+  },
+  {
+    "student_id": "1002000107",
+    "first_name": "Sofia",
+    "last_name": "Martinez",
+    "program_id": "BS-SE",
+    "catalog_year": 2025,
+    "start_term_id": "2025-FA",
+    "scenario": "Switched from Computer Science to Software Engineering in spring 2026.",
+    "program_changes": [
+      {
+        "from_program_id": "BS-CS",
+        "to_program_id": "BS-SE",
+        "changed_at": "2026-01-10"
+      }
+    ],
+    "transcript": [
+      {
+        "course_id": "CSE 1310",
+        "term_id": "2025-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term_id": "2025-FA",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term_id": "2026-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term_id": "2026-SP",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 2425",
+        "term_id": "2026-SP",
+        "grade": "B"
+      }
+    ]
+  },
+  {
+    "student_id": "1002000108",
+    "first_name": "Kenji",
+    "last_name": "Watanabe",
+    "program_id": "BS-CS",
+    "catalog_year": 2025,
+    "start_term_id": "2025-SP",
+    "scenario": "Part-time student who takes one or two courses a term, including summers.",
+    "transcript": [
+      {
+        "course_id": "CSE 1310",
+        "term_id": "2025-SP",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term_id": "2025-SU",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term_id": "2025-FA",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term_id": "2026-SP",
+        "grade": "C"
+      },
+      {
+        "course_id": "CSE 1325",
+        "term_id": "2026-SU",
+        "grade": "B"
+      }
+    ]
+  }
+]
