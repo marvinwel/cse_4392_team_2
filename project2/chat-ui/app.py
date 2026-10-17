@@ -611,7 +611,7 @@ html, body, [data-testid="stApp"],
 .st-key-chat_area iframe {
     display: block !important;
     width: 100% !important;
-    height: calc(100dvh - 300px - var(--input-space)) !important;
+    height: calc(100dvh - 220px - var(--input-space)) !important;
     min-height: 150px !important;
     border: none !important;
 }
@@ -720,7 +720,7 @@ html, body, [data-testid="stApp"],
 
    ------------------------------------------ */
 
-@media (max-width: 900px) {
+@media (max-width: 600px) {
 
     .brand-name { font-size: 17px; }
 
@@ -740,7 +740,7 @@ html, body, [data-testid="stApp"],
 
         height: calc(100dvh - 320px - var(--input-space)) !important;
 
-        max-height: calc(100dvh - 320px - var(--input-space)) !important;
+        max-height: calc(100dvh - 220px - var(--input-space)) !important;
 
     }
 
@@ -1472,7 +1472,7 @@ with main_col:
 
                 """,
 
-                height=400,
+                height=600,
 
                 scrolling=False,
 
