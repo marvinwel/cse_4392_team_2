@@ -604,31 +604,16 @@ html, body, [data-testid="stApp"],
    ------------------------------------------ */
 
 .st-key-chat_area {
-
     min-height: 0 !important;
-
     overflow: hidden !important;
-
 }
 
-.st-key-chat_area iframe,
-
-.st-key-chat_area [data-testid="stElementContainer"]:has(iframe),
-
-.st-key-chat_area [data-testid="stCustomComponentV1"]:has(iframe) {
-
-    display: block;
-
+.st-key-chat_area iframe {
+    display: block !important;
     width: 100% !important;
-
-    border: 0;
-
     height: calc(100dvh - 300px - var(--input-space)) !important;
-
-    max-height: calc(100dvh - 300px - var(--input-space)) !important;
-
-    min-height: 120px !important;
-
+    min-height: 150px !important;
+    border: none !important;
 }
 
 /* ------------------------------------------
@@ -1316,7 +1301,8 @@ with main_col:
 
                     #chat-container {{
 
-                        height: 100vh;
+                        height: 100%;
+                        min-height: 0;
 
                         overflow-y: auto;
 
@@ -1486,7 +1472,7 @@ with main_col:
 
                 """,
 
-                height=600,
+                height=400,
 
                 scrolling=False,
 
