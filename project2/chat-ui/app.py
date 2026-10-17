@@ -51,12 +51,32 @@ import time
 import boto3
 import jwt
 from botocore.exceptions import ClientError, BotoCoreError
+import json
+
+
+@st.cache_resource
+def get_cognito_secrets():
+    client = boto3.client(
+        "secretsmanager",
+        region_name="us-east-2"
+    )
+
+    response = client.get_secret_value(
+        SecretId="uta-ai-advisor/cognito"
+    )
+
+    return json.loads(response["SecretString"])
+
 
 COGNITO_REGION = "us-east-2"
 COGNITO_POOL_ID = "us-east-2_eM4o9bwmk"
 COGNITO_ISSUER = f"https://cognito-idp.{COGNITO_REGION}.amazonaws.com/{COGNITO_POOL_ID}"
-COGNITO_CLIENT_ID = st.secrets["auth"]["client_id"]
-COGNITO_CLIENT_SECRET = st.secrets["auth"]["client_secret"]
+
+cognito_secrets = get_cognito_secrets()
+
+COGNITO_CLIENT_ID = cognito_secrets["client_id"]
+COGNITO_CLIENT_SECRET = cognito_secrets["client_secret"]
+
 LOGIN_BACKGROUND = Path(__file__).parent / "assets" / "uta-login-campus.jpg"
 
 @st.cache_resource
