@@ -265,33 +265,50 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
 
     Courses planned in EARLIER terms count as completed for prerequisites.
     """
-    if program.get("catalog_status") != "VALIDATED":
-        return {
-            "ok": False,
-            "course_id": course_id,
-            "term_id": term_id,
-            "errors": [
-                "Degree program requirements have not been validated."
-            ],
-            "warnings": [],
-            "suggested_section": None
-        }
+    program_validated = program.get("catalog_status") == "VALIDATED"
+
+    errors, warnings = [], []
+
+    if not program_validated:
+        errors.append(
+            "Degree program requirements have not been validated. "
+            "Eligibility cannot be confirmed."
+        )
     
     errors, warnings = [], []
     course = courses.get(course_id)
+
     if course is None:
         return {"ok": False, "course_id": course_id, "term_id": term_id,
                 "errors": [f"{course_id} is not in the course catalog (check the exact code)"],
                 "warnings": [], "suggested_section": None}
     if course.get("prerequisites_review_status") != "VALIDATED":
-        return {
-            "ok": False,
-            "course_id": course_id,
-            "term_id": term_id,
-            "errors": ["Course prerequisites have not been validated."],
-            "warnings": [],
-            "suggested_section": None
-        }
+        errors.append(
+            "Course prerequisites are provisional and have not been validated."
+    )
+    # Check Engineering Professional Program admission
+    if course.get("requires_professional_program", False):
+
+        admission_status = student.get(
+            "engineering_professional_program_admitted"
+        )
+
+        if admission_status is True:
+            pass
+
+        elif admission_status is False:
+            errors.append(
+                "Student is not admitted to an Engineering "
+                "Professional Program."
+            )
+
+        else:
+            errors.append(
+                "Engineering Professional Program admission "
+                "has not been verified."
+            )
+
+    
     grades = best_grades(student["transcript"])
     t_type, t_order = term_type(term_id), term_order(term_id)
     earlier = {c["course_id"] for t in plan_terms
@@ -342,7 +359,11 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
     suggested = None
     sections = course["sections"].get(term_id, [])
     if not sections:
-        errors.append(f"no section times published for {term_id}; cannot verify schedule eligibility")
+        if not errors:
+            errors.append(
+                f"No section times are available for {term_id}; "
+                "schedule eligibility cannot be verified."
+            )
     else:
         for sec in sections:
             if not any(_overlaps(m, tm) for m in sec["meetings"] for _, tm in taken):
