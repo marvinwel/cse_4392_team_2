@@ -608,12 +608,15 @@ html, body, [data-testid="stApp"],
     overflow: hidden !important;
 }
 
-.st-key-chat_area iframe {
+.st-key-chat_area iframe,
+.st-key-chat_area [data-testid="stElementContainer"]:has(iframe),
+.st-key-chat_area [data-testid="stCustomComponentV1"]:has(iframe) {
     display: block !important;
     width: 100% !important;
-    height: calc(100dvh - 150px - var(--input-space)) !important;
-    min-height: 150px !important;
-    border: none !important;
+    border: 0 !important;
+    height: calc(100dvh - 300px - var(--input-space)) !important;
+    max-height: calc(100dvh - 300px - var(--input-space)) !important;
+    min-height: 120px !important;
 }
 
 /* ------------------------------------------
@@ -1308,7 +1311,7 @@ with main_col:
 
                         overflow-x: hidden;
 
-                        padding: 12px 10px 20px 0;
+                        padding: 12px 10px 60px 0;
 
                         scrollbar-width: thin;
 
