@@ -1,0 +1,1197 @@
+{
+  "total_records": 91,
+  "proposed_count": 50,
+  "preserved_count": 3,
+  "skipped_count": 38,
+  "proposals": [
+    {
+      "course_id": "CSE 1106",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in CSE 1310.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1310",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 1205",
+      "catalog_year": 2025,
+      "prerequisite_text": "CSE 1310.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1310"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 1325",
+      "catalog_year": 2025,
+      "prerequisite_text": "CSE 1320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1320"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 1326",
+      "catalog_year": 2025,
+      "prerequisite_text": "CSE 1320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1320"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 2100",
+      "catalog_year": 2025,
+      "prerequisite_text": "CSE 1320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1320"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 2312",
+      "catalog_year": 2025,
+      "prerequisite_text": "a C or better in CSE 1320 and a C or better in CSE 1205 or CSE 1106.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1320",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 1205",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "CSE 1106",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 2440",
+      "catalog_year": 2025,
+      "prerequisite_text": "Grade C or better in MATH 2425 and PHYS 1444.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "MATH 2425",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "PHYS 1444",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 2441",
+      "catalog_year": 2025,
+      "prerequisite_text": "CSE 1320 and CSE 2315.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1320"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 2315"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3302",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in each of the following: CSE 1325, CSE 2312 and CSE 3318.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1325",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 2312",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3310",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in each of the following: CSE 1320, CSE 1325 and CSE 2315.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1320",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 1325",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 2315",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3311",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in each of the following: CSE 3310 and CSE 3318.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3310",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3313",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in each of the following: CSE 3318, CSE 3380 or MATH 3330, and IE 3301 or MATH 3313.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3380",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3330",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "IE 3301",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3313",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3314",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in CSE 3318 and COMS 2302.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "COMS 2302",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3315",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in CSE 2315.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 2315",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3320",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in CSE 2312.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 2312",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3323",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in CSE 2440.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 2440",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3330",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in each of the following: CSE 1325 and CSE 3318. Computer Science and Engineering (CSE) 3",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 1325",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3340",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in CSE 3318, and C or better in CSE 3310.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3310",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3341",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in CSE 2441.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 2441",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 3442",
+      "catalog_year": 2025,
+      "prerequisite_text": "C or better in each of the following: CSE 2312, CSE 2440 and CSE 2441.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 2312",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 2440",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 2441",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4304",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3380 or MATH 3330.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3380",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3330",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4305",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in the following: CSE 3302 and CSE 3315.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3302",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3315",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4308",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318 and (IE 3301 or MATH 3313).",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "IE 3301",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3313",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4309",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318, IE 3301 or MATH 3313, and CSE 3380 or MATH 3330.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "IE 3301",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3313",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3380",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3330",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4310",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318, IE 3301 or MATH 3313, and CSE 3380 or MATH 3330.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "IE 3301",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3313",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3380",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3330",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4311",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3380 or MATH 3330, and C or better in IE 3301 or MATH 3313.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3380",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3330",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "IE 3301",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3313",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4314",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in COMS 2302.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "COMS 2302",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4321",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3310.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3310",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4322",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3310.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3310",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4323",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4331",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3330.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3330",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4333",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3330, and C or better in CSE 3320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3330",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4342",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3323, CSE 3442, and CSE 3313.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3323",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3442",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3313",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4344",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4345",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in each of the following IE 3301 or MATH 3313, CSE 3318, and either CSE 3380 or MATH 3330.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "IE 3301",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3313",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3380",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3330",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4351",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4352",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3442.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3442",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4354",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in both CSE 3320 and CSE 3442.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3442",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4355",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in both CSE 3323 and CSE 3442.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3323",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3442",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4356",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3442.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3442",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4358",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3442.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3442",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4360",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318, CSE 3320 and CSE 3380 (or MATH 3330).",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3318",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3380",
+            "min_grade": "C"
+          },
+          {
+            "course_id": "MATH 3330",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4361",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3311.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3311",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4372",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3442.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3442",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4373",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4376",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3313.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3313",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4377",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3313 and CSE 3442.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3313",
+            "min_grade": "C"
+          }
+        ],
+        [
+          {
+            "course_id": "CSE 3442",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4379",
+      "catalog_year": 2025,
+      "prerequisite_text": "B or better in CSE 4378 and admission to the UVS certificate program.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 4378",
+            "min_grade": "B"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4380",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    },
+    {
+      "course_id": "CSE 4382",
+      "catalog_year": 2025,
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3320.",
+      "proposed_prereqs": [
+        [
+          {
+            "course_id": "CSE 3320",
+            "min_grade": "C"
+          }
+        ]
+      ],
+      "other_requirements_note": "Original prerequisite text and admission flags still apply; no final eligibility approval."
+    }
+  ],
+  "preserved": [
+    {
+      "course_id": "CSE 3318",
+      "catalog_year": 2025,
+      "reason": "already populated"
+    },
+    {
+      "course_id": "CSE 3380",
+      "catalog_year": 2025,
+      "reason": "already populated"
+    },
+    {
+      "course_id": "CSE 4303",
+      "catalog_year": 2025,
+      "reason": "already populated"
+    }
+  ],
+  "skipped": [
+    {
+      "course_id": "COMS 2302",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "CSE 1000",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Departmental good standing and permission of instructor. May be taken a maximum of 3 times."
+    },
+    {
+      "course_id": "CSE 1105",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": null
+    },
+    {
+      "course_id": "CSE 1301",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": null
+    },
+    {
+      "course_id": "CSE 1310",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "C or better in MATH 1302 or MATH 1402 or C or better in (or concurrent enrollment in) a subsequent mathematics course (Math 1421, Math 1426, Math 2425, Math 2326, Math 3330, HONR-SC 1426 or HONR-SC 2425) or a qualifying score on the ALEKS PPL and C or better in UNIV 1131 (or concurrent enrollment) or ENGR 1101 (or concurrent enrollment)."
+    },
+    {
+      "course_id": "CSE 1311",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "C or better in (or concurrent enrollment in) one of the following; (Math 1421, Math 1426, Math 2425, Math 2326, Math 3330, HONR-SC 1426, or HONR-SC 2425)."
+    },
+    {
+      "course_id": "CSE 1320",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "C or better in CSE 1310 and C or better in (or concurrent enrollment in) (Math 1421, Math 1426, Math 2425, Math 2326, Math 3330, HONR-SC 1426, or HONR-SC 2425) or a qualifying score on the ALEKS PPL and C or better in UNIV 1131 (or concurrent enrollment) or ENGR 1101 (or concurrent enrollment.)."
+    },
+    {
+      "course_id": "CSE 1392",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "consent of advisor."
+    },
+    {
+      "course_id": "CSE 2000",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Departmental good standing and permission of instructor. May be taken a maximum of 3 times."
+    },
+    {
+      "course_id": "CSE 2315",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "C or better in CSE 1310 and C or better in MATH 1426 (or C or better in or concurrent enrollment in MATH 2425)."
+    },
+    {
+      "course_id": "CSE 2392",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "consent of advisor."
+    },
+    {
+      "course_id": "CSE 3000",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Departmental good standing and permission of instructor. May be taken a maximum of 3 times."
+    },
+    {
+      "course_id": "CSE 3392",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "consent of advisor."
+    },
+    {
+      "course_id": "CSE 4000",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Departmental good standing and permission of instructor. May be taken a maximum of 3 times."
+    },
+    {
+      "course_id": "CSE 4191",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "consent of instructor and department chairperson."
+    },
+    {
+      "course_id": "CSE 4316",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Admitted into a CSE Professional Program. For academic plan CS__CS or SE__SE, C or better in CSE 3310 and CSE 3320, and C or better in CSE 3314 (or concurrently). For academic plan CSE_CP, C or better in CSE 3320 and CSE 3442, and C or better in CSE 3314 (or concurrently)."
+    },
+    {
+      "course_id": "CSE 4317",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 4316 and continuation with the same team."
+    },
+    {
+      "course_id": "CSE 4334",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in each of the following: IE 3301 (or MATH 3313). Co-requisite: CSE 3330."
+    },
+    {
+      "course_id": "CSE 4340",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 4344 or CSE 4352 or consent of instructor. Computer Science and Engineering (CSE) 5"
+    },
+    {
+      "course_id": "CSE 4362",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Admitted into an Engineering Professional Program."
+    },
+    {
+      "course_id": "CSE 4363",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Admitted into an Engineering Professional Program."
+    },
+    {
+      "course_id": "CSE 4378",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Admission to a professional engineering or science program."
+    },
+    {
+      "course_id": "CSE 4381",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Admitted into an Engineering Professional Program. C or better in CSE 3320 and C or better in CSE 4344 (or concurrently)."
+    },
+    {
+      "course_id": "CSE 4391",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "consent of instructor and department chairperson."
+    },
+    {
+      "course_id": "CSE 4392",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "consent of instructor."
+    },
+    {
+      "course_id": "ECON 2305",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "ENGL 1301",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "ENGR 1101",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "IE 2308",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "IE 3301",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "MATH 1426",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "MATH 2326",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "MATH 2425",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "MATH 3313",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "MATH 3330",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "PHYS 1443",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "PHYS 1444",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    },
+    {
+      "course_id": "UNIV 1131",
+      "catalog_year": 2025,
+      "reason": "not in conservative allowlist",
+      "prerequisite_text": "Pending official 2025-2026 catalog verification"
+    }
+  ]
+}

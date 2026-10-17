@@ -1,0 +1,3941 @@
+{
+    "Items": [
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "0"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3000"
+            },
+            "prerequisite_text": {
+                "S": "Departmental good standing and permission of instructor. May be taken a maximum of 3 times."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Junior level undergraduate research course."
+            },
+            "title": {
+                "S": "JUNIOR UNDERGRADUATE RESEARCH"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4303"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318, and either CSE 3380 or MATH 3330."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Theory and practice for the visual representation of data by computers including display devices, output primitives, planes and curved surfaces, two- and three-dimensional transformations, parallel and perspective viewing, removal of hidden lines and surfaces, illumination models, ray tracing, radiosity, color models, and computer animation."
+            },
+            "prereqs": {
+                "L": [
+                    {
+                        "L": [
+                            {
+                                "M": {
+                                    "course_id": {
+                                        "S": "CSE 3318"
+                                    },
+                                    "min_grade": {
+                                        "S": "C"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "L": [
+                            {
+                                "M": {
+                                    "course_id": {
+                                        "S": "CSE 3380"
+                                    },
+                                    "min_grade": {
+                                        "S": "C"
+                                    }
+                                }
+                            },
+                            {
+                                "M": {
+                                    "course_id": {
+                                        "S": "MATH 3330"
+                                    },
+                                    "min_grade": {
+                                        "S": "C"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "title": {
+                "S": "COMPUTER GRAPHICS"
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "4"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3442"
+            },
+            "prerequisite_text": {
+                "S": "C or better in each of the following: CSE 2312, CSE 2440 and CSE 2441."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Design of microcontroller-based systems, including microprocessor programming, component and system architectures, memory interfacing, asynchronous and synchronous serial interfaces, timer-based peripherals, analog to digital (A/D) and digital to analog (D/A) converters, and typical applications."
+            },
+            "title": {
+                "S": "EMBEDDED SYSTEMS I"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4381"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3320 and C or better in CSE 4344 (or concurrently)."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Deeper study of the fundamentals of security, including symmetric key cryptography, public key cryptography, cryptographic protocols, malware design, network attacks and defenses, data security, privacy, and wireless security."
+            },
+            "title": {
+                "S": "INFORMATION SECURITY II"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3341"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 2441."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Hierarchical organization, design, simulation, implementation, and testing of digital systems. Industrial standard computer-aided design tools including hardware description languages (HDLs), field-programmable gate arrays (FPGAs), and other prototyping hardware and software will be employed. Design of arithmetic and other algorithmic processes will be covered. A term project will be required."
+            },
+            "title": {
+                "S": "DIGITAL LOGIC DESIGN II"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3315"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 2315."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Selected theoretical concepts including regular and context free languages, finite state and pushdown automata, Turing machines, computability, and NP-completeness."
+            },
+            "title": {
+                "S": "THEORETICAL CONCEPTS IN COMPUTER SCIENCE AND ENGINEERING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "English"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/engl/"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "ENGL 1301"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Rhetoric and Composition I"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3323"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 2440."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Design, analysis and testing of electronic circuits. Topics include operational amplifiers, diodes, bipolar-junction transistors (BJTs), and field-effect transistors (FETs) and their applications. Concurrent laboratory experiments complement lecture topics."
+            },
+            "title": {
+                "S": "ELECTRONICS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "4"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 2440"
+            },
+            "prerequisite_text": {
+                "S": "Grade C or better in MATH 2425 and PHYS 1444."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Basic principles of electrical circuits using resistors, capacitors and inductors. Filter analysis and synthesis using complex algebra. Introduction to operational amplifiers. Time domain and frequency domain analysis and taxonomy of signals. Concurrent laboratory experiments complement lecture topics."
+            },
+            "title": {
+                "S": "CIRCUIT ANALYSIS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 2392"
+            },
+            "prerequisite_text": {
+                "S": "consent of advisor."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "New developments in the field of computer science and engineering. Topic may vary from semester to semester. May be repeated for credit when topic changes. Departmental approval required in advance to use for degree credit."
+            },
+            "title": {
+                "S": "SPECIAL TOPICS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Mathematics"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/math/"
+            },
+            "credits": {
+                "N": "4"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "MATH 1426"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Calculus I"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 2312"
+            },
+            "prerequisite_text": {
+                "S": "a C or better in CSE 1320 and a C or better in CSE 1205 or CSE 1106."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Computer organization from the viewpoint of software, including instruction set architectures, memory addressing, integer and floating-point representation and arithmetic, instruction pipelining, cache, memory virtualization, and I/O. The relationship of higher-level programming languages to assembly language and instruction set architecture is also explored."
+            },
+            "title": {
+                "S": "COMPUTER ORGANIZATION & ASSEMBLY LANGUAGE PROGRAMMING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4360"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318, CSE 3320 and CSE 3380 (or MATH 3330)."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "An introduction to robotics and the design and programming of autonomous robot systems. Topics include basic kinematics, dynamics, and control, as well as sensors, knowledge representation, and programming techniques. Course work includes individual and group projects involving the building and programming of simulated and real robots."
+            },
+            "title": {
+                "S": "AUTONOMOUS ROBOT DESIGN AND PROGRAMMING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4378"
+            },
+            "prerequisite_text": {
+                "S": "Admission to a professional engineering or science program."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Introduction to UVS (Unmanned Vehicle Systems) such as UAS (Unmanned Aircraft Systems), UGS (Unmanned Ground System) and UMS (Unmanned Maritime System), their history, missions, capabilities, types, configurations, subsystems, and the disciplines needed for UVS development and operation. UVS missions could include student competitions sponsored by various technical organizations. This course is team-taught by engineering faculty."
+            },
+            "title": {
+                "S": "INTRODUCTION TO UNMANNED VEHICLE SYSTEMS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "0"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4000"
+            },
+            "prerequisite_text": {
+                "S": "Departmental good standing and permission of instructor. May be taken a maximum of 3 times."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Senior level undergraduate research course."
+            },
+            "title": {
+                "S": "SENIOR UNDERGRADUATE RESEARCH"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 2315"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 1310 and C or better in MATH 1426 (or C or better in or concurrent enrollment in MATH 2425)."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Propositional and predicate logic, mathematical proof techniques, sets, combinatorics, functions and relations, graphs, and graph algorithms."
+            },
+            "title": {
+                "S": "DISCRETE STRUCTURES"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Engineering"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/engr/"
+            },
+            "credits": {
+                "N": "1"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "ENGR 1101"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Entrance to Engineering for Transfer Students"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3314"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 3318 and COMS 2302."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Ethics. Contemporary social aspects and responsibilities of computing in a global, societal context. Lifelong learning goals and resources. Entrepreneurship and intellectual property. Project involving written and oral communication."
+            },
+            "title": {
+                "S": "PROFESSIONAL PRACTICES"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Physics"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/phys/"
+            },
+            "credits": {
+                "N": "4"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "PHYS 1444"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "General Technical Physics II"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "2"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1205"
+            },
+            "prerequisite_text": {
+                "S": "CSE 1310."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "A practical approach to hands-on computer hardware and software systems in a laboratory environment. Students will be exposed to basic engineering concepts such as simple circuits, digital logic, embedded controllers, computer networking, software design, and Linux operating systems. Some College of Engineering requirements are satisfied by the content of this course."
+            },
+            "title": {
+                "S": "INTRODUCTION TO COMPUTER SCIENCE AND ENGINEERING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4358"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3442."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Asynchronous and synchronous memory interfacing and timing, design and implementation of DMA controllers and SDRAM controllers. Course includes a project with significant system design."
+            },
+            "title": {
+                "S": "MICROPROCESSOR SYSTEMS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NOT_LISTED"
+            },
+            "credits": {
+                "N": "1"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1105"
+            },
+            "prerequisite_text": {
+                "NULL": true
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Introduction to engineering concepts, the computer science and engineering disciplines, skills for written communication, and departmental orientation."
+            },
+            "title": {
+                "S": "INTRODUCTION TO COMPUTER SCIENCE AND ENGINEERING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4355"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in both CSE 3323 and CSE 3442."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Applications of electronics and microcontrollers to the control of electromechanical systems. Topics include driving brushless motors (including stepper motors), brushed permanent magnet motors, and other mechanical actuators; the use of the sensors including IMU,LIDAR, RADAR, GPS, capacitive/ inductive sensing, laser distance, thermocouples, strain, pressure, optical encoders, and Hall devices; and control applications. Course includes significant laboratory content and a project with extensive hardware and software requirements."
+            },
+            "title": {
+                "S": "ELECTROMECHANICAL SYSTEMS AND SENSORS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "1"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4191"
+            },
+            "prerequisite_text": {
+                "S": "consent of instructor and department chairperson."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Special problems in computer science and engineering on an individual basis. Topics may change from semester to semester. May be repeated for credit. Departmental approval must be obtained in advance for degree credit."
+            },
+            "title": {
+                "S": "INDIVIDUAL PROJECTS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4321"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3310."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Study of software quality assurance, software testing, and software maintenance processes, methods and techniques including formal review techniques, software verification, validation, and testing, types of software maintenance, maintenance activities, and regression testing."
+            },
+            "title": {
+                "S": "SOFTWARE TESTING & MAINTENANCE"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3392"
+            },
+            "prerequisite_text": {
+                "S": "consent of advisor."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "New developments in the field of computer science and engineering. Topic may vary from semester to semester. May be repeated for credit when topic changes. Departmental approval required in advance to use for degree credit."
+            },
+            "title": {
+                "S": "SPECIAL TOPICS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "0"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 2000"
+            },
+            "prerequisite_text": {
+                "S": "Departmental good standing and permission of instructor. May be taken a maximum of 3 times."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Sophomore level undergraduate research course."
+            },
+            "title": {
+                "S": "SOPHOMORE UNDERGRADUATE RESEARCH"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NOT_LISTED"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1301"
+            },
+            "prerequisite_text": {
+                "NULL": true
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "(TCCN = COSC 1301) For those persons having an interest in finding out what a computer is (and is not), the types of problems suited for computers, and how to utilize a computer to solve problems. The organization and characteristics of computers; application of commercial software such as word processors, spreadsheets, database packages, and communications packages."
+            },
+            "title": {
+                "S": "COMPUTER LITERACY"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3320"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 2312."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Functions and components of an operating system, including process synchronization, job scheduling, memory management, file systems protection, and deadlocks. Related system software, such as loaders, linkers, assemblers, and windowing systems."
+            },
+            "title": {
+                "S": "OPERATING SYSTEMS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3302"
+            },
+            "prerequisite_text": {
+                "S": "C or better in each of the following: CSE 1325, CSE 2312 and CSE 3318."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Introduction, analysis, and evaluation of the important concepts found in a variety of programming languages. Formalisms useful in specifying language syntax and semantics; programming language paradigms such as algorithmic, functional, logic, and object-oriented."
+            },
+            "title": {
+                "S": "PROGRAMMING LANGUAGES"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3311"
+            },
+            "prerequisite_text": {
+                "S": "C or better in each of the following: CSE 3310 and CSE 3318."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Study of an agile unified methodology and its application to object-oriented software development. Topics include requirements acquisition, use case derivation, modeling and design of interaction behavior and state behavior, introduction to design patterns, derivation of design class diagrams, implementation considerations and deployment. Team project."
+            },
+            "title": {
+                "S": "OBJECT-ORIENTED SOFTWARE ENGINEERING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Physics"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/phys/"
+            },
+            "credits": {
+                "N": "4"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "PHYS 1443"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "General Technical Physics I"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Industrial Engineering"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/ie/"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "IE 3301"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Engineering Probability"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4305"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in the following: CSE 3302 and CSE 3315."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Review of programming language structures, translation, and storage allocation. Theory and practice of compilers and issues in compiler construction including parsing, intermediate code generation, local optimization problems such as register allocation, data-flow analysis, and global optimization."
+            },
+            "title": {
+                "S": "COMPILERS FOR ALGORITHMIC LANGUAGES"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4362"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Examines the technical, formal, and cultural elements of games. Teaches game design concepts through hands-on analysis and creative practice."
+            },
+            "title": {
+                "S": "GAME ANALYSIS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4344"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Design and analysis of computer networks. Emphasis on the OSI architecture but discusses other schemes (e.g., ARPAnet). Data link control, local networks, protocols/architectures, network access protocols, transport protocols, internetworking, and ISDN."
+            },
+            "title": {
+                "S": "COMPUTER NETWORK ORGANIZATION"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3330"
+            },
+            "prerequisite_text": {
+                "S": "C or better in each of the following: CSE 1325 and CSE 3318. Computer Science and Engineering (CSE) 3"
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Database system architecture; file structures for databases, including indexing hashing, and B+-trees; the relational model and algebra; the SQL database language; Entity-Relationship data modeling; functional dependencies and basic normalization."
+            },
+            "title": {
+                "S": "DATABASE SYSTEMS AND FILE STRUCTURES"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4379"
+            },
+            "prerequisite_text": {
+                "S": "B or better in CSE 4378 and admission to the UVS certificate program."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Introduction to the technologies needed to create an UVS (Unmanned Vehicle System). Integration of these technologies (embodied as a set of sensors, actuators, computing and mobility platform sub-systems) into a functioning UVS through team work. UVS could be designed to compete in a student competition sponsored by various technical organizations or to support a specific mission or function defined by the instructors. This course is teamtaught by engineering faculty."
+            },
+            "title": {
+                "S": "UNMANNED VEHICLE SYSTEM DEVELOPMENT"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4310"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318, IE 3301 or MATH 3313, and CSE 3380 or MATH 3330."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "This course introduces students to basic concepts and techniques in computer vision. The topics covered include morphological operations, connected component analysis, image filters, edge detection, feature extraction, object detection, object recognition, tracking, gesture recognition, image formation and camera models, calibration, and stereo vision. A strong programming background is assumed, as well as familiarity with linear algebra (vector and matrix operations), and knowledge of basic probability theory and statistics."
+            },
+            "title": {
+                "S": "FUNDAMENTALS OF COMPUTER VISION"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4309"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318, IE 3301 or MATH 3313, and CSE 3380 or MATH 3330."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "This course offers an introduction to machine learning. Topics include naive Bayes classifiers, linear regression, linear classifiers, neural networks and backpropagation, kernel methods, decision trees, feature selection, clustering, and reinforcement learning. A strong programming background is assumed, as well as familiarity with linear algebra (vector and matrix operations), and knowledge of basic probability theory and statistics."
+            },
+            "title": {
+                "S": "FUNDAMENTALS OF MACHINE LEARNING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4304"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3380 or MATH 3330."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Fundamentals of what it takes to create a game that is simultaneously economically attractive enough to produce as well as being fun to play. The former characteristic is objective, though often tricky to bound adequately while the latter is subjective, though easily demonstrated. This is a team-based class; each team conceives, designs, and develops a complete game through a series of exercises that build upon each other and using freely available tools."
+            },
+            "title": {
+                "S": "GAME DESIGN AND DEVELOPMENT"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4354"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in both CSE 3320 and CSE 3442."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Implementation of a real-time operating system with cooperative and preemption context switching, priority scheduling, semaphores, message queues, and inter-process communications on bare metal microcontrollers. Course includes multiple projects with hardware construction and rigorous software requirements."
+            },
+            "title": {
+                "S": "REAL-TIME OPERATING SYSTEMS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Mathematics"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/math/"
+            },
+            "credits": {
+                "N": "4"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "MATH 2425"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Calculus II"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4351"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Theory and practice of parallel processing, including characterization of parallel processors, models for memory, algorithms, and interprocess synchronization. Issues in parallelizing serial computations, efficiency and speedup analysis. Programming exercises using one or more concurrent programming languages, on one of more parallel computers."
+            },
+            "title": {
+                "S": "PARALLEL PROCESSING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3340"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 3318, and C or better in CSE 3310."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Introduction to the interdisciplinary field of Human-Computer Interaction. Studio-based course that bridges cognitive science, ethnography, and anthropology to provide a profound understand of user experience, while concurrently fostering frontend development skills in software, hardware, and wireless communication for the crafting of state-of-the-art user interfaces. Emphasizing a human-centered design ethos, the course encourages the design of interfaces that are not only functional but also meaningful and critically reflective."
+            },
+            "title": {
+                "S": "INTRODUCTION TO HUMAN COMPUTER INTERACTION"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4333"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3330, and C or better in CSE 3320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Cloud Computing has transformed the IT industry by opening the possibility for infinite or at least highly elastic scalability in the delivery of enterprise applications and software as a service (SaaS). Cloud computing is a method of computing where a shared group of resources such as file storage, web servers, data processing services, and applications are accessed via a public internet connection or a private VPN and/or direct network connection. Cloud computing gives mature enterprises and new start-ups the option to deploy their applications to systems of infinite computational power with practically no initial capital investment and with modest operating costs proportional to the actual use. Examples of cloud computing services include Amazon Web Services, Microsoft Azure, Google Cloud Platform, and IBM Softlayer. This course introduces students to the fundamental and design concepts of writing software applications for the cloud. This course will discuss tools required by an application programmer in building, deploying, and maintaining cloud applications. A combination of lectures and lab activities will expose students to the programming interface utilized in developing cloud applications."
+            },
+            "title": {
+                "S": "CLOUD COMPUTING FUNDAMENTALS AND APPLICATIONS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3318"
+            },
+            "prerequisite_text": {
+                "S": "CSE 1320 and CSE 2315."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Design and analysis of algorithms with an emphasis on data structures. Approaches to analyzing lower bounds on problems and upper bounds on algorithms. Classical algorithm design techniques including algorithms for sorting, searching, and other operations on data structures such as hash tables, trees, graphs, strings, and advanced data structures, dynamic programming and greedy approaches."
+            },
+            "prereqs": {
+                "L": [
+                    {
+                        "L": [
+                            {
+                                "M": {
+                                    "course_id": {
+                                        "S": "CSE 1320"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "L": [
+                            {
+                                "M": {
+                                    "course_id": {
+                                        "S": "CSE 2315"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "title": {
+                "S": "ALGORITHMS & DATA STRUCTURES"
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4372"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3442."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Design of a RISC processor, based on RISC V and custom instruction set architectures with implementation on an FPGA target for test and verification. Course includes a project with extensive software requirements."
+            },
+            "title": {
+                "S": "RISC PROCESSOR DESIGN"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4331"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3330."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Review of the relational model and algebra; relational calculus; relational database design theory; advanced data modeling concepts; object-oriented and object-relational databases; database system implementation techniques, including concurrency control, recovery, atomic commitment, and query processing and optimization, database security; introduction to advanced concepts, such as active, deductive, spatial, temporal, multimedia and distributed databases."
+            },
+            "title": {
+                "S": "DATABASE IMPLEMENTATION AND THEORY"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4342"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3323, CSE 3442, and CSE 3313."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Advanced course in design of microcontroller-based systems. Emphasis is on the application of microcontrollers to real-time problems. Topics include the study of the differences in bare metal and embedded Linux implementations, simple Linux character device drivers, bootloader design, watchdog and supervision concepts, and developing applications such as PID controllers. Course includes significant laboratory content and a project with extensive hardware and software requirements."
+            },
+            "title": {
+                "S": "EMBEDDED SYSTEMS II"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "University Studies"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/"
+            },
+            "credits": {
+                "N": "1"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "UNIV 1131"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Student Success"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4352"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3442."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Study of protocol stacks and layers, implementation of an Ethernet protocol stack, and design of a basic low-latency, small footprint IoT protocol on bare metal embedded devices and embedded Linux systems. Course includes multiple projects with hardware construction and extensive software and integration requirements."
+            },
+            "title": {
+                "S": "IOT AND NETWORKING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3310"
+            },
+            "prerequisite_text": {
+                "S": "C or better in each of the following: CSE 1320, CSE 1325 and CSE 2315."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Software engineering principles, processes, and techniques; software development approaches focusing on functional analysis and functional design methods. Configuration management, implementation strategies, and testing. Team project."
+            },
+            "title": {
+                "S": "FUNDAMENTALS OF SOFTWARE ENGINEERING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1320"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 1310 and C or better in (or concurrent enrollment in) (Math 1421, Math 1426, Math 2425, Math 2326, Math 3330, HONR-SC 1426, or HONR-SC 2425) or a qualifying score on the ALEKS PPL and C or better in UNIV 1131 (or concurrent enrollment) or ENGR 1101 (or concurrent enrollment.)."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Programming concepts beyond basic control and data structures. Emphasis is given to data structures including linked-lists and trees as well as modular design consistent with software engineering principles."
+            },
+            "title": {
+                "S": "INTERMEDIATE PROGRAMMING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4356"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3442."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Design of FPGA-based system on chip solutions, including processor subsystems, FPGA fabric, processor to FPGA bridges, and Linux device drivers. Course includes a project with extensive software requirements."
+            },
+            "title": {
+                "S": "SYSTEM ON CHIP (SOC) DESIGN"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4361"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3311."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "In-depth study of software design patterns including description of patterns, design principles and techniques used by patterns as well as application of patterns to solving practical design problems. Team project."
+            },
+            "title": {
+                "S": "SOFTWARE DESIGN PATTERNS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4311"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3380 or MATH 3330, and C or better in IE 3301 or MATH 3313."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "This course offers an introduction to neural networks and deep learning. Topics include perceptrons, single-layer neural networks, multi-layer neural networks, Tensorflow and Keras, convolutional neural networks, transfer learning, deep learning methods for object recognition and object detection in images, and sequential learning models for analyzing text. Auto-encoders and generative adversarial networks will be covered to some extent. A strong programming and algorithmic background is assumed, as well as familiarity with linear algebra (vector and matrix operations)."
+            },
+            "title": {
+                "S": "NEURAL NETWORKS AND DEEP LEARNING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3380"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 2315."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Solving systems of equations, matrix algebra, determinants, vector spaces, orthogonality and least squares, with applications to computer science."
+            },
+            "prereqs": {
+                "L": [
+                    {
+                        "L": [
+                            {
+                                "M": {
+                                    "course_id": {
+                                        "S": "CSE 2315"
+                                    },
+                                    "min_grade": {
+                                        "S": "C"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "title": {
+                "S": "LINEAR ALGEBRA FOR CSE"
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4314"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in COMS 2302."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Ethics. Contemporary social aspects and responsibilities of computing in a global, societal context. Lifelong learning goals and resources. Entrepreneurship and intellectual property. Project involving written and oral communication."
+            },
+            "title": {
+                "S": "PROFESSIONAL PRACTICES"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Industrial Engineering"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/ie/"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "IE 2308"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Economics for Engineers"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1392"
+            },
+            "prerequisite_text": {
+                "S": "consent of advisor."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "New developments in the field of computer science and engineering. Topic may vary from semester to semester. May be repeated for credit when topic changes. Departmental approval required in advance to use for degree credit."
+            },
+            "title": {
+                "S": "SPECIAL TOPICS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4373"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Study of general purpose computation on a GPU. Topics include GPU architectures, stream processing, and programming languages such as OpenCL and CUDA that realize data-parallel, high-throughput compute kernels on GPU architectures."
+            },
+            "title": {
+                "S": "GENERAL PURPOSE GPU PROGRAMMING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4316"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into a CSE Professional Program. For academic plan CS__CS or SE__SE, C or better in CSE 3310 and CSE 3320, and C or better in CSE 3314 (or concurrently). For academic plan CSE_CP, C or better in CSE 3320 and CSE 3442, and C or better in CSE 3314 (or concurrently)."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Analysis and design of an industry-type project that involves hardware and software components to meet desired needs within realistic constraints and standards. The project is to be completed in CSE 4317 the following semester. Multidisciplinary teams of CSE 4316 students are required to develop, review, and present problem definition, project planning, requirements formulation, and design specification."
+            },
+            "title": {
+                "S": "COMPUTER SYSTEM DESIGN PROJECT I"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4345"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in each of the following IE 3301 or MATH 3313, CSE 3318, and either CSE 3380 or MATH 3330."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Introduction to numerical methods for solving problems in computer science and computer engineering. Topics include computer arithmetic, linear and nonlinear equations, eigenvalue problems, least squares, optimization, interpolation, and simulation."
+            },
+            "title": {
+                "S": "COMPUTATIONAL METHODS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4317"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 4316 and continuation with the same team."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Implementation, integration, quality assurance through peer review and testing, and deployment of the project designed in CSE 4316; oral presentation, documentation and project demonstration."
+            },
+            "title": {
+                "S": "COMPUTER SYSTEM DESIGN PROJECT II"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1310"
+            },
+            "prerequisite_text": {
+                "S": "C or better in MATH 1302 or MATH 1402 or C or better in (or concurrent enrollment in) a subsequent mathematics course (Math 1421, Math 1426, Math 2425, Math 2326, Math 3330, HONR-SC 1426 or HONR-SC 2425) or a qualifying score on the ALEKS PPL and C or better in UNIV 1131 (or concurrent enrollment) or ENGR 1101 (or concurrent enrollment)."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "(TCCN = COSC 1320) An introduction to the computer, to the algorithmic process, and to programming using basic control and data structures, using a procedural language."
+            },
+            "title": {
+                "S": "INTRODUCTION TO COMPUTERS & PROGRAMMING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Mathematics"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/math/"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "MATH 2326"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Calculus III"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Mathematics"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/math/"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "MATH 3330"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Introduction to Linear Algebra and Vector Spaces"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "1"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 2100"
+            },
+            "prerequisite_text": {
+                "S": "CSE 1320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "A practical approach to hands-on computer hardware and software systems in a laboratory environment. Students will be exposed to basic design concepts using off-the-shelf hardware components and to tools that enable the design of complex software systems."
+            },
+            "title": {
+                "S": "PRACTICAL COMPUTER HARDWARE/SOFTWARE SYSTEMS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Communication Studies"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/coms/"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "COMS 2302"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Professional and Technical Communication for Science and Engineering"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4392"
+            },
+            "prerequisite_text": {
+                "S": "consent of instructor."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "New developments in the field of computer science and engineering. Topic may vary from semester to semester. May be repeated for credit when topic changes. Departmental approval required in advance to use for degree credit."
+            },
+            "title": {
+                "S": "SPECIAL TOPICS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Mathematics"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/math/"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "MATH 3313"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Introduction to Probability"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4323"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Pipelined processors, parallel processors including shared and distributed memory, multicore, Very Long Instruction Word (VLIW) and graphics processors, memory and cache design, computer peripherals, and computer clusters."
+            },
+            "title": {
+                "S": "QUANTITATIVE COMPUTER ARCHITECTURE"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4308"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in each of the following: CSE 3318 and (IE 3301 or MATH 3313)."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "An introduction to the field of artificial intelligence studying basic techniques such as heuristic search, deduction, learning, problem solving, knowledge representation, uncertainty reasoning and symbolic programming languages such as LISP. Application areas may include intelligent agents, data mining, natural language, machine vision, planning and expert systems."
+            },
+            "title": {
+                "S": "ARTIFICIAL INTELLIGENCE"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4376"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3313."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Study of digital communication systems including source and channel coding, digital modulation techniques, inter-symbol interference, and multi-channel combining and multiple-access methods."
+            },
+            "title": {
+                "S": "DIGITAL COMMUNICATION SYSTEMS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4380"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Hands-on introduction to the basics of security. Includes system security, buffer overflows, a high-level overview of cryptography, firewalls and intrusion detection/prevention, malware, penetration testing, forensics, and system administration."
+            },
+            "title": {
+                "S": "INFORMATION SECURITY"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4377"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3313 and CSE 3442."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Study of wireless systems including modulation, amplification, linearization techniques, filtering, antennas, propagation, reception, and demodulation. Topics include software defined radio design, link budget, and interference analysis. Course includes significant laboratory content."
+            },
+            "title": {
+                "S": "WIRELESS COMMUNICATION SYSTEMS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1325"
+            },
+            "prerequisite_text": {
+                "S": "CSE 1320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Object-oriented concepts, class diagrams, collection classes, generics, polymorphism, and reusability. Projects involve extensive programming and include graphical user interfaces and multithreading."
+            },
+            "title": {
+                "S": "OBJECT-ORIENTED PROGRAMMING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "imported_at": {
+                "S": "2026-10-17T21:26:03+00:00"
+            },
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "department": {
+                "S": "Economics"
+            },
+            "source_url": {
+                "S": "https://catalog.uta.edu/coursedescriptions/econ/"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "import_note": {
+                "S": "Provisional research record. Do not use for eligibility or degree audit."
+            },
+            "course_id": {
+                "S": "ECON 2305"
+            },
+            "prerequisite_text": {
+                "S": "Pending official 2025-2026 catalog verification"
+            },
+            "source_catalog_year_verified": {
+                "BOOL": false
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": ""
+            },
+            "title": {
+                "S": "Principles of Macroeconomics"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 3313"
+            },
+            "prerequisite_text": {
+                "S": "C or better in each of the following: CSE 3318, CSE 3380 or MATH 3330, and IE 3301 or MATH 3313."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Examines models for presentation and processing of digital signals. Sampling theorem, correlation and convolution, time and frequency analysis of linear systems, Fourier transform, Z-transform, design of digital filters structures for discrete time systems."
+            },
+            "title": {
+                "S": "INTRODUCTION TO SIGNAL PROCESSING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "1"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1106"
+            },
+            "prerequisite_text": {
+                "S": "C or better in CSE 1310."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "A practical approach to hands-on computer hardware and software systems in a laboratory environment. Students will be exposed to basic engineering concepts such as simple circuits, digital logic, embedded controllers, computer networking, software design, and Linux operating systems."
+            },
+            "title": {
+                "S": "INTRODUCTION TO COMPUTER SCIENCE AND ENGINEERING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4334"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in each of the following: IE 3301 (or MATH 3313). Co-requisite: CSE 3330."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Automatic discovery of patterns and knowledge from large data repositories, including databases, data warehouses, Web, document collections, and transactions. Basic topics of data mining including data preprocessing, data warehousing and online analytical processing (OLAP), data cube, frequent pattern and association rule mining, correlation analysis, classification and prediction and clustering, as well as advanced topics covering the techniques and applications of data mining on Web and text documents."
+            },
+            "title": {
+                "S": "DATA MINING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4363"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Surveys the esports industry from the perspective of multiple professions, including coaching, design, business, entertainment, and cultural production. Combines critical study with experiential learning through activities such as live analysis, design exercises, and industry engagement. Students identify a concrete need in an esports context and design a computational or interactive system to address it, drawing on principles of training, simulation, and performance analysis."
+            },
+            "title": {
+                "S": "ESPORTS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1311"
+            },
+            "prerequisite_text": {
+                "S": "C or better in (or concurrent enrollment in) one of the following; (Math 1421, Math 1426, Math 2425, Math 2326, Math 3330, HONR-SC 1426, or HONR-SC 2425)."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "An introduction to the computer, to the algorithmic process, and to programming using basic control and data structures. This class is currently using the C language."
+            },
+            "title": {
+                "S": "INTRODUCTION TO PROGRAMMING FOR ENGINEERS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4391"
+            },
+            "prerequisite_text": {
+                "S": "consent of instructor and department chairperson."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Special problems in computer science and engineering on an individual basis. Topics may change from semester to semester. May be repeated for credit. Departmental approval must be obtained in advance for degree credit."
+            },
+            "title": {
+                "S": "INDIVIDUAL PROJECTS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "0"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1000"
+            },
+            "prerequisite_text": {
+                "S": "Departmental good standing and permission of instructor. May be taken a maximum of 3 times."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Freshman level undergraduate research course."
+            },
+            "title": {
+                "S": "FRESHMAN UNDERGRADUATE RESEARCH"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4322"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3310."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Introduction to software project management. Issues include effort estimation and costing, project planning and scheduling, option analysis, software quality assurance, and formal technical reviews."
+            },
+            "title": {
+                "S": "SOFTWARE PROJECT MANAGEMENT"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "4"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 2441"
+            },
+            "prerequisite_text": {
+                "S": "CSE 1320 and CSE 2315."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Analysis, design and testing of combinational and sequential logic circuits. Topics include Boolean algebra, logic circuit minimization techniques, synchronous sequential circuit design, algorithmic state machine design, design of arithmetic/logic and control units, and Verilog programming of FPGA devices."
+            },
+            "title": {
+                "S": "DIGITAL LOGIC DESIGN I"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": false
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 1326"
+            },
+            "prerequisite_text": {
+                "S": "CSE 1320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Object-Oriented concepts (abstraction, encapsulation, inheritance, polymorphism) in the context of programming in C++ 11 and later. Projects involve extensive programming in C++."
+            },
+            "title": {
+                "S": "OBJECT-ORIENTED PROGRAMMING IN C++"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4382"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 3320."
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "This course is an introduction to methods of secure software design and development. Students will learn about the major security problems found in software today. Using this knowledge, they will work in teams to find these bugs in software, fix the bugs, and design software so that it has fewer security problems. Static analysis tools will be a core part of the class, but students will also be exposed to black box testing tools. Topics will include input validation, buffer overflow prevention, error handling, web application issues, and XML."
+            },
+            "title": {
+                "S": "SECURE PROGRAMMING"
+            },
+            "prereqs": {
+                "L": []
+            }
+        },
+        {
+            "prerequisites_review_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "credits": {
+                "N": "3"
+            },
+            "source": {
+                "S": "2025-2026 CSE course descriptions supplied by user"
+            },
+            "sections": {
+                "M": {}
+            },
+            "terms_offered": {
+                "L": []
+            },
+            "requires_professional_program": {
+                "BOOL": true
+            },
+            "catalog_status": {
+                "S": "NEEDS_REVIEW"
+            },
+            "course_id": {
+                "S": "CSE 4340"
+            },
+            "prerequisite_text": {
+                "S": "Admitted into an Engineering Professional Program. C or better in CSE 4344 or CSE 4352 or consent of instructor. Computer Science and Engineering (CSE) 5"
+            },
+            "catalog_year": {
+                "N": "2025"
+            },
+            "description": {
+                "S": "Fundamentals of wireless networks, radio spectrum, coding and modulation, multiple access techniques, antennas, noise and interference, channels, demodulation and decoding, error rates and capacity, link budgets, medium access control, rate adaption, and wireless LAN/PAN, ad-hoc, and sensor networks."
+            },
+            "title": {
+                "S": "FUNDAMENTALS OF WIRELESS NETWORKS"
+            },
+            "prereqs": {
+                "L": []
+            }
+        }
+    ],
+    "Count": 91,
+    "ScannedCount": 91,
+    "ConsumedCapacity": null
+}
