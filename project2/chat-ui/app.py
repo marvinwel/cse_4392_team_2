@@ -675,6 +675,7 @@ def ask_langchain(prompt, access_token):
         api_response.raise_for_status()
 
         data = api_response.json()
+        return data.get("answer", "The AI Advisor did not return an answer.")
     except requests.exceptions.RequestException:
         return "I'm having trouble connecting to the AI Advisor backend. Please try again shortly."
     except ValueError:
