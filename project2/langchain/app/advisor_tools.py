@@ -275,7 +275,6 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
             "Eligibility cannot be confirmed."
         )
     
-    errors, warnings = [], []
     course = courses.get(course_id)
 
     if course is None:
@@ -315,18 +314,45 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
                if term_order(t["term_id"]) < t_order for c in t["courses"]}
     same_term = next((t["courses"] for t in plan_terms if t["term_id"] == term_id), [])
 
-    # (a) prerequisites
+
+    # (a) Prerequisites
     def satisfied(opt):
         if opt["course_id"] in earlier:
             return True
-        need = GRADE_RANK.get((opt.get("min_grade") or "D").upper(), PASSING_RANK)
+
+        need = GRADE_RANK.get(
+            (opt.get("min_grade") or "D").upper(),
+            PASSING_RANK
+        )
         return grades.get(opt["course_id"], -99) >= need
 
-    missing = [" or ".join(o["course_id"] + (f" ({o['min_grade']} or better)" if o.get("min_grade") else "")
-                           for o in group)
-               for group in course["prereqs"] if not any(satisfied(o) for o in group)]
-    if missing:
-        errors.append("prerequisites not met: " + "; ".join(missing))
+    prerequisites_met = []
+    prerequisites_missing = []
+
+    for group in course.get("prereqs", []):
+        options = [
+            {
+                "course_id": opt["course_id"],
+                "min_grade": opt.get("min_grade", "D"),
+                "satisfied": satisfied(opt),
+            }
+            for opt in group
+        ]
+        group_result = {
+            "options": options,
+            "satisfied": any(o["satisfied"] for o in options),
+        }
+        if group_result["satisfied"]:
+            prerequisites_met.append(group_result)
+        else:
+            prerequisites_missing.append(group_result)
+
+    for group in prerequisites_missing:
+        names = " OR ".join(
+            f"{o['course_id']} ({o['min_grade']} or better)"
+            for o in group["options"]
+        )
+        errors.append(f"Missing prerequisite: {names}")
 
     # (b) already passed, or already in this plan. A D is passing but can be retaken,
     #     because many prerequisites require a C or better.
@@ -389,7 +415,11 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
 
     return {"ok": not errors, "course_id": course_id, "title": course["title"],
             "credits": course["credits"], "term_id": term_id, "counts_toward": groups,
-            "suggested_section": suggested, "errors": errors, "warnings": warnings}
+            "suggested_section": suggested,
+            "prerequisites_met": prerequisites_met,
+            "prerequisites_missing": prerequisites_missing,
+            "prerequisites_validated": course.get("prerequisites_review_status") == "VALIDATED",
+            "errors": errors, "warnings": warnings}
 
 
 def _next_term(term_id: str, include_summer: bool) -> str:
