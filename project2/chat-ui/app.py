@@ -656,16 +656,25 @@ def get_request_executor():
     return ThreadPoolExecutor(max_workers=4)
 
 
-def ask_langchain(prompt):
+def ask_langchain(prompt, access_token):
     try:
         api_response = requests.post(
             f"{LANGCHAIN_API_URL.rstrip('/')}/chat",
-            json={"message": prompt},
+            headers={
+                "Authorization": f"Bearer {access_token}"
+            },
+            json={
+                "message": prompt
+            },
             timeout=120,
         )
+
+        if api_response.status_code in (401, 403):
+            return "Your session is no longer authorized. Please sign in again."
+
         api_response.raise_for_status()
+
         data = api_response.json()
-        return data.get("answer") or "The AI Advisor did not return an answer."
     except requests.exceptions.RequestException:
         return "I'm having trouble connecting to the AI Advisor backend. Please try again shortly."
     except ValueError:
