@@ -1,5 +1,5 @@
 """
-Advisor tools: DynamoDB (students, degree plans) + Chroma (everything catalog).
+Advisor tools: DynamoDB (students, programs, courses, degree plans) + Chroma (RAG documents).
 
     pip install langchain-core boto3
     aws configure                                  # region us-east-2, same as the ingestion Lambda
@@ -9,56 +9,20 @@ Advisor tools: DynamoDB (students, degree plans) + Chroma (everything catalog).
     python dynamo_setup.py                         # creates the student / plan tables
 
 Where data lives
-- DynamoDB advisor_students       profile + transcript (stored inside the item)
-- DynamoDB advisor_degree_plans   saved plans; written ONLY by save_degree_plan, after validation
-- Chroma   ONE collection, filled by the ingestion Lambda, holding three kinds of record
-           (metadata "record_type"):
-             course   id = exact course code ("CSE 3318"), from docs .../courses.json
-             program  id = program code ("BS-CS"),        from docs .../programs.json
-             chunk    id = hash, pieces of catalog / policy documents for open questions
+- DynamoDB advisor_students: student profiles and transcripts
+- DynamoDB advisor_degree_plans: saved plans
+- DynamoDB advisor_courses: structured course catalog by course_id + catalog_year
+- DynamoDB advisor_programs: degree requirements by program_id + catalog_year
+- Chroma: document chunks for semantic RAG search
 
 Embeddings
   The Lambda embeds with Amazon Titan Text Embeddings v2 (1024 dims). search_catalog embeds
   the question with the SAME model; a different model would make the distances meaningless.
 
 The one rule that makes this work
-  Exact facts (credits, prereqs, sections, degree requirements) are read from
-  Chroma with collection.get(ids=[...]): an exact ID lookup, no embeddings.
-  Similarity search (collection.query) is ONLY for open-ended questions like
-  "which course covers network security?". Embeddings can confuse CSE 3318
-  with CSE 3315, so never answer an exact question from query().
-
-Chroma metadata contract (the ingestion Lambda writes records this way)
-  Chroma metadata values must be str/int/float/bool, so nested data is JSON text.
-
-  course records   id: "CSE 3318"   record_type: "course"
-    document:   full course description (this is what gets embedded)
-    metadata:
-      course_id      "CSE 3318"                       same string as the id
-      title          "Algorithms and Data Structures"
-      credits        3                                int
-      prereqs        '[[{"course_id":"CSE 2315"}],
-                       [{"course_id":"CSE 1325","min_grade":"C"},
-                        {"course_id":"CSE 1320","min_grade":"C"}]]'
-                     AND across the outer list, OR inside each inner list. "[]" if none.
-      terms_offered  '["fall","spring"]'             "[]" = no restriction
-      sections       '{"2027-SP":[{"section":"001",
-                        "meetings":[{"day":"M","start":"10:00","end":"11:20"}]}]}'
-                     "{}" if no schedule yet. Days M T W R F S; zero-padded 24h times.
-
-  program records  id: "BS-CS"      record_type: "program"
-    document:   program overview text
-    metadata:
-      program_id     "BS-CS"
-      name           "B.S. Computer Science"
-      total_credits  120                              int
-      requirements   '[{"name":"Core","courses":["CSE 1310","CSE 1320"]},
-                       {"name":"Tech electives","courses":["CSE 4308"],"min_credits":12}]'
-
-  chunk records    id: hash         record_type: "chunk"
-    document:   a chunk of text
-    metadata:   source, category, page, plus course_id / program_id when known
-                (enables exact filtering in search_catalog)
+  Exact course and program facts come from DynamoDB, keyed by catalog year.
+  Chroma similarity search is for open-ended document questions only.
+  Unvalidated catalog records must not be used to approve eligibility or degree plans.
 
 DynamoDB items
   advisor_students      key student_id
@@ -200,38 +164,46 @@ def _json(value, default):
     return json.loads(value) if value else default
 
 
-def fetch_courses(course_ids) -> dict[str, dict]:
-    """Exact lookup by course code. Missing codes are simply absent from the result."""
-    ids = sorted(set(course_ids))
-    if not ids:
-        return {}
-    res = chroma_get(ids=ids)
-    out = {}
-    for cid, md in zip(res["ids"], res["metadatas"]):
-        if (md or {}).get("record_type") != "course":
-            continue
-        out[cid] = {
-            "course_id": cid,
-            "title": md.get("title", ""),
-            "credits": int(md["credits"]),
-            "prereqs": _json(md.get("prereqs"), []),
-            "terms_offered": _json(md.get("terms_offered"), []),
-            "sections": _json(md.get("sections"), {}),
+def fetch_courses(course_ids, catalog_year: int = 2025) -> dict:
+    table = dynamo().Table("advisor_courses")
+
+    courses = {}
+
+    for course_id in sorted({str(cid).strip().upper() for cid in course_ids}):
+        response = table.get_item(
+            Key={
+                "course_id": course_id,
+                "catalog_year": catalog_year,
+            }
+        )
+
+        course = response.get("Item")
+
+        if course:
+            courses[course_id] = _plain(course)
+
+    return courses
+
+
+def fetch_program(program_id: str, catalog_year: int = 2025) -> dict:
+    table = dynamo().Table("advisor_programs")
+    program_id = program_id.strip().upper()
+
+    response = table.get_item(
+        Key={
+            "program_id": program_id,
+            "catalog_year": catalog_year,
         }
-    return out
+    )
 
+    program = response.get("Item")
 
-def fetch_program(program_id: str) -> dict:
-    res = chroma_get(ids=[program_id])
-    if not res["ids"] or (res["metadatas"][0] or {}).get("record_type") != "program":
-        raise LookupError(f"No program {program_id!r} in the catalog")
-    md = res["metadatas"][0]
-    return {
-        "program_id": program_id,
-        "name": md.get("name", program_id),
-        "total_credits": int(md["total_credits"]),
-        "requirements": _json(md.get("requirements"), []),
-    }
+    if not program:
+        raise LookupError(
+            f"Program {program_id} not found for catalog {catalog_year}"
+        )
+
+    return _plain(program)
 
 
 def fetch_student(student_id: str) -> dict:
@@ -280,7 +252,7 @@ def _plan_course_ids(plan_terms) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# The cross-reference: student (DynamoDB) x catalog (Chroma) -> checks (a)-(f)
+# The cross-reference: student x structured catalog (DynamoDB) -> checks (a)-(f)
 # ---------------------------------------------------------------------------
 
 def validate_course(course_id, term_id, *, student, program, courses, plan_terms) -> dict:
@@ -293,13 +265,33 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
 
     Courses planned in EARLIER terms count as completed for prerequisites.
     """
+    if program.get("catalog_status") != "VALIDATED":
+        return {
+            "ok": False,
+            "course_id": course_id,
+            "term_id": term_id,
+            "errors": [
+                "Degree program requirements have not been validated."
+            ],
+            "warnings": [],
+            "suggested_section": None
+        }
+    
     errors, warnings = [], []
     course = courses.get(course_id)
     if course is None:
         return {"ok": False, "course_id": course_id, "term_id": term_id,
                 "errors": [f"{course_id} is not in the course catalog (check the exact code)"],
                 "warnings": [], "suggested_section": None}
-
+    if course.get("prerequisites_review_status") != "VALIDATED":
+        return {
+            "ok": False,
+            "course_id": course_id,
+            "term_id": term_id,
+            "errors": ["Course prerequisites have not been validated."],
+            "warnings": [],
+            "suggested_section": None
+        }
     grades = best_grades(student["transcript"])
     t_type, t_order = term_type(term_id), term_order(term_id)
     earlier = {c["course_id"] for t in plan_terms
@@ -350,7 +342,7 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
     suggested = None
     sections = course["sections"].get(term_id, [])
     if not sections:
-        warnings.append(f"no section times published for {term_id}; schedule conflict not checked")
+        errors.append(f"no section times published for {term_id}; cannot verify schedule eligibility")
     else:
         for sec in sections:
             if not any(_overlaps(m, tm) for m in sec["meetings"] for _, tm in taken):
@@ -371,9 +363,8 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
     earned = sum(courses[cid]["credits"] for cid, r in grades.items()
                  if r >= PASSING_RANK and cid in courses)
     planned = sum(courses[cid]["credits"] for cid in _plan_course_ids(plan_terms))
-    if earned + planned + course["credits"] > program["total_credits"]:
-        errors.append(f"would exceed the {program['total_credits']}-credit degree total "
-                      f"({earned} earned + {planned} planned + {course['credits']})")
+    # The program's total_credits is a graduation minimum, not an enrollment cap.
+    # Do not reject an otherwise eligible course for exceeding this number.
 
     return {"ok": not errors, "course_id": course_id, "title": course["title"],
             "credits": course["credits"], "term_id": term_id, "counts_toward": groups,
@@ -512,27 +503,39 @@ class PlanTerm(BaseModel):
 
 @tool
 def get_student_record(student_id: str) -> dict:
-    """Get a student's major, transcript with grades, earned credits, and saved degree plan names.
-    Use this for any question about what the student has taken or how far along they are."""
+    """Get a student's major, transcript, earned credits, and saved plan names."""
     try:
-        s = fetch_student(student_id)
-        courses = fetch_courses(t["course_id"] for t in s["transcript"])
-        grades = best_grades(s["transcript"])
-        earned = sum(courses[c]["credits"] for c, r in grades.items() if r >= PASSING_RANK and c in courses)
-        plans = list_plan_names(student_id)
-        return {"student_id": s["student_id"], "name": f"{s.get('first_name', '')} {s.get('last_name', '')}".strip(),
-                "program_id": s["program_id"], "catalog_year": s.get("catalog_year"),
-                "transcript": s["transcript"], "earned_credits": earned, "saved_plans": plans}
+        student = fetch_student(student_id)
+        courses = fetch_courses(
+            [t["course_id"] for t in student["transcript"]],
+            catalog_year=int(student["catalog_year"]),
+        )
+        grades = best_grades(student["transcript"])
+        earned = sum(
+            courses[c]["credits"]
+            for c, rank in grades.items()
+            if rank >= PASSING_RANK and c in courses
+        )
+        return {
+            "student_id": student["student_id"],
+            "name": f"{student.get('first_name', '')} {student.get('last_name', '')}".strip(),
+            "program_id": student["program_id"],
+            "catalog_year": student["catalog_year"],
+            "transcript": student["transcript"],
+            "earned_credits": earned,
+            "credits_note": "Credits include only transcript courses found in the matching catalog; not a verified degree audit.",
+            "saved_plans": list_plan_names(student_id),
+        }
     except LookupError as e:
         return {"error": str(e)}
 
-
 @tool
-def get_course_details(course_ids: list[str]) -> dict:
+def get_course_details(course_ids: list[str], catalog_year: int = 2025) -> dict:
     """Exact lookup of courses by code: title, credits, prerequisites, terms offered, sections.
     Always use this (not search_catalog) when you know the course code."""
-    found = fetch_courses(course_ids)
-    missing = sorted(set(course_ids) - set(found))
+    normalized = [cid.strip().upper() for cid in course_ids]
+    found = fetch_courses(normalized, catalog_year=catalog_year)
+    missing = sorted(set(normalized) - set(found))
     return {"courses": list(found.values()), "not_found": missing}
 
 
@@ -559,21 +562,22 @@ def search_catalog(question: str, course_id: Optional[str] = None,
 def check_course_eligibility(student_id: str, course_id: str, term_id: str,
                              plan_name: Optional[str] = None,
                              program_id: Optional[str] = None) -> dict:
-    """Check whether a student can take a course in a term: prerequisites, already passed,
-    counts toward the degree, offered that term, schedule conflicts, semester credit limit,
-    and total degree credits. Pass plan_name to check against a saved plan, and program_id
-    to check against a different major (for "what if I switch majors" questions)."""
+    """Check course eligibility; unvalidated catalog records are rejected."""
     try:
         student = fetch_student(student_id)
         plan_terms = fetch_plan(student_id, plan_name)["terms"] if plan_name else []
-        program = fetch_program(program_id or student["program_id"])
-        courses = fetch_courses([course_id, *(t["course_id"] for t in student["transcript"]),
-                                 *_plan_course_ids(plan_terms)])
-        return validate_course(course_id.upper(), term_id.upper(), student=student, program=program,
-                               courses=courses, plan_terms=plan_terms)
+        catalog_year = int(student["catalog_year"])
+        program = fetch_program(program_id or student["program_id"], catalog_year=catalog_year)
+        course_id = course_id.strip().upper()
+        courses = fetch_courses(
+            [course_id, *(t["course_id"] for t in student["transcript"]),
+             *_plan_course_ids(plan_terms)],
+            catalog_year=catalog_year,
+        )
+        return validate_course(course_id, term_id.upper(), student=student,
+                               program=program, courses=courses, plan_terms=plan_terms)
     except LookupError as e:
         return {"error": str(e)}
-
 
 @tool
 def save_degree_plan(student_id: str, plan_name: str, terms: list[PlanTerm],
@@ -583,13 +587,21 @@ def save_degree_plan(student_id: str, plan_name: str, terms: list[PlanTerm],
     the errors are returned so the plan can be fixed and saved again."""
     try:
         student = fetch_student(student_id)
-        program = fetch_program(program_id or student["program_id"])
+        program = fetch_program(
+            program_id or student["program_id"],
+            catalog_year=int(student["catalog_year"])
+        )
     except LookupError as e:
         return {"error": str(e)}
 
+    if program.get("catalog_status") != "VALIDATED":
+        return {"saved": False, "error": "Degree program requirements have not been validated."}
+
     proposed = _normalize_terms(terms)
-    courses = fetch_courses([*(t["course_id"] for t in student["transcript"]),
-                             *_plan_course_ids(proposed)])
+    courses = fetch_courses(
+        [*(t["course_id"] for t in student["transcript"]), *_plan_course_ids(proposed)],
+        catalog_year=int(student["catalog_year"]),
+    )
 
     accepted, problems, warnings = [], [], []
     for term in proposed:
@@ -607,6 +619,8 @@ def save_degree_plan(student_id: str, plan_name: str, terms: list[PlanTerm],
 
     if problems:
         return {"saved": False, "problems": problems}
+    if not any(t["courses"] for t in accepted):
+        return {"saved": False, "error": "Cannot save an empty degree plan."}
 
     total = sum(courses[c["course_id"]]["credits"] for t in accepted for c in t["courses"])
     _store_plan(student_id, plan_name, program["program_id"], accepted, total)
@@ -629,14 +643,32 @@ def generate_degree_plan(student_id: str, start_term: str, max_credits_per_term:
     plan for a different major. Pass save_as to save the result under that plan name."""
     try:
         student = fetch_student(student_id)
-        program = fetch_program(program_id or student["program_id"])
+        program = fetch_program(
+            program_id or student["program_id"],
+            catalog_year=int(student["catalog_year"]),
+        )
     except LookupError as e:
         return {"error": str(e)}
 
+    if program.get("catalog_status") != "VALIDATED":
+        return {"error": "Degree program requirements have not been validated.", "saved": False}
+
     start_term = start_term.upper()
-    courses = fetch_courses([*(c for g in program["requirements"] for c in g["courses"]),
-                             *(t["course_id"] for t in student["transcript"]),
-                             *(preferred_electives or [])])
+    courses = fetch_courses(
+        [*(c for g in program["requirements"] for c in g["courses"]),
+         *(t["course_id"] for t in student["transcript"]),
+         *(preferred_electives or [])],
+        catalog_year=int(student["catalog_year"]),
+    )
+    missing = sorted({c for g in program["requirements"] for c in g["courses"]} - set(courses))
+    if missing:
+        return {"error": "Required course records are missing for the student's catalog year.",
+                "missing_courses": missing, "saved": False}
+    unvalidated = sorted(cid for cid, course in courses.items()
+                         if course.get("prerequisites_review_status") != "VALIDATED")
+    if unvalidated:
+        return {"error": "Course prerequisites have not been validated.",
+                "unvalidated_courses": unvalidated, "saved": False}
     grades = best_grades(student["transcript"])
     remaining, notes = _courses_still_needed(program, grades, courses, preferred_electives)
     priority = _unlock_counts(remaining, courses)
@@ -694,7 +726,11 @@ def compare_degree_plans(student_id: str, plan_a: str, plan_b: str) -> dict:
         plans = {name: fetch_plan(student_id, name) for name in (plan_a, plan_b)}
     except LookupError as e:
         return {"error": str(e)}
-    courses = fetch_courses(cid for p in plans.values() for cid in _plan_course_ids(p["terms"]))
+    student = fetch_student(student_id)
+    courses = fetch_courses(
+        (cid for p in plans.values() for cid in _plan_course_ids(p["terms"])),
+        catalog_year=int(student["catalog_year"]),
+    )
 
     def summary(p):
         terms = sorted(p["terms"], key=lambda t: term_order(t["term_id"]))
