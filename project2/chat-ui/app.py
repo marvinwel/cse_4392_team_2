@@ -611,7 +611,7 @@ html, body, [data-testid="stApp"],
 .st-key-chat_area iframe {
     display: block !important;
     width: 100% !important;
-    height: calc(100dvh - 220px - var(--input-space)) !important;
+    height: calc(100dvh - 150px - var(--input-space)) !important;
     min-height: 150px !important;
     border: none !important;
 }
