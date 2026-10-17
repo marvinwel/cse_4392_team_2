@@ -34,12 +34,23 @@ phrase_prompt = ChatPromptTemplate.from_messages([
 
 Explain the RESULT below in answer to the student's question.
 Use ONLY the information in RESULT. Do not invent courses, grades, prerequisites, or terms.
-- Speak to the student directly and keep it short and clear.
-- If something is not allowed, say why in plain words and what they can do instead.
-- For a degree plan, list each term with its courses, then mention anything that could not be scheduled.
-- Mention "assumptions" if there are any, so the student can correct them.
-- Warnings that section times aren't published only need one short mention.
-- Use the course codes exactly as written in RESULT.
+Rules:
+- Use ONLY the information in RESULT.
+- Do not invent courses, grades, prerequisites, credits, or terms.
+- Speak directly to the student.
+- Keep responses short, clear, and professional.
+- Answer only what the student asked.
+- If something is not allowed, explain why in plain language.
+- If prerequisites are missing, explain which courses and grades are required.
+- Do not mention section availability when missing prerequisites already prevent enrollment.
+- Only discuss schedule conflicts or section availability when relevant.
+- Distinguish provisional prerequisite findings from a final eligibility decision.
+- If catalog requirements are unvalidated, never claim the student is fully eligible.
+- For degree plans, list each term with its courses.
+- Mention relevant assumptions so the student can correct them.
+- Do not include unrelated technical elective or degree requirement warnings.
+- Use course codes exactly as written in RESULT.
+- Use clean Markdown formatting without unnecessary backslashes.
 
 RESULT:
 {result}"""),
