@@ -119,16 +119,48 @@ def handle(route: str, message: str, student_id: str | None, session_id: str | N
 
 def student_record(message, record, state, today) -> dict:
     data = dict(record)
+
+    # Transcript questions already have the required data.
+    # Avoid fetching every degree requirement and course.
+    transcript_words = (
+        "completed",
+        "transcript",
+        "grades",
+        "courses taken",
+        "classes taken",
+    )
+
+    if any(word in message.lower() for word in transcript_words):
+        return reply(phrase(message, record, data), data)
+
     try:
-        program = fetch_program(record["program_id"])
+        program = fetch_program(
+            record["program_id"],
+            catalog_year=int(record["catalog_year"])
+        )
+
         grades = best_grades(record["transcript"])
-        courses = fetch_courses([c for g in program["requirements"] for c in g["courses"]]
-                                + [t["course_id"] for t in record["transcript"]])
-        remaining, notes = _courses_still_needed(program, grades, courses, [])
-        data.update({"program_name": program["name"], "total_credits_required": program["total_credits"],
-                     "remaining_required_courses": remaining, "notes": notes})
+
+        courses = fetch_courses(
+            [c for g in program["requirements"] for c in g["courses"]]
+            + [t["course_id"] for t in record["transcript"]],
+            catalog_year=int(record["catalog_year"])
+        )
+
+        remaining, notes = _courses_still_needed(
+            program, grades, courses, []
+        )
+
+        data.update({
+            "program_name": program["name"],
+            "total_credits_required": program["total_credits"],
+            "remaining_required_courses": remaining,
+            "notes": notes
+        })
+
     except LookupError as error:
         data["notes"] = [str(error)]
+
     return reply(phrase(message, record, data), data)
 
 
