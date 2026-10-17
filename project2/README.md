@@ -2,11 +2,66 @@
 
 ## Overview
 
-UTA AI Advisor is an AI-powered academic advising application for University of Texas at Arlington (UTA) students.
+The **UTA AI Advisor** is an AI-powered academic advising application.
 
-Students can ask questions about courses, prerequisites, schedules, and degree requirements.
+The application allows students to ask questions about:
 
-The application uses **Streamlit, LangChain, RAG, and Amazon Bedrock** to provide AI-generated answers.
+- Course information and prerequisites
+- Course eligibility
+- Schedule conflicts
+- Degree requirements and planning
+
+The frontend is built using **Streamlit**, authentication is handled by **Amazon Cognito**, and student questions are processed by a **LangChain backend** powered by Amazon Bedrock.
+
+## Application Screenshots
+
+### Login Page — Amazon Cognito
+
+Students must sign in using their credentials before accessing the AI Advisor.
+
+Amazon Cognito handles authentication, while the application provides a custom login interface.
+
+![UTA AI Advisor Login Page](assets/login-page.png)
+
+
+
+# Students
+
+These eight fictional student accounts are used to test the AI Advisor's academic advising features.
+
+| Student ID | Name | Username | Program | Test Scenario |
+|---|---|---|---|---|
+| 1002000101 | Emily Johnson | `emily1234` | BS-CS | New freshman with no completed courses |
+| 1002000102 | Michael Smith | `michael1234` | BS-CS | Sophomore progressing normally |
+| 1002000103 | Sarah Williams | `sarah1234` | BS-CS | Junior with strong academic performance |
+| 1002000104 | James Brown | `james1234` | BS-CS | Prerequisite blocked by a low grade |
+| 1002000105 | Jessica Davis | `jessica1234` | BS-SE | Senior approaching graduation |
+| 1002000106 | David Miller | `david1234` | BS-CS | Failed course, successful retake, and withdrawal |
+| 1002000107 | Sofia Martinez | `sofia1234` | BS-SE | Changed majors from Computer Science to Software Engineering |
+| 1002000108 | Daniel Taylor | `daniel1234` | BS-CS | Part-time student attending summer semesters |
+
+
+
+
+
+### AI Advisor Chat Interface
+
+After authentication, students can interact with the AI Advisor through the Streamlit chat interface.
+
+![UTA AI Advisor Chat Interface](assets/chat-ui.png)
+
+## Example Questions
+
+| Student | Question | Expected Behavior |
+|---|---|---|
+| Emily Johnson | "Make me a degree plan starting Spring 2027." | Generate a degree plan for a new student |
+| Michael Smith | "Can I take CSE 1325 next spring?" | Check prerequisite eligibility |
+| Sarah Williams | "Can I take CSE 3320 and CSE 3318 in spring?" | Check eligibility and schedule conflicts |
+| James Brown | "Can I take CSE 1325?" | Identify that CSE 1320 requires a minimum grade of C |
+| Jessica Davis | "What courses do I have left?" | Identify remaining graduation requirements |
+| David Miller | "Can I take CSE 4303?" | Identify the missing MATH 3330 prerequisite |
+| Sofia Martinez | "What if I switched back to Computer Science?" | Evaluate a potential major change |
+| Daniel Taylor | "Plan two classes per semester, including summers." | Generate a part-time degree plan |
 
 ## Project Features
 
@@ -17,20 +72,55 @@ The application uses **Streamlit, LangChain, RAG, and Amazon Bedrock** to provid
 - Retrieve academic information using RAG
 - Student login using Amazon Cognito (planned)
 
-## Technology Stack
+## Technologies Used
 
-| Component | Technology |
+| Technology | Purpose |
 |---|---|
-| Chat UI | Python, Streamlit |
-| Backend | Python, LangChain |
-| Generative AI | Amazon Bedrock |
-| Embedding Model | Amazon Titan Embeddings V2 |
-| Vector Database | ChromaDB |
-| Academic Data | Amazon S3 |
-| Structured Data | Database / SQL Tools |
-| Hosting | Amazon EC2 |
-| Containerization | Docker |
-| CI/CD | GitHub Actions, Amazon ECR |
+| Streamlit | Web application and chat interface |
+| Amazon Cognito | Student authentication |
+| Python | Application development |
+| FastAPI | Backend REST API |
+| LangChain | AI application orchestration |
+| Amazon Bedrock | Large language model inference |
+| Docker | Application containerization |
+| Amazon EC2 | Application hosting |
+| Amazon ECR | Docker image storage |
+| AWS Secrets Manager | Secure Cognito application credentials |
+| GitHub Actions | Automated deployment |
+
+
+
+## Application Architecture
+
+The Chat UI communicates with the LangChain backend using HTTP requests.
+
+```text
+Student
+   |
+   v
+Streamlit Chat UI (EC2)
+   |
+   +----> Amazon Cognito
+   |       Student Authentication
+   |
+   v
+FastAPI Backend (EC2)
+   |
+   v
+LangChain
+   |
+   +----> RAG / Course Information
+   |
+   +----> Student Data / Academic Checks
+   |
+   v
+Amazon Bedrock
+   |
+   v
+Response to Chat UI
+```
+
+The backend is responsible for processing questions and returning responses. Personalized student-data authorization must be enforced by the backend, not just the frontend login.
 
 ## Project Structure
 
@@ -44,46 +134,6 @@ project2/
 ├── rag/                 # RAG pipeline and embeddings
 │
 └── README.md            # Main project documentation
-```
-
-## Application Architecture
-
-```text
-Student
-   |
-   v
-Streamlit Chat UI (EC2)
-   |
-   v
-LangChain Backend (EC2)
-   |
-   v
-Question Router
-   |
-   +---------------------+
-   |                     |
-   v                     v
-RAG Pipeline          SQL Tools
-   |                     |
-   v                     v
-Embedding Model       Student Data
-   |                     |
-   v                     |
-ChromaDB                  |
-   |                     |
-   +----------+----------+
-              |
-              v
-     LangChain Backend
-              |
-              v
-      Amazon Bedrock
-              |
-              v
-       AI Response
-              |
-              v
-      Streamlit Chat UI
 ```
 
 ## RAG Pipeline
@@ -206,3 +256,25 @@ Hosts the generative LLM used to produce final answers from the student's questi
 **UTA CSE — Team 2**
 
 University of Texas at Arlington
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
