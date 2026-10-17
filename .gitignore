@@ -16,3 +16,7 @@ __pycache__/
 
 # macOS system files
 .DS_Store
+
+
+# Streamlit configuration and secrets
+project2/chat-ui/.streamlit/

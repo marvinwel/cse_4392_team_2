@@ -1,18 +1,19 @@
 [
   {
     "student_id": "1002000101",
-    "first_name": "Maya",
-    "last_name": "Okafor",
+    "first_name": "Emily",
+    "last_name": "Johnson",
     "program_id": "BS-CS",
     "catalog_year": 2026,
     "start_term_id": "2026-FA",
     "scenario": "First-semester freshman; nothing completed yet.",
-    "transcript": []
+    "transcript": [],
+    "cognito_sub": "714b1500-0001-70fa-c5bf-96cfbc3d0729"
   },
   {
     "student_id": "1002000102",
-    "first_name": "Diego",
-    "last_name": "Ramirez",
+    "first_name": "Michael",
+    "last_name": "Smith",
     "program_id": "BS-CS",
     "catalog_year": 2025,
     "start_term_id": "2025-FA",
@@ -43,12 +44,13 @@
         "term_id": "2026-SP",
         "grade": "C"
       }
-    ]
+    ],
+    "cognito_sub": "b1cbf530-6061-70d8-c822-9e18fc4ab270"
   },
   {
     "student_id": "1002000103",
-    "first_name": "Priya",
-    "last_name": "Natarajan",
+    "first_name": "Sarah",
+    "last_name": "Williams",
     "program_id": "BS-CS",
     "catalog_year": 2024,
     "start_term_id": "2024-FA",
@@ -109,12 +111,13 @@
         "term_id": "2026-SP",
         "grade": "B"
       }
-    ]
+    ],
+    "cognito_sub": "71fb85c0-0021-70f6-b6c2-34f1a72ad647"
   },
   {
     "student_id": "1002000104",
-    "first_name": "Jordan",
-    "last_name": "Lee",
+    "first_name": "James",
+    "last_name": "Brown",
     "program_id": "BS-CS",
     "catalog_year": 2025,
     "start_term_id": "2025-FA",
@@ -140,12 +143,13 @@
         "term_id": "2026-SP",
         "grade": "B"
       }
-    ]
+    ],
+    "cognito_sub": "a1eb05c0-a001-7006-896b-f9c8e04edc1f"
   },
   {
     "student_id": "1002000105",
-    "first_name": "Aisha",
-    "last_name": "Rahman",
+    "first_name": "Jessica",
+    "last_name": "Davis",
     "program_id": "BS-SE",
     "catalog_year": 2023,
     "start_term_id": "2023-FA",
@@ -226,12 +230,13 @@
         "term_id": "2026-SP",
         "grade": "A"
       }
-    ]
+    ],
+    "cognito_sub": "815b95e0-a041-7065-1f60-a6bc246794a1"
   },
   {
     "student_id": "1002000106",
-    "first_name": "Ethan",
-    "last_name": "Brooks",
+    "first_name": "David",
+    "last_name": "Miller",
     "program_id": "BS-CS",
     "catalog_year": 2024,
     "start_term_id": "2024-FA",
@@ -297,7 +302,8 @@
         "term_id": "2026-SP",
         "grade": "W"
       }
-    ]
+    ],
+    "cognito_sub": "f18b55a0-d031-7092-6813-b9983a129e41"
   },
   {
     "student_id": "1002000107",
@@ -340,12 +346,13 @@
         "term_id": "2026-SP",
         "grade": "B"
       }
-    ]
+    ],
+    "cognito_sub": "c12bd5e0-b0f1-7019-8dd4-a8e18efe01c6"
   },
   {
     "student_id": "1002000108",
-    "first_name": "Kenji",
-    "last_name": "Watanabe",
+    "first_name": "Daniel",
+    "last_name": "Taylor",
     "program_id": "BS-CS",
     "catalog_year": 2025,
     "start_term_id": "2025-SP",
@@ -376,6 +383,7 @@
         "term_id": "2026-SU",
         "grade": "B"
       }
-    ]
+    ],
+    "cognito_sub": "f1ab55d0-d091-70e8-4270-acbf49f1bcd3"
   }
 ]
