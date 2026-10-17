@@ -60,6 +60,10 @@ Rules:
   unvalidated prerequisites.
 - Do not claim the student is definitively ineligible when
   the catalog requirements are still provisional.
+- Use normal paragraphs with blank lines between them.
+- Never use backslashes for line breaks.
+- When explaining prerequisite groups, preserve AND/OR logic.
+- Clearly distinguish required courses from alternative courses.
 
 RESULT:
 {result}"""),
