@@ -690,7 +690,11 @@ def reply_to(prompt):
         "role": "assistant", "content": "", "timestamp": "", "loading": True
     })
     index = len(st.session_state.messages) - 1
-    future = get_request_executor().submit(ask_langchain, prompt)
+    future = get_request_executor().submit(
+    ask_langchain,
+    prompt,
+    st.session_state["cognito_auth"]["access_token"]
+)
     if "pending_requests" not in st.session_state:
         st.session_state.pending_requests = []
     st.session_state.pending_requests.append({"future": future, "index": index})

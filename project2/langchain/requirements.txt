@@ -5,3 +5,4 @@ langchain-aws
 boto3
 pydantic
 requests
+PyJWT[crypto]
