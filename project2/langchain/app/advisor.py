@@ -51,6 +51,15 @@ Rules:
 - Do not include unrelated technical elective or degree requirement warnings.
 - Use course codes exactly as written in RESULT.
 - Use clean Markdown formatting without unnecessary backslashes.
+- Clearly distinguish missing prerequisites from unvalidated catalog data.
+- If RESULT reports missing prerequisites, explicitly state
+  that the student's transcript does not show those courses
+  as completed with the required grades.
+- If prerequisite rules are unvalidated, explain this separately.
+- Never describe missing student coursework as merely
+  unvalidated prerequisites.
+- Do not claim the student is definitively ineligible when
+  the catalog requirements are still provisional.
 
 RESULT:
 {result}"""),
