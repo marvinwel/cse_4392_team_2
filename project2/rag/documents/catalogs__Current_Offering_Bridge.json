@@ -1,0 +1,1695 @@
+{
+  "scope": "Exact course-code bridge from archived selected degree/core/dependency references to current 2026-2027 catalog definitions and Fall 2026/Spring 2027 undergraduate section snapshots. Not an equivalency table.",
+  "current_offering_policy": "Select the student’s applicable catalog for degree accounting. Consult current course/section enrollment requirements and effective policies when proposing current enrollment. Do not automatically apply archived prerequisites as current permission or replace old degree rules with new ones. Resolve effective-policy conflicts through official advising.",
+  "courses": [
+    {
+      "course": "AAST 2371",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ANTH 2322",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ARAB 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ARAB 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ARAB 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ARAB 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ARAB 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ARCH 1301",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ARCH 2300",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ART 1301",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 11,
+        "2272": 9
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ART 1309",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ART 1310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ART 1317",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ASL 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 5
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ASL 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 3,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ASL 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ASL 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CHIN 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CHIN 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CHIN 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CHIN 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CHIN 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CLAS 1300",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 3,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "COMS 2302",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 30,
+        "2272": 32
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 1106",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 10,
+        "2272": 16
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 1205",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 1310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 6,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 1320",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 7
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 1325",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 3,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 1326",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 2312",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 2315",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 2440",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 2441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 5
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3302",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 3,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3311",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3315",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3318",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 5
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3320",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 5
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3323",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3330",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3341",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3380",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 3442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 5
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4303",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4305",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4308",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4316",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 20,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4317",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 6,
+        "2272": 19
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4321",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4322",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4323",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4342",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4344",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 3,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4352",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4360",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4361",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4378",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4380",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 9,
+        "2272": 11
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4381",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "CSE 4382",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "DIVR 2315",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "DNCE 1300",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 6,
+        "2272": 7
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ECON 2301",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ECON 2305",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 15,
+        "2272": 10
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ENGL 1301",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 155,
+        "2272": 39
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ENGL 1350",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 5
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ENGL 1375",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 12,
+        "2272": 10
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ENGL 2303",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 3,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ENGL 2309",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ENGL 2319",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ENGL 2329",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "ENGR 1101",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "FREN 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 6,
+        "2272": 5
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "FREN 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "FREN 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "FREN 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "FREN 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GERM 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GERM 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GERM 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GERM 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GERM 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GLOBAL 2301",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 9,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GREK 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GREK 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GREK 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GREK 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GWSS 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "GWSS 2315",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HIST 1301",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 21,
+        "2272": 17
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HIST 1302",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 17,
+        "2272": 17
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HIST 1331",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 6,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HIST 1332",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 5
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HIST 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HIST 2377",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HONR 1426",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HONR 2425",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HONR-SC 1426",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "HONR-SC 2425",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "IE 2308",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "IE 3301",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 8,
+        "2272": 8
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "INTS 1310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "JOUR 2340",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "KORE 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 3,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "KORE 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "KORE 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "KORE 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "KORE 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "LATN 1411",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "LATN 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "LATN 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "LATN 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "LATN 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "LING 2371",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 4,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MAS 2300",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 1301",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 20,
+        "2272": 16
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 1302",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 34,
+        "2272": 15
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 1315",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 11,
+        "2272": 7
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 1402",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 1421",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 33,
+        "2272": 27
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 1426",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 55,
+        "2272": 39
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 2326",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 9,
+        "2272": 7
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 2425",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 24,
+        "2272": 32
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 3313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MATH 3330",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 6,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MUSI 1300",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MUSI 1302",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MUSI 1304",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MUSI 2300",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "MUSI 2301",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PHIL 1300",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PHIL 1304",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 9,
+        "2272": 8
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PHIL 2300",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 8
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PHYS 1443",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 21,
+        "2272": 23
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PHYS 1444",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 21,
+        "2272": 18
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "POLS 2311",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 17,
+        "2272": 14
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "POLS 2312",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 20,
+        "2272": 17
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PORT 1441",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PORT 1442",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PORT 2313",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "PORT 2314",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "RUSS 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "RUSS 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "RUSS 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "RUSS 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "RUSS 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "SOCI 1310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 6,
+        "2272": 6
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "SPAN 1441",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 10,
+        "2272": 11
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "SPAN 1442",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 6,
+        "2272": 11
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "SPAN 2310",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "SPAN 2312",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "SPAN 2313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 2,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "SPAN 2314",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 3
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "SPAN 2315",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 1,
+        "2272": 1
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "STATS 3313",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "THEA 1342",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 7,
+        "2272": 10
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "THEA 1343",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 5,
+        "2272": 2
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "UNIV 1131",
+      "current_catalog_block_found": true,
+      "current_undergraduate_section_counts": {
+        "2268": 12,
+        "2272": 4
+      },
+      "status": "Exact-code current catalog match; current enrollment rules must be checked separately from historical degree applicability",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "WOMS 2310",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    },
+    {
+      "course": "WOMS 2315",
+      "current_catalog_block_found": false,
+      "current_undergraduate_section_counts": {
+        "2268": 0,
+        "2272": 0
+      },
+      "status": "No exact-code current course block; manual legacy/transfer/substitution review required",
+      "renaming_or_equivalency_inferred": false
+    }
+  ],
+  "codes_without_current_exact_match": [
+    "ECON 2301",
+    "HONR 1426",
+    "HONR 2425",
+    "HONR-SC 1426",
+    "HONR-SC 2425",
+    "LATN 1411",
+    "PHIL 1300",
+    "PORT 1441",
+    "PORT 1442",
+    "PORT 2313",
+    "PORT 2314",
+    "WOMS 2310",
+    "WOMS 2315"
+  ],
+  "additional_public_queries": [
+    {
+      "term_code": "2268",
+      "subject": "PORT",
+      "career": "UGRD",
+      "open_only": false,
+      "result": "No classes returned",
+      "source_url": "https://arcs-prd.utshare.utsystem.edu/psc/ARCSPRD/EMPLOYEE/PSFT_ACS/c/COMMUNITY_ACCESS.CLASS_SEARCH.GBL"
+    },
+    {
+      "term_code": "2272",
+      "subject": "PORT",
+      "career": "UGRD",
+      "open_only": false,
+      "result": "No classes returned",
+      "source_url": "https://arcs-prd.utshare.utsystem.edu/psc/ARCSPRD/EMPLOYEE/PSFT_ACS/c/COMMUNITY_ACCESS.CLASS_SEARCH.GBL"
+    }
+  ],
+  "source_only_current_pages": [
+    "https://catalog.uta.edu/coursedescriptions/port/",
+    "https://catalog.uta.edu/coursedescriptions/honr/"
+  ],
+  "refreshed_public_review": "2026-10-16 America/Chicago",
+  "offering_count_source": "schedules__2026_Fall__2026_Fall_Undergraduate.json; schedules__2026_Fall__2026_Fall_Supporting_Sections.json; schedules__2027_Spring__2027_Spring_Undergraduate.json; schedules__2027_Spring__2027_Spring_Supporting_Sections.json; excludes added developmental context from degree-offering counts"
+}
