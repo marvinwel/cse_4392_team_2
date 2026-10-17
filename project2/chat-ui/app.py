@@ -1444,29 +1444,40 @@ with main_col:
                     </div>
 
                     <script>
-
-                        function scrollToBottom() {{
-
-                            const chat = document.getElementById("chat-container");
-
-                            if (chat) {{
-
-                                chat.scrollTop = chat.scrollHeight;
-
-                            }}
-
+                        function fitFrame() {{
+                            try {{
+                                const frame = window.frameElement;
+                                if (!frame) return;
+                                const top = frame.getBoundingClientRect().top;
+                                const h = Math.max(200, window.parent.innerHeight - top - 96 - 12);
+                                frame.style.setProperty('height', h + 'px', 'important');
+                                frame.style.setProperty('max-height', h + 'px', 'important');
+                                let p = frame.parentElement;
+                                for (let i = 0; i < 2 && p; i++, p = p.parentElement) {{
+                                    p.style.setProperty('height', h + 'px', 'important');
+                                    p.style.setProperty('max-height', h + 'px', 'important');
+                                }}
+                            }} catch (e) {{}}
                         }}
 
-                        scrollToBottom();
+                        function scrollToBottom() {{
+                            const chat = document.getElementById("chat-container");
+                            if (chat) {{
+                                chat.scrollTop = chat.scrollHeight;
+                            }}
+                        }}
 
-                        window.addEventListener("load", scrollToBottom);
+                        function layout() {{
+                            fitFrame();
+                            scrollToBottom();
+                        }}
 
-                        requestAnimationFrame(scrollToBottom);
-
-                        setTimeout(scrollToBottom, 100);
-
-                        setTimeout(scrollToBottom, 300);
-
+                        layout();
+                        window.addEventListener("load", layout);
+                        requestAnimationFrame(layout);
+                        setTimeout(layout, 100);
+                        setTimeout(layout, 300);
+                        try {{ window.parent.addEventListener("resize", layout); }} catch (e) {{}}
                     </script>
 
                 </body>
