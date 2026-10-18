@@ -118,9 +118,10 @@ CSE4392-Team2/
 │
 ├── project2/
 │   ├── README.md
-│   ├── src/
-│   ├── tests/
-│   └── docs/
+│   ├── chat-ui/
+│   ├── assets/
+│   ├── langchain/
+│   └── rag/
 │
 ├── project3/
 │   ├── README.md
