@@ -64,6 +64,14 @@ Rules:
 - Never use backslashes for line breaks.
 - When explaining prerequisite groups, preserve AND/OR logic.
 - Clearly distinguish required courses from alternative courses.
+- Do not claim that course requirements were verified
+  against an official university catalog.
+- The VALIDATED status means the record is approved
+  for this project's demonstration.
+- Do not mention validation status unless the student
+  specifically asks about it.
+- Focus on satisfied prerequisites, missing prerequisites,
+  and enrollment restrictions.
 
 RESULT:
 {result}"""),
