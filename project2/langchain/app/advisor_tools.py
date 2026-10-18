@@ -165,24 +165,49 @@ def _json(value, default):
 
 
 def fetch_courses(course_ids, catalog_year: int = 2025) -> dict:
-    table = dynamo().Table("advisor_courses")
+    """Retrieve catalog-year-specific courses using DynamoDB batch requests.
 
-    courses = {}
+    BatchGetItem accepts at most 100 keys per request. UnprocessedKeys are
+    retried with exponential backoff to avoid silently missing course records.
+    """
+    import time
 
-    for course_id in sorted({str(cid).strip().upper() for cid in course_ids}):
-        response = table.get_item(
-            Key={
-                "course_id": course_id,
-                "catalog_year": catalog_year,
+    table_name = "advisor_courses"
+    ids = sorted({str(cid).strip().upper() for cid in course_ids if str(cid).strip()})
+    if not ids:
+        return {}
+
+    table = dynamo().Table(table_name)
+    results = {}
+
+    for offset in range(0, len(ids), 100):
+        chunk = ids[offset:offset + 100]
+        pending = {
+            table_name: {
+                "Keys": [
+                    {"course_id": cid, "catalog_year": int(catalog_year)}
+                    for cid in chunk
+                ],
+                "ConsistentRead": False,
             }
-        )
+        }
 
-        course = response.get("Item")
+        for attempt in range(8):
+            response = dynamo().batch_get_item(RequestItems=pending)
+            for item in response.get("Responses", {}).get(table_name, []):
+                results[item["course_id"]] = _plain(item)
 
-        if course:
-            courses[course_id] = _plain(course)
+            pending = response.get("UnprocessedKeys", {})
+            if not pending or not pending.get(table_name, {}).get("Keys"):
+                break
+            time.sleep(min(0.1 * (2 ** attempt), 3.0))
+        else:
+            raise RuntimeError(
+                f"DynamoDB could not retrieve all {table_name} records "
+                "after repeated throttling; retry the request."
+            )
 
-    return courses
+    return results
 
 
 def fetch_program(program_id: str, catalog_year: int = 2025) -> dict:
