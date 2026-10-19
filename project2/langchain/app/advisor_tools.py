@@ -679,6 +679,16 @@ def check_course_eligibility(
             courses=courses,
             plan_terms=plan_terms
         )
+        print(
+        "ELIGIBILITY DEBUG:",
+        {
+            "course": course_id,
+            "prerequisites_met": result.get("prerequisites_met"),
+            "prerequisites_missing": result.get("prerequisites_missing"),
+            "errors": result.get("errors"),
+        },
+        flush=True
+)
 
         # Provide explicit prerequisite conclusions for the LLM.
         if "prerequisites_missing" in result:
