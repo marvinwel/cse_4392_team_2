@@ -136,10 +136,18 @@ def known_subjects() -> frozenset:
 
 
 def _is_course_match(m) -> bool:
+    subject = m.group(1).upper()
     subjects = known_subjects()
+
     if subjects:
-        return m.group(1).upper() in subjects
-    return m.group(1).isupper()          # catalog unavailable: only trust "CSE 3318" style
+        return subject in subjects
+
+    # Accept lowercase and uppercase course codes.
+    return subject in {
+        "CSE", "MATH", "IE", "COMS", "ENGL",
+        "PHYS", "CHEM", "BIOL", "ECON",
+        "POLS", "ENGR", "UNIV"
+    }
 
 
 def normalize_course_code(value) -> Optional[str]:
@@ -253,14 +261,34 @@ def extract(route: str, question: str, previous: Optional[dict] = None, today: O
     })
     data = parse_json(raw)
     try:
-        return model.model_validate({k: v for k, v in data.items() if v is not None})
+        params = model.model_validate({
+            k: v for k, v in data.items()
+            if v is not None
+    })
+
     except ValidationError:
-        # Keep whatever fields are valid; drop the rest.
         clean = {}
+
         for key, value in data.items():
             try:
                 model.model_validate({key: value})
                 clean[key] = value
             except ValidationError:
                 pass
-        return model.model_validate(clean)
+
+        params = model.model_validate(clean)
+
+    if route == "course_eligibility":
+        explicit_courses = codes_in(question)
+
+        if explicit_courses:
+            params.courses = explicit_courses
+
+        if params.term:
+            params.term = normalize_term(params.term, today)
+
+        # Recover an explicitly mentioned term if Gemma omitted it.
+        if not params.term:
+            params.term = normalize_term(question, today)
+
+    return params
