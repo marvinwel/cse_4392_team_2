@@ -634,26 +634,69 @@ def search_catalog(question: str, course_id: Optional[str] = None,
     return {"results": hits}
 
 
+
 @tool
-def check_course_eligibility(student_id: str, course_id: str, term_id: str,
-                             plan_name: Optional[str] = None,
-                             program_id: Optional[str] = None) -> dict:
-    """Check course eligibility; unvalidated catalog records are rejected."""
+def check_course_eligibility(
+    student_id: str,
+    course_id: str,
+    term_id: str,
+    plan_name: Optional[str] = None,
+    program_id: Optional[str] = None
+) -> dict:
+    """Check course eligibility using the student's transcript and catalog."""
+
     try:
         student = fetch_student(student_id)
-        plan_terms = fetch_plan(student_id, plan_name)["terms"] if plan_name else []
-        catalog_year = int(student["catalog_year"])
-        program = fetch_program(program_id or student["program_id"], catalog_year=catalog_year)
-        course_id = course_id.strip().upper()
-        courses = fetch_courses(
-            [course_id, *(t["course_id"] for t in student["transcript"]),
-             *_plan_course_ids(plan_terms)],
-            catalog_year=catalog_year,
+
+        plan_terms = (
+            fetch_plan(student_id, plan_name)["terms"]
+            if plan_name else []
         )
-        return validate_course(course_id, term_id.upper(), student=student,
-                               program=program, courses=courses, plan_terms=plan_terms)
+
+        catalog_year = int(student["catalog_year"])
+
+        program = fetch_program(
+            program_id or student["program_id"],
+            catalog_year=catalog_year
+        )
+
+        course_id = course_id.strip().upper()
+
+        courses = fetch_courses(
+            [
+                course_id,
+                *(t["course_id"] for t in student["transcript"]),
+                *_plan_course_ids(plan_terms)
+            ],
+            catalog_year=catalog_year
+        )
+
+        result = validate_course(
+            course_id,
+            term_id.upper(),
+            student=student,
+            program=program,
+            courses=courses,
+            plan_terms=plan_terms
+        )
+
+        # Provide explicit prerequisite conclusions for the LLM.
+        if "prerequisites_missing" in result:
+            result["academic_prerequisites_satisfied"] = (
+                len(result["prerequisites_missing"]) == 0
+            )
+
+            result["prerequisite_summary"] = (
+                "All configured academic prerequisites are satisfied."
+                if result["academic_prerequisites_satisfied"]
+                else "One or more required prerequisite groups are missing."
+            )
+
+        return result
+
     except LookupError as e:
         return {"error": str(e)}
+
 
 @tool
 def save_degree_plan(student_id: str, plan_name: str, terms: list[PlanTerm],
