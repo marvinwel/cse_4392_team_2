@@ -322,14 +322,26 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
 
     # (a) Prerequisites
     def satisfied(opt):
-        if opt["course_id"] in earlier:
-            return True
+        course_id = opt["course_id"]
+        
 
         need = GRADE_RANK.get(
             (opt.get("min_grade") or "D").upper(),
             PASSING_RANK
         )
-        return grades.get(opt["course_id"], -99) >= need
+
+        if grades.get(course_id, -99) >= need:
+            return True
+
+        if course_id in earlier:
+            return True
+
+        if opt.get("concurrent_allowed", False):
+            same_term_ids = {c["course_id"] for c in same_term}
+            if course_id in same_term_ids:
+                return True
+
+        return False
 
     prerequisites_met = []
     prerequisites_missing = []
@@ -807,7 +819,30 @@ def generate_degree_plan(student_id: str, start_term: str, max_credits_per_term:
         cap = min(max_credits_per_term, MAX_TERM_CREDITS[term_type(term)])
         plan.append({"term_id": term, "courses": []})
         credits = 0
-        for cid in sorted(remaining, key=lambda c: (-priority[c], c)):
+        
+        
+        
+        def scheduling_priority(cid):
+            course = courses[cid]
+
+            # Courses that other courses may take concurrently go first.
+            concurrent_unlocks = sum(
+                1
+                for other_id in remaining
+                if other_id != cid
+                for group in courses[other_id].get("prereqs", [])
+                for option in group
+                if option.get("course_id") == cid
+                and option.get("concurrent_allowed", False)
+            )
+
+            return (-concurrent_unlocks, -priority[cid], cid)
+
+
+        for cid in sorted(remaining, key=scheduling_priority):
+
+
+
             if max_courses_per_term and len(plan[-1]["courses"]) >= max_courses_per_term:
                 break
             if credits + courses[cid]["credits"] > cap:
