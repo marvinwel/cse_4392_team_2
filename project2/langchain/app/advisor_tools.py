@@ -310,27 +310,7 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
         errors.append(
             "Course prerequisites are provisional and have not been validated."
     )
-    # Check Engineering Professional Program admission
-    if course.get("requires_professional_program", False):
-
-        admission_status = student.get(
-            "engineering_professional_program_admitted"
-        )
-
-        if admission_status is True:
-            pass
-
-        elif admission_status is False:
-            errors.append(
-                "Student is not admitted to an Engineering "
-                "Professional Program."
-            )
-
-        else:
-            errors.append(
-                "Engineering Professional Program admission "
-                "has not been verified."
-            )
+    
 
     
     grades = best_grades(student["transcript"])
