@@ -17,6 +17,9 @@ concurrency:
   group: langchain-production
   cancel-in-progress: false
 
+env:
+  CHROMA_URL: "http://18.225.168.240:8000"
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -63,7 +66,7 @@ jobs:
                '-p 8001:8001 '
                '-e AWS_REGION=us-east-2 '
                '-e BEDROCK_MODEL_ID=google.gemma-3-27b-it '
-               '-e CHROMA_URL=http://3.19.68.190:8000 '
+               '-e CHROMA_URL=${{ env.CHROMA_URL }} '
                '-e CHROMA_COLLECTION_ID=2700ece6-2519-4fc4-8db0-f72353e5ac63 '
                f'{image}'),
               'for i in $(seq 1 30); do if curl --fail --silent --max-time 5 http://localhost:8001/health; then exit 0; fi; echo "Waiting for FastAPI..."; sleep 5; done; docker logs uta-langchain; exit 1'
