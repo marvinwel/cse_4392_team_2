@@ -796,6 +796,10 @@ def generate_degree_plan(student_id: str, start_term: str, max_credits_per_term:
                 "unvalidated_courses": unvalidated, "saved": False}
     grades = best_grades(student["transcript"])
     remaining, notes = _courses_still_needed(program, grades, courses, preferred_electives)
+    unmet_requirements = [
+        note for note in notes
+        if "not enough eligible courses" in note.lower()
+    ]
     priority = _unlock_counts(remaining, courses)
 
     plan, last_errors, term, idle = [], {}, start_term, 0
@@ -826,17 +830,20 @@ def generate_degree_plan(student_id: str, start_term: str, max_credits_per_term:
 
     total = sum(courses[c["course_id"]]["credits"] for t in plan for c in t["courses"])
     out = {"program_id": program["program_id"], "start_term": start_term,
-           "complete": not remaining, "last_term": plan[-1]["term_id"] if plan else None,
+           "complete": not remaining and not unmet_requirements, "last_term": plan[-1]["term_id"] if plan else None,
            "semesters": len(plan), "total_planned_credits": total,
            "terms": [{"term_id": t["term_id"],
                       "credits": sum(courses[c["course_id"]]["credits"] for c in t["courses"]),
                       "courses": t["courses"]} for t in plan],
            "could_not_schedule": {c: last_errors.get(c, ["never reached"]) for c in remaining},
-           "notes": notes}
+           "notes": notes,
+           "unmet_requirements": unmet_requirements}
     if save_as:
-        if remaining:
+        if remaining or unmet_requirements:
             out["saved"] = False
-            out["save_note"] = "not saved: some required courses could not be scheduled"
+            out["save_note"] = (
+                "Not saved: the degree plan has unscheduled courses "
+                "or unmet degree requirements.")
         else:
             _store_plan(student_id, save_as, program["program_id"], plan, total)
             out["saved"], out["plan_name"] = True, save_as

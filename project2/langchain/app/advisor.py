@@ -129,7 +129,11 @@ DEGREE PLANNING:
 - List each term with its planned courses.
 - Include credits when available.
 - Distinguish completed courses from planned courses.
-- Mention relevant missing requirements or assumptions.
+- If complete is false, clearly state that the plan is incomplete.
+- Explain any unmet_requirements.
+- Do not promise graduation by last_term unless complete is true.
+- If course sections are null, do not claim schedules are confirmed.
+- Mention relevant assumptions.
 - Avoid unrelated warnings.
 
 FINAL ACCURACY RULES:
