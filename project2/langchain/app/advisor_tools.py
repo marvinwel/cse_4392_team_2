@@ -387,23 +387,39 @@ def validate_course(course_id, term_id, *, student, program, courses, plan_terms
             if sec["section"] == item.get("section"):
                 taken += [(item["course_id"], m) for m in sec["meetings"]]
 
+
     suggested = None
     sections = course["sections"].get(term_id, [])
+
     if not sections:
-        if not errors:
-            errors.append(
-                f"No section times are available for {term_id}; "
-                "schedule eligibility cannot be verified."
-            )
+        warnings.append(
+            f"No section times are available for {term_id}; "
+            "schedule availability has not been verified."
+        )
     else:
         for sec in sections:
-            if not any(_overlaps(m, tm) for m in sec["meetings"] for _, tm in taken):
+            if not any(
+                _overlaps(m, tm)
+                for m in sec["meetings"]
+                for _, tm in taken
+            ):
                 suggested = sec["section"]
                 break
+
         if suggested is None:
-            clashing = sorted({cid for cid, tm in taken
-                               for sec in sections for m in sec["meetings"] if _overlaps(m, tm)})
-            errors.append(f"schedule conflict: every {course_id} section overlaps {', '.join(clashing)}")
+            clashing = sorted({
+                cid
+                for cid, tm in taken
+                for sec in sections
+                for m in sec["meetings"]
+                if _overlaps(m, tm)
+            })
+
+            errors.append(
+                f"Schedule conflict: every {course_id} section "
+                f"overlaps {', '.join(clashing)}"
+            )
+
 
     # (e) semester credit limit
     term_credits = sum(courses[c["course_id"]]["credits"] for c in same_term)
