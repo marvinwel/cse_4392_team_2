@@ -405,23 +405,43 @@ html, body, [data-testid="stApp"],
 .st-key-logout { padding-left: 14px; }
 
 .st-key-logout button {
-    background: #ffffff !important;
-    color: #07478c !important;
-    border: 1.5px solid #07478c !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-    letter-spacing: .2px;
-    min-height: 42px !important;
-    margin-top: 22px !important;
-    box-shadow: none !important;
-    transition: background-color .15s ease, color .15s ease !important;
+    background: linear-gradient(135deg, #ffa24c 0%, #f26b21 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    min-height: 52px !important;
+    margin-top: 17px !important;
+    box-shadow: 0 6px 16px rgba(242, 107, 33, .35) !important;
+    transition: filter .15s ease, transform .15s ease, box-shadow .15s ease !important;
 }
 
-.st-key-logout button p { color: #07478c !important; transition: color .15s ease; }
-.st-key-logout button:hover { background: #07478c !important; border-color: #07478c !important; }
-.st-key-logout button:hover p { color: #ffffff !important; }
-.st-key-logout button:focus-visible { outline: 2px solid #f59b36 !important; outline-offset: 2px; }
+.st-key-logout button p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    white-space: nowrap;
+}
+
+/* Logout icon (door with arrow), drawn with an inline SVG so no extra library is needed */
+.st-key-logout button p::before {
+    content: "";
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.st-key-logout button:hover {
+    filter: brightness(1.07);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(242, 107, 33, .45) !important;
+}
+
+.st-key-logout button:active { transform: translateY(0); }
+.st-key-logout button:focus-visible { outline: 2px solid #ffffff !important; outline-offset: 2px; }
 
 /* ------------------------------------------
    CHAT HEADING
