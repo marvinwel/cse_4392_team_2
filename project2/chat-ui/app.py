@@ -9,7 +9,7 @@ import re
 import os
 import requests
 
-LANGCHAIN_API_URL = os.getenv("LANGCHAIN_API_URL", "http://3.144.31.80:8001")
+LANGCHAIN_API_URL = os.getenv("LANGCHAIN_API_URL", "http://18.119.135.168:8001")
 
 # ==========================================
 # PAGE CONFIGURATION
