@@ -165,3 +165,9 @@ git push origin feature/feature-name
 ```
 
 A Pull Request can then be created for the team to review before merging changes into the `main` branch.
+<br>
+## **Note:** update ip adress in 2 locations <br>
+```
+1. chatui:LANGCHAIN_API_URL
+2. .github/workflows/deploy-langchains.yml:CHROMA_URL
+```

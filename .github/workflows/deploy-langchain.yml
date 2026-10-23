@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  CHROMA_URL: "http://18.225.168.240:8000"
+  CHROMA_URL: "http://18.224.228.207:8000"
 
 jobs:
   build-and-deploy:
