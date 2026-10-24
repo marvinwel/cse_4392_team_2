@@ -551,6 +551,7 @@ def timestamp_now():
     return datetime.now(ZoneInfo("America/Chicago")).strftime("%I:%M %p")
 def new_chat():
     st.session_state.pop("pending_requests", None)
+    st.session_state.advisor_session_id = str(uuid.uuid4())
     st.session_state.messages = [
         {
             "role": "assistant",
@@ -560,6 +561,8 @@ def new_chat():
     ]
 if "messages" not in st.session_state:
     new_chat()
+if "advisor_session_id" not in st.session_state:
+    st.session_state.advisor_session_id = str(uuid.uuid4())
 # ==========================================
 # CHAT HELPERS
 # ==========================================
@@ -600,9 +603,9 @@ def reply_to(prompt):
     """Display a message immediately and send conversation context."""
     history = [
         {"role": message["role"], "content": message["content"]}
-        for message in st.session_state.messages[-12:]
-        if not message.get("loading")
-    ]
+        for message in st.session_state.messages
+        if not message.get("loading") and message.get("content") != WELCOME
+    ][-12:]
     st.session_state.messages.append({
         "role": "user", "content": prompt, "timestamp": timestamp_now()
     })
@@ -787,6 +790,9 @@ with main_col:
 # so Streamlit pins it to the bottom of the viewport.
 # ==========================================
 if auth:
-    if prompt := st.chat_input("Type your message here...", disabled=False):
+    if prompt := st.chat_input(
+        "Type your message here...",
+        disabled=bool(st.session_state.get("pending_requests"))
+    ):
         reply_to(prompt)
         st.rerun()
