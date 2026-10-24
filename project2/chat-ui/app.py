@@ -578,9 +578,9 @@ if _avatar_css:
 # CHAT STATE
 # ==========================================
 WELCOME = (
-    "Hello! I’m your UTA CSE AI Advisor (Team 2).\n\n"
+    "Hello! I’m your UTA CSE AI Advisor (Team 2).\n"
     "I can help you with course information, prerequisites, "
-    "schedule conflicts, and degree planning.\n\n"
+    "and degree planning.\n"
     "How can I help you today?"
 )
 def timestamp_now():
