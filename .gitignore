@@ -19,4 +19,5 @@ __pycache__/
 
 
 # Streamlit configuration and secrets
-project2/chat-ui/.streamlit/
+project2/chat-ui/.streamlit/*
+!project2/chat-ui/.streamlit/config.toml

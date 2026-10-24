@@ -1,0 +1,10 @@
+# Theme Streamlit uses BEFORE app.py's custom CSS loads.
+# Without this, a browser in dark mode gets Streamlit's dark theme for a
+# split second on page load and sign-in (black page, dark input bars).
+[theme]
+base = "light"
+primaryColor = "#0064D9"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f0f3f8"
+textColor = "#17243a"
+font = "sans serif"

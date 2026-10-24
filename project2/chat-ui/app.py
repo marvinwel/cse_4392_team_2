@@ -259,6 +259,10 @@ html, body, [data-testid="stApp"] {
     opacity: 1 !important;
     transition: none !important;
 }
+/* Right after sign-in, the old login form is still in the page for a
+   moment and shows up unstyled (dark full-width bars). The chat page
+   has no forms, so hide any leftover login form here. */
+[data-testid="stForm"], .login-brand, .login-footer { display: none !important; }
 /* ------------------------------------------
    FIXED APP SHELL
    Everything is exactly (viewport - input space) tall,
@@ -578,9 +582,9 @@ if _avatar_css:
 # CHAT STATE
 # ==========================================
 WELCOME = (
-    "Hello! I’m your UTA CSE AI Advisor (Team 2).\n"
+    "Hello! I’m your UTA CSE AI Advisor (Team 2).\n\n"
     "I can help you with course information, prerequisites, "
-    "and degree planning.\n"
+    "schedule conflicts, and degree planning.\n\n"
     "How can I help you today?"
 )
 def timestamp_now():
