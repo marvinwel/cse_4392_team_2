@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -823,9 +824,26 @@ with main_col:
 # so Streamlit pins it to the bottom of the viewport.
 # ==========================================
 if auth:
-    if prompt := st.chat_input(
-        "Type your message here...",
-        disabled=bool(st.session_state.get("pending_requests"))
-    ):
+    # The input is never disabled: disabling it is what made the browser
+    # drop the cursor after every message. You can type (and send) the next
+    # message while the advisor is still answering; each reply fills in
+    # its own "typing" bubble in order.
+    if prompt := st.chat_input("Type your message here..."):
         reply_to(prompt)
         st.rerun()
+
+    # Put the cursor back in the chat box after each full rerun.
+    # The timestamp makes the snippet change every run, so Streamlit
+    # re-executes it instead of reusing the old iframe.
+    components.html(
+        f"""
+        <script>
+        // run {time.time()}
+        const doc = window.parent.document;
+        const box = doc.querySelector('[data-testid="stChatInputTextArea"]')
+                 || doc.querySelector('[data-testid="stChatInput"] textarea');
+        if (box && doc.activeElement !== box) {{ box.focus(); }}
+        </script>
+        """,
+        height=0,
+    )
