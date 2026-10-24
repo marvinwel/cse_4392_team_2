@@ -1,0 +1,337 @@
+Source: https://catalog.uta.edu/academicregulations/degreerequirements/generalcorerequirements/
+Retrieved: 2026-10-16
+Date status: catalog_2026_2027
+Capture: main content; all catalog tabs retained; tables use tab-separated cells.
+
+General Core Requirements
+General Core Curriculum for a Bachelor's Degree
+The University requires the following courses for each degree:
+COMMUNICATION
+[TABLE: tab-separated cells]
+Select two of the following: [spans 2 columns]	6
+COMS 1301	FUNDAMENTALS OF PUBLIC SPEAKING	
+COMS 2302	PROFESSIONAL AND TECHNICAL COMMUNICATION FOR SCIENCE AND ENGINEERING	
+ENGL 1301	RHETORIC AND COMPOSITION I	
+ENGL 1302	RHETORIC AND COMPOSITION II	
+THEA 1303	FUNDAMENTALS OF PRESENTATION	
+Total Hours [spans 2 columns]	6
+[END TABLE]
+CREATIVE ARTS
+[TABLE: tab-separated cells]
+Select one of the following: [spans 2 columns]	3
+ARCH 1301	INTRODUCTION TO DESIGN IN THE BUILT ENVIRONMENT	
+ART 1301	ART APPRECIATION	
+ART 1309	INTRODUCTION TO ART HISTORY I: PREHISTORIC THROUGH 16TH CENTURY	
+ART 1310	INTRODUCTION TO ART HISTORY II: 17TH CENTURY TO THE PRESENT	
+DNCE 1300	DANCE APPRECIATION	
+ENGL 1375	INTRODUCTION TO CREATIVE WRITING	
+JOUR 2340	UNDERSTANDING PHOTOJOURNALISM	
+MUSI 1300	MUSIC APPRECIATION	
+MUSI 1302	JAZZ APPRECIATION	
+MUSI 1304	HISTORY OF ROCK MUSIC	
+MUSI 2300	INTRODUCTION TO WORLD MUSIC	
+MUSI 2301	APPRECIATION OF MUSIC IN FILM	
+THEA 1342	THEATRE AND FILM APPRECIATION	
+THEA 1343	INTRODUCTION TO THEATRE	
+Total Hours [spans 2 columns]	3
+[END TABLE]
+GOVERNMENT/POLITICAL SCIENCE 
+[TABLE: tab-separated cells]
+POLS 2311	GOVERNMENT OF THE UNITED STATES	3
+POLS 2312	STATE AND LOCAL GOVERNMENT	3
+Total Hours [spans 2 columns]	6
+[END TABLE]
+LANGUAGE, PHILOSOPHY AND CULTURE 
+[TABLE: tab-separated cells]
+Select one of the following: [spans 2 columns]	3
+ANTH 2322	GLOBAL CULTURES	
+ARAB 2310	ARABIC CULTURE IN THE WORLD	
+ARAB 2314	INTERMEDIATE ARABIC II	
+ARCH 2300	MASTERWORKS OF WESTERN ARCHITECTURE	
+ART 1317	INTRODUCTION TO ART HISTORY III: AFRICA, ASIA, AMERICAS	
+ASL 2314	INTERMEDIATE AMERICAN SIGN LANGUAGE II	
+CHIN 2310	CHINESE CULTURE IN THE WORLD	
+CHIN 2314	INTERMEDIATE CHINESE II	
+CLAS 1300	INTRODUCTION TO CLASSICAL MYTHOLOGY	
+DIVR/GWSS 2315	INTRODUCTION TO LGBTQ+ STUDIES	
+ENGL 1350	WRITING ABOUT FILM	
+ENGL 2303	TOPICS IN LITERATURE	
+ENGL 2309	WORLD LITERATURE	
+ENGL 2319	BRITISH LITERATURE	
+ENGL 2329	AMERICAN LITERATURE	
+FREN 2310	FRENCH AND FRANCOPHONE CULTURES IN THE WORLD	
+FREN 2314	INTERMEDIATE FRENCH II	
+GERM 2310	GERMAN CULTURE IN THE WORLD	
+GERM 2314	INTERMEDIATE GERMAN II	
+GLOBAL 2301	INTRODUCTION TO GLOBAL ISSUES	
+GREK 2314	GREEK LEVEL IV	
+GWSS 2310	INTRO TO WOMEN'S & GENDER STUDIES	
+HIST 2377	FLIGHT CULTURE AND THE HUMAN EXPERIENCE	
+INTS 1310	INTRODUCTION TO POPULAR CULTURE	
+KORE 2310	KOREAN CULTURE IN THE WORLD	
+KORE 2314	INTERMEDIATE KOREAN II	
+LATN 2314	LATIN LEVEL IV	
+LING 2371	LANGUAGE IN A MULTICULTURAL USA	
+MAS 2300	INTRODUCTION TO MEXICAN AMERICAN STUDIES	
+PHIL 1304	CONTEMPORARY MORAL PROBLEMS	
+PHIL 2300	INTRODUCTION TO PHILOSOPHY	
+RUSS 2310	RUSSIAN CULTURE IN THE WORLD	
+RUSS 2314	INTERMEDIATE RUSSIAN II	
+SOCI/INTS 1310	INTRODUCTION TO POPULAR CULTURE	
+SPAN 2314	INTERMEDIATE SPANISH II	
+SPAN 2310	HISPANIC CULTURE IN THE WORLD	
+SPAN 2315	SPANISH FOR NATIVE/HERITAGE SPEAKERS II	
+Total Hours [spans 2 columns]	3
+[END TABLE]
+LIFE AND PHYSICAL SCIENCE
+[TABLE: tab-separated cells]
+Select two of the following: [spans 2 columns]	6
+ANTH 2307	BIOLOGICAL ANTHROPOLOGY	
+ASTR 1345	INTRODUCTORY ASTRONOMY I	
+ASTR 1346	INTRODUCTORY ASTRONOMY II	
+BIOL 1333	BIOLOGY I FOR NON-SCIENCE MAJORS	
+BIOL 1334	BIOLOGY II FOR NON-SCIENCE MAJORS	
+BIOL 1441	BIOLOGY I FOR SCIENCE MAJORS: CELL AND MOLECULAR BIOLOGY	
+BIOL 1442	BIOLOGY II FOR SCIENCE MAJORS: ECOLOGY AND EVOLUTION	
+BIOL 2457	HUMAN ANATOMY AND PHYSIOLOGY I	
+BIOL 2458	HUMAN ANATOMY AND PHYSIOLOGY II	
+BIOL 2460	MICROBIOLOGY FOR NON-SCIENCE MAJORS	
+CHEM 1345	CHEMISTRY IN THE WORLD AROUND US	
+CHEM 1346	SEX, DRUGS, AND ARTIFICIAL INTELLIGENCE	
+CHEM 1400	INTRODUCTORY CHEMICAL PRINCIPLES	
+CHEM 1441	GENERAL CHEMISTRY I	
+CHEM 1451	CHEMISTRY FOR HEALTH SCIENCES	
+ENVR 1301	INTRODUCTION TO ENVIRONMENTAL SCIENCE	
+ENVR 1330	GLOBAL WARMING	
+ENVR 2314	THE GLOBAL ENVIRONMENT AND HUMAN HEALTH	
+GEOG 2301	PHYSICAL GEOGRAPHY	
+GEOL 1301	EARTH SYSTEMS	
+GEOL 1302	EARTH HISTORY	
+GEOL 1330	GLOBAL WARMING	
+GEOL 1340	WEATHER AND CLIMATE	
+GEOL 1350	INTRODUCTION TO OCEANOGRAPHY	
+GEOL 1360	NATURAL DISASTERS AND HAZARDS	
+PHYS 1300	INTRODUCTION TO MUSICAL ACOUSTICS	
+PHYS 1301	PHYSICS FOR NON SPECIALISTS I	
+PHYS 1302	PHYSICS FOR NON SPECIALISTS II	
+PHYS 1351	ENERGY AND ENVIRONMENT	
+PHYS 1441	GENERAL COLLEGE PHYSICS I	
+PHYS 1442	GENERAL COLLEGE PHYSICS II	
+PHYS 1443	GENERAL TECHNICAL PHYSICS I	
+PHYS 1444	GENERAL TECHNICAL PHYSICS II	
+Total Hours [spans 2 columns]	6
+[END TABLE]
+MATHEMATICS 
+[TABLE: tab-separated cells]
+Select one of the following: [spans 2 columns]	3
+DATA 1301	INTRODUCTION TO DATA SCIENCE	
+MATH 1301	CONTEMPORARY MATHEMATICS	
+MATH 1302	COLLEGE ALGEBRA	
+MATH 1303	TRIGONOMETRY	
+MATH 1308	ELEMENTARY STATISTICAL ANALYSIS	
+MATH 1309	STATISTICAL LITERACY	
+MATH 1315	COLLEGE ALGEBRA FOR ECONOMICS & BUSINESS ANALYSIS	
+MATH 1316	MATHEMATICS FOR ECONOMICS AND BUSINESS ANALYSIS	
+MATH 1324	ALGEBRA AND TRIGONOMETRY	
+MATH 1325	ANALYTIC GEOMETRY	
+MATH 1327	ARCHITECTURAL CALCULUS WITH ANALYTIC GEOMETRY	
+MATH 1330	ARITHMETICAL PROBLEM SOLVING	
+MATH 1331	GEOMETRICAL INFERENCE AND REASONING	
+MATH 1332	FUNCTIONS, DATA, AND APPLICATIONS	
+MATH 1402	COLLEGE ALGEBRA	
+MATH 1421	PREPARATION FOR CALCULUS	
+MATH 1426	CALCULUS I	
+PHIL 2311	LOGIC	
+Three (3) semester credit hours must be selected from the Mathematics list above. The remaining required 3 semester credit hours can be selected from the Mathematics list above or from the following courses: MATH 2425 Calculus II, MATH 2326 Calculus III. [spans 2 columns]	
+Total Hours [spans 2 columns]	3
+[END TABLE]
+SOCIAL AND BEHAVIORAL SCIENCE 
+[TABLE: tab-separated cells]
+Select one of the following: [spans 2 columns]	3
+AAST 2300	INTRODUCTION TO AFRICAN AMERICAN STUDIES	
+ANTH 1306	INTRODUCTION TO ANTHROPOLOGY	
+ANTH 2339	INTRODUCTION TO ARCHAEOLOGY	
+CRCJ 2334	INTRODUCTION TO THE CRIMINAL JUSTICE SYSTEM	
+ECON 2305	PRINCIPLES OF MACROECONOMICS	
+ECON 2306	PRINCIPLES OF MICROECONOMICS	
+ECON 2337	ECONOMICS OF SOCIAL ISSUES	
+EDAD 2330	THEORIES IN LEADERSHIP	
+FINA 2330	MONEY, FINANCE AND THE MODERN CONSUMER	
+GEOG 2302	HUMAN GEOGRAPHY	
+GEOG 2303	WORLD REGIONAL GEOGRAPHY	
+IE 2308	ECONOMICS FOR ENGINEERS	
+KINE 2350	PUBLIC HEALTH: PRINCIPLES AND POPULATIONS	
+LING 2301	INTRODUCTION TO THE STUDY OF HUMAN LANGUAGE	
+MANA 1301	BUSINESS IN A GLOBAL ENVIRONMENT	
+MANA 2302	COMMUNICATIONS IN ORGANIZATIONS	
+MODL 2301	INTRODUCTION TO WORLD LANGUAGES	
+PSYC 1315	INTRODUCTION TO PSYCHOLOGY	
+SOCI 1311	INTRODUCTION TO SOCIOLOGY	
+SOCI 2312	SOCIAL PROBLEMS	
+SOCW 2302	HUMAN BEHAVIOR AND THE SOCIAL ENVIRONMENT	
+SOCW 2361	INTRODUCTION TO SOCIAL WORK	
+SPAN 2300	SPANISH IN THE UNITED STATES	
+Total Hours [spans 2 columns]	3
+[END TABLE]
+U.S. HISTORY 
+[TABLE: tab-separated cells]
+Select two of the following: [spans 2 columns]	6
+HIST 1301	HISTORY OF THE UNITED STATES TO 1865	
+or HIST 1331	TECHNOLOGY AND SCIENCE IN AMERICAN SOCIETY, I [spans 2 columns]
+HIST 1302	HISTORY OF THE UNITED STATES, 1865 TO PRESENT	
+or HIST 1332	TECHNOLOGY AND SCIENCE IN AMERICAN SOCIETY, II [spans 2 columns]
+Total Hours [spans 2 columns]	6
+[END TABLE]
+COMPONENT AREA OPTION 
+[TABLE: tab-separated cells]
+Select two of the following: [spans 2 columns]	6
+Any course listed above (a course may count in only one area) [spans 2 columns]	
+MATH 2425	CALCULUS II	
+MATH 2326	CALCULUS III	
+Total Hours [spans 2 columns]	6
+[END TABLE]
+Total Core Hours
+[TABLE: tab-separated cells]
+All Components [spans 2 columns]	
+Total Hours [spans 2 columns]	42
+[END TABLE]
+
+SOURCE LINKS
+https://catalog.uta.edu/search/?P=COMS%201301
+https://catalog.uta.edu/search/?P=COMS%202302
+https://catalog.uta.edu/search/?P=ENGL%201301
+https://catalog.uta.edu/search/?P=ENGL%201302
+https://catalog.uta.edu/search/?P=THEA%201303
+https://catalog.uta.edu/search/?P=ARCH%201301
+https://catalog.uta.edu/search/?P=ART%201301
+https://catalog.uta.edu/search/?P=ART%201309
+https://catalog.uta.edu/search/?P=ART%201310
+https://catalog.uta.edu/search/?P=DNCE%201300
+https://catalog.uta.edu/search/?P=ENGL%201375
+https://catalog.uta.edu/search/?P=JOUR%202340
+https://catalog.uta.edu/search/?P=MUSI%201300
+https://catalog.uta.edu/search/?P=MUSI%201302
+https://catalog.uta.edu/search/?P=MUSI%201304
+https://catalog.uta.edu/search/?P=MUSI%202300
+https://catalog.uta.edu/search/?P=MUSI%202301
+https://catalog.uta.edu/search/?P=THEA%201342
+https://catalog.uta.edu/search/?P=THEA%201343
+https://catalog.uta.edu/search/?P=POLS%202311
+https://catalog.uta.edu/search/?P=POLS%202312
+https://catalog.uta.edu/search/?P=ANTH%202322
+https://catalog.uta.edu/search/?P=ARAB%202310
+https://catalog.uta.edu/search/?P=ARAB%202314
+https://catalog.uta.edu/search/?P=ARCH%202300
+https://catalog.uta.edu/search/?P=ART%201317
+https://catalog.uta.edu/search/?P=ASL%202314
+https://catalog.uta.edu/search/?P=CHIN%202310
+https://catalog.uta.edu/search/?P=CHIN%202314
+https://catalog.uta.edu/search/?P=CLAS%201300
+https://catalog.uta.edu/search/?P=DIVR%202315
+https://catalog.uta.edu/search/?P=ENGL%201350
+https://catalog.uta.edu/search/?P=ENGL%202303
+https://catalog.uta.edu/search/?P=ENGL%202309
+https://catalog.uta.edu/search/?P=ENGL%202319
+https://catalog.uta.edu/search/?P=ENGL%202329
+https://catalog.uta.edu/search/?P=FREN%202310
+https://catalog.uta.edu/search/?P=FREN%202314
+https://catalog.uta.edu/search/?P=GERM%202310
+https://catalog.uta.edu/search/?P=GERM%202314
+https://catalog.uta.edu/search/?P=GLOBAL%202301
+https://catalog.uta.edu/search/?P=GREK%202314
+https://catalog.uta.edu/search/?P=GWSS%202310
+https://catalog.uta.edu/search/?P=HIST%202377
+https://catalog.uta.edu/search/?P=INTS%201310
+https://catalog.uta.edu/search/?P=KORE%202310
+https://catalog.uta.edu/search/?P=KORE%202314
+https://catalog.uta.edu/search/?P=LATN%202314
+https://catalog.uta.edu/search/?P=LING%202371
+https://catalog.uta.edu/search/?P=MAS%202300
+https://catalog.uta.edu/search/?P=PHIL%201304
+https://catalog.uta.edu/search/?P=PHIL%202300
+https://catalog.uta.edu/search/?P=RUSS%202310
+https://catalog.uta.edu/search/?P=RUSS%202314
+https://catalog.uta.edu/search/?P=SOCI%201310
+https://catalog.uta.edu/search/?P=SPAN%202314
+https://catalog.uta.edu/search/?P=SPAN%202310
+https://catalog.uta.edu/search/?P=SPAN%202315
+https://catalog.uta.edu/search/?P=ANTH%202307
+https://catalog.uta.edu/search/?P=ASTR%201345
+https://catalog.uta.edu/search/?P=ASTR%201346
+https://catalog.uta.edu/search/?P=BIOL%201333
+https://catalog.uta.edu/search/?P=BIOL%201334
+https://catalog.uta.edu/search/?P=BIOL%201441
+https://catalog.uta.edu/search/?P=BIOL%201442
+https://catalog.uta.edu/search/?P=BIOL%202457
+https://catalog.uta.edu/search/?P=BIOL%202458
+https://catalog.uta.edu/search/?P=BIOL%202460
+https://catalog.uta.edu/search/?P=CHEM%201345
+https://catalog.uta.edu/search/?P=CHEM%201346
+https://catalog.uta.edu/search/?P=CHEM%201400
+https://catalog.uta.edu/search/?P=CHEM%201441
+https://catalog.uta.edu/search/?P=CHEM%201451
+https://catalog.uta.edu/search/?P=ENVR%201301
+https://catalog.uta.edu/search/?P=ENVR%201330
+https://catalog.uta.edu/search/?P=ENVR%202314
+https://catalog.uta.edu/search/?P=GEOG%202301
+https://catalog.uta.edu/search/?P=GEOL%201301
+https://catalog.uta.edu/search/?P=GEOL%201302
+https://catalog.uta.edu/search/?P=GEOL%201330
+https://catalog.uta.edu/search/?P=GEOL%201340
+https://catalog.uta.edu/search/?P=GEOL%201350
+https://catalog.uta.edu/search/?P=GEOL%201360
+https://catalog.uta.edu/search/?P=PHYS%201300
+https://catalog.uta.edu/search/?P=PHYS%201301
+https://catalog.uta.edu/search/?P=PHYS%201302
+https://catalog.uta.edu/search/?P=PHYS%201351
+https://catalog.uta.edu/search/?P=PHYS%201441
+https://catalog.uta.edu/search/?P=PHYS%201442
+https://catalog.uta.edu/search/?P=PHYS%201443
+https://catalog.uta.edu/search/?P=PHYS%201444
+https://catalog.uta.edu/search/?P=DATA%201301
+https://catalog.uta.edu/search/?P=MATH%201301
+https://catalog.uta.edu/search/?P=MATH%201302
+https://catalog.uta.edu/search/?P=MATH%201303
+https://catalog.uta.edu/search/?P=MATH%201308
+https://catalog.uta.edu/search/?P=MATH%201309
+https://catalog.uta.edu/search/?P=MATH%201315
+https://catalog.uta.edu/search/?P=MATH%201316
+https://catalog.uta.edu/search/?P=MATH%201324
+https://catalog.uta.edu/search/?P=MATH%201325
+https://catalog.uta.edu/search/?P=MATH%201327
+https://catalog.uta.edu/search/?P=MATH%201330
+https://catalog.uta.edu/search/?P=MATH%201331
+https://catalog.uta.edu/search/?P=MATH%201332
+https://catalog.uta.edu/search/?P=MATH%201402
+https://catalog.uta.edu/search/?P=MATH%201421
+https://catalog.uta.edu/search/?P=MATH%201426
+https://catalog.uta.edu/search/?P=PHIL%202311
+https://catalog.uta.edu/search/?P=MATH%202425
+https://catalog.uta.edu/search/?P=MATH%202326
+https://catalog.uta.edu/search/?P=AAST%202300
+https://catalog.uta.edu/search/?P=ANTH%201306
+https://catalog.uta.edu/search/?P=ANTH%202339
+https://catalog.uta.edu/search/?P=CRCJ%202334
+https://catalog.uta.edu/search/?P=ECON%202305
+https://catalog.uta.edu/search/?P=ECON%202306
+https://catalog.uta.edu/search/?P=ECON%202337
+https://catalog.uta.edu/search/?P=EDAD%202330
+https://catalog.uta.edu/search/?P=FINA%202330
+https://catalog.uta.edu/search/?P=GEOG%202302
+https://catalog.uta.edu/search/?P=GEOG%202303
+https://catalog.uta.edu/search/?P=IE%202308
+https://catalog.uta.edu/search/?P=KINE%202350
+https://catalog.uta.edu/search/?P=LING%202301
+https://catalog.uta.edu/search/?P=MANA%201301
+https://catalog.uta.edu/search/?P=MANA%202302
+https://catalog.uta.edu/search/?P=MODL%202301
+https://catalog.uta.edu/search/?P=PSYC%201315
+https://catalog.uta.edu/search/?P=SOCI%201311
+https://catalog.uta.edu/search/?P=SOCI%202312
+https://catalog.uta.edu/search/?P=SOCW%202302
+https://catalog.uta.edu/search/?P=SOCW%202361
+https://catalog.uta.edu/search/?P=SPAN%202300
+https://catalog.uta.edu/search/?P=HIST%201301
+https://catalog.uta.edu/search/?P=HIST%201331
+https://catalog.uta.edu/search/?P=HIST%201302
+https://catalog.uta.edu/search/?P=HIST%201332

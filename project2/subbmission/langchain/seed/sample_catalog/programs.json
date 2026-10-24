@@ -1,0 +1,90 @@
+[
+  {
+    "program_id": "BS-CS",
+    "name": "B.S. Computer Science",
+    "total_credits": 120,
+    "overview": "SAMPLE DATA. Computer science degree covering programming, algorithms, systems, and a senior design capstone.",
+    "requirements": [
+      {
+        "name": "CSE Core",
+        "courses": [
+          "CSE 1310",
+          "CSE 1320",
+          "CSE 1325",
+          "CSE 2312",
+          "CSE 2315",
+          "CSE 3302",
+          "CSE 3310",
+          "CSE 3318",
+          "CSE 3320",
+          "CSE 4316",
+          "CSE 4317"
+        ]
+      },
+      {
+        "name": "Math and Science",
+        "courses": [
+          "MATH 1426",
+          "MATH 2425",
+          "MATH 3330",
+          "IE 3301"
+        ]
+      },
+      {
+        "name": "CS Electives",
+        "courses": [
+          "CSE 4303",
+          "CSE 4308",
+          "CSE 4309",
+          "CSE 4344",
+          "CSE 4351",
+          "CSE 4380"
+        ],
+        "min_credits": 9
+      }
+    ]
+  },
+  {
+    "program_id": "BS-SE",
+    "name": "B.S. Software Engineering",
+    "total_credits": 120,
+    "overview": "SAMPLE DATA. Software engineering degree covering software process, testing, project management, and a capstone.",
+    "requirements": [
+      {
+        "name": "SE Core",
+        "courses": [
+          "CSE 1310",
+          "CSE 1320",
+          "CSE 1325",
+          "CSE 2312",
+          "CSE 2315",
+          "CSE 3310",
+          "CSE 3318",
+          "CSE 3320",
+          "CSE 4316",
+          "CSE 4317",
+          "CSE 4321",
+          "CSE 4322"
+        ]
+      },
+      {
+        "name": "Math and Science",
+        "courses": [
+          "MATH 1426",
+          "MATH 2425",
+          "IE 3301"
+        ]
+      },
+      {
+        "name": "SE Electives",
+        "courses": [
+          "CSE 4308",
+          "CSE 4344",
+          "CSE 4361",
+          "CSE 4380"
+        ],
+        "min_credits": 6
+      }
+    ]
+  }
+]

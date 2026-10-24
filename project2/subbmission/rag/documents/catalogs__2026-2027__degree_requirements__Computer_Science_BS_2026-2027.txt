@@ -1,0 +1,241 @@
+Source: https://catalog.uta.edu/engineering/computer/undergraduate/computer-science-bs/
+Retrieved: 2026-10-16
+Date status: catalog_2026_2027
+Capture: main content; all catalog tabs retained; tables use tab-separated cells.
+
+Bachelor of Science in Computer Science
+Overview
+Admissions
+Requirements
+Advising
+About This Program
+UTA’s Bachelor of Science in Computer Science (BCBS) degree program is designed to expose students to the intellectual and practical aspects of modern software-intensive computing systems, including software development at various levels involving operating systems, database systems, programming languages, networks, security issues, user interfaces, and artificial intelligence.
+Our students gain fundamental knowledge and practical skills in the design of computer-based systems, as well as demonstrating leadership for a changing profession and world. They will also apply the knowledge and skills gained in the classroom in real-world settings through internships or cooperative education programs and course projects, including a capstone project.
+ABET Accreditation
+The BSCS program has been accredited since 2002 by the Computing Accreditation Commission of ABET, under the commission's General Criteria and the Program Criteria for Computer Science.
+Program Educational Objectives
+The program is designed so that a few years following graduation students will be able to:
+Be technically competent and have commenced a computing career or advanced studies.
+Advance in the profession, especially in responsibility for the design of computer-based systems.
+Demonstrate leadership to advance the growing computer science profession globally. 
+Student Outcomes
+Upon completion of the degree, students will be able to:
+Analyze a complex computing problem and to apply principles of computing and other relevant disciplines to identify solutions.
+Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline.
+Communicate effectively in a variety of professional contexts.
+Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles.
+Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline.
+Apply computer science theory and software development fundamentals to produce computing-based solutions.
+Admissions Criteria
+All entering students majoring in this program are permitted to enroll in general education and pre-professional courses for which they are qualified. Students completing pre-professional courses must meet the academic requirements specified by the College of Engineering prior to applying for admission to the professional program. The Computer Science and Engineering Department requires a 2.5 overall grade point average on a 4.0 scale in each of three categories: (1) overall, (2) required science, mathematics, and engineering courses, and (3) required CSE courses. Additionally, they must have a total of no more than four unsuccessful attempts in engineering courses. Students not in the professional program must have permission from the department chairperson to receive credit for courses listed in the professional program category. Application for admission to the professional program is made to the Department of Computer Science and Engineering.
+Prior Preparation
+This is a four-year program, and requirements for the degree are based upon prior high school preparation through either an honors or college track. More specifically, entering students are expected to have a background in mathematics through precalculus, high school chemistry, and programming in a high-level language such as C, C++, Java or Python.
+Students who have not had the appropriate preparation should contact the departmental advising office for assistance in structuring a degree plan that will include leveling courses. Students requiring leveling courses may require a longer period of time to complete their undergraduate program.
+Readiness Examinations
+Students that have prior programming experience without having course credit for a programming course will have the option to take readiness examinations before enrolling in CSE courses at UTA. Students not passing the readiness examination must take these courses at UTA. A readiness examination may be taken only once per course and only before enrolling in any CSE courses. Additional information is available in the departmental office.
+Curriculum 
+[TABLE: tab-separated cells]
+Foundations [spans 2 columns]	
+General Core Requirements [spans 2 columns]	42
+Students are required to complete specific courses in certain core areas. Those included in the pre-professional program are identified with a footnote. [spans 2 columns]	
+In addition to the specified courses, students must choose 6 hours of U.S. History, 6 hours of Political Science, 3 hours of Language, Philosophy, Culture, and 3 hours of Creative Arts in the general education core. [spans 2 columns]	
+For Communication select: [spans 2 columns]	
+COMS 2302	PROFESSIONAL AND TECHNICAL COMMUNICATION FOR SCIENCE AND ENGINEERING	
+ENGL 1301	RHETORIC AND COMPOSITION I [1]	
+For Mathematics select: [spans 2 columns]	
+MATH 1426	CALCULUS I [1]	
+For Life & Physical Sciences select: [spans 2 columns]	
+PHYS 1443	GENERAL TECHNICAL PHYSICS I [1]	
+PHYS 1444	GENERAL TECHNICAL PHYSICS II [1]	
+For Social & Behavioral Sciences select: [spans 2 columns]	
+IE 2308	ECONOMICS FOR ENGINEERS	
+or ECON 2305	PRINCIPLES OF MACROECONOMICS [spans 2 columns]
+For Component Area Option select: [spans 2 columns]	
+MATH 2425	CALCULUS II [1]	
+MATH 2326	CALCULUS III	
+BSCS Foundations [spans 2 columns]	
+Additional hours required in core [spans 2 columns]	4
+UNIV 1131	STUDENT SUCCESS	1
+or ENGR 1101	ENTRANCE TO ENGINEERING FOR TRANSFER STUDENTS [spans 2 columns]
+or UNIV 1101	CAREER PREPARATION AND STUDENT SUCCESS [spans 2 columns]
+CSE 1106	INTRODUCTION TO COMPUTER SCIENCE AND ENGINEERING	1
+CSE 1310	INTRODUCTION TO COMPUTERS & PROGRAMMING	3
+CSE 1320	INTERMEDIATE PROGRAMMING	3
+CSE 1325	OBJECT-ORIENTED PROGRAMMING	3
+CSE 2312	COMPUTER ORGANIZATION & ASSEMBLY LANGUAGE PROGRAMMING	3
+CSE 2315	DISCRETE STRUCTURES	3
+CSE 3318	ALGORITHMS & DATA STRUCTURES	3
+BSCS Specialization (Professional Program) [2] [spans 2 columns]	
+IE 3301	ENGINEERING PROBABILITY	3
+or MATH 3313	INTRODUCTION TO PROBABILITY [spans 2 columns]
+CSE 3302	PROGRAMMING LANGUAGES	3
+CSE 3310	FUNDAMENTALS OF SOFTWARE ENGINEERING	3
+CSE 3314	PROFESSIONAL PRACTICES	3
+CSE 3315	THEORETICAL CONCEPTS IN COMPUTER SCIENCE AND ENGINEERING	3
+CSE 3320	OPERATING SYSTEMS	3
+CSE 3330	DATABASE SYSTEMS AND FILE STRUCTURES	3
+CSE 3380	LINEAR ALGEBRA FOR CSE	3
+or MATH 3330	INTRODUCTION TO LINEAR ALGEBRA AND VECTOR SPACES [spans 2 columns]
+CSE 4316	COMPUTER SYSTEM DESIGN PROJECT I	3
+CSE 4317	COMPUTER SYSTEM DESIGN PROJECT II	3
+CSE 4344	COMPUTER NETWORK ORGANIZATION	3
+Select one of the following: [spans 2 columns]	3
+CSE 4380	INFORMATION SECURITY	
+CSE 4381	INFORMATION SECURITY II	
+CSE 4382	SECURE PROGRAMMING	
+Technical Electives [spans 2 columns]	
+Select six from the following [spans 2 columns]	18
+CSE 4303	COMPUTER GRAPHICS	
+CSE 4304	GAME DESIGN AND DEVELOPMENT	
+CSE 4305	COMPILERS FOR ALGORITHMIC LANGUAGES	
+CSE 4308	ARTIFICIAL INTELLIGENCE	
+CSE 4309	FUNDAMENTALS OF MACHINE LEARNING	
+CSE 4310	FUNDAMENTALS OF COMPUTER VISION	
+CSE 4311	NEURAL NETWORKS AND DEEP LEARNING	
+CSE 4321	SOFTWARE TESTING & MAINTENANCE	
+CSE 4322	SOFTWARE PROJECT MANAGEMENT	
+CSE 4323	QUANTITATIVE COMPUTER ARCHITECTURE	
+CSE 4331	DATABASE IMPLEMENTATION AND THEORY	
+CSE 4333	CLOUD COMPUTING FUNDAMENTALS AND APPLICATIONS	
+CSE 4334	DATA MINING	
+CSE 4345	COMPUTATIONAL METHODS	
+CSE 4351	PARALLEL PROCESSING	
+CSE 4360	AUTONOMOUS ROBOT DESIGN AND PROGRAMMING	
+CSE 4361	SOFTWARE DESIGN PATTERNS	
+CSE 4373	GENERAL PURPOSE GPU PROGRAMMING	
+CSE 4376	DIGITAL COMMUNICATION SYSTEMS	
+CSE 4378	INTRODUCTION TO UNMANNED VEHICLE SYSTEMS	
+CSE 4379	UNMANNED VEHICLE SYSTEM DEVELOPMENT	
+CSE 4380	INFORMATION SECURITY	
+CSE 4381	INFORMATION SECURITY II	
+CSE 4382	SECURE PROGRAMMING	
+CSE 4392	SPECIAL TOPICS (Only specific sections that are approved by your advisor)	
+CSE 3311	OBJECT-ORIENTED SOFTWARE ENGINEERING	
+CSE 3313	INTRODUCTION TO SIGNAL PROCESSING	
+CSE 3340	INTRODUCTION TO HUMAN COMPUTER INTERACTION	
+ENGR 4302	ENGINEERING ENTREPRENEURSHIP	
+IE 3315	OPERATIONS RESEARCH I	
+Select any electives sufficient to complete 123 hours [spans 2 columns]	3
+Total Hours [spans 2 columns]	123
+[END TABLE]
+[1]
+Core course included in the pre-professional program.
+[2]
+All pre-requisites for professional courses must be completed with a C or better.
+Total hours will depend upon prior preparation and academic qualifications. 
+[TABLE: tab-separated cells]
+First Year [spans 4 columns]
+Fall Semester	Hours	Spring Semester	Hours
+UNIV 1131, ENGR 1101, or UNIV 1101	1	CSE 1106	1
+CSE 1310	3	CSE 1320	3
+MATH 1426	4	MATH 2425	4
+ENGL 1301	3	PHYS 1443	4
+U.S. History (part 1)	3	CSE 2315	3
+Language, Philosophy & Culture	3	[spans 2 columns]
+	17		15
+Second Year [spans 4 columns]
+Fall Semester	Hours	Spring Semester	Hours
+CSE 1325	3	CSE 3380 or MATH 3330	3
+CSE 2312	3	CSE 3310	3
+CSE 3318	3	CSE 3320	3
+PHYS 1444	4	MATH 2326	3
+U.S. History (part 2)	3	COMS 2302	3
+	16		15
+Third Year [spans 4 columns]
+Fall Semester	Hours	Spring Semester	Hours
+CSE 3302	3	CSE 4344	3
+CSE 3330	3	Government/Political Science	3
+CSE 3315	3	Technical Elective	3
+IE 3301 or MATH 3313	3	Technical Elective	3
+Government/Political Science	3	Technical Elective	3
+	15		15
+Fourth Year [spans 4 columns]
+Fall Semester	Hours	Spring Semester	Hours
+CSE 3314	3	CSE 4317	3
+CSE 4316	3	CSE 4380, 4381, or 4382	3
+ECON 2305 or IE 2308	3	Technical Elective	3
+Technical Elective	3	Open Elective	3
+Technical Elective	3	Creative Arts	3
+	15		15
+Total Hours: 123 [spans 4 columns]
+[END TABLE]
+Program Completion
+Refer to the College of Engineering section of this catalog for information concerning the following topics: Preparation in High School for Admission to the College of Engineering, Admission to the College of Engineering, Admission to the Professional Program, Counseling, College of Engineering Academic Regulations, Transfer Policies, College of Engineering Probation, Repeating Course Policy and Academic Honesty.
+Advising Resources
+First time in college students meet with engineering advisors in the UAEC (UAECengineering@uta.edu).  Transfer students are advised prior to New Maverick Orientation by the department.  Students, please read all student emails carefully and consult the department advising webpage for additional contact information and answers to common questions. 
+Location:
+ERB 6th Floor: ERB 643, ERB 644, ERB 645, ERB 646, ERB 622A
+Email:
+cseugadvising@uta.edu
+Phone:
+817-272-3785
+Web:
+Find our contact information, walk-in advising schedule, and virtual appointment links here
+
+SOURCE LINKS
+http://www.abet.org/ 
+https://catalog.uta.edu/academicregulations/degreerequirements/generalcorerequirements/
+https://catalog.uta.edu/search/?P=COMS%202302
+https://catalog.uta.edu/search/?P=ENGL%201301
+https://catalog.uta.edu/search/?P=MATH%201426
+https://catalog.uta.edu/search/?P=PHYS%201443
+https://catalog.uta.edu/search/?P=PHYS%201444
+https://catalog.uta.edu/search/?P=IE%202308
+https://catalog.uta.edu/search/?P=ECON%202305
+https://catalog.uta.edu/search/?P=MATH%202425
+https://catalog.uta.edu/search/?P=MATH%202326
+https://catalog.uta.edu/search/?P=UNIV%201131
+https://catalog.uta.edu/search/?P=ENGR%201101
+https://catalog.uta.edu/search/?P=UNIV%201101
+https://catalog.uta.edu/search/?P=CSE%201106
+https://catalog.uta.edu/search/?P=CSE%201310
+https://catalog.uta.edu/search/?P=CSE%201320
+https://catalog.uta.edu/search/?P=CSE%201325
+https://catalog.uta.edu/search/?P=CSE%202312
+https://catalog.uta.edu/search/?P=CSE%202315
+https://catalog.uta.edu/search/?P=CSE%203318
+https://catalog.uta.edu/search/?P=IE%203301
+https://catalog.uta.edu/search/?P=MATH%203313
+https://catalog.uta.edu/search/?P=CSE%203302
+https://catalog.uta.edu/search/?P=CSE%203310
+https://catalog.uta.edu/search/?P=CSE%203314
+https://catalog.uta.edu/search/?P=CSE%203315
+https://catalog.uta.edu/search/?P=CSE%203320
+https://catalog.uta.edu/search/?P=CSE%203330
+https://catalog.uta.edu/search/?P=CSE%203380
+https://catalog.uta.edu/search/?P=MATH%203330
+https://catalog.uta.edu/search/?P=CSE%204316
+https://catalog.uta.edu/search/?P=CSE%204317
+https://catalog.uta.edu/search/?P=CSE%204344
+https://catalog.uta.edu/search/?P=CSE%204380
+https://catalog.uta.edu/search/?P=CSE%204381
+https://catalog.uta.edu/search/?P=CSE%204382
+https://catalog.uta.edu/search/?P=CSE%204303
+https://catalog.uta.edu/search/?P=CSE%204304
+https://catalog.uta.edu/search/?P=CSE%204305
+https://catalog.uta.edu/search/?P=CSE%204308
+https://catalog.uta.edu/search/?P=CSE%204309
+https://catalog.uta.edu/search/?P=CSE%204310
+https://catalog.uta.edu/search/?P=CSE%204311
+https://catalog.uta.edu/search/?P=CSE%204321
+https://catalog.uta.edu/search/?P=CSE%204322
+https://catalog.uta.edu/search/?P=CSE%204323
+https://catalog.uta.edu/search/?P=CSE%204331
+https://catalog.uta.edu/search/?P=CSE%204333
+https://catalog.uta.edu/search/?P=CSE%204334
+https://catalog.uta.edu/search/?P=CSE%204345
+https://catalog.uta.edu/search/?P=CSE%204351
+https://catalog.uta.edu/search/?P=CSE%204360
+https://catalog.uta.edu/search/?P=CSE%204361
+https://catalog.uta.edu/search/?P=CSE%204373
+https://catalog.uta.edu/search/?P=CSE%204376
+https://catalog.uta.edu/search/?P=CSE%204378
+https://catalog.uta.edu/search/?P=CSE%204379
+https://catalog.uta.edu/search/?P=CSE%204392
+https://catalog.uta.edu/search/?P=CSE%203311
+https://catalog.uta.edu/search/?P=CSE%203313
+https://catalog.uta.edu/search/?P=CSE%203340
+https://catalog.uta.edu/search/?P=ENGR%204302
+https://catalog.uta.edu/search/?P=IE%203315
+https://catalog.uta.edu/engineering/
+https://www.uta.edu/academics/schools-colleges/engineering/academics/departments/cse/students/undergraduate-advising

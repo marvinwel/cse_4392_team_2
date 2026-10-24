@@ -1,0 +1,146 @@
+Source: https://catalog.uta.edu/archives/2022-2023/midyearaddendum/
+Catalog year: 2022-2023
+Retrieved: 2026-10-16
+Capture: complete main content, including all archived catalog tabs and tables. Archived publication; selected for the student’s matching catalog year.
+
+Mid-Year Addendum
+This is an archived copy of the 2022-2023 catalog. To access the most recent version of the catalog, please visit http://catalog.uta.edu/.
+Overview
+Administrative Updates
+College of Architecture, Planning and Public Affairs
+College of Business
+College of Education
+College of Engineering
+College of Liberal Arts
+College of Nursing and Health Innovation
+College of Science
+School of Social Work
+Honors College
+Division of Student Success
+ABOUT THE MID-YEAR ADDENDUM
+Overview
+The University Catalog is published annually and serves as a reference for the academic year. The University recognizes the evolving nature of curriculum and policy development results in proposal approvals throughout the academic year. The University Catalog Mid-Year Addendum allows critical policy updates and academic courses and programs approved outside the catalog publication cycle to be included in the official University catalog in a timely manner.
+The Mid-Year Addendum is limited to policy updates to maintain compliance or align with international, national, state and other regulatory bodies, newly approved academic courses and programs, and critical announcements. Items included in the Mid-Year Addendum are effective at the start of the Spring term unless otherwise noted.
+Prior Publications
+The University of Texas at Arlington Online University Catalog, published in June, is the official catalog of the University and takes precedence over any previously printed or online catalog.  As such, the University Catalog Mid-Year Addendum, published and effective at the start of Spring term, also supersedes catalog editions published prior to this date.
+Students are governed by the catalog under which they were enrolled or, at a student’s option, the catalog of any subsequent year in which that student was in residence. Please refer to the academic requirements and procedures sections for more information.
+In This Edition
+Below is a list of items included in the 2023 edition of the University Catalog Mid-Year Addendum. If the page is listed here, detailed information can be found in the corresponding tab above. If no updates were made, the page will be notated with, "No updates at this time."
+Administrative Updates
+The University of Texas at Arlington > About UTA
+Updates SACSOC accreditation statement
+University Requirements & Policies > Student Rights & Security
+Updates language in Student Complaints & Appeals and Grievances Other than Grades sections
+College of Engineering
+Electrical Engineering > Graduate Programs > Certificates
+Adds two new Electrical Engineering certificates to graduate programs
+Graduate Certificate in Cyber-physical Systems
+Graduate Certificate in Electric Propulsion
+Administrative Updates
+Page: The University of Texas at Arlington > About UTA
+University Profile
+The University of Texas at Arlington is accredited by the Southern Association of Colleges and Schools Commission on Colleges (SACSCOC) to award baccalaureate, master’s, and doctoral degrees. Degree-granting institutions also may offer credentials such as certificates and diplomas at approved degree levels. Questions about the accreditation of the University of Texas at Arlington may be directed in writing to the Southern Association of Colleges and Schools Commission on Colleges at 1866 Southern Lane, Decatur, GA 30033-4097, by calling (404) 679-4500, or by using information available on SACSCOC’s website.
+Page: University Requirements & Policies > Student Rights & Security
+Student Complaints and Appeals
+UT Arlington is committed to addressing student complaints in a fair, consistent, and professional manner. In attempting to resolve a complaint, the student must first make a serious effort to resolve the matter with the individual with whom the grievance originated.
+Complaints involving academic matters other than grades can be filed with the academic department chair then appealed to the dean. If the complaint originates within a school/college or an academic department, then a student should contact the school/college or academic department for instructions and complaint/appeal filing requirements.
+Non-academic complaints can be filed with the office director then appealed to the unit head/vice president, The dean of students’ File a Complaint webpage  contains direct links to the various offices’ complaint processes and office contact information and can be used to determine where and how to file a complaint that originated outside of a college/school or academic department.
+All complaints/appeals must be submitted in writing either on an appeal form or through the documentation process required by the office or unit where the complaint originated.
+Students may formally appeal to the dean of students a decision made by a school/college dean or unit head/vice president only when the student can present evidence of differential treatment or procedural irregularity.  The dean of students’ UTA Student Formal Appeal Form is available on the dean of students’ File A Complaint webpage.
+Complaint and appeal procedures are applicable to all classifications of UTA students enrolled in academic courses and programs in all locations or online.
+Information on procedures related to grade grievances is available in the Undergraduate Grade and Grading Policies and Graduate Grade and Grading Policies sections of the catalog.
+Grievances Other than Grades
+Refer to Student Complaints and Appeals section above.
+College of Architecture, Planning and Public Affairs
+No updates at this time
+College of Business
+NO UPDATES AT THIS TIME
+College of Education
+NO UPDATES AT THIS TIME
+College of Engineering
+PAGE: Electrical Engineering > Graduate Programs > Certificates
+GRADUATE CERTIFICATE IN CYBER-PHYSICAL SYSTEMS
+PROGRAM OBJECTIVE
+The certificate provides graduate students with a comprehensive knowledge of Cyber-physical systems that feature a tight integration of computation and physical components. Topics covered include model-based and data-driven solutions for CPS, co-design techniques that address a variety of computation, networking, control, and physical constraints in real systems, and related software, hardware, and middle issues. This program aims at the dual goal of providing the local aviation and defense industries with a workforce knowledgeable of cyber physical systems and offering career advancement opportunities for their employees. Upon completion, students will be able to
+Model, analyze, and control cyber-physical systems
+Apply data-driven analytical tools and intelligent control systems to manage cyber-physical systems.
+Understand the relationships between cyber-physical systems, the internet of things, intelligent transportation systems, and robot networking.
+ADMISSION REQUIREMENTS
+Existing students may earn this certificate by completing the required courses and submitting a Request for Certificate to the UTA Office of Records. Non-degree seeking students must satisfy the admission requirements established by the Graduate School for special non-degree-seeking and graduate certificate applicants.
+Unconditional Admission is granted if all the following conditions are met:
+A Bachelor’s degree in an engineering with a minimum GPA of 3.0 or a current enrollment in an engineering master’s program at UTA with a minimum GPA of 3.0.
+Those who desire the certificate program without enrolling in graduate degree program must be admitted to UTA as a non‐degree certificate-seeking student.
+If English is not the applicant's native language, he/she should meet the EE admission requirement on TOEFL iBT, or IELTS.  International applicants who have successfully completed a BS or MS from an institution in the United States and are not seeking funding as a Graduate Teaching Assistant, are not required to meet this requirement.
+Remedial work may be required for applicant without an engineering or science background.
+ACADEMIC REQUIREMENTS
+Students must complete the two required/core courses and select two elective courses as outlined above. All courses used to satisfy the certificate requirements must be passed with a grade of B or better. The time limit for completion of the Certificate Program is 6 years.
+Degree seeking students who successfully complete the certificate program will be eligible to continue their studies to earn a Master of Science in Electrical Engineering with a focus in cyber-physical systems, and the courses that are completed in the certificate program can be used to satisfy the course requirements the MSEE program.
+[TABLE: tab-separated cells]
+Required/Core Courses [spans 2 columns]
+EE 5304	CYBER-PHYSICAL SYSTEMS	3
+EE 6353	CONVEX OPTIMIZATION FOR ENGINEERS	3
+Elective Courses [spans 2 columns]
+EE 5307	LINEAR SYSTEMS ENGINEERING	3
+EE 5321	OPTIMAL CONTROL	3
+EE 5322	INTELLIGENT CONTROL SYSTEMS	3
+[END TABLE]
+GRADUATE CERTIFICATE IN ELECTRIC PROPULSION
+Program objective
+The certificate program emphasizes the common elements of Electric Propulsion including power electronics, electric machines and drives, and energy distribution systems. Sample topics include principles of inductors, transformers, force/torque formulation, modeling and analysis of power electronics devices and systems.  This program aims to provide the transportation electrification industry with a new well-educated and locally available workforce.  Existing industry employees who complete the certificate will have greater advancement opportunities for their employees. Upon completion, students will be able to:
+Model, analyze, or control power electronics circuits and systems
+Model, analyze, or control electric machines and drives
+Understand the impact of power quality
+ADMISSION REQUIREMENTS
+Existing students may earn this certificate by completing the required courses and submitting a Request for Certificate to the UTA Office of Records. Non-degree seeking students must satisfy the admission requirements established by the Graduate School for special non-degree-seeking and graduate certificate applicants.
+Unconditional Admission is granted if all the following conditions are met:
+A Bachelor’s degree in an engineering discipline with a minimum GPA of 3.0 or a current enrollment in an engineering Master’s program at UTA with a minimum GPA of 3.0.
+Those who desire to complete the certificate program without enrolling in graduate degree program must be admitted to UTA as a non‐degree seeking student.
+If English is not the applicant's native language, he/she should meet the EE admission requirement on TOEFL iBT, or IELTS.  International applicants who have successfully completed a BS or MS from an institution in the United States and are not seeking funding as a Graduate Teaching Assistant, are not required to meet this requirement.
+Remedial work may be required if an applicant does not have an engineering or science background.
+ACADEMIC REQUIREMENTS
+Students must complete two (2) required/Core courses and one (1) elective course as outlined. All courses used to satisfy the certificate requirements must be passed with a grade of B or better. The time limit for completion of the Certificate Program is 2 years.
+Degree seeking students who successfully complete the certificate program will be eligible to continue their studies to earn a Master of Science in Electrical Engineering with a focus in Power and Energy, and the courses that are completed in the certificate program can be used to satisfy the course requirements the MSEE program.
+[TABLE: tab-separated cells]
+Required/Core Courses [spans 2 columns]
+EE 5370	ELECTRIC MOTOR DRIVES	3
+EE 6375	POWER ELECTRONICS ENGINEERING	3
+Elective Courses [spans 2 columns]
+EE 5374	POWER SYSTEM PROTECTIVE RELAYING	3
+EE 5375	POWER SYSTEM DISTRIBUTION	3
+EE 5378	POWER QUALITY	3
+[END TABLE]
+College of Liberal Arts
+NO UPDATES AT THIS TIME
+College of Nursing and Health Innovation
+NO UPDATES AT THIS TIME
+College of Science
+NO UPDATES AT THIS TIME
+School of Social Work
+NO UPDATES AT THIS TIME
+Honors College
+NO UPDATES AT THIS TIME
+Division of Student Success
+NO UPDATES AT THIS TIME
+
+SOURCE LINKS
+http://catalog.uta.edu/
+https://catalog.uta.edu/archives/2022-2023/academicregulations/
+https://catalog.uta.edu/archives/2022-2023/aboututa/
+https://www.sacscoc.org/
+https://catalog.uta.edu/archives/2022-2023/academicregulations/security/
+https://www.uta.edu/student-affairs/dos/file-a-complaint
+https://common.forms.uta.edu/view.php?id=2491
+https://catalog.uta.edu/archives/2022-2023/academicregulations/grades/#undergraduatetext
+https://catalog.uta.edu/archives/2022-2023/academicregulations/grades/#graduatetext
+https://catalog.uta.edu/archives/2022-2023/engineering/electrical/graduate/#certificatestext
+https://catalog.uta.edu/academicregulations/admissions/graduate/#text
+https://catalog.uta.edu/search/?P=EE%205304
+https://catalog.uta.edu/search/?P=EE%206353
+https://catalog.uta.edu/search/?P=EE%205307
+https://catalog.uta.edu/search/?P=EE%205321
+https://catalog.uta.edu/search/?P=EE%205322
+https://catalog.uta.edu/search/?P=EE%205370
+https://catalog.uta.edu/search/?P=EE%206375
+https://catalog.uta.edu/search/?P=EE%205374
+https://catalog.uta.edu/search/?P=EE%205375
+https://catalog.uta.edu/search/?P=EE%205378

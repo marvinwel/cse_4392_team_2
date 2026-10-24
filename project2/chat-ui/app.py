@@ -33,7 +33,6 @@ import jwt
 from botocore.exceptions import ClientError, BotoCoreError
 import json
 
-
 @st.cache_resource
 def get_cognito_secrets():
     client = boto3.client(
@@ -47,7 +46,6 @@ def get_cognito_secrets():
 
     return json.loads(response["SecretString"])
 
-
 COGNITO_REGION = "us-east-2"
 COGNITO_POOL_ID = "us-east-2_eM4o9bwmk"
 COGNITO_ISSUER = f"https://cognito-idp.{COGNITO_REGION}.amazonaws.com/{COGNITO_POOL_ID}"
@@ -59,16 +57,13 @@ COGNITO_CLIENT_SECRET = cognito_secrets["client_secret"]
 
 LOGIN_BACKGROUND = Path(__file__).parent / "assets" / "uta-login-campus.jpg"
 
-
 @st.cache_resource
 def cognito_client():
     return boto3.client("cognito-idp", region_name=COGNITO_REGION)
 
-
 @st.cache_resource
 def jwt_keys():
     return jwt.PyJWKClient(f"{COGNITO_ISSUER}/.well-known/jwks.json")
-
 
 def secret_hash(username):
     digest = hmac.new(
@@ -77,7 +72,6 @@ def secret_hash(username):
         hashlib.sha256,
     ).digest()
     return base64.b64encode(digest).decode("ascii")
-
 
 def verify_identity(id_token):
     key = jwt_keys().get_signing_key_from_jwt(id_token).key
@@ -92,7 +86,6 @@ def verify_identity(id_token):
     if claims.get("token_use") != "id":
         raise ValueError("Unexpected Cognito token type")
     return claims
-
 
 def complete_sign_in(auth_result, username):
     claims = verify_identity(auth_result["IdToken"])
@@ -115,7 +108,6 @@ def complete_sign_in(auth_result, username):
         "expires_at": time.time() + int(auth_result.get("ExpiresIn", 3600)) - 30,
     }
 
-
 def sign_out():
     auth = st.session_state.get("cognito_auth") or {}
     if auth.get("refresh_token"):
@@ -130,7 +122,6 @@ def sign_out():
     for key in ("cognito_auth", "messages", "pending_requests", "cognito_challenge"):
         st.session_state.pop(key, None)
     st.rerun()
-
 
 def show_login():
     if LOGIN_BACKGROUND.exists():
@@ -232,7 +223,6 @@ def show_login():
             st.error("Unable to sign in. Verify the Cognito app client configuration and AWS credentials.")
         except (jwt.PyJWTError, ValueError):
             st.error("Cognito returned an identity token that could not be verified.")
-
 
 auth = st.session_state.get("cognito_auth")
 if not auth or time.time() >= auth["expires_at"]:
@@ -610,7 +600,6 @@ html, body, [data-testid="stApp"],
 </style>
 """, unsafe_allow_html=True)
 
-
 @st.cache_resource
 def avatar_css():
     """Advisor avatar as a CSS background, built once instead of on every refresh."""
@@ -622,7 +611,6 @@ def avatar_css():
         + encoded
         + "') center/contain no-repeat;}</style>"
     )
-
 
 _avatar_css = avatar_css()
 if _avatar_css:
@@ -638,10 +626,8 @@ WELCOME = (
     "How can I help you today?"
 )
 
-
 def timestamp_now():
     return datetime.now(ZoneInfo("America/Chicago")).strftime("%I:%M %p")
-
 
 def new_chat():
     st.session_state.pop("pending_requests", None)
@@ -653,7 +639,6 @@ def new_chat():
         }
     ]
 
-
 if "messages" not in st.session_state:
     new_chat()
 
@@ -661,22 +646,19 @@ if "messages" not in st.session_state:
 # CHAT HELPERS
 # ==========================================
 
-
 def render_message_text(content):
     """Escape HTML, render bold, and avoid excessive blank lines."""
     content = escape(str(content))
-    content = re.sub(r"\n[ \t]*\n+", "\n", content)
-    content = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", content, flags=re.DOTALL)
+    content = re.sub(r"**\n**[ **\t**]***\n**+", "\n", content)
+    content = re.sub(r"**\*\***(.+?)**\*\***", r"<strong>\1</strong>", content, flags=re.DOTALL)
     return content.replace("\n", "<br>")
-
 
 @st.cache_resource
 def get_request_executor():
     # Shared worker pool; no Streamlit UI calls inside worker threads.
     return ThreadPoolExecutor(max_workers=4)
 
-
-def ask_langchain(prompt, access_token):
+def ask_langchain(prompt, access_token, history):
     try:
         api_response = requests.post(
             f"{LANGCHAIN_API_URL.rstrip('/')}/chat",
@@ -684,16 +666,14 @@ def ask_langchain(prompt, access_token):
                 "Authorization": f"Bearer {access_token}"
             },
             json={
-                "message": prompt
+                "message": prompt,
+                "history": history
             },
             timeout=120,
         )
-
         if api_response.status_code in (401, 403):
             return "Your session is no longer authorized. Please sign in again."
-
         api_response.raise_for_status()
-
         data = api_response.json()
         return data.get("answer", "The AI Advisor did not return an answer.")
     except requests.exceptions.RequestException:
@@ -701,9 +681,14 @@ def ask_langchain(prompt, access_token):
     except ValueError:
         return "The AI Advisor returned an invalid response."
 
-
 def reply_to(prompt):
-    """Display a message immediately and process each request independently."""
+    """Display a message immediately and send previous conversation context."""
+    # Capture history before adding the current message.
+    history = [
+        {"role": message["role"], "content": message["content"]}
+        for message in st.session_state.messages[-12:]
+        if not message.get("loading")
+    ]
     st.session_state.messages.append({
         "role": "user", "content": prompt, "timestamp": timestamp_now()
     })
@@ -712,14 +697,14 @@ def reply_to(prompt):
     })
     index = len(st.session_state.messages) - 1
     future = get_request_executor().submit(
-    ask_langchain,
-    prompt,
-    st.session_state["cognito_auth"]["access_token"]
-)
+        ask_langchain,
+        prompt,
+        st.session_state["cognito_auth"]["access_token"],
+        history
+    )
     if "pending_requests" not in st.session_state:
         st.session_state.pending_requests = []
     st.session_state.pending_requests.append({"future": future, "index": index})
-
 
 # ==========================================
 # NAVIGATION RAIL + MAIN LAYOUT
@@ -730,7 +715,7 @@ if "nav_expanded" not in st.session_state:
 expanded = st.session_state.nav_expanded
 
 # Line the fixed chat input up with the main column in both nav states.
-# Columns are 2.4/12 (20%) expanded or 0.65/12 (~5.4%) collapsed.
+# Columns are 2.4/12 (20%) expanded or 0.65/12 (\~5.4%) collapsed.
 nav_pct = 20 if expanded else 5.42
 st.markdown(
     f"<style>[data-testid='stBottom'] {{ padding-left: calc({nav_pct}% + 12px) !important; }}</style>",
