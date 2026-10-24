@@ -132,17 +132,12 @@ def sign_out():
     st.rerun()
 
 
-@st.cache_resource
-def login_background_css():
-    """Encode the login background once instead of on every page load."""
+def show_login():
     if LOGIN_BACKGROUND.exists():
         encoded = base64.b64encode(LOGIN_BACKGROUND.read_bytes()).decode("ascii")
-        return f"url('data:image/jpeg;base64,{encoded}')"
-    return "linear-gradient(135deg,#063a83,#0064d9)"
-
-
-def show_login():
-    background = login_background_css()
+        background = f"url('data:image/jpeg;base64,{encoded}')"
+    else:
+        background = "linear-gradient(135deg,#063a83,#0064d9)"
     st.markdown(f"""
     <style>
       [data-testid="stAppViewContainer"] {{
@@ -151,14 +146,7 @@ def show_login():
       }}
       [data-testid="stHeader"], [data-testid="stToolbar"],
       [data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"] {{display:none!important;}}
-      [data-testid="stMainBlockContainer"] {{
-        max-width:560px!important;padding:3vh 20px!important;
-        animation: loginFade .3s ease .15s both;
-      }}
-      @keyframes loginFade {{
-        from {{ opacity: 0; }}
-        to   {{ opacity: 1; }}
-      }}
+      [data-testid="stMainBlockContainer"] {{max-width:560px!important;padding:3vh 20px!important;}}
       .login-brand {{text-align:center; margin:0 0 24px;}}
       .login-uta {{font-size:72px;font-weight:900;letter-spacing:-7px;color:#0056b8;line-height:1;}}
       .login-uta span {{font-size:39px;color:#ef8624;vertical-align:middle;letter-spacing:0;}}
@@ -206,18 +194,14 @@ def show_login():
       @media(max-width:600px) {{[data-testid="stForm"] {{padding:25px 18px;}}
           .login-uta {{font-size:58px;}}}}
     </style>""", unsafe_allow_html=True)
-
-    holder = st.empty()
-    with holder.container():
-        with st.form("cognito_custom_login", clear_on_submit=True):
-            st.markdown('<div class="login-brand"><div class="login-uta">UTA<span>★</span></div>'
-                        '<div class="login-title">Team 2 AI Advisor</div>'
-                        '<div class="login-subtitle">Your AI-powered academic advisor<br>for UTA Computer Science</div></div>', unsafe_allow_html=True)
-            username = st.text_input("UT Arlington NetID or Username", placeholder="Enter your username", autocomplete="username")
-            password = st.text_input("Password", type="password", placeholder="Enter your password", autocomplete="current-password")
-            submitted = st.form_submit_button("Sign In", use_container_width=True)
-            st.markdown('<div class="login-footer">Secure student sign-in powered by Amazon Cognito</div>', unsafe_allow_html=True)
-
+    with st.form("cognito_custom_login", clear_on_submit=True):
+        st.markdown('<div class="login-brand"><div class="login-uta">UTA<span>★</span></div>'
+                    '<div class="login-title">Team 2 AI Advisor</div>'
+                    '<div class="login-subtitle">Your AI-powered academic advisor<br>for UTA Computer Science</div></div>', unsafe_allow_html=True)
+        username = st.text_input("UT Arlington NetID or Username", placeholder="Enter your username", autocomplete="username")
+        password = st.text_input("Password", type="password", placeholder="Enter your password", autocomplete="current-password")
+        submitted = st.form_submit_button("Sign In", use_container_width=True)
+        st.markdown('<div class="login-footer">Secure student sign-in powered by Amazon Cognito</div>', unsafe_allow_html=True)
     if submitted:
         if not username.strip() or not password:
             st.error("Enter your username and password.")
@@ -235,12 +219,6 @@ def show_login():
             )
             if "AuthenticationResult" in response:
                 complete_sign_in(response["AuthenticationResult"], username)
-                holder.markdown(
-                    "<div style='text-align:center;margin-top:30vh;"
-                    "font-family:Inter,Arial,sans-serif;font-size:22px;"
-                    "font-weight:600;color:#07478c'>Signing you in…</div>",
-                    unsafe_allow_html=True,
-                )
                 st.rerun()
             else:
                 st.error("This account requires an additional Cognito challenge (such as MFA or a password change). Use the Cognito managed login until that flow is implemented.")
@@ -734,10 +712,10 @@ def reply_to(prompt):
     })
     index = len(st.session_state.messages) - 1
     future = get_request_executor().submit(
-        ask_langchain,
-        prompt,
-        st.session_state["cognito_auth"]["access_token"]
-    )
+    ask_langchain,
+    prompt,
+    st.session_state["cognito_auth"]["access_token"]
+)
     if "pending_requests" not in st.session_state:
         st.session_state.pending_requests = []
     st.session_state.pending_requests.append({"future": future, "index": index})
