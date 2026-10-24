@@ -172,7 +172,14 @@ def show_login():
           color: #17253d !important;
           fill: none !important;
       }}
-      [data-stale="true"], .stale-element {{opacity:1!important;transition:none!important;}}
+      /* After logout, leftover pieces of the chat page (messages, the blue
+         chat bar, the cursor-focus script) are still in the DOM for a moment.
+         Hide them on the login page so they don't flash over the form. */
+      [data-testid="stHorizontalBlock"]:has(.st-key-nav_rail),
+      .st-key-nav_rail, .st-key-uta_header, .st-key-chat_area,
+      .chat-scroll, .topbar, .headline, .subtitle, .rule,
+      [data-testid="stBottom"], [data-testid="stChatInput"],
+      [data-testid="stIFrame"], iframe[height="0"] {{display:none!important;}}
       @media(max-width:600px) {{[data-testid="stForm"] {{padding:25px 18px;}}
           .login-uta {{font-size:58px;}}}}
     </style>""", unsafe_allow_html=True)
