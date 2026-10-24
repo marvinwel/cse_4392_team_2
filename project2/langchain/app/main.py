@@ -1,5 +1,3 @@
-
-#new
 import json
 import boto3
 import jwt
@@ -196,6 +194,12 @@ def chat(
 
         if route == "course_eligibility":
             if not course_id:
+                session.update(
+                    session_id,
+                    student_id,
+                    last_route=route
+                )
+
                 return {
                     "route": route,
                     "answer": "Which course would you like me to check?",
@@ -213,6 +217,14 @@ def chat(
             session_id
         )
 
+        # Preserve the active route for subsequent follow-up questions.
+        # session.update should merge fields rather than replace session state.
+        session.update(
+            session_id,
+            student_id,
+            last_route=route
+        )
+
         return {
             "route": route,
             "answer": result["answer"],
@@ -221,6 +233,12 @@ def chat(
         }
 
     # Step 5: Unsupported requests.
+    session.update(
+        session_id,
+        student_id,
+        last_route=route
+    )
+
     return {
         "route": route,
         "answer": "This feature is not available yet.",
