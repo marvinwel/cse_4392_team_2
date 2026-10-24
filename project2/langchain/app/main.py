@@ -1,3 +1,4 @@
+#force update
 import json
 import boto3
 import jwt
@@ -156,7 +157,6 @@ def chat(
     # Step 1: Route the student's question using history.
     route = route_question(
         question=request.message,
-        previous_route=state.get("last_route"),
         history=history
     )
 
