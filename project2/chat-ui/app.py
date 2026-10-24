@@ -585,8 +585,10 @@ def render_message_text(content):
     # Preserve line breaks in the chat UI.
     return content.replace("\n", "<br>")
 
+@st.cache_resource
 def get_request_executor():
-    # Shared worker pool; no Streamlit UI calls inside worker threads.
+    # One shared worker pool for the whole app (cached so it is not
+    # recreated on every message). No Streamlit UI calls inside worker threads.
     return ThreadPoolExecutor(max_workers=4)
 def ask_langchain(prompt, access_token, history, session_id):
     try:
@@ -607,8 +609,20 @@ def ask_langchain(prompt, access_token, history, session_id):
         api_response.raise_for_status()
         data = api_response.json()
         return data.get("answer", "The AI Advisor did not return an answer.")
-    except requests.exceptions.RequestException:
-        return "I'm having trouble connecting to the AI Advisor backend. Please try again shortly."
+    except requests.exceptions.HTTPError as exc:
+        print(f"Backend HTTP error: {exc}", flush=True)
+        return f"Backend error: {exc.response.status_code}"
+
+    except requests.exceptions.Timeout:
+        return "The AI Advisor backend timed out."
+
+    except requests.exceptions.ConnectionError as exc:
+        print(f"Connection error: {exc}", flush=True)
+        return "Unable to connect to the AI Advisor backend."
+
+    except requests.exceptions.RequestException as exc:
+        print(f"Request error: {exc}", flush=True)
+        return "The AI Advisor request failed."
     except ValueError:
         return "The AI Advisor returned an invalid response."
 def reply_to(prompt):
@@ -642,7 +656,7 @@ if "nav_expanded" not in st.session_state:
     st.session_state.nav_expanded = False  # start collapsed
 expanded = st.session_state.nav_expanded
 # Line the fixed chat input up with the main column in both nav states.
-# Columns are 2.4/12 (20%) expanded or 0.65/12 (\~5.4%) collapsed.
+# Columns are 2.4/12 (20%) expanded or 0.65/12 (~5.4%) collapsed.
 nav_pct = 20 if expanded else 5.42
 st.markdown(
     f"<style>[data-testid='stBottom'] {{ padding-left: calc({nav_pct}% + 12px) !important; }}</style>",
@@ -749,10 +763,12 @@ with main_col:
     @st.fragment(run_every=1 if st.session_state.get("pending_requests") else None)
     def render_chat():
         remaining = []
+        finished_any = False
         for pending in st.session_state.get("pending_requests", []):
             if not pending["future"].done():
                 remaining.append(pending)
                 continue
+            finished_any = True
             try:
                 answer = pending["future"].result()
             except Exception:
@@ -765,6 +781,11 @@ with main_col:
                     "timestamp": timestamp_now(),
                 }
         st.session_state.pending_requests = remaining
+        # A reply just arrived and nothing else is pending: rerun the whole app
+        # (not just this fragment) so the chat input is re-enabled and the
+        # 1-second polling stops.
+        if finished_any and not remaining:
+            st.rerun()
         avatar_inner = "" if UTA_LOGO.exists() else "🎓"
         # Keep this HTML on single lines: blank lines or indentation would make
         # Streamlit's markdown treat it as a code block.
