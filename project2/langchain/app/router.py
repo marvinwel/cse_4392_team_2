@@ -1,4 +1,4 @@
-#test
+#test1
 import os
 
 from langchain_aws import ChatBedrockConverse
@@ -106,11 +106,20 @@ VALID_ROUTES = (
 
 
 # Classify the student's question
-def route_question(question: str, previous_route: str | None = None) -> str:
+
+def route_question(
+    question: str,
+    history: list[dict] | None = None
+) -> str:
+
+    history_text = "\n".join(
+        f"{message.get('role', 'unknown')}: {message.get('content', '')}"
+        for message in (history or [])[-12:]
+    ) or "No previous conversation."
 
     decision = router_chain.invoke({
         "question": question,
-        "previous_route": previous_route or "none"
+        "history": history_text
     })
 
     route = decision.strip().lower().strip("`'\" .")
@@ -118,7 +127,6 @@ def route_question(question: str, previous_route: str | None = None) -> str:
     if route in VALID_ROUTES:
         return route
 
-    # Small models sometimes add words around the label; accept it if exactly one label appears.
     found = [r for r in VALID_ROUTES if r in route]
 
     if len(found) == 1:
