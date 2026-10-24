@@ -44,7 +44,20 @@ unsupported:
 - Registration actions, financial aid, housing, anything else
 - Unrelated questions
 
-The previous route in this conversation was: {previous_route}
+Recent conversation:
+{history}
+
+Use the conversation history to understand follow-up questions.
+
+Examples:
+- "Make me a degree plan" followed by "What about 3 classes?"
+  → degree_plan
+- "What is CSE 3318?" followed by "What are its prerequisites?"
+  → course_information
+- "What is CSE 3318?" followed by "Can I take it?"
+  → course_eligibility
+
+Classify the CURRENT question using its meaning and the conversation history.
 Short follow-ups like "what about 3 classes?" or "and in the fall?" usually
 continue the previous route.
 
