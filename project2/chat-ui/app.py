@@ -194,14 +194,15 @@ def show_login():
       @media(max-width:600px) {{[data-testid="stForm"] {{padding:25px 18px;}}
           .login-uta {{font-size:58px;}}}}
     </style>""", unsafe_allow_html=True)
-    with st.form("cognito_custom_login", clear_on_submit=True):
-        st.markdown('<div class="login-brand"><div class="login-uta">UTA<span>★</span></div>'
-                    '<div class="login-title">Team 2 AI Advisor</div>'
-                    '<div class="login-subtitle">Your AI-powered academic advisor<br>for UTA Computer Science</div></div>', unsafe_allow_html=True)
-        username = st.text_input("UT Arlington NetID or Username", placeholder="Enter your username", autocomplete="username")
-        password = st.text_input("Password", type="password", placeholder="Enter your password", autocomplete="current-password")
-        submitted = st.form_submit_button("Sign In", use_container_width=True)
-        st.markdown('<div class="login-footer">Secure student sign-in powered by Amazon Cognito</div>', unsafe_allow_html=True)
+    holder = st.empty()
+    with holder.container():
+        with st.form("cognito_custom_login", clear_on_submit=True):
+            st.markdown('<div class="login-brand">...</div>', unsafe_allow_html=True)   # unchanged
+            username = st.text_input(...)                                               # unchanged
+            password = st.text_input(...)                                               # unchanged
+            submitted = st.form_submit_button("Sign In", use_container_width=True)      # unchanged
+            st.markdown('<div class="login-footer">...</div>', unsafe_allow_html=True)  # unchanged
+    
     if submitted:
         if not username.strip() or not password:
             st.error("Enter your username and password.")
@@ -219,6 +220,12 @@ def show_login():
             )
             if "AuthenticationResult" in response:
                 complete_sign_in(response["AuthenticationResult"], username)
+                holder.markdown(
+                    "<div style='text-align:center;margin-top:30vh;"
+                    "font-family:Inter,Arial,sans-serif;font-size:22px;"
+                    "font-weight:600;color:#07478c'>Signing you in…</div>",
+                    unsafe_allow_html=True,
+                )
                 st.rerun()
             else:
                 st.error("This account requires an additional Cognito challenge (such as MFA or a password change). Use the Cognito managed login until that flow is implemented.")
@@ -430,6 +437,7 @@ html, body, [data-testid="stApp"],
     content: "";
     width: 22px;
     height: 22px;
+    
     flex-shrink: 0;
     background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E") center / contain no-repeat;
 }
