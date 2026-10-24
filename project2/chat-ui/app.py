@@ -93,20 +93,28 @@ def complete_sign_in(auth_result, username):
         "refresh_token": auth_result.get("RefreshToken"),
         "expires_at": time.time() + int(auth_result.get("ExpiresIn", 3600)) - 30,
     }
+def revoke_refresh_token(refresh_token):
+    try:
+        cognito_client().revoke_token(
+            Token=refresh_token,
+            ClientId=COGNITO_CLIENT_ID,
+            ClientSecret=COGNITO_CLIENT_SECRET,
+        )
+    except (ClientError, BotoCoreError):
+        pass
+@st.cache_resource
+def logout_executor():
+    return ThreadPoolExecutor(max_workers=2)
 def sign_out():
+    """Runs as the Log out button's on_click callback, BEFORE the script reruns.
+    Clearing the session here means the next run goes straight to the login
+    page, instead of redrawing (and dimming) the whole chat page first."""
     auth = st.session_state.get("cognito_auth") or {}
     if auth.get("refresh_token"):
-        try:
-            cognito_client().revoke_token(
-                Token=auth["refresh_token"],
-                ClientId=COGNITO_CLIENT_ID,
-                ClientSecret=COGNITO_CLIENT_SECRET,
-            )
-        except (ClientError, BotoCoreError):
-            pass
+        # Revoke in the background so the user does not wait on the network call.
+        logout_executor().submit(revoke_refresh_token, auth["refresh_token"])
     for key in ("cognito_auth", "messages", "pending_requests", "cognito_challenge", "advisor_session_id"):
         st.session_state.pop(key, None)
-    st.rerun()
 def show_login():
     if LOGIN_BACKGROUND.exists():
         encoded = base64.b64encode(LOGIN_BACKGROUND.read_bytes()).decode("ascii")
@@ -164,6 +172,7 @@ def show_login():
           color: #17253d !important;
           fill: none !important;
       }}
+      [data-stale="true"], .stale-element {{opacity:1!important;transition:none!important;}}
       @media(max-width:600px) {{[data-testid="stForm"] {{padding:25px 18px;}}
           .login-uta {{font-size:58px;}}}}
     </style>""", unsafe_allow_html=True)
@@ -235,6 +244,14 @@ html, body, [data-testid="stApp"] {
 [data-testid="stSidebarCollapsedControl"] { display: none !important; }
 [data-testid="stHeader"] { height: 0 !important; background: transparent !important; }
 [data-testid="stToolbar"] { display: none; }
+/* Turn off Streamlit's "stale" fade, which dims the page to white
+   while the script reruns (logout, sending a message, nav clicks). */
+[data-stale="true"],
+.stale-element,
+[data-testid="stElementContainer"][data-stale="true"] {
+    opacity: 1 !important;
+    transition: none !important;
+}
 /* ------------------------------------------
    FIXED APP SHELL
    Everything is exactly (viewport - input space) tall,
@@ -743,9 +760,13 @@ with main_col:
                 unsafe_allow_html=True,
             )
         with header_logout:
-            if st.button("Log out", key="logout", type="secondary", use_container_width=True):
-                new_chat()
-                sign_out()
+            st.button(
+                "Log out",
+                key="logout",
+                type="secondary",
+                use_container_width=True,
+                on_click=sign_out,
+            )
     # ==========================================
     # MAIN CONTENT
     # ==========================================
