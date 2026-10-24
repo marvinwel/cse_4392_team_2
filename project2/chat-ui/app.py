@@ -1,4 +1,3 @@
-#update
 import streamlit as st
 import streamlit.components.v1 as components
 from pathlib import Path
@@ -48,6 +47,7 @@ cognito_secrets = get_cognito_secrets()
 COGNITO_CLIENT_ID = cognito_secrets["client_id"]
 COGNITO_CLIENT_SECRET = cognito_secrets["client_secret"]
 LOGIN_BACKGROUND = Path(__file__).parent / "assets" / "uta-login-campus.jpg"
+LOGIN_BACKGROUND_STATIC = Path(__file__).parent / "static" / "uta-login-campus.jpg"
 @st.cache_resource
 def cognito_client():
     return boto3.client("cognito-idp", region_name=COGNITO_REGION)
@@ -117,7 +117,14 @@ def sign_out():
     for key in ("cognito_auth", "messages", "pending_requests", "cognito_challenge", "advisor_session_id"):
         st.session_state.pop(key, None)
 def show_login():
-    if LOGIN_BACKGROUND.exists():
+    # Serve the campus photo as a static file (static/uta-login-campus.jpg,
+    # with STREAMLIT_SERVER_ENABLE_STATIC_SERVING=true). Embedding it as base64
+    # made this <style> block several MB, so the form appeared unstyled (the
+    # full-width bars) until the CSS finished loading. A small CSS block
+    # applies immediately; the photo then loads on its own.
+    if LOGIN_BACKGROUND_STATIC.exists():
+        background = "url('app/static/uta-login-campus.jpg')"
+    elif LOGIN_BACKGROUND.exists():
         encoded = base64.b64encode(LOGIN_BACKGROUND.read_bytes()).decode("ascii")
         background = f"url('data:image/jpeg;base64,{encoded}')"
     else:
@@ -125,6 +132,7 @@ def show_login():
     st.markdown(f"""
     <style>
       [data-testid="stAppViewContainer"] {{
+        background-color: #063a83;  /* shows instantly while the photo loads */
         background-image: linear-gradient(100deg,rgba(0,33,83,.22),rgba(0,30,75,.48)), {background};
         background-position:center; background-size:cover;
       }}
