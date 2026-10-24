@@ -23,9 +23,10 @@ course_information:
 Example: "What is CSE 3318 about?" / "What are the prerequisites for CSE 3320?"
 
 student_record:
-- The student's own transcript, grades, completed courses, or credits
+- The student's own profile: name, student ID, major, classification, catalog year
+- The student's own transcript, grades, GPA, completed courses, or credits
 - What the student still has left to finish their degree
-Example: "What courses have I taken?" / "How many credits do I have left?"
+Example: "Who am I?" / "What's my major?" / "What courses have I taken?" / "How many credits do I have left?"
 
 course_eligibility:
 - Whether THIS student can take a specific course, now or in a given term
@@ -43,6 +44,7 @@ Example: "Compare my two plans" / "Which plan finishes sooner?"
 unsupported:
 - Registration actions, financial aid, housing, anything else
 - Unrelated questions
+- NOT questions about the student's own profile or record (those are student_record)
 
 Recent conversation:
 {history}
