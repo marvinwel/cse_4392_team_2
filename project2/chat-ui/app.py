@@ -566,13 +566,25 @@ if "advisor_session_id" not in st.session_state:
 # ==========================================
 # CHAT HELPERS
 # ==========================================
+
 def render_message_text(content):
-    """Escape HTML, render bold, and avoid excessive blank lines."""
+    """Safely render message text with basic bold formatting."""
     content = escape(str(content))
-    content = re.sub(r"**\n**[ **\t**]***\n**+", "\n", content)
-    content = re.sub(r"**\*\***(.+?)**\*\***", r"<strong>\1</strong>", content, flags=re.DOTALL)
+
+    # Reduce excessive blank lines.
+    content = re.sub(r"\n[ \t]*\n(?:[ \t]*\n)+", "\n\n", content)
+
+    # Convert Markdown bold text into HTML bold.
+    content = re.sub(
+        r"\*\*(.+?)\*\*",
+        r"<strong>\1</strong>",
+        content,
+        flags=re.DOTALL
+    )
+
+    # Preserve line breaks in the chat UI.
     return content.replace("\n", "<br>")
-@st.cache_resource
+
 def get_request_executor():
     # Shared worker pool; no Streamlit UI calls inside worker threads.
     return ThreadPoolExecutor(max_workers=4)
