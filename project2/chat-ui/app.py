@@ -328,15 +328,26 @@ html, body, [data-testid="stApp"],
     z-index: 10 !important;
     background: white;
 }
+/* The blue banner is drawn on the whole header row (all three columns),
+   so it continues behind the student name and the Log out button. */
 .st-key-uta_header [data-testid="stHorizontalBlock"] {
     gap: 0 !important;
-    align-items: flex-start !important;
+    align-items: center !important;
+    height: 86px;
+    margin-bottom: 24px;
+    padding-right: 16px;
+    background: linear-gradient(105deg, #07478c, #06356e);
+}
+.st-key-uta_header [data-testid="stColumn"] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .topbar {
     height: 86px;
-    margin: 0 0 24px;
+    margin: 0;
     padding: 0 25px;
-    background: linear-gradient(105deg, #07478c, #06356e);
+    background: transparent;
     color: white;
     display: flex;
     align-items: center;
@@ -378,7 +389,7 @@ html, body, [data-testid="stApp"],
     border: none !important;
     border-radius: 12px !important;
     min-height: 52px !important;
-    margin-top: 17px !important;
+    margin-top: 0 !important;
     box-shadow: 0 6px 16px rgba(242, 107, 33, .35) !important;
     transition: filter .15s ease, transform .15s ease, box-shadow .15s ease !important;
 }
