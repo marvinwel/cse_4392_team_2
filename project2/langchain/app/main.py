@@ -1,3 +1,4 @@
+
 #new
 import json
 import boto3
@@ -13,6 +14,8 @@ from pydantic import BaseModel, Field
 from app import session
 from app.advisor import STUDENT_ROUTES, handle
 from app.advisor_tools import students_table
+from app.extract import codes_in
+from app.course_context import resolve_course
 from app.router import route_question
 from app.rag import answer_course_question
 
@@ -44,6 +47,7 @@ COGNITO_ISSUER = (
     f"https://cognito-idp.{COGNITO_REGION}.amazonaws.com/"
     f"{COGNITO_POOL_ID}"
 )
+
 
 @lru_cache(maxsize=1)
 def jwks_client():
@@ -81,7 +85,6 @@ def authenticated_user(authorization: str = Header(default="")):
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 
-
 def get_authenticated_student(claims: dict) -> str:
     cognito_sub = claims["sub"]
 
@@ -112,20 +115,21 @@ def get_authenticated_student(claims: dict) -> str:
 
     return students[0]["student_id"]
 
-    
+
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
 
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1)
     session_id: Optional[str] = None
+    history: list[ChatMessage] = Field(default_factory=list)
 
 
 @app.get("/health")
 def health():
     return {"status": "healthy"}
-
-
-
-
 
 
 @app.post("/chat")
@@ -145,15 +149,33 @@ def chat(
 
     state = session.get(session_id, student_id)
 
-    # Step 1: Route the student's question.
+    # Convert conversation history to dictionaries.
+    history = [
+        message.model_dump()
+        for message in request.history
+    ]
+
+    # Step 1: Route the student's question using history.
     route = route_question(
-        request.message,
-        state.get("last_route")
+        question=request.message,
+        previous_route=state.get("last_route"),
+        history=history
     )
 
-    # Step 2: Execute the RAG pipeline.
+    # Step 2: Resolve course references from history.
+    course_id = resolve_course(
+        question=request.message,
+        history=history
+    )
+
+    # Step 3: Execute the RAG pipeline.
     if route == "course_information":
-        result = answer_course_question(request.message)
+        question = request.message
+
+        if course_id and not codes_in(question):
+            question = f"{question} (Course: {course_id})"
+
+        result = answer_course_question(question)
 
         session.update(
             session_id,
@@ -168,11 +190,25 @@ def chat(
             "data": None
         }
 
-    # Step 3: Student-specific routes.
+    # Step 4: Student-specific routes.
     if route in STUDENT_ROUTES:
+        question = request.message
+
+        if route == "course_eligibility":
+            if not course_id:
+                return {
+                    "route": route,
+                    "answer": "Which course would you like me to check?",
+                    "sources": [],
+                    "data": None
+                }
+
+            if not codes_in(question):
+                question = f"{question} (Course: {course_id})"
+
         result = handle(
             route,
-            request.message,
+            question,
             student_id,
             session_id
         )
@@ -184,7 +220,7 @@ def chat(
             "data": result["data"]
         }
 
-    # Step 4: Unsupported requests.
+    # Step 5: Unsupported requests.
     return {
         "route": route,
         "answer": "This feature is not available yet.",

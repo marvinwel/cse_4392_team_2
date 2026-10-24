@@ -8,9 +8,8 @@ import base64
 import re
 import os
 import requests
-
+import uuid
 LANGCHAIN_API_URL = os.getenv("LANGCHAIN_API_URL", "http://18.119.135.168:8001")
-
 # ==========================================
 # PAGE CONFIGURATION
 # ==========================================
@@ -20,9 +19,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
-
 UTA_LOGO = Path(__file__).parent / "assets" / "uta-logo.png"
-
 # Custom login uses Cognito USER_PASSWORD_AUTH, not Streamlit OIDC st.login().
 # Passwords are passed directly to Cognito over HTTPS and are not persisted.
 import hashlib
@@ -32,39 +29,29 @@ import boto3
 import jwt
 from botocore.exceptions import ClientError, BotoCoreError
 import json
-
 @st.cache_resource
 def get_cognito_secrets():
     client = boto3.client(
         "secretsmanager",
         region_name="us-east-2"
     )
-
     response = client.get_secret_value(
         SecretId="uta-ai-advisor/cognito"
     )
-
     return json.loads(response["SecretString"])
-
 COGNITO_REGION = "us-east-2"
 COGNITO_POOL_ID = "us-east-2_eM4o9bwmk"
 COGNITO_ISSUER = f"https://cognito-idp.{COGNITO_REGION}.amazonaws.com/{COGNITO_POOL_ID}"
-
 cognito_secrets = get_cognito_secrets()
-
 COGNITO_CLIENT_ID = cognito_secrets["client_id"]
 COGNITO_CLIENT_SECRET = cognito_secrets["client_secret"]
-
 LOGIN_BACKGROUND = Path(__file__).parent / "assets" / "uta-login-campus.jpg"
-
 @st.cache_resource
 def cognito_client():
     return boto3.client("cognito-idp", region_name=COGNITO_REGION)
-
 @st.cache_resource
 def jwt_keys():
     return jwt.PyJWKClient(f"{COGNITO_ISSUER}/.well-known/jwks.json")
-
 def secret_hash(username):
     digest = hmac.new(
         COGNITO_CLIENT_SECRET.encode("utf-8"),
@@ -72,7 +59,6 @@ def secret_hash(username):
         hashlib.sha256,
     ).digest()
     return base64.b64encode(digest).decode("ascii")
-
 def verify_identity(id_token):
     key = jwt_keys().get_signing_key_from_jwt(id_token).key
     claims = jwt.decode(
@@ -86,7 +72,6 @@ def verify_identity(id_token):
     if claims.get("token_use") != "id":
         raise ValueError("Unexpected Cognito token type")
     return claims
-
 def complete_sign_in(auth_result, username):
     claims = verify_identity(auth_result["IdToken"])
     access_token = auth_result["AccessToken"]
@@ -107,7 +92,6 @@ def complete_sign_in(auth_result, username):
         "refresh_token": auth_result.get("RefreshToken"),
         "expires_at": time.time() + int(auth_result.get("ExpiresIn", 3600)) - 30,
     }
-
 def sign_out():
     auth = st.session_state.get("cognito_auth") or {}
     if auth.get("refresh_token"):
@@ -119,10 +103,9 @@ def sign_out():
             )
         except (ClientError, BotoCoreError):
             pass
-    for key in ("cognito_auth", "messages", "pending_requests", "cognito_challenge"):
+    for key in ("cognito_auth", "messages", "pending_requests", "cognito_challenge", "advisor_session_id"):
         st.session_state.pop(key, None)
     st.rerun()
-
 def show_login():
     if LOGIN_BACKGROUND.exists():
         encoded = base64.b64encode(LOGIN_BACKGROUND.read_bytes()).decode("ascii")
@@ -150,7 +133,6 @@ def show_login():
       [data-testid="stFormSubmitButton"] button {{background:#075dcc!important;color:white!important;
           border:none!important;min-height:50px!important;font-weight:750!important;border-radius:9px!important;}}
       [data-testid="stFormSubmitButton"] button:hover {{background:#004aab!important;}}
-
       /* White username and password fields (login only) */
       [data-testid="stForm"] div[data-baseweb="input"],
       [data-testid="stForm"] div[data-baseweb="base-input"],
@@ -181,7 +163,6 @@ def show_login():
           color: #17253d !important;
           fill: none !important;
       }}
-
       @media(max-width:600px) {{[data-testid="stForm"] {{padding:25px 18px;}}
           .login-uta {{font-size:58px;}}}}
     </style>""", unsafe_allow_html=True)
@@ -223,46 +204,36 @@ def show_login():
             st.error("Unable to sign in. Verify the Cognito app client configuration and AWS credentials.")
         except (jwt.PyJWTError, ValueError):
             st.error("Cognito returned an identity token that could not be verified.")
-
 auth = st.session_state.get("cognito_auth")
 if not auth or time.time() >= auth["expires_at"]:
     st.session_state.pop("cognito_auth", None)
     show_login()
     st.stop()
-
 student_display_name = auth["display_name"]
 # NOTE: Frontend login is not backend authorization. FastAPI must validate
 # a Cognito access token and map the verified sub to a student record before
 # returning transcripts or other private student data.
-
 # ==========================================
 # GLOBAL CSS
 # ==========================================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 :root {
     /* Vertical space reserved at the bottom for the fixed chat input */
     --input-space: 96px;
 }
-
 html, body, [data-testid="stApp"] {
     font-family: Inter, Arial, sans-serif;
 }
-
 [data-testid="stAppViewContainer"] {
     background: #ffffff;
 }
-
 /* Native sidebar is unused: custom navigation rail below. */
 [data-testid="stSidebar"],
 [data-testid="stSidebarCollapsedControl"] { display: none !important; }
-
 [data-testid="stHeader"] { height: 0 !important; background: transparent !important; }
-
 [data-testid="stToolbar"] { display: none; }
-
 /* ------------------------------------------
    FIXED APP SHELL
    Everything is exactly (viewport - input space) tall,
@@ -276,9 +247,7 @@ html, body, [data-testid="stApp"],
     max-height: 100dvh !important;
     overflow: hidden !important;
 }
-
 [data-testid="stMain"] > div { overscroll-behavior: none; }
-
 [data-testid="stMainBlockContainer"] {
     height: calc(100dvh - var(--input-space)) !important;
     max-height: calc(100dvh - var(--input-space)) !important;
@@ -286,19 +255,16 @@ html, body, [data-testid="stApp"],
     padding: 0 12px !important;
     max-width: 100% !important;
 }
-
 [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"],
 [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"],
 [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
     height: calc(100dvh - var(--input-space)) !important;
     min-height: 0 !important;
 }
-
 [data-testid="stMainBlockContainer"] > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"] {
     align-items: stretch !important;
     gap: 0 !important;
 }
-
 /* ------------------------------------------
    NAVIGATION RAIL
    ------------------------------------------ */
@@ -312,7 +278,6 @@ html, body, [data-testid="stApp"],
     padding: 16px 8px !important;
     border-right: 1px solid #e5eaf0;
 }
-
 .st-key-nav_rail [data-testid="stButton"] button {
     width: 100%;
     border: 0;
@@ -324,12 +289,10 @@ html, body, [data-testid="stApp"],
     border-radius: 9px;
     transition: background-color .15s ease;
 }
-
 .st-key-nav_rail [data-testid="stButton"] button:hover { background: #e7f1ff; color: #005ac5; }
 .st-key-nav_rail [data-testid="stButton"] button:disabled { opacity: .7; color: #52657e; }
 .st-key-nav_rail [data-testid="stButton"] button[kind="primary"] { background: #e2efff; color: #0057c5; }
 .st-key-nav_rail [data-testid="stButton"] button p { white-space: nowrap; }
-
 /* ------------------------------------------
    UTA HEADER
    (no negative margins, so nothing runs off-screen)
@@ -340,12 +303,10 @@ html, body, [data-testid="stApp"],
     z-index: 10 !important;
     background: white;
 }
-
 .st-key-uta_header [data-testid="stHorizontalBlock"] {
     gap: 0 !important;
     align-items: flex-start !important;
 }
-
 .topbar {
     height: 86px;
     margin: 0 0 24px;
@@ -356,7 +317,6 @@ html, body, [data-testid="stApp"],
     align-items: center;
     gap: 18px;
 }
-
 .uta-logo {
     font-size: 39px;
     font-weight: 800;
@@ -364,26 +324,22 @@ html, body, [data-testid="stApp"],
     color: white;
     line-height: 1;
 }
-
 .uta-star {
     color: #f59b36;
     font-size: 25px;
     vertical-align: middle;
     margin-left: -3px;
 }
-
 .brand-name {
     font-size: 24px;
     font-weight: 750;
     line-height: 1.2;
 }
-
 .brand-sub {
     font-size: 14px;
     color: #bcd5f4;
     margin-top: 3px;
 }
-
 .student-name {
     text-align: right;
     color: #e8f2ff;
@@ -391,9 +347,7 @@ html, body, [data-testid="stApp"],
     font-weight: 600;
     white-space: nowrap;
 }
-
 .st-key-logout { padding-left: 14px; }
-
 .st-key-logout button {
     background: linear-gradient(135deg, #ffa24c 0%, #f26b21 100%) !important;
     border: none !important;
@@ -403,7 +357,6 @@ html, body, [data-testid="stApp"],
     box-shadow: 0 6px 16px rgba(242, 107, 33, .35) !important;
     transition: filter .15s ease, transform .15s ease, box-shadow .15s ease !important;
 }
-
 .st-key-logout button p {
     display: flex;
     align-items: center;
@@ -414,7 +367,6 @@ html, body, [data-testid="stApp"],
     font-weight: 700 !important;
     white-space: nowrap;
 }
-
 /* Logout icon (door with arrow), drawn with an inline SVG so no extra library is needed */
 .st-key-logout button p::before {
     content: "";
@@ -423,16 +375,13 @@ html, body, [data-testid="stApp"],
     flex-shrink: 0;
     background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E") center / contain no-repeat;
 }
-
 .st-key-logout button:hover {
     filter: brightness(1.07);
     transform: translateY(-1px);
     box-shadow: 0 8px 20px rgba(242, 107, 33, .45) !important;
 }
-
 .st-key-logout button:active { transform: translateY(0); }
 .st-key-logout button:focus-visible { outline: 2px solid #ffffff !important; outline-offset: 2px; }
-
 /* ------------------------------------------
    CHAT HEADING
    ------------------------------------------ */
@@ -442,18 +391,15 @@ html, body, [data-testid="stApp"],
     color: #111c31;
     margin-bottom: 5px;
 }
-
 .subtitle {
     font-size: 14px;
     color: #60718b;
     margin-bottom: 15px;
 }
-
 .rule {
     border-top: 1px solid #dfe6ef;
     margin: 12px 0 20px;
 }
-
 /* ------------------------------------------
    CHAT (rendered inline, no iframe)
    The 280px is the space used above the chat (header + heading).
@@ -461,7 +407,6 @@ html, body, [data-testid="stApp"],
    If there is a gap above the bar, lower it.
    ------------------------------------------ */
 .st-key-chat_area { min-height: 0 !important; }
-
 .chat-scroll {
     height: calc(100dvh - 280px - var(--input-space));
     min-height: 150px;
@@ -471,14 +416,11 @@ html, body, [data-testid="stApp"],
     scrollbar-width: thin;
     scrollbar-color: #a8bdd6 transparent;
 }
-
 .chat-inner { flex-shrink: 0; padding: 12px 10px 24px 0; }
-
 .message-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; width: 100%; }
 .user-row { justify-content: flex-end; }
 .assistant-row { justify-content: flex-start; }
 .message-group { max-width: 55%; min-width: 0; }
-
 .bubble {
     padding: 13px 17px;
     border-radius: 13px;
@@ -486,10 +428,8 @@ html, body, [data-testid="stApp"],
     line-height: 1.6;
     overflow-wrap: anywhere;
 }
-
 .user-bubble { background: #0064D9; color: white; }
 .assistant-bubble { background: #F0F3F8; color: #17243A; }
-
 .avatar {
     width: 36px;
     height: 36px;
@@ -499,13 +439,10 @@ html, body, [data-testid="stApp"],
     justify-content: center;
     font-size: 23px;
 }
-
 .assistant-avatar { border-radius: 50%; }
-
 .timestamp { color: #8291a6; font-size: 11px; margin-top: 5px; line-height: 1.4; }
 .user-time { text-align: right; }
 .assistant-time { text-align: left; }
-
 .typing-indicator { display: inline-flex; align-items: center; gap: 5px; height: 22px; }
 .typing-indicator span {
     width: 7px;
@@ -516,12 +453,10 @@ html, body, [data-testid="stApp"],
 }
 .typing-indicator span:nth-child(2) { animation-delay: .2s; }
 .typing-indicator span:nth-child(3) { animation-delay: .4s; }
-
 @keyframes typing {
     0%, 60%, 100% { transform: translateY(0); opacity: .4; }
     30% { transform: translateY(-5px); opacity: 1; }
 }
-
 /* ------------------------------------------
    CHAT INPUT (fixed to the bottom of the viewport)
    Left padding is set dynamically from Python
@@ -537,26 +472,21 @@ html, body, [data-testid="stApp"],
     box-sizing: border-box !important;
     background: #07478c !important;
 }
-
 [data-testid="stBottom"] > div,
 [data-testid="stBottomBlockContainer"] {
     background: #07478c !important;
 }
-
 [data-testid="stBottomBlockContainer"] {
     padding: 14px 0 !important;
     max-width: 100% !important;
 }
-
 [data-testid="stChatInput"],
 [data-testid="stChatInput"] > div,
 [data-testid="stChatInput"] form {
     background: white !important;
     border-radius: 11px !important;
 }
-
 [data-testid="stChatInput"] { border: 1px solid #0064D9 !important; }
-
 /* Keep every layer of the chat input light, even in browser dark mode */
 [data-testid="stChatInput"] div[data-baseweb="textarea"],
 [data-testid="stChatInput"] div[data-baseweb="base-input"],
@@ -568,27 +498,22 @@ html, body, [data-testid="stApp"],
     caret-color: #17243a !important;
     font-family: Inter, Arial, sans-serif;
 }
-
 [data-testid="stChatInput"] textarea::placeholder { color: #8291a6 !important; }
-
 [data-testid="stChatInputSubmitButton"] button {
     background: #0064D9 !important;
     color: white !important;
     border-radius: 8px !important;
 }
-
 [data-testid="stChatInputSubmitButton"] svg {
     color: white !important;
     stroke: white !important;
 }
-
 /* ------------------------------------------
    RESPONSIVE
    ------------------------------------------ */
 @media (max-width: 700px) {
     .message-group { max-width: 80%; }
 }
-
 @media (max-width: 600px) {
     .brand-name { font-size: 17px; }
     .brand-sub { font-size: 11px; }
@@ -599,7 +524,6 @@ html, body, [data-testid="stApp"],
 }
 </style>
 """, unsafe_allow_html=True)
-
 @st.cache_resource
 def avatar_css():
     """Advisor avatar as a CSS background, built once instead of on every refresh."""
@@ -611,11 +535,9 @@ def avatar_css():
         + encoded
         + "') center/contain no-repeat;}</style>"
     )
-
 _avatar_css = avatar_css()
 if _avatar_css:
     st.markdown(_avatar_css, unsafe_allow_html=True)
-
 # ==========================================
 # CHAT STATE
 # ==========================================
@@ -625,10 +547,8 @@ WELCOME = (
     "schedule conflicts, and degree planning.\n\n"
     "How can I help you today?"
 )
-
 def timestamp_now():
     return datetime.now(ZoneInfo("America/Chicago")).strftime("%I:%M %p")
-
 def new_chat():
     st.session_state.pop("pending_requests", None)
     st.session_state.messages = [
@@ -638,27 +558,22 @@ def new_chat():
             "timestamp": timestamp_now(),
         }
     ]
-
 if "messages" not in st.session_state:
     new_chat()
-
 # ==========================================
 # CHAT HELPERS
 # ==========================================
-
 def render_message_text(content):
     """Escape HTML, render bold, and avoid excessive blank lines."""
     content = escape(str(content))
     content = re.sub(r"**\n**[ **\t**]***\n**+", "\n", content)
     content = re.sub(r"**\*\***(.+?)**\*\***", r"<strong>\1</strong>", content, flags=re.DOTALL)
     return content.replace("\n", "<br>")
-
 @st.cache_resource
 def get_request_executor():
     # Shared worker pool; no Streamlit UI calls inside worker threads.
     return ThreadPoolExecutor(max_workers=4)
-
-def ask_langchain(prompt, access_token, history):
+def ask_langchain(prompt, access_token, history, session_id):
     try:
         api_response = requests.post(
             f"{LANGCHAIN_API_URL.rstrip('/')}/chat",
@@ -667,7 +582,8 @@ def ask_langchain(prompt, access_token, history):
             },
             json={
                 "message": prompt,
-                "history": history
+                "history": history,
+                "session_id": session_id
             },
             timeout=120,
         )
@@ -680,10 +596,8 @@ def ask_langchain(prompt, access_token, history):
         return "I'm having trouble connecting to the AI Advisor backend. Please try again shortly."
     except ValueError:
         return "The AI Advisor returned an invalid response."
-
 def reply_to(prompt):
-    """Display a message immediately and send previous conversation context."""
-    # Capture history before adding the current message.
+    """Display a message immediately and send conversation context."""
     history = [
         {"role": message["role"], "content": message["content"]}
         for message in st.session_state.messages[-12:]
@@ -700,20 +614,18 @@ def reply_to(prompt):
         ask_langchain,
         prompt,
         st.session_state["cognito_auth"]["access_token"],
-        history
+        history,
+        st.session_state["advisor_session_id"]
     )
     if "pending_requests" not in st.session_state:
         st.session_state.pending_requests = []
     st.session_state.pending_requests.append({"future": future, "index": index})
-
 # ==========================================
 # NAVIGATION RAIL + MAIN LAYOUT
 # ==========================================
 if "nav_expanded" not in st.session_state:
     st.session_state.nav_expanded = False  # start collapsed
-
 expanded = st.session_state.nav_expanded
-
 # Line the fixed chat input up with the main column in both nav states.
 # Columns are 2.4/12 (20%) expanded or 0.65/12 (\~5.4%) collapsed.
 nav_pct = 20 if expanded else 5.42
@@ -721,13 +633,11 @@ st.markdown(
     f"<style>[data-testid='stBottom'] {{ padding-left: calc({nav_pct}% + 12px) !important; }}</style>",
     unsafe_allow_html=True,
 )
-
 nav_col, main_col = st.columns(
     [2.4, 9.6] if expanded else [0.65, 11.35],
     gap="small",
     vertical_alignment="top",
 )
-
 with nav_col:
     with st.container(key="nav_rail"):
         if st.button(
@@ -738,7 +648,6 @@ with nav_col:
         ):
             st.session_state.nav_expanded = not expanded
             st.rerun()
-
         if expanded:
             st.markdown("**🎓 Team 2 AI Advisor**")
         else:
@@ -746,7 +655,6 @@ with nav_col:
                 "<div style='text-align:center;font-size:23px'>🎓</div>",
                 unsafe_allow_html=True,
             )
-
         if st.button(
             "💬  Chat Advisor" if expanded else "💬",
             key="chat_nav",
@@ -755,7 +663,6 @@ with nav_col:
             help="Chat Advisor",
         ):
             st.rerun()
-
         for label, icon in (
             ("Degree Planner", "🎓"),
             ("Course Search", "📖"),
@@ -770,9 +677,7 @@ with nav_col:
                 use_container_width=True,
                 help=f"{label} (coming soon)",
             )
-
         st.divider()
-
         if st.button(
             "✎  New Chat" if expanded else "✎",
             key="new_chat_nav",
@@ -781,17 +686,14 @@ with nav_col:
         ):
             new_chat()
             st.rerun()
-
         if expanded:
             st.caption("Signed in through Amazon Cognito.")
-
 with main_col:
     # ==========================================
     # UTA HEADER
     # ==========================================
     with st.container(key="uta_header"):
         header_left, header_user, header_logout = st.columns([7, 1.45, 1.25], gap="small")
-
         with header_left:
             st.markdown(
                 '<div class="topbar">'
@@ -803,7 +705,6 @@ with main_col:
                 '</div>',
                 unsafe_allow_html=True,
             )
-
         with header_user:
             st.markdown(
                 '<div class="topbar" style="padding:0 5px;justify-content:center">'
@@ -811,12 +712,10 @@ with main_col:
                 '</div>',
                 unsafe_allow_html=True,
             )
-
         with header_logout:
             if st.button("Log out", key="logout", type="secondary", use_container_width=True):
                 new_chat()
                 sign_out()
-
     # ==========================================
     # MAIN CONTENT
     # ==========================================
@@ -828,7 +727,6 @@ with main_col:
         '<div class="rule"></div>',
         unsafe_allow_html=True,
     )
-
     # ==========================================
     # BUILD CHAT MESSAGES
     # Refreshes every second only while a reply is pending.
@@ -852,9 +750,7 @@ with main_col:
                     "timestamp": timestamp_now(),
                 }
         st.session_state.pending_requests = remaining
-
         avatar_inner = "" if UTA_LOGO.exists() else "🎓"
-
         # Keep this HTML on single lines: blank lines or indentation would make
         # Streamlit's markdown treat it as a code block.
         rows = []
@@ -879,15 +775,12 @@ with main_col:
                     f'<div class="bubble assistant-bubble">{content}</div>'
                     f'<div class="timestamp assistant-time">{ts}</div></div></div>'
                 )
-
         st.markdown(
             '<div class="chat-scroll"><div class="chat-inner">' + "".join(rows) + '</div></div>',
             unsafe_allow_html=True,
         )
-
     with st.container(key="chat_area"):
         render_chat()
-
 # ==========================================
 # CHAT INPUT
 # Must be at the top level of the script (not inside a column/container)
