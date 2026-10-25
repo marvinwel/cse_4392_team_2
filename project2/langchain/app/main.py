@@ -165,13 +165,16 @@ def chat(
         history=context_history
     )
 
-    print(f"Route for {request.message!r}: {route}", flush=True)
-
     # Step 2: Resolve course references from the FULL history, so a course
     # mentioned in an older (summarized) turn can still be found.
     course_id = resolve_course(
         question=request.message,
         history=history
+    )
+
+    print(
+        f"Route for {request.message!r}: {route} (course: {course_id})",
+        flush=True
     )
 
     # Step 3: Execute the RAG pipeline.
@@ -200,6 +203,16 @@ def chat(
     if route in STUDENT_ROUTES:
         question = request.message
 
+        # Follow-ups like "did I take it?" or "can I take it?" name no course,
+        # so attach the course resolved from the conversation history.
+        # (Not for degree_plan / compare_plans: those are about the whole plan.)
+        if (
+            route in ("student_record", "course_eligibility")
+            and course_id
+            and not codes_in(question)
+        ):
+            question = f"{question} (Course: {course_id})"
+
         if route == "course_eligibility":
             if not course_id:
                 session.update(
@@ -214,9 +227,6 @@ def chat(
                     "sources": [],
                     "data": None
                 }
-
-            if not codes_in(question):
-                question = f"{question} (Course: {course_id})"
 
         result = handle(
             route,
