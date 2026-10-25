@@ -1,0 +1,46 @@
+sh-5.2$ sudo docker logs -f uta-langchain
+Streaming disabled for model 'google.gemma-3-27b-it': provider 'google' is not verified as streaming-capable with ChatBedrockConverse, so calls will fall back to the non-streaming Converse API. If this model does support streaming, pass disable_streaming=False to override.
+Streaming disabled for model 'google.gemma-3-27b-it': provider 'google' is not verified as streaming-capable with ChatBedrockConverse, so calls will fall back to the non-streaming Converse API. If this model does support streaming, pass disable_streaming=False to override.
+Streaming disabled for model 'google.gemma-3-27b-it': provider 'google' is not verified as streaming-capable with ChatBedrockConverse, so calls will fall back to the non-streaming Converse API. If this model does support streaming, pass disable_streaming=False to override.
+Streaming disabled for model 'google.gemma-3-27b-it': provider 'google' is not verified as streaming-capable with ChatBedrockConverse, so calls will fall back to the non-streaming Converse API. If this model does support streaming, pass disable_streaming=False to override.
+Streaming disabled for model 'google.gemma-3-27b-it': provider 'google' is not verified as streaming-capable with ChatBedrockConverse, so calls will fall back to the non-streaming Converse API. If this model does support streaming, pass disable_streaming=False to override.
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     172.17.0.1:39174 - "GET /health HTTP/1.1" 200 OK
+Route for 'who am i?': student_record (course: None)
+INFO:     18.227.82.4:48022 - "POST /chat HTTP/1.1" 200 OK
+Route for 'what is cse 4308 about?': course_information (course: CSE 4308)
+INFO:     18.227.82.4:51834 - "POST /chat HTTP/1.1" 200 OK
+Route for 'what are the prereqs for it?': course_information (course: CSE 4308)
+INFO:     18.227.82.4:41338 - "POST /chat HTTP/1.1" 200 OK
+Route for 'can i take it?': course_eligibility (course: CSE 4308)
+ELIGIBILITY DEBUG: {'course': 'CSE 4308', 'prerequisites_met': [], 'prerequisites_missing': [{'options': [{'course_id': 'CSE 3318', 'min_grade': 'C', 'satisfied': False}], 'satisfied': False}, {'options': [{'course_id': 'IE 3301', 'min_grade': 'C', 'satisfied': False}, {'course_id': 'MATH 3313', 'min_grade': 'C', 'satisfied': False}], 'satisfied': False}], 'errors': ['Missing prerequisite: CSE 3318 (C or better)', 'Missing prerequisite: IE 3301 (C or better) OR MATH 3313 (C or better)']}
+INFO:     18.227.82.4:48504 - "POST /chat HTTP/1.1" 200 OK
+History compacted: 8 messages / 1060 chars -> summary + 4 messages / 881 chars
+Route for 'generate my degree plan without summer semesters': degree_plan (course: CSE 4308)
+INFO:     18.227.82.4:50262 - "POST /chat HTTP/1.1" 200 OK
+History compacted: 10 messages / 1831 chars -> summary + 6 messages / 1652 chars
+Route for 'generate my degree plan without summer semesters max 9 credits': degree_plan (course: CSE 4308)
+INFO:     18.227.82.4:57378 - "POST /chat HTTP/1.1" 200 OK
+INFO:     64.205.72.2:1078 - "GET / HTTP/1.1" 404 Not Found
+INFO:     77.67.26.44:4276 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     200.138.46.59:7246 - "GET /api/mcp HTTP/1.1" 404 Not Found
+INFO:     77.67.26.117:15316 - "GET /mcp/ HTTP/1.1" 404 Not Found
+INFO:     64.205.72.35:6036 - "GET /mcp HTTP/1.1" 404 Not Found
+Route for 'who am i?': student_record (course: None)
+INFO:     18.227.82.4:36990 - "POST /chat HTTP/1.1" 200 OK
+Route for 'can i take cse 4308?': course_eligibility (course: CSE 4308)
+ELIGIBILITY DEBUG: {'course': 'CSE 4308', 'prerequisites_met': [], 'prerequisites_missing': [{'options': [{'course_id': 'CSE 3318', 'min_grade': 'C', 'satisfied': False}], 'satisfied': False}, {'options': [{'course_id': 'IE 3301', 'min_grade': 'C', 'satisfied': False}, {'course_id': 'MATH 3313', 'min_grade': 'C', 'satisfied': False}], 'satisfied': False}], 'errors': ['Missing prerequisite: CSE 3318 (C or better)', 'Missing prerequisite: IE 3301 (C or better) OR MATH 3313 (C or better)']}
+INFO:     18.227.82.4:41502 - "POST /chat HTTP/1.1" 200 OK
+Route for 'what is it about?': course_information (course: CSE 4308)
+INFO:     18.227.82.4:55502 - "POST /chat HTTP/1.1" 200 OK
+Route for 'generate my degree plan': degree_plan (course: CSE 4308)
+INFO:     18.227.82.4:35166 - "POST /chat HTTP/1.1" 200 OK
+History compacted: 8 messages / 1354 chars -> summary + 4 messages / 1288 chars
+Route for 'generate my degree plan max 9 credits': degree_plan (course: CSE 4308)
+INFO:     18.227.82.4:41706 - "POST /chat HTTP/1.1" 200 OK
+History compacted: 10 messages / 2081 chars -> summary + 6 messages / 2015 chars
+Route for 'compare my two last degree plan': compare_plans (course: CSE 4308)
+INFO:     18.227.82.4:47250 - "POST /chat HTTP/1.1" 200 OK

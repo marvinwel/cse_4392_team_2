@@ -6,3 +6,5 @@ boto3
 pydantic
 requests
 PyJWT[crypto]
+langchain-chroma
+chromadb-client==1.0.0

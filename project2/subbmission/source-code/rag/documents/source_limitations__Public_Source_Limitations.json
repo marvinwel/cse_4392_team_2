@@ -1,0 +1,21 @@
+{
+  "review_date": "2026-10-16 America/Chicago",
+  "scope": "Public-source documentation for an undergraduate CSE class-project advisor, not official credit evaluation",
+  "honors": "Definitions confirmed in all four supported archived HONR-SC editions. Short HONR references appear inside their corresponding descriptions; contextual linkage only. No universal conversion of student-entered credit.",
+  "precalculus": "MATH 1322/1323 historical definitions and their content relationship to historical MATH 1421 confirmed. Current CHEM 1441/1465 explicitly list old-number prerequisite alternatives; preserve exact branches, grades and other conditions. No blanket replacement inferred.",
+  "addendum": {
+    "edition_heading": "2026-2027",
+    "body_year": "2025",
+    "source_defect": "Conflicting edition labels remain visible; no official correction found",
+    "overview_updates_displayed": false,
+    "engineering_updates_displayed": false,
+    "administrative_updates_displayed": false,
+    "handling": "No override imported from empty update lists. Preserve conflict and retrieval date. No claim of correction, future no-change guarantee or independently confirmed Spring 2027 effective date."
+  },
+  "additional_limits": [
+    "WOMS/GWSS prefix context does not establish universal individual-credit equivalency",
+    "Unpublished/ambiguous component combinations remain restricted from automatic certification",
+    "Fictional student input cannot itself establish accepted transfer credit"
+  ],
+  "university_source_defects_resolved": false
+}

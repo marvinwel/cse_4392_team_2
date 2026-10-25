@@ -1,0 +1,103 @@
+Source: https://catalog.uta.edu/archives/2024-2025/engineering/computer/undergraduate/
+Catalog year: 2024-2025
+Retrieved: 2026-10-16
+Capture: complete program requirements section, including tables and footnotes. Read shared undergraduate and engineering policies too.
+
+Requirements for a Bachelor of Science Degree in Computer Engineering
+The University Core Curriculum consists of 42 credit hours from University Core Curriculum.
+[TABLE: tab-separated cells]
+General Education Courses [spans 2 columns]	24
+COMS 2302	PROFESSIONAL AND TECHNICAL COMMUNICATION FOR SCIENCE AND ENGINEERING
+POLS 2311	GOVERNMENT OF THE UNITED STATES
+POLS 2312	STATE AND LOCAL GOVERNMENT
+History Electives (6 hours) [2] [spans 2 columns]
+Social & Behavioral Sciences (IE 2308 or ECON 2305) [spans 2 columns]
+Approved Language, Philosophy and Culture elective [2] [spans 2 columns]
+Approved Creative Arts elective [2] [spans 2 columns]
+Program Requirements [spans 2 columns]
+Pre-Professional Courses [1] [spans 2 columns]
+UNIV 1131	STUDENT SUCCESS	1
+or ENGR 1101	ENTRANCE TO ENGINEERING FOR TRANSFER STUDENTS [spans 2 columns]
+ENGL 1301	RHETORIC AND COMPOSITION I	3
+MATH 1426	CALCULUS I	4
+MATH 2425	CALCULUS II	4
+PHYS 1443	GENERAL TECHNICAL PHYSICS I	4
+PHYS 1444	GENERAL TECHNICAL PHYSICS II	4
+CSE 1106	INTRODUCTION TO COMPUTER SCIENCE AND ENGINEERING	1
+CSE 1310	INTRODUCTION TO COMPUTERS & PROGRAMMING	3
+CSE 1320	INTERMEDIATE PROGRAMMING	3
+CSE 1325	OBJECT-ORIENTED PROGRAMMING	3
+CSE 2312	COMPUTER ORGANIZATION & ASSEMBLY LANGUAGE PROGRAMMING	3
+CSE 2315	DISCRETE STRUCTURES	3
+CSE 2440	CIRCUIT ANALYSIS	4
+CSE 2441	DIGITAL LOGIC DESIGN I	4
+CSE 3318	ALGORITHMS & DATA STRUCTURES	3
+Professional Courses [3] [spans 2 columns]
+IE 3301	ENGINEERING PROBABILITY	3
+or MATH 3313	INTRODUCTION TO PROBABILITY [spans 2 columns]
+CSE 3313	INTRODUCTION TO SIGNAL PROCESSING	3
+CSE 3314	PROFESSIONAL PRACTICES	3
+CSE 3320	OPERATING SYSTEMS	3
+CSE 3323	ELECTRONICS	3
+CSE 3341	DIGITAL LOGIC DESIGN II	3
+CSE 3380	LINEAR ALGEBRA FOR CSE	3
+or MATH 3330	INTRODUCTION TO LINEAR ALGEBRA AND VECTOR SPACES [spans 2 columns]
+CSE 3442	EMBEDDED SYSTEMS I	4
+CSE 4316	COMPUTER SYSTEM DESIGN PROJECT I	3
+CSE 4317	COMPUTER SYSTEM DESIGN PROJECT II	3
+CSE 4323	QUANTITATIVE COMPUTER ARCHITECTURE	3
+CSE 4342	EMBEDDED SYSTEMS II	3
+Approved Mathematics elective [2] [spans 2 columns]	3
+Approved Science elective [2] [spans 2 columns]	4
+Approved Technical elective [2] [spans 2 columns]	9
+Total Hours [spans 2 columns]	124
+[END TABLE]
+[1]
+All pre-professional courses must be completed with a C or better before enrolling in professional courses
+[2]
+A list of acceptable electives is available from the departmental office or Web site.
+[3]
+All prerequisites for professional courses must be completed with a C or better
+Note: Total hours will depend upon prior preparation and academic qualifications.  Also, students who do not have two units of high school foreign language will be required to take modern and classical language courses in addition to the previously listed requirements.
+Refer to the College of Engineering section of this catalog for information concerning the following topics: Preparation in High School for Admission to the College of Engineering, Admission to the College of Engineering, Admission to the Professional Program, Counseling, College of Engineering Academic Regulations, Transfer Policies, College of Engineering Probation, Repeating Course Policy and Academic Honesty.
+Recommended Core Curriculum
+Computer Science and  Engineering students will satisfy the university core curriculum requirement by completing all General Education courses specified under “Requirements for a Bachelor of Science Degree in Computer Engineering” along with ENGL 1301, MATH 1426, MATH 2425, PHYS 1443 and PHYS 1444, which are within the Pre-Professional Program.  The university core curriculum allows each degree plan to designate a component area to satisfy three hours of the core requirement.  For the Computer Engineering degree plan, the designated component area is Mathematics and MATH 2326 is selected to satisfy the requirement.
+
+SOURCE LINKS
+https://catalog.uta.edu/archives/2024-2025/academicregulations/degreerequirements/generalcorerequirements/
+https://catalog.uta.edu/search/?P=COMS%202302
+https://catalog.uta.edu/search/?P=POLS%202311
+https://catalog.uta.edu/search/?P=POLS%202312
+https://catalog.uta.edu/search/?P=IE%202308
+https://catalog.uta.edu/search/?P=ECON%202305
+https://catalog.uta.edu/search/?P=UNIV%201131
+https://catalog.uta.edu/search/?P=ENGR%201101
+https://catalog.uta.edu/search/?P=ENGL%201301
+https://catalog.uta.edu/search/?P=MATH%201426
+https://catalog.uta.edu/search/?P=MATH%202425
+https://catalog.uta.edu/search/?P=PHYS%201443
+https://catalog.uta.edu/search/?P=PHYS%201444
+https://catalog.uta.edu/search/?P=CSE%201106
+https://catalog.uta.edu/search/?P=CSE%201310
+https://catalog.uta.edu/search/?P=CSE%201320
+https://catalog.uta.edu/search/?P=CSE%201325
+https://catalog.uta.edu/search/?P=CSE%202312
+https://catalog.uta.edu/search/?P=CSE%202315
+https://catalog.uta.edu/search/?P=CSE%202440
+https://catalog.uta.edu/search/?P=CSE%202441
+https://catalog.uta.edu/search/?P=CSE%203318
+https://catalog.uta.edu/search/?P=IE%203301
+https://catalog.uta.edu/search/?P=MATH%203313
+https://catalog.uta.edu/search/?P=CSE%203313
+https://catalog.uta.edu/search/?P=CSE%203314
+https://catalog.uta.edu/search/?P=CSE%203320
+https://catalog.uta.edu/search/?P=CSE%203323
+https://catalog.uta.edu/search/?P=CSE%203341
+https://catalog.uta.edu/search/?P=CSE%203380
+https://catalog.uta.edu/search/?P=MATH%203330
+https://catalog.uta.edu/search/?P=CSE%203442
+https://catalog.uta.edu/search/?P=CSE%204316
+https://catalog.uta.edu/search/?P=CSE%204317
+https://catalog.uta.edu/search/?P=CSE%204323
+https://catalog.uta.edu/search/?P=CSE%204342
+https://catalog.uta.edu/archives/2024-2025/engineering/

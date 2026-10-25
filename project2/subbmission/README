@@ -1,0 +1,50 @@
+
+UTA TEAM 2 AI ADVISOR
+CSE 4392/5320 - Team Project Assignment 2: An Academic AI Advisor Using LangChain
+Team 2: Marvin Wellington, Joseph Fitchett, Ryan Patterson, Sarthak Wadhawan, Emily Ford
+ 
+ 
+SUBMISSION CONTENTS
+-------------------
+ 
+presentation/
+    PowerPoint for the final presentation: architecture, code segments and
+    demo screenshots.
+ 
+logs/
+    langchain-logs.txt   		Execution traces from the LangChain backend (docker logs).
+                 			Shows each chat request, the route chosen for each question,
+                 			and the chat-history summaries.
+    rag-pipeline-logs.csv      	AWS Lambda logs from the RAG ingestion pipeline. Shows each
+                 		    	document processed, chunks stored and embeddings created.
+ 
+source-code/
+    chat-ui/     Streamlit web interface: student sign-in (Amazon Cognito) and
+                 the chat page that sends questions to the backend.
+ 
+    langchain/   FastAPI + LangChain backend:
+                   main.py           /chat endpoint, ties all steps together
+                   router.py         LLM router that picks one of 6 routes
+                   memory.py         LLM summary of older chat history
+                   rag.py            Vector search (Titan + ChromaDB) and answers
+                   advisor.py,
+                   advisor_tools.py  Student records, prerequisite checks and
+                                     degree plans from DynamoDB
+                   course_context.py Finds the course a follow-up refers to
+ 
+    rag/
+        documents/      All documents used to generate the embedding vectors
+                        (UTA catalogs 2022-2027, degree requirements,
+                        prerequisites, policies).
+        lambda-func.py  AWS Lambda function that parses, chunks (LangChain
+                        text splitter), embeds (Titan Embeddings V2) and stores
+                        the documents in ChromaDB.
+ 
+ 
+MODELS AND SERVICES
+-------------------
+LLM:         Google Gemma 3 27B IT on Amazon Bedrock
+Embeddings:  Amazon Titan Text Embeddings V2 on Amazon Bedrock
+Databases:   ChromaDB (vectors), DynamoDB (student and course records)
+Hosting:     Docker containers on AWS EC2, deployed with GitHub Actions
+ 
