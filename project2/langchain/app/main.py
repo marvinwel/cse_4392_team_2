@@ -17,6 +17,7 @@ from app.extract import codes_in
 from app.course_context import resolve_course
 from app.router import route_question
 from app.rag import answer_course_question
+from app.memory import compact_history
 
 
 app = FastAPI(title="UTA AI Advisor - LangChain")
@@ -154,13 +155,20 @@ def chat(
         for message in request.history
     ]
 
-    # Step 1: Route the student's question using history.
+    # Summarize older turns with the LLM so the router prompt stays small.
+    # Recent turns are kept word for word.
+    context_history = compact_history(history)
+
+    # Step 1: Route the student's question using the compact history.
     route = route_question(
         question=request.message,
-        history=history
+        history=context_history
     )
 
-    # Step 2: Resolve course references from history.
+    print(f"Route for {request.message!r}: {route}", flush=True)
+
+    # Step 2: Resolve course references from the FULL history, so a course
+    # mentioned in an older (summarized) turn can still be found.
     course_id = resolve_course(
         question=request.message,
         history=history
