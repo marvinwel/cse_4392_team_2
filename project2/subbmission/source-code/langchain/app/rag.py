@@ -1,11 +1,10 @@
-
-import json
 import os
+from urllib.parse import urlparse
 
-import boto3
-import requests
+import chromadb
 
-from langchain_aws import ChatBedrockConverse
+from langchain_aws import BedrockEmbeddings, ChatBedrockConverse
+from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
@@ -18,7 +17,7 @@ AWS_REGION = os.getenv("AWS_REGION", "us-east-2")
 EMBEDDING_MODEL_ID = "amazon.titan-embed-text-v2:0"
 
 CHROMA_URL = os.environ["CHROMA_URL"].rstrip("/")
-CHROMA_COLLECTION_ID = os.environ["CHROMA_COLLECTION_ID"]
+CHROMA_COLLECTION_NAME = os.getenv("CHROMA_COLLECTION_NAME", "uta_ai_advisor")
 
 BEDROCK_MODEL_ID = os.getenv(
     "BEDROCK_MODEL_ID",
@@ -26,9 +25,37 @@ BEDROCK_MODEL_ID = os.getenv(
 )
 
 
-bedrock = boto3.client(
-    "bedrock-runtime",
-    region_name=AWS_REGION
+# Same embedding settings as the ingestion Lambda, so the question vector
+# and the stored document vectors are comparable.
+embeddings = BedrockEmbeddings(
+    model_id=EMBEDDING_MODEL_ID,
+    region_name=AWS_REGION,
+    model_kwargs={
+        "dimensions": 1024,
+        "normalize": True
+    }
+)
+
+
+# LangChain vector store over the existing ChromaDB collection.
+chroma_url = urlparse(CHROMA_URL)
+
+chroma_client = chromadb.HttpClient(
+    host=chroma_url.hostname,
+    port=chroma_url.port or (443 if chroma_url.scheme == "https" else 8000),
+    ssl=chroma_url.scheme == "https"
+)
+
+vector_store = Chroma(
+    client=chroma_client,
+    collection_name=CHROMA_COLLECTION_NAME,
+    embedding_function=embeddings
+)
+
+
+# Retriever: embeds the question with Titan and returns the 4 nearest chunks.
+retriever = vector_store.as_retriever(
+    search_kwargs={"k": 4}
 )
 
 
@@ -65,50 +92,6 @@ answer_chain = (
     | answer_llm
     | StrOutputParser()
 )
-
-
-def embed_question(question: str) -> list[float]:
-    response = bedrock.invoke_model(
-        modelId=EMBEDDING_MODEL_ID,
-        contentType="application/json",
-        accept="application/json",
-        body=json.dumps({
-            "inputText": question,
-            "dimensions": 1024,
-            "normalize": True
-        })
-    )
-
-    result = json.loads(response["body"].read())
-
-    return result["embedding"]
-
-
-def search_chromadb(embedding: list[float]) -> dict:
-    url = (
-        f"{CHROMA_URL}"
-        "/api/v2/tenants/default_tenant"
-        "/databases/default_database"
-        f"/collections/{CHROMA_COLLECTION_ID}/query"
-    )
-
-    response = requests.post(
-        url,
-        json={
-            "query_embeddings": [embedding],
-            "n_results": 4,
-            "include": [
-                "documents",
-                "metadatas",
-                "distances"
-            ]
-        },
-        timeout=20
-    )
-
-    response.raise_for_status()
-
-    return response.json()
 
 
 def describe_course(course: dict) -> str:
@@ -160,12 +143,10 @@ def exact_course_records(question: str) -> list[dict]:
 
 
 def answer_course_question(question: str) -> dict:
-    embedding = embed_question(question)
+    docs = retriever.invoke(question)
 
-    results = search_chromadb(embedding)
-
-    documents = results.get("documents", [[]])[0]
-    metadatas = results.get("metadatas", [[]])[0]
+    documents = [doc.page_content for doc in docs]
+    metadatas = [doc.metadata for doc in docs]
 
     exact = exact_course_records(question)
 
