@@ -1,4 +1,3 @@
-#update
 import streamlit as st
 import streamlit.components.v1 as components
 from pathlib import Path
@@ -433,6 +432,48 @@ html, body, [data-testid="stApp"],
 .st-key-logout button:active { transform: translateY(0); }
 .st-key-logout button:focus-visible { outline: 2px solid #ffffff !important; outline-offset: 2px; }
 /* ------------------------------------------
+   RESPONSIVE HEADER + LOG OUT BUTTON
+   Keep the three header columns on one row (Streamlit stacks columns on
+   narrow screens), let the button shrink with the window, and switch to an
+   icon-only button on small screens.
+   ------------------------------------------ */
+.st-key-uta_header [data-testid="stHorizontalBlock"] { flex-wrap: nowrap !important; }
+.st-key-uta_header [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] { min-width: 0 !important; }
+.st-key-logout button {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 12px !important;
+}
+.st-key-logout button p {
+    font-size: clamp(13px, 1.3vw, 18px) !important;
+    justify-content: center;
+}
+@media (max-width: 1000px) {
+    .st-key-uta_header [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(1) {
+        flex: 1 1 auto !important;
+        width: auto !important;
+    }
+    .st-key-uta_header [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(2),
+    .st-key-uta_header [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(3) {
+        flex: 0 0 auto !important;
+        width: auto !important;
+    }
+    .st-key-logout { padding-left: 8px; }
+    .brand-sub { display: none; }
+}
+@media (max-width: 700px) {
+    /* Icon only: the label is hidden visually but still read by screen readers */
+    .st-key-logout button {
+        width: 46px !important;
+        min-height: 44px !important;
+        padding: 0 !important;
+    }
+    .st-key-logout button p { font-size: 0 !important; gap: 0; }
+    .student-name { display: none; }
+    .uta-logo { font-size: 28px; }
+    .brand-name { font-size: 16px; }
+}
+/* ------------------------------------------
    CHAT HEADING
    ------------------------------------------ */
 .headline {
@@ -592,9 +633,9 @@ if _avatar_css:
 # CHAT STATE
 # ==========================================
 WELCOME = (
-    "Hello! I’m your UTA CSE AI Advisor (Team 2).\n"
+    "Hello! I’m your UTA CSE AI Advisor (Team 2).\n\n"
     "I can help you with course information, prerequisites, "
-    "and degree planning.\n"
+    "schedule conflicts, and degree planning.\n\n"
     "How can I help you today?"
 )
 def timestamp_now():
@@ -796,6 +837,7 @@ with main_col:
                 "Log out",
                 key="logout",
                 type="secondary",
+                help="Log out",
                 use_container_width=True,
                 on_click=sign_out,
             )

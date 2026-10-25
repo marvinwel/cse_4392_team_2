@@ -18,9 +18,24 @@ from app.course_context import resolve_course
 from app.router import route_question
 from app.rag import answer_course_question
 from app.memory import compact_history
+from app.courtesy import courtesy_reply
 
 
 app = FastAPI(title="UTA AI Advisor - LangChain")
+
+
+# Reply for questions the router classifies as "unsupported"
+# (registration actions, financial aid, housing, unrelated topics).
+UNSUPPORTED_ANSWER = (
+    "I can only help with UTA Computer Science academic advising, so I can't "
+    "answer that one. Here's what I can do:\n\n"
+    "**Course information:** \"What is CSE 3318 about?\"\n"
+    "**Your academic record:** \"What courses have I taken?\"\n"
+    "**Course eligibility:** \"Can I take CSE 4308?\"\n"
+    "**Degree planning:** \"Make me a degree plan without summer semesters\"\n\n"
+    "For registration, financial aid or housing, please contact the "
+    "appropriate UTA office or your academic advisor."
+)
 
 
 @lru_cache(maxsize=1)
@@ -177,6 +192,21 @@ def chat(
         flush=True
     )
 
+    # Thanks / ok / hi / bye: courtesy reply with a follow-up question.
+    if route == "small_talk":
+        session.update(
+            session_id,
+            student_id,
+            last_route=route
+        )
+
+        return {
+            "route": route,
+            "answer": courtesy_reply(request.message, context_history),
+            "sources": [],
+            "data": None
+        }
+
     # Step 3: Execute the RAG pipeline.
     if route == "course_information":
         question = request.message
@@ -259,7 +289,7 @@ def chat(
 
     return {
         "route": route,
-        "answer": "This feature is not available yet.",
+        "answer": UNSUPPORTED_ANSWER,
         "sources": [],
         "data": None
     }
