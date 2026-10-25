@@ -1,4 +1,3 @@
-#test1
 import os
 
 from langchain_aws import ChatBedrockConverse
@@ -41,6 +40,11 @@ compare_plans:
 - Comparing two of the student's degree plans
 Example: "Compare my two plans" / "Which plan finishes sooner?"
 
+small_talk:
+- Thanks, acknowledgements, greetings or goodbyes with NO question or request in them
+Example: "Thank you" / "ok" / "Thanks, that helps" / "Hi" / "Bye"
+- If the message also asks something ("ok, what about 3 classes?"), use that request's route instead
+
 unsupported:
 - Registration actions, financial aid, housing, anything else
 - Unrelated questions
@@ -58,12 +62,12 @@ Examples:
   → course_information
 - "What is CSE 3318?" followed by "Can I take it?"
   → course_eligibility
+- "Can I take CSE 4308?" followed by "ok thank you"
+  → small_talk
 
 Classify the CURRENT question using its meaning and the conversation history.
 Short follow-ups like "what about 3 classes?" or "and in the fall?" usually
 continue the previous route.
-
-if student question is "ok" or "thank you", reply with a courtesy message for assistanting them.
 
 Return ONLY one of these exact values:
 course_information
@@ -71,6 +75,7 @@ student_record
 course_eligibility
 degree_plan
 compare_plans
+small_talk
 unsupported
 
 Do not answer the student's question.
@@ -105,6 +110,7 @@ VALID_ROUTES = (
     "course_eligibility",
     "degree_plan",
     "compare_plans",
+    "small_talk",
     "unsupported"
 )
 
@@ -136,8 +142,6 @@ def route_question(
     if len(found) == 1:
         return found[0]
 
-    
-    raise ValueError(
-        f"{route}"
-        #f"Invalid route returned by model: {route}"
-    )
+    # Never crash the request on an unexpected model reply.
+    print(f"Router returned unexpected value: {route!r}", flush=True)
+    return "unsupported"
