@@ -63,6 +63,8 @@ Classify the CURRENT question using its meaning and the conversation history.
 Short follow-ups like "what about 3 classes?" or "and in the fall?" usually
 continue the previous route.
 
+if student question is "ok" or "thank you", reply with a courtesy message for assistanting them.
+
 Return ONLY one of these exact values:
 course_information
 student_record
@@ -134,6 +136,8 @@ def route_question(
     if len(found) == 1:
         return found[0]
 
+    
     raise ValueError(
-        f"Invalid route returned by model: {route}"
+        f"{route}"
+        #f"Invalid route returned by model: {route}"
     )

@@ -24,9 +24,9 @@ from app.memory import compact_history
 # Reply for questions the router classifies as "unsupported"
 # (registration actions, financial aid, housing, unrelated topics).
 UNSUPPORTED_ANSWER = (
-    "I can only help with UTA academic advising, such as answering questions "
+    "I can only help with UTA academic advising, such as answering questions\n"
     "about course information, your academic records, course eligibility, "
-    "and Degree planning\n"
+    "and Degree planning.\n\n"
     "For registration, financial aid or housing, please contact the "
     "appropriate UTA office or your academic advisor."
 )
