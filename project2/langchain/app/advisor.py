@@ -170,6 +170,71 @@ def phrase(question: str, record: dict, result: dict) -> str:
     })
 
 
+def format_degree_plan(data: dict) -> str:
+    """
+    Write the degree plan in code instead of asking the LLM to.
+    Every term, course and credit comes straight from generate_degree_plan(),
+    so nothing can be skipped, reworded or recalculated.
+    """
+    if data.get("error"):
+        lines = [f"I couldn't build a degree plan: {data['error']}"]
+        for key, label in (("missing_courses", "Missing course records"),
+                           ("unvalidated_courses", "Courses with unvalidated prerequisites")):
+            if data.get(key):
+                lines.append(f"- {label}: {', '.join(data[key])}")
+        return "\n".join(lines)
+
+    terms = data.get("terms", [])
+    if not terms:
+        return "I couldn't schedule any courses with those settings. Try allowing more credits per term."
+
+    settings = data.get("settings", {})
+    first, last = terms[0]["term_id"], terms[-1]["term_id"]
+    span = f"{extract.term_label(first)} to {extract.term_label(last)}"
+    summary = f"{len(terms)} semesters, {data.get('total_planned_credits')} credits, {span}"
+
+    if data.get("complete"):
+        lines = [f"Here is your degree plan: {summary}."]
+    else:
+        lines = [f"**This plan is incomplete.** It covers {summary}, "
+                 "but some required courses could not be scheduled."]
+
+    limits = [f"up to {settings.get('max_credits_per_term', 15)} credits per term"]
+    if settings.get("max_courses_per_term"):
+        limits.append(f"up to {settings['max_courses_per_term']} classes per term")
+    limits.append("including summer" if settings.get("include_summer") else "fall and spring only")
+    lines.append("Settings: " + ", ".join(limits) + ".")
+    lines.append("")
+
+    for term in terms:
+        courses = ", ".join(
+            f"{c['course_id']} ({c['credits']})" if c.get("credits") is not None else c["course_id"]
+            for c in term["courses"]
+        )
+        lines.append(f"**{extract.term_label(term['term_id'])} ({term['credits']} credits):** {courses}")
+
+    unscheduled = data.get("could_not_schedule") or {}
+    if unscheduled:
+        lines.append("")
+        lines.append("**Could not schedule:**")
+        for course_id, errors in unscheduled.items():
+            lines.append(f"- {course_id}: {'; '.join(errors)}")
+
+    extra = list(data.get("assumptions") or []) + list(data.get("notes") or [])
+    if extra:
+        lines.append("")
+        lines.append("**Notes:**")
+        lines += [f"- {n}" for n in extra]
+
+    lines.append("")
+    if data.get("saved") and data.get("plan_name"):
+        lines.append(f"Saved as **{data['plan_name']}**.")
+    if any(c.get("section") is None for t in terms for c in t["courses"]):
+        lines.append("Section times are not confirmed yet, so check the class schedule before registering.")
+
+    return "\n".join(lines).rstrip()
+
+
 def reply(answer: str, data=None) -> dict:
     return {"answer": answer, "sources": [], "data": data}
 
@@ -319,7 +384,9 @@ def degree_plan(message, record, state, today) -> dict:
         data.pop("plan_name", None)
 
     plan_names = state.get("plan_names", []) + ([plan_name] if result.get("saved") else [])
-    return {**reply(phrase(message, record, data), data),
+    # The plan is written by code (format_degree_plan), not by the LLM, so terms
+    # and credits always match what the planner produced.
+    return {**reply(format_degree_plan(data), data),
             "_session": {"last_plan_params": {k: v for k, v in settings.items() if v not in (None, [])},
                          "plan_names": plan_names}}
 
