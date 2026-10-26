@@ -867,9 +867,15 @@ def generate_degree_plan(student_id: str, start_term: str, max_credits_per_term:
     out = {"program_id": program["program_id"], "start_term": start_term,
            "complete": not remaining and not unmet_requirements, "last_term": plan[-1]["term_id"] if plan else None,
            "semesters": len(plan), "total_planned_credits": total,
+           # Each course carries its own title and credits ("credits" on the term is the
+           # term total), so the LLM never has to guess per-course credits.
            "terms": [{"term_id": t["term_id"],
                       "credits": sum(courses[c["course_id"]]["credits"] for c in t["courses"]),
-                      "courses": t["courses"]} for t in plan],
+                      "courses": [{"course_id": c["course_id"],
+                                   "title": courses[c["course_id"]].get("title", ""),
+                                   "credits": courses[c["course_id"]]["credits"],
+                                   "section": c.get("section")}
+                                  for c in t["courses"]]} for t in plan],
            "could_not_schedule": {c: last_errors.get(c, ["never reached"]) for c in remaining},
            "notes": notes,
            "unmet_requirements": unmet_requirements}
