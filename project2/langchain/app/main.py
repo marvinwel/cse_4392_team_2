@@ -1,5 +1,6 @@
 #force update
 import json
+import re
 import boto3
 import jwt
 
@@ -22,6 +23,15 @@ from app.courtesy import courtesy_reply
 
 
 app = FastAPI(title="UTA AI Advisor - LangChain")
+
+
+# True when the question points back to a course mentioned earlier
+# ("did I take it?", "what grade did I get in that class?").
+def refers_to_course(question: str) -> bool:
+    text = question.lower()
+    if re.search(r"\b(it|them)\b", text):
+        return True
+    return bool(re.search(r"\b(that|this|the|those|these)\s+(course|class)(es)?\b", text))
 
 
 # Reply for questions the router classifies as "unsupported"
@@ -235,12 +245,16 @@ def chat(
 
         # Follow-ups like "did I take it?" or "can I take it?" name no course,
         # so attach the course resolved from the conversation history.
+        # - course_eligibility always needs a course.
+        # - student_record only when the question points back at a course
+        #   ("did I take it?"), not for "who am I?" or "what's my GPA?".
         # (Not for degree_plan / compare_plans: those are about the whole plan.)
-        if (
-            route in ("student_record", "course_eligibility")
-            and course_id
-            and not codes_in(question)
-        ):
+        needs_course = (
+            route == "course_eligibility"
+            or (route == "student_record" and refers_to_course(question))
+        )
+
+        if needs_course and course_id and not codes_in(question):
             question = f"{question} (Course: {course_id})"
 
         if route == "course_eligibility":
