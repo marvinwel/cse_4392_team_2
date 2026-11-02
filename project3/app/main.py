@@ -77,20 +77,20 @@ def generate_ep_tests(state: TestGenState) -> dict:
     source_code = Path(state["source_path"]).read_text()
 
     system_prompt = f"""You are a software testing expert.
-Generate FUNCTIONAL test cases using EQUIVALENCE PARTITIONING.
+        Generate FUNCTIONAL test cases using EQUIVALENCE PARTITIONING.
 
-Method:
-1. List every public method of {class_name} (except main) and every input it
-   depends on: its parameters AND the fields it reads (such as a state variable
-   or a value it compares against a threshold).
-2. For each method, divide those inputs into equivalence classes, where every
-   value in a class causes the same behavior:
-   - one VALID class per distinct behavior (each case of a switch, each outcome of an if)
-   - one VALID class per side of every comparison (e.g. above vs. at-or-below a threshold)
-   - one INVALID class for values that match no case or are outside the allowed range
-3. Pick ONE representative value from the middle of each class, not its edges.
-4. Write one test per equivalence class.
-""" + COMMON_RULES.format(class_name=class_name, package_name=package_name)
+        Method:
+        1. List every public method of {class_name} (except main) and every input it
+        depends on: its parameters AND the fields it reads (such as a state variable
+        or a value it compares against a threshold).
+        2. For each method, divide those inputs into equivalence classes, where every
+        value in a class causes the same behavior:
+        - one VALID class per distinct behavior (each case of a switch, each outcome of an if)
+        - one VALID class per side of every comparison (e.g. above vs. at-or-below a threshold)
+        - one INVALID class for values that match no case or are outside the allowed range
+        3. Pick ONE representative value from the middle of each class, not its edges.
+        4. Write one test per equivalence class.
+        """ + COMMON_RULES.format(class_name=class_name, package_name=package_name)
 
     response = model.invoke([
         SystemMessage(content=system_prompt),
@@ -108,20 +108,20 @@ def generate_bv_tests(state: TestGenState) -> dict:
     source_code = Path(state["source_path"]).read_text()
 
     system_prompt = f"""You are a software testing expert.
-Generate FUNCTIONAL test cases using BOUNDARY VALUE ANALYSIS.
+        Generate FUNCTIONAL test cases using BOUNDARY VALUE ANALYSIS.
 
-Method:
-1. Find every numeric comparison in {class_name} (e.g. temp > limit, x < max)
-   and every bounded range of values a variable can take (e.g. state constants 0..2).
-2. For each comparison against a value N, test N-1, N, and N+1, and say in the
-   comment whether the condition is true or false at exactly N.
-3. For each range MIN..MAX, test MIN and MAX (valid) and MIN-1 and MAX+1 (invalid).
-   Trace what the code really does with the invalid values.
-4. Do NOT invent boundaries for things that have no numeric comparison or range.
-5. Use field names instead of hard-coded numbers where possible
-   (e.g. coolTemp - 1 instead of 67).
-6. Write one test per boundary value.
-""" + COMMON_RULES.format(class_name=class_name, package_name=package_name)
+        Method:
+        1. Find every numeric comparison in {class_name} (e.g. temp > limit, x < max)
+        and every bounded range of values a variable can take (e.g. state constants 0..2).
+        2. For each comparison against a value N, test N-1, N, and N+1, and say in the
+        comment whether the condition is true or false at exactly N.
+        3. For each range MIN..MAX, test MIN and MAX (valid) and MIN-1 and MAX+1 (invalid).
+        Trace what the code really does with the invalid values.
+        4. Do NOT invent boundaries for things that have no numeric comparison or range.
+        5. Use field names instead of hard-coded numbers where possible
+        (e.g. coolTemp - 1 instead of 67).
+        6. Write one test per boundary value.
+        """ + COMMON_RULES.format(class_name=class_name, package_name=package_name)
 
     response = model.invoke([
         SystemMessage(content=system_prompt),
