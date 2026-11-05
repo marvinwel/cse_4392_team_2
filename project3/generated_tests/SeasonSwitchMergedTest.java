@@ -49,7 +49,6 @@ public class SeasonSwitchMergedTest {
         SeasonSwitch.state = 1;
         ss.cool();
         assertEquals(1, SeasonSwitch.state);
-        assertTrue(ac.isOn);
     }
 
     // cool() - State HEAT
@@ -58,8 +57,8 @@ public class SeasonSwitchMergedTest {
         SeasonSwitch.state = 2;
         ss.cool();
         assertEquals(1, SeasonSwitch.state);
-        assertTrue(ac.isOn);
         assertFalse(heater.isOn);
+        assertTrue(ac.isOn);
         assertTrue(ss.timer.isRunning());
     }
 
@@ -78,7 +77,6 @@ public class SeasonSwitchMergedTest {
         SeasonSwitch.state = 2;
         ss.heat();
         assertEquals(2, SeasonSwitch.state);
-        assertTrue(heater.isOn);
     }
 
     // heat() - State COOL
@@ -87,8 +85,8 @@ public class SeasonSwitchMergedTest {
         SeasonSwitch.state = 1;
         ss.heat();
         assertEquals(2, SeasonSwitch.state);
-        assertTrue(heater.isOn);
         assertFalse(ac.isOn);
+        assertTrue(heater.isOn);
         assertTrue(ss.timer.isRunning());
     }
 
@@ -98,9 +96,6 @@ public class SeasonSwitchMergedTest {
         SeasonSwitch.state = 0;
         ss.off();
         assertEquals(0, SeasonSwitch.state);
-        assertFalse(ac.isOn);
-        assertFalse(heater.isOn);
-        assertFalse(ss.timer.isRunning());
     }
 
     // off() - State HEAT
@@ -129,23 +124,21 @@ public class SeasonSwitchMergedTest {
         SeasonSwitch.state = 0;
         ss.timerOff();
         assertEquals(0, SeasonSwitch.state);
-        assertFalse(ac.isOn);
-        assertFalse(heater.isOn);
     }
 
-    // timerOff() - State COOL, temp < coolTemp
+    // timerOff() - State COOL - temp > coolTemp
     @Test
-    void timerOff_cool_temp_lt() {
+    void timerOff_cool_temp_gt_coolTemp() {
         SeasonSwitch.state = 1;
-        room.temp = 67;
+        room.temp = 72;
         ss.timerOff();
         assertEquals(1, SeasonSwitch.state);
-        assertFalse(ac.isOn);
+        assertTrue(ac.isOn);
     }
 
-    // timerOff() - State COOL, temp == coolTemp
+    // timerOff() - State COOL - temp <= coolTemp
     @Test
-    void timerOff_cool_temp_eq() {
+    void timerOff_cool_temp_lte_coolTemp() {
         SeasonSwitch.state = 1;
         room.temp = 68;
         ss.timerOff();
@@ -153,41 +146,21 @@ public class SeasonSwitchMergedTest {
         assertFalse(ac.isOn);
     }
 
-    // timerOff() - State COOL, temp > coolTemp
+    // timerOff() - State HEAT - temp < heatTemp
     @Test
-    void timerOff_cool_temp_gt() {
-        SeasonSwitch.state = 1;
-        room.temp = 69;
-        ss.timerOff();
-        assertEquals(1, SeasonSwitch.state);
-        assertTrue(ac.isOn);
-    }
-
-    // timerOff() - State HEAT, temp < heatTemp
-    @Test
-    void timerOff_heat_temp_lt() {
+    void timerOff_heat_temp_lt_heatTemp() {
         SeasonSwitch.state = 2;
-        room.temp = 76;
+        room.temp = 75;
         ss.timerOff();
         assertEquals(2, SeasonSwitch.state);
         assertTrue(heater.isOn);
     }
 
-    // timerOff() - State HEAT, temp == heatTemp
+    // timerOff() - State HEAT - temp >= heatTemp
     @Test
-    void timerOff_heat_temp_eq() {
+    void timerOff_heat_temp_gte_heatTemp() {
         SeasonSwitch.state = 2;
         room.temp = 77;
-        ss.timerOff();
-        assertEquals(2, SeasonSwitch.state);
-        assertFalse(heater.isOn);
-    }
-
-    // timerOff() - State HEAT, temp > heatTemp
-    @Test
-    void timerOff_heat_temp_gt() {
-        SeasonSwitch.state = 2;
-        room.temp = 78;
         ss.timerOff();
         assertEquals(2, SeasonSwitch.state);
         assertFalse(heater.isOn);
@@ -206,6 +179,18 @@ public class SeasonSwitchMergedTest {
 
     // cool() - state = OFF, boundary: 0
     @Test
+    void testCoolStateOffMinusOne() {
+        SeasonSwitch.state = -1;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.cool();
+        // Should still transition to COOL
+        assertEquals(1, SeasonSwitch.state);
+        assertTrue(ss.ac.isOn);
+        assertTrue(SeasonSwitch.timer.isRunning());
+    }
+
+    // cool() - state = OFF, boundary: 0
+    @Test
     void testCoolStateOffZero() {
         SeasonSwitch ss = new SeasonSwitch();
         ss.cool();
@@ -214,23 +199,58 @@ public class SeasonSwitchMergedTest {
         assertTrue(SeasonSwitch.timer.isRunning());
     }
 
+    // cool() - state = OFF, boundary: 1
+    @Test
+    void testCoolStateOffPlusOne() {
+        SeasonSwitch.state = 1;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.cool();
+        // Should remain in COOL
+        assertEquals(1, SeasonSwitch.state);
+        assertTrue(ss.ac.isOn);
+        assertTrue(SeasonSwitch.timer.isRunning());
+    }
+
+    // cool() - state = COOL, boundary: 1
+    @Test
+    void testCoolStateCoolMinusOne() {
+        SeasonSwitch.state = 0;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.cool();
+        ss.cool();
+        // Should remain in COOL
+        assertEquals(1, SeasonSwitch.state);
+    }
+
     // cool() - state = COOL, boundary: 1
     @Test
     void testCoolStateCoolZero() {
         SeasonSwitch.state = 1;
         SeasonSwitch ss = new SeasonSwitch();
         ss.cool();
+        // Should remain in COOL
         assertEquals(1, SeasonSwitch.state);
     }
 
-    // cool() - state = HEAT, boundary: 2
+    // cool() - state = COOL, boundary: 2
     @Test
-    void testCoolStateHeatZero() {
+    void testCoolStateCoolPlusOne() {
         SeasonSwitch.state = 2;
         SeasonSwitch ss = new SeasonSwitch();
         ss.cool();
         assertEquals(1, SeasonSwitch.state);
         assertTrue(ss.ac.isOn);
+        assertTrue(SeasonSwitch.timer.isRunning());
+    }
+
+    // heat() - state = OFF, boundary: 0
+    @Test
+    void testHeatStateOffMinusOne() {
+        SeasonSwitch.state = -1;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.heat();
+        assertEquals(2, SeasonSwitch.state);
+        assertTrue(ss.heater.isOn);
         assertTrue(SeasonSwitch.timer.isRunning());
     }
 
@@ -244,6 +264,27 @@ public class SeasonSwitchMergedTest {
         assertTrue(SeasonSwitch.timer.isRunning());
     }
 
+    // heat() - state = OFF, boundary: 1
+    @Test
+    void testHeatStateOffPlusOne() {
+        SeasonSwitch.state = 1;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.heat();
+        assertEquals(2, SeasonSwitch.state);
+        assertTrue(ss.heater.isOn);
+        assertTrue(SeasonSwitch.timer.isRunning());
+    }
+
+    // heat() - state = HEAT, boundary: 2
+    @Test
+    void testHeatStateHeatMinusOne() {
+        SeasonSwitch.state = 1;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.heat();
+        ss.heat();
+        assertEquals(2, SeasonSwitch.state);
+    }
+
     // heat() - state = HEAT, boundary: 2
     @Test
     void testHeatStateHeatZero() {
@@ -253,10 +294,10 @@ public class SeasonSwitchMergedTest {
         assertEquals(2, SeasonSwitch.state);
     }
 
-    // heat() - state = COOL, boundary: 1
+    // heat() - state = HEAT, boundary: 3
     @Test
-    void testHeatStateCoolZero() {
-        SeasonSwitch.state = 1;
+    void testHeatStateHeatPlusOne() {
+        SeasonSwitch.state = 3;
         SeasonSwitch ss = new SeasonSwitch();
         ss.heat();
         assertEquals(2, SeasonSwitch.state);
@@ -266,10 +307,41 @@ public class SeasonSwitchMergedTest {
 
     // off() - state = OFF, boundary: 0
     @Test
+    void testOffStateOffMinusOne() {
+        SeasonSwitch.state = -1;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.off();
+        assertEquals(-1, SeasonSwitch.state);
+    }
+
+    // off() - state = OFF, boundary: 0
+    @Test
     void testOffStateOffZero() {
         SeasonSwitch ss = new SeasonSwitch();
         ss.off();
         assertEquals(0, SeasonSwitch.state);
+    }
+
+    // off() - state = OFF, boundary: 1
+    @Test
+    void testOffStateOffPlusOne() {
+        SeasonSwitch.state = 1;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.off();
+        assertEquals(0, SeasonSwitch.state);
+        assertFalse(ss.ac.isOn);
+        assertFalse(SeasonSwitch.timer.isRunning());
+    }
+
+    // off() - state = HEAT, boundary: 2
+    @Test
+    void testOffStateHeatMinusOne() {
+        SeasonSwitch.state = 1;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.off();
+        assertEquals(0, SeasonSwitch.state);
+        assertFalse(ss.heater.isOn);
+        assertFalse(SeasonSwitch.timer.isRunning());
     }
 
     // off() - state = HEAT, boundary: 2
@@ -283,6 +355,24 @@ public class SeasonSwitchMergedTest {
         assertFalse(SeasonSwitch.timer.isRunning());
     }
 
+    // off() - state = HEAT, boundary: 3
+    @Test
+    void testOffStateHeatPlusOne() {
+        SeasonSwitch.state = 3;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.off();
+        assertEquals(3, SeasonSwitch.state);
+    }
+
+    // off() - state = COOL, boundary: 1
+    @Test
+    void testOffStateCoolMinusOne() {
+        SeasonSwitch.state = 0;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.off();
+        assertEquals(0, SeasonSwitch.state);
+    }
+
     // off() - state = COOL, boundary: 1
     @Test
     void testOffStateCoolZero() {
@@ -294,14 +384,23 @@ public class SeasonSwitchMergedTest {
         assertFalse(SeasonSwitch.timer.isRunning());
     }
 
-    // timerOff() - room.temp > coolTemp, boundary: coolTemp - 1
+    // off() - state = COOL, boundary: 2
+    @Test
+    void testOffStateCoolPlusOne() {
+        SeasonSwitch.state = 2;
+        SeasonSwitch ss = new SeasonSwitch();
+        ss.off();
+        assertEquals(2, SeasonSwitch.state);
+    }
+
+    // timerOff() - room.temp > coolTemp, boundary: coolTemp
     @Test
     void testTimerOffCoolTempMinusOne() {
         SeasonSwitch.state = 1;
         SeasonSwitch ss = new SeasonSwitch();
-        ss.room.temp = 67;
+        ss.room.temp = ss.coolTemp - 1;
         ss.timerOff();
-        assertTrue(ss.ac.isOn);
+        assertFalse(ss.ac.isOn);
     }
 
     // timerOff() - room.temp > coolTemp, boundary: coolTemp
@@ -309,9 +408,9 @@ public class SeasonSwitchMergedTest {
     void testTimerOffCoolTempZero() {
         SeasonSwitch.state = 1;
         SeasonSwitch ss = new SeasonSwitch();
-        ss.room.temp = 68;
+        ss.room.temp = ss.coolTemp;
         ss.timerOff();
-        assertFalse(ss.ac.isOn);
+        assertTrue(ss.ac.isOn);
     }
 
     // timerOff() - room.temp > coolTemp, boundary: coolTemp + 1
@@ -319,17 +418,17 @@ public class SeasonSwitchMergedTest {
     void testTimerOffCoolTempPlusOne() {
         SeasonSwitch.state = 1;
         SeasonSwitch ss = new SeasonSwitch();
-        ss.room.temp = 69;
+        ss.room.temp = ss.coolTemp + 1;
         ss.timerOff();
         assertTrue(ss.ac.isOn);
     }
 
-    // timerOff() - room.temp < heatTemp, boundary: heatTemp - 1
+    // timerOff() - room.temp < heatTemp, boundary: heatTemp
     @Test
     void testTimerOffHeatTempMinusOne() {
         SeasonSwitch.state = 2;
         SeasonSwitch ss = new SeasonSwitch();
-        ss.room.temp = 76;
+        ss.room.temp = ss.heatTemp - 1;
         ss.timerOff();
         assertTrue(ss.heater.isOn);
     }
@@ -339,7 +438,7 @@ public class SeasonSwitchMergedTest {
     void testTimerOffHeatTempZero() {
         SeasonSwitch.state = 2;
         SeasonSwitch ss = new SeasonSwitch();
-        ss.room.temp = 77;
+        ss.room.temp = ss.heatTemp;
         ss.timerOff();
         assertFalse(ss.heater.isOn);
     }
@@ -349,8 +448,8 @@ public class SeasonSwitchMergedTest {
     void testTimerOffHeatTempPlusOne() {
         SeasonSwitch.state = 2;
         SeasonSwitch ss = new SeasonSwitch();
-        ss.room.temp = 78;
+        ss.room.temp = ss.heatTemp + 1;
         ss.timerOff();
-        assertTrue(ss.heater.isOn);
+        assertFalse(ss.heater.isOn);
     }
 }

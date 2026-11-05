@@ -2,3 +2,5 @@ langchain
 langchain-core 
 langgraph  
 langchain-aws
+langsmith 
+python-dotenv

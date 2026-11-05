@@ -1,4 +1,6 @@
 from pathlib import Path
+from dotenv import load_dotenv
+from langsmith import traceable
 from typing import TypedDict
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_aws import ChatBedrockConverse
@@ -11,6 +13,8 @@ import subprocess
 from pathlib import Path
 
 MAX_REVIEW_ATTEMPTS = 3 #Max attempts for review
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 # ---------------------------------------------------------------------------
 # Model config
@@ -101,6 +105,7 @@ def load_source(state: AgentState):
 # ---------------------------------------------------------------------------
 # Node 2: Equivalence Partition tests
 # ---------------------------------------------------------------------------
+@traceable(name="Generate ep test", run_type="tool")
 def generate_ep_tests(state: AgentState) -> dict:
     feedback = state.get("review_feedback", "")
     previous_tests = state.get("ep_tests", "")
@@ -152,6 +157,7 @@ def generate_ep_tests(state: AgentState) -> dict:
 # ---------------------------------------------------------------------------
 # Node 3: Boundary Value tests
 # ---------------------------------------------------------------------------
+@traceable(name="Generate bv test", run_type="tool")
 def generate_bv_tests(state: AgentState) -> dict:
     feedback = state.get("review_feedback", "")
     previous_tests = state.get("bv_tests", "")
@@ -204,14 +210,14 @@ def generate_bv_tests(state: AgentState) -> dict:
 # Node 4: merge_tests
 # ---------------------------------------------------------------------------
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 MERGER_JAR = (
     BASE_DIR / "junit-merger" / "target"
     / "junit-merger-1.0.0.jar"
 )
 
-
+@traceable(name="JavaParser JUnit Merge", run_type="tool")
 def merge_tests(state: AgentState) -> dict:
     class_name = state["class_name"]
 
