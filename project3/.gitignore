@@ -1,0 +1,12 @@
+# Environment variables (API keys and secrets)
+app/.env
+
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated Java build files
+junit-merger/target/
