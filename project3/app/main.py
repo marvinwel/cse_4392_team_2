@@ -2,9 +2,15 @@ from pathlib import Path
 from typing import TypedDict
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_aws import ChatBedrockConverse
-from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.graph import StateGraph, START, END
+import re
+from langgraph.types import interrupt
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import Command
+import subprocess
+from pathlib import Path
 
+MAX_REVIEW_ATTEMPTS = 3 #Max attempts for review
 
 # ---------------------------------------------------------------------------
 # Model config
@@ -15,7 +21,7 @@ NOVA_MODEL = "us.amazon.nova-micro-v1:0" #support up to to tools, cheapest
 GEMMA_MODEL = "google.gemma-3-27b-it"
 REGION = "us-east-1"
 TEMPERATURE = 0
-MAX_TOKENS = 4096
+MAX_TOKENS = 8000
 
 model = ChatBedrockConverse(
     model=GEMMA_MODEL,
@@ -29,16 +35,21 @@ model = ChatBedrockConverse(
 # ---------------------------------------------------------------------------
 # State
 # ---------------------------------------------------------------------------
-class TestGenState(TypedDict, total=False):
+class AgentState(TypedDict, total=False):
     source_path: str      # path to SeasonSwitch.java
+    source_code: str
     class_name: str       # "SeasonSwitch"
     package_name: str     # "cse4392"
     ep_tests: str         # generated Equivalence Partition test class
     bv_tests: str         # generated Boundary Value test class
-
+    merged_tests: str
+    review_approved: bool
+    review_feedback: str
+    review_attempts: int
+    
 
 # ---------------------------------------------------------------------------
-# Shared rules (used by both nodes)
+# template
 # ---------------------------------------------------------------------------
 
 
@@ -76,13 +87,26 @@ def clean_java(text: str) -> str:
     return text.strip().removeprefix("```java").removeprefix("```").removesuffix("```").strip()
 
 
+
 # ---------------------------------------------------------------------------
-# Node 1: Equivalence Partition tests
+# Node 1: load source
 # ---------------------------------------------------------------------------
-def generate_ep_tests(state: TestGenState) -> dict:
+
+def load_source(state: AgentState):
+    source_code = Path(state["source_path"]).read_text()
+
+    return {"source_code": source_code}
+
+
+# ---------------------------------------------------------------------------
+# Node 2: Equivalence Partition tests
+# ---------------------------------------------------------------------------
+def generate_ep_tests(state: AgentState) -> dict:
+    feedback = state.get("review_feedback", "")
+    previous_tests = state.get("ep_tests", "")
     class_name = state.get("class_name", "SeasonSwitch")
     package_name = state.get("package_name", "cse4392")
-    source_code = Path(state["source_path"]).read_text()
+
 
     ep_prompt = f"""You are a software testing expert.
         Generate FUNCTIONAL test cases using EQUIVALENCE PARTITIONING.
@@ -104,18 +128,36 @@ def generate_ep_tests(state: TestGenState) -> dict:
         "system-message": ep_prompt,
         "package_name": package_name,
         "class_name": class_name,
-        "human-message":f"Generate the test class {class_name}EPTest for this code:\n\n{source_code}",
+        "human-message": f"""
+            Generate or revise {class_name}EPTest.
+
+            Java source:
+            {state['source_code']}
+
+            Previous EP tests:
+            {previous_tests}
+
+            Reviewer feedback:
+            {feedback}
+
+            If feedback is provided, revise the previous tests
+            to address it while preserving valid test coverage.
+
+            Otherwise, generate new equivalence partition tests.
+            """
     })
     return {"ep_tests": clean_java(response.content)}
 
 
 # ---------------------------------------------------------------------------
-# Node 2: Boundary Value tests
+# Node 3: Boundary Value tests
 # ---------------------------------------------------------------------------
-def generate_bv_tests(state: TestGenState) -> dict:
+def generate_bv_tests(state: AgentState) -> dict:
+    feedback = state.get("review_feedback", "")
+    previous_tests = state.get("bv_tests", "")
     class_name = state.get("class_name", "SeasonSwitch")
     package_name = state.get("package_name", "cse4392")
-    source_code = Path(state["source_path"]).read_text()
+
 
     bv_prompt = f"""You are a software testing expert.
         Generate FUNCTIONAL test cases using BOUNDARY VALUE ANALYSIS.
@@ -137,24 +179,136 @@ def generate_bv_tests(state: TestGenState) -> dict:
         "system-message": bv_prompt,
         "package_name": package_name,
         "class_name": class_name,
-        "human-message": f"Generate the test class {class_name}BVTest for this code:\n\n{source_code}"
+        "human-message": f"""
+            Generate or revise {class_name}BVTest.
+
+            Java source:
+            {state['source_code']}
+
+            Previous BVA tests:
+            {previous_tests}
+
+            Reviewer feedback:
+            {feedback}
+
+            If feedback is provided, revise the previous tests
+            to address it while preserving valid test coverage.
+
+            Otherwise, generate new boundary value tests.
+            """
     })
     return {"bv_tests": clean_java(response.content)}
+
+
+# ---------------------------------------------------------------------------
+# Node 4: merge_tests
+# ---------------------------------------------------------------------------
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+MERGER_JAR = (
+    BASE_DIR / "junit-merger" / "target"
+    / "junit-merger-1.0.0.jar"
+)
+
+
+def merge_tests(state: AgentState) -> dict:
+    class_name = state["class_name"]
+
+    output_dir = BASE_DIR / "generated_tests"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    ep_file = output_dir / f"{class_name}EPTest.java"
+    bv_file = output_dir / f"{class_name}BVTest.java"
+    merged_file = output_dir / f"{class_name}MergedTest.java"
+
+    ep_file.write_text(state["ep_tests"], encoding="utf-8")
+    bv_file.write_text(state["bv_tests"], encoding="utf-8")
+
+    subprocess.run(
+        [
+            "java",
+            "-jar",
+            str(MERGER_JAR),
+            str(ep_file),
+            str(bv_file),
+            str(merged_file),
+            f"{class_name}MergedTest",
+        ],
+        check=True,
+    )
+
+    return {
+        "merged_tests": merged_file.read_text(encoding="utf-8")
+    }
+
+
+# ---------------------------------------------------------------------------
+# Node 5: Human Review of Generated Tests
+# ---------------------------------------------------------------------------
+def review_tests(state: AgentState) -> dict:
+    decision = interrupt({
+        "message": "Review the generated JUnit test cases.",
+        "tests": state["merged_tests"],
+        "instructions": "Approve or reject with feedback."
+    })
+
+    attempts = state.get("review_attempts", 0)
+
+    return {
+        "review_approved": decision["approved"],
+        "review_feedback": decision.get("feedback", ""),
+        "review_attempts": attempts + (0 if decision["approved"] else 1)
+    }
+
+
+
+# ---------------------------------------------------------------------------
+# Conditional router R1
+# ---------------------------------------------------------------------------
+def route_test_review(state: AgentState) -> str:
+   
+    if state["review_approved"]:
+        return "approved"
+
+    if state.get("review_attempts", 0) >= MAX_REVIEW_ATTEMPTS:
+        return "max_attempts"
+
+    return "regenerate"
 
 
 # ---------------------------------------------------------------------------
 # Build Graph: both generators run in parallel from START
 # ---------------------------------------------------------------------------
 def build_graph():
-    graph = StateGraph(TestGenState)
-    graph.add_node("generate_ep_tests", generate_ep_tests)
-    graph.add_node("generate_bv_tests", generate_bv_tests)
+    graph = StateGraph(AgentState)
+    graph.add_node("load_source",load_source)
+    graph.add_node("ep_agent", generate_ep_tests)
+    graph.add_node("bva_agent", generate_bv_tests)
+    graph.add_node("merge_tests",merge_tests)
+    graph.add_node("review_tests", review_tests)
 
-    graph.add_edge(START, "generate_ep_tests")
-    graph.add_edge(START, "generate_bv_tests")
-    graph.add_edge("generate_ep_tests", END)
-    graph.add_edge("generate_bv_tests", END)
-    return graph.compile()
+    graph.add_edge(START, "load_source")
+
+    #run both nodes execute in parrallel
+    graph.add_edge("load_source", "ep_agent")
+    graph.add_edge("load_source", "bva_agent")
+    
+    # Wait for both agents to finish
+    graph.add_edge(
+    ["ep_agent", "bva_agent"],
+    "merge_tests")
+
+    graph.add_edge("merge_tests", "review_tests")
+
+    graph.add_conditional_edges(
+        "review_tests",
+        route_test_review,
+        {"approved": END,
+        "regenerate": "load_source"
+        })
+
+    return graph.compile(checkpointer=MemorySaver())
 
 
 # ---------------------------------------------------------------------------
@@ -162,16 +316,50 @@ def build_graph():
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     app = build_graph()
+
+    config = {
+    "configurable": {
+        "thread_id": "assignment3-001"
+    }
+    }
+
     result = app.invoke({
-        "source_path": "SeasonSwitch.java",
+        "source_path": str(BASE_DIR / "app" / "SeasonSwitch.java"),
         "class_name": "SeasonSwitch",
         "package_name": "cse4392",
-    })
+    },config=config)
+
+    print(result["__interrupt__"])
+
+
+    while "__interrupt__" in result:
+        review = result["__interrupt__"][0].value
+
+        print("\n=== Generated Tests for Review ===")
+        print(review["tests"])
+
+        answer = input("\nApprove tests? (yes/no): ").strip().lower()
+        approved = answer in ("yes", "y")
+
+        feedback = ""
+        if not approved:
+            feedback = input("Enter your feedback: ").strip()
+
+        result = app.invoke(
+            Command(resume={
+                "approved": approved,
+                "feedback": feedback
+            }),
+            config=config
+        )
 
     out_dir = Path("generated_tests")
     out_dir.mkdir(exist_ok=True)
     (out_dir / "SeasonSwitchEPTest.java").write_text(result["ep_tests"])
     (out_dir / "SeasonSwitchBVTest.java").write_text(result["bv_tests"])
+    (out_dir / "SeasonSwitchMergedTest.java").write_text(
+    result["merged_tests"]
+)
 
     print("=== Equivalence Partition tests ===\n", result["ep_tests"])
     print("\n=== Boundary Value tests ===\n", result["bv_tests"])
