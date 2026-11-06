@@ -21,9 +21,9 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 # ---------------------------------------------------------------------------
 # us.amazon.nova-2-lite-v1:0 is best for tool agent, expensive
 # us.amazon.nova-lite-v1:0, older and cheaper
-NOVA_MODEL = "us.amazon.nova-micro-v1:0" #support up to to tools, cheapest
+NOVA_MODEL = "us.amazon.nova-micro-v1:0" #support up to two tools, cheapest
 GEMMA_MODEL = "google.gemma-3-27b-it"
-QWEN_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0"
+QWEN_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0" #Qwen3 Coder 30B A3B 
 REGION = "us-east-1"
 TEMPERATURE = 0
 MAX_TOKENS = 8000
@@ -130,7 +130,8 @@ def generate_ep_tests(state: AgentState) -> dict:
         3. Pick ONE representative value from the middle of each class, not its edges.
         4. Write one test per equivalence class.
         """
-
+    
+    print("Generating functional test cases using Equivalence Partitioning.......\n")
     response = chain.invoke({
         "system-message": ep_prompt,
         "package_name": package_name,
@@ -183,6 +184,7 @@ def generate_bv_tests(state: AgentState) -> dict:
         6. Write one test per boundary value.
         """
 
+    print("Generating functional test cases using Boundary Value Analysis.......\n")
     response = chain.invoke({
         "system-message": bv_prompt,
         "package_name": package_name,
@@ -233,6 +235,7 @@ def merge_tests(state: AgentState) -> dict:
     ep_file.write_text(state["ep_tests"], encoding="utf-8")
     bv_file.write_text(state["bv_tests"], encoding="utf-8")
 
+    print("Merging Equivalence Partitioning (EP) and Boundary Value Analysis (BVA) test cases.......\n")
     subprocess.run(
         [
             "java",

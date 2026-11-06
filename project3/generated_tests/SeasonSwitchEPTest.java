@@ -16,11 +16,8 @@ public class SeasonSwitchEPTest {
     public void setUp() {
         seasonSwitch = new SeasonSwitch();
         SeasonSwitch.state = 0; // Reset static state
-        seasonSwitch.ac.isOn = false;
-        seasonSwitch.heater.isOn = false;
-        seasonSwitch.room.temp = 70;
-        seasonSwitch.timer.stop();
-        seasonSwitch.room.timer.stop();
+        seasonSwitch.timer.stop(); // Ensure timer is stopped
+        seasonSwitch.room.timer.stop(); // Ensure room timer is stopped
     }
 
     @AfterEach
@@ -30,7 +27,7 @@ public class SeasonSwitchEPTest {
     }
 
     /**
-     * Tests cool() when state is OFF (valid case 1)
+     * Tests cool() when state is OFF (valid case)
      */
     @Test
     public void testCoolFromOff() {
@@ -41,19 +38,19 @@ public class SeasonSwitchEPTest {
     }
 
     /**
-     * Tests cool() when state is COOL (valid case 2)
+     * Tests cool() when state is COOL (valid case)
      */
     @Test
     public void testCoolFromCool() {
         SeasonSwitch.state = COOL;
         seasonSwitch.cool();
         assertEquals(COOL, SeasonSwitch.state);
-        assertFalse(seasonSwitch.ac.isOn);
-        assertFalse(seasonSwitch.timer.isRunning());
+        assertFalse(seasonSwitch.ac.isOn); // Should remain off
+        assertFalse(seasonSwitch.timer.isRunning()); // Should not start again
     }
 
     /**
-     * Tests cool() when state is HEAT (valid case 3)
+     * Tests cool() when state is HEAT (valid case)
      */
     @Test
     public void testCoolFromHeat() {
@@ -61,22 +58,12 @@ public class SeasonSwitchEPTest {
         seasonSwitch.cool();
         assertEquals(COOL, SeasonSwitch.state);
         assertTrue(seasonSwitch.ac.isOn);
-        assertTrue(seasonSwitch.heater.isOn);
+        assertTrue(seasonSwitch.heater.isOn); // Heater should be turned off
         assertTrue(seasonSwitch.timer.isRunning());
     }
 
     /**
-     * Tests cool() with invalid state (should not change anything)
-     */
-    @Test
-    public void testCoolFromInvalidState() {
-        SeasonSwitch.state = 999;
-        seasonSwitch.cool();
-        assertEquals(999, SeasonSwitch.state);
-    }
-
-    /**
-     * Tests heat() when state is OFF (valid case 1)
+     * Tests heat() when state is OFF (valid case)
      */
     @Test
     public void testHeatFromOff() {
@@ -87,19 +74,19 @@ public class SeasonSwitchEPTest {
     }
 
     /**
-     * Tests heat() when state is HEAT (valid case 2)
+     * Tests heat() when state is HEAT (valid case)
      */
     @Test
     public void testHeatFromHeat() {
         SeasonSwitch.state = HEAT;
         seasonSwitch.heat();
         assertEquals(HEAT, SeasonSwitch.state);
-        assertFalse(seasonSwitch.heater.isOn);
-        assertFalse(seasonSwitch.timer.isRunning());
+        assertFalse(seasonSwitch.heater.isOn); // Should remain off
+        assertFalse(seasonSwitch.timer.isRunning()); // Should not start again
     }
 
     /**
-     * Tests heat() when state is COOL (valid case 3)
+     * Tests heat() when state is COOL (valid case)
      */
     @Test
     public void testHeatFromCool() {
@@ -107,22 +94,12 @@ public class SeasonSwitchEPTest {
         seasonSwitch.heat();
         assertEquals(HEAT, SeasonSwitch.state);
         assertTrue(seasonSwitch.heater.isOn);
-        assertTrue(seasonSwitch.ac.isOn);
+        assertTrue(seasonSwitch.ac.isOn); // AC should be turned off
         assertTrue(seasonSwitch.timer.isRunning());
     }
 
     /**
-     * Tests heat() with invalid state (should not change anything)
-     */
-    @Test
-    public void testHeatFromInvalidState() {
-        SeasonSwitch.state = 999;
-        seasonSwitch.heat();
-        assertEquals(999, SeasonSwitch.state);
-    }
-
-    /**
-     * Tests off() when state is OFF (valid case 1)
+     * Tests off() when state is OFF (valid case)
      */
     @Test
     public void testOffFromOff() {
@@ -134,7 +111,7 @@ public class SeasonSwitchEPTest {
     }
 
     /**
-     * Tests off() when state is HEAT (valid case 2)
+     * Tests off() when state is HEAT (valid case)
      */
     @Test
     public void testOffFromHeat() {
@@ -147,7 +124,7 @@ public class SeasonSwitchEPTest {
     }
 
     /**
-     * Tests off() when state is COOL (valid case 3)
+     * Tests off() when state is COOL (valid case)
      */
     @Test
     public void testOffFromCool() {
@@ -160,17 +137,7 @@ public class SeasonSwitchEPTest {
     }
 
     /**
-     * Tests off() with invalid state (should not change anything)
-     */
-    @Test
-    public void testOffFromInvalidState() {
-        SeasonSwitch.state = 999;
-        seasonSwitch.off();
-        assertEquals(999, SeasonSwitch.state);
-    }
-
-    /**
-     * Tests timerOff() when state is OFF (valid case 1)
+     * Tests timerOff() when state is OFF (valid case)
      */
     @Test
     public void testTimerOffFromOff() {
@@ -182,72 +149,60 @@ public class SeasonSwitchEPTest {
     }
 
     /**
-     * Tests timerOff() when state is COOL and room.temp > coolTemp (valid case 2a)
+     * Tests timerOff() when state is COOL and room.temp > coolTemp (valid case)
      */
     @Test
     public void testTimerOffFromCoolWithHighTemp() {
         SeasonSwitch.state = COOL;
-        seasonSwitch.room.temp = 75;
+        seasonSwitch.room.temp = 75; // Above coolTemp (68)
         seasonSwitch.timerOff();
         assertEquals(COOL, SeasonSwitch.state);
         assertTrue(seasonSwitch.ac.isOn);
     }
 
     /**
-     * Tests timerOff() when state is COOL and room.temp <= coolTemp (valid case 2b)
+     * Tests timerOff() when state is COOL and room.temp <= coolTemp (valid case)
      */
     @Test
     public void testTimerOffFromCoolWithLowTemp() {
         SeasonSwitch.state = COOL;
-        seasonSwitch.room.temp = 65;
+        seasonSwitch.room.temp = 65; // Below or equal to coolTemp (68)
         seasonSwitch.timerOff();
         assertEquals(COOL, SeasonSwitch.state);
         assertFalse(seasonSwitch.ac.isOn);
     }
 
     /**
-     * Tests timerOff() when state is HEAT and room.temp < heatTemp (valid case 3a)
+     * Tests timerOff() when state is HEAT and room.temp < heatTemp (valid case)
      */
     @Test
     public void testTimerOffFromHeatWithLowTemp() {
         SeasonSwitch.state = HEAT;
-        seasonSwitch.room.temp = 70;
+        seasonSwitch.room.temp = 70; // Below heatTemp (77)
         seasonSwitch.timerOff();
         assertEquals(HEAT, SeasonSwitch.state);
         assertTrue(seasonSwitch.heater.isOn);
     }
 
     /**
-     * Tests timerOff() when state is HEAT and room.temp >= heatTemp (valid case 3b)
+     * Tests timerOff() when state is HEAT and room.temp >= heatTemp (valid case)
      */
     @Test
     public void testTimerOffFromHeatWithHighTemp() {
         SeasonSwitch.state = HEAT;
-        seasonSwitch.room.temp = 80;
+        seasonSwitch.room.temp = 80; // Above or equal to heatTemp (77)
         seasonSwitch.timerOff();
         assertEquals(HEAT, SeasonSwitch.state);
         assertFalse(seasonSwitch.heater.isOn);
     }
 
     /**
-     * Tests timerOff() with invalid state (should not change anything)
+     * Tests invalid state value (outside valid range)
      */
     @Test
-    public void testTimerOffFromInvalidState() {
-        SeasonSwitch.state = 999;
-        seasonSwitch.timerOff();
-        assertEquals(999, SeasonSwitch.state);
-    }
-
-    /**
-     * Tests actionPerformed() calls timerOff()
-     */
-    @Test
-    public void testActionPerformedCallsTimerOff() {
-        SeasonSwitch.state = COOL;
-        seasonSwitch.room.temp = 75;
-        seasonSwitch.actionPerformed(new ActionEvent(this, 0, ""));
-        assertEquals(COOL, SeasonSwitch.state);
-        assertTrue(seasonSwitch.ac.isOn);
+    public void testInvalidStateValue() {
+        SeasonSwitch.state = 99; // Invalid state
+        seasonSwitch.cool();
+        assertEquals(99, SeasonSwitch.state); // Should not change
     }
 }

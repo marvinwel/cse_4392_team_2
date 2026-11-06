@@ -167,10 +167,10 @@ public final class JunitMerger {
                         key = memberKey(member);
                         body = normalized(member);
 
-                        System.out.println(
-                            "Renamed conflicting " + originalName
-                            + "() to " + newName + "()"
-                        );
+                        // System.out.println(
+                        //     "Renamed conflicting " + originalName
+                        //     + "() to " + newName + "()"
+                        // );
                     }
                 }
 
@@ -196,6 +196,6 @@ public final class JunitMerger {
 
         Files.writeString(destination, out.toString());
 
-        System.out.println("Merged Java file: " + destination);
+        // System.out.println("Merged Java file: " + destination);
     }
 }
