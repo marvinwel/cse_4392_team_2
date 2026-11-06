@@ -23,12 +23,13 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 # us.amazon.nova-lite-v1:0, older and cheaper
 NOVA_MODEL = "us.amazon.nova-micro-v1:0" #support up to to tools, cheapest
 GEMMA_MODEL = "google.gemma-3-27b-it"
+QWEN_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0"
 REGION = "us-east-1"
 TEMPERATURE = 0
 MAX_TOKENS = 8000
 
 model = ChatBedrockConverse(
-    model=GEMMA_MODEL,
+    model=QWEN_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=MAX_TOKENS,
