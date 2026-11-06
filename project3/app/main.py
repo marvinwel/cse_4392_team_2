@@ -367,16 +367,26 @@ if __name__ == "__main__":
         "package_name": "cse4392",
     },config=config)
 
-    print(result["__interrupt__"])
 
 
     while "__interrupt__" in result:
         review = result["__interrupt__"][0].value
 
         print("\n=== Generated Tests for Review ===")
-        print(review["tests"])
+        print(
+            f"\nReview file: "
+                f"{BASE_DIR / 'generated_tests' / 'SeasonSwitchMergedTest.java'}"
+        )
+        print(f"Number of generated tests: {review['tests'].count('@Test')}")
 
-        answer = input("\nApprove tests? (yes/no): ").strip().lower()
+        while True:
+            answer = input("\nApprove tests? (yes/no): ").strip().lower()
+
+            if answer in ("yes", "y", "no", "n"):
+                break
+
+            print("Please enter yes or no. Blank answers are not accepted.")
+
         approved = answer in ("yes", "y")
 
         feedback = ""
