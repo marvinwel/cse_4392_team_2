@@ -50,7 +50,8 @@ class AgentState(TypedDict, total=False):
     review_approved: bool
     review_feedback: str
     review_attempts: int
-    
+    workflow_status: str
+
 
 # ---------------------------------------------------------------------------
 # template
@@ -127,7 +128,7 @@ def generate_ep_tests(state: AgentState) -> dict:
         - one INVALID class for values that match no case or are outside the allowed range
         3. Pick ONE representative value from the middle of each class, not its edges.
         4. Write one test per equivalence class.
-        """ 
+        """
 
     response = chain.invoke({
         "system-message": ep_prompt,
@@ -179,7 +180,7 @@ def generate_bv_tests(state: AgentState) -> dict:
         5. Use field names instead of hard-coded numbers where possible
         (e.g. coolTemp - 1 instead of 67).
         6. Write one test per boundary value.
-        """ 
+        """
 
     response = chain.invoke({
         "system-message": bv_prompt,
@@ -273,7 +274,7 @@ def review_tests(state: AgentState) -> dict:
 # Conditional router R1
 # ---------------------------------------------------------------------------
 def route_test_review(state: AgentState) -> str:
-   
+
     if state["review_approved"]:
         return "approved"
 
@@ -282,37 +283,68 @@ def route_test_review(state: AgentState) -> str:
 
     return "regenerate"
 
+# Temporary placeholder until Joseph's Maven runner is ready
+def run_tests_stub(state: AgentState) -> dict:
+    print("Maven test execution is not implemented yet.")
+    return {
+        "workflow_status": "awaiting_test_runner"
+    }
+
+
+# Stop safely when human review reaches the retry limit
+def escalate_review(state: AgentState) -> dict:
+    print("Review failed: maximum rejection attempts reached.")
+    return {
+        "workflow_status": "review_exhausted"
+    }
 
 # ---------------------------------------------------------------------------
 # Build Graph: both generators run in parallel from START
 # ---------------------------------------------------------------------------
 def build_graph():
     graph = StateGraph(AgentState)
-    graph.add_node("load_source",load_source)
+
+    # Register nodes
+    graph.add_node("load_source", load_source)
     graph.add_node("ep_agent", generate_ep_tests)
     graph.add_node("bva_agent", generate_bv_tests)
-    graph.add_node("merge_tests",merge_tests)
+    graph.add_node("merge_tests", merge_tests)
     graph.add_node("review_tests", review_tests)
 
+    # Temporary nodes
+    graph.add_node("run_tests", run_tests_stub)
+    graph.add_node("escalate_review", escalate_review)
+
+    # Start workflow
     graph.add_edge(START, "load_source")
 
-    #run both nodes execute in parrallel
+    # Run test generators in parallel
     graph.add_edge("load_source", "ep_agent")
     graph.add_edge("load_source", "bva_agent")
-    
-    # Wait for both agents to finish
-    graph.add_edge(
-    ["ep_agent", "bva_agent"],
-    "merge_tests")
 
+    # Wait for both generators before merging
+    graph.add_edge(
+        ["ep_agent", "bva_agent"],
+        "merge_tests"
+    )
+
+    # Human review
     graph.add_edge("merge_tests", "review_tests")
 
+    # Route review decision
     graph.add_conditional_edges(
         "review_tests",
         route_test_review,
-        {"approved": END,
-        "regenerate": "load_source"
-        })
+        {
+            "approved": "run_tests",
+            "regenerate": "load_source",
+            "max_attempts": "escalate_review"
+        }
+    )
+
+    # Temporary endpoints
+    graph.add_edge("run_tests", END)
+    graph.add_edge("escalate_review", END)
 
     return graph.compile(checkpointer=MemorySaver())
 
@@ -358,6 +390,14 @@ if __name__ == "__main__":
             }),
             config=config
         )
+
+    status = result.get("workflow_status", "unknown")
+    print(f"\nWorkflow status: {status}")
+
+    if status == "review_exhausted":
+           raise SystemExit(
+               "Stopped: tests were not approved after 3 attempts."
+           )
 
     out_dir = Path("generated_tests")
     out_dir.mkdir(exist_ok=True)
