@@ -47,7 +47,7 @@ model = ChatBedrockConverse(
 )
 
 model_review = ChatBedrockConverse(
-    model=REVIEW_MODEL,
+    model=QWEN_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=MAX_TOKENS,
@@ -167,6 +167,10 @@ def generate_ep_tests(state: AgentState) -> dict:
         - one INVALID class for values that match no case or are outside the allowed range
         3. Pick ONE representative value from the middle of each class, not its edges.
         4. Write one test per equivalence class.
+
+        Name every @Test method using the testEP prefix.
+        Example: testEPHeatFromOff().
+        Every generated method name must be unique.
         """
 
     print("Generating functional test cases using Equivalence Partitioning.......\n")
@@ -220,6 +224,10 @@ def generate_bv_tests(state: AgentState) -> dict:
         5. Use field names instead of hard-coded numbers where possible
         (e.g. coolTemp - 1 instead of 67).
         6. Write one test per boundary value.
+
+        Name every @Test method using the testBVA prefix.
+        Example: testBVAHeatFromOff().
+        Every generated method name must be unique.
         """
 
     print("Generating functional test cases using Boundary Value Analysis.......\n")
@@ -576,7 +584,7 @@ def build_graph():
 
 
 
-    
+
 #     if __name__ == "__main__":
 
 #         app = build_graph()
