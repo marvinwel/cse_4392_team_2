@@ -12,6 +12,14 @@ from langgraph.types import Command
 import subprocess
 from pathlib import Path
 
+# >>> PERSON 3 (Joseph) BEGIN: imports
+# Maven/JUnit/JaCoCo execution, coverage and evidence nodes (app/testing_nodes.py)
+try:
+    from testing_nodes import run_tests, check_coverage, save_results, route_test_results
+except ImportError:  # when run as `python -m app.main`
+    from app.testing_nodes import run_tests, check_coverage, save_results, route_test_results
+# <<< PERSON 3 (Joseph) END: imports
+
 MAX_REVIEW_ATTEMPTS = 3 #Max attempts for review
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(Path(__file__).resolve().parent / ".env")
@@ -52,6 +60,14 @@ class AgentState(TypedDict, total=False):
     review_feedback: str
     review_attempts: int
     workflow_status: str
+    # >>> PERSON 3 (Joseph) BEGIN: state keys
+    phase: str              # "original" | "refactored"
+    test_class: str         # optional: run this test class instead of merged_tests
+    test_report: dict       # written by run_tests (Surefire results)
+    coverage: dict          # written by check_coverage (JaCoCo branch coverage)
+    coverage_scope: dict    # optional override of the measured scope
+    saved_artifacts: dict   # written by save_results: {"original": path, ...}
+    # <<< PERSON 3 (Joseph) END: state keys
 
 
 # ---------------------------------------------------------------------------
@@ -287,12 +303,15 @@ def route_test_review(state: AgentState) -> str:
 
     return "regenerate"
 
-# Temporary placeholder until Joseph's Maven runner is ready
-def run_tests_stub(state: AgentState) -> dict:
-    print("Maven test execution is not implemented yet.")
+# >>> PERSON 3 (Joseph) BEGIN: repair_agent placeholder (replace with Sarthak's node)
+def repair_agent_stub(state: AgentState) -> dict:
+    report = state.get("test_report", {})
+    print(f"{report.get('failed', 0)} failed / {report.get('errors', 0)} errors: "
+          "repair_agent is not implemented yet.")
     return {
-        "workflow_status": "awaiting_test_runner"
+        "workflow_status": "awaiting_repair_agent"
     }
+# <<< PERSON 3 (Joseph) END: repair_agent placeholder
 
 
 # Stop safely when human review reaches the retry limit
@@ -315,8 +334,14 @@ def build_graph():
     graph.add_node("merge_tests", merge_tests)
     graph.add_node("review_tests", review_tests)
 
+    # >>> PERSON 3 (Joseph) BEGIN: nodes
+    graph.add_node("run_tests", run_tests)
+    graph.add_node("check_coverage", check_coverage)
+    graph.add_node("save_results", save_results)
+    graph.add_node("repair_agent", repair_agent_stub)   # placeholder for Sarthak
+    # <<< PERSON 3 (Joseph) END: nodes
+
     # Temporary nodes
-    graph.add_node("run_tests", run_tests_stub)
     graph.add_node("escalate_review", escalate_review)
 
     # Start workflow
@@ -346,8 +371,26 @@ def build_graph():
         }
     )
 
+    # >>> PERSON 3 (Joseph) BEGIN: edges
+    # R2: passed -> coverage, failed -> repair
+    graph.add_conditional_edges(
+        "run_tests",
+        route_test_results,
+        {
+            "passed": "check_coverage",
+            "failed": "repair_agent"
+        }
+    )
+
+    # Until Ryan's R3 coverage router exists: always save the current evidence
+    graph.add_edge("check_coverage", "save_results")
+
+    # Temporary endpoints until R3 / repair loop exist
+    graph.add_edge("save_results", END)
+    graph.add_edge("repair_agent", END)
+    # <<< PERSON 3 (Joseph) END: edges
+
     # Temporary endpoints
-    graph.add_edge("run_tests", END)
     graph.add_edge("escalate_review", END)
 
     return graph.compile(checkpointer=MemorySaver())
@@ -369,6 +412,9 @@ if __name__ == "__main__":
         "source_path": str(BASE_DIR / "app" / "SeasonSwitch.java"),
         "class_name": "SeasonSwitch",
         "package_name": "cse4392",
+        # >>> PERSON 3 (Joseph) BEGIN: initial phase
+        "phase": "original",
+        # <<< PERSON 3 (Joseph) END: initial phase
     },config=config)
 
 
@@ -407,6 +453,22 @@ if __name__ == "__main__":
 
     status = result.get("workflow_status", "unknown")
     print(f"\nWorkflow status: {status}")
+
+    # >>> PERSON 3 (Joseph) BEGIN: results printout
+    report = result.get("test_report")
+    if report:
+        print(f"Tests: {report['passed']}/{report['total']} passed, "
+              f"{report['failed']} failed, {report['errors']} errors")
+        for f in report["failures"]:
+            print(f"  FAIL {f['test']}: {f['message'][:160]}")
+    cov = result.get("coverage")
+    if cov:
+        b = cov["branch"]
+        print(f"Branch coverage: {b['covered']}/{b['total']} = {b['percent']}% "
+              f"(fully covered: {cov['fully_covered']})")
+    if result.get("saved_artifacts"):
+        print(f"Evidence saved: {result['saved_artifacts']}")
+    # <<< PERSON 3 (Joseph) END: results printout
 
     if status == "review_exhausted":
            raise SystemExit(

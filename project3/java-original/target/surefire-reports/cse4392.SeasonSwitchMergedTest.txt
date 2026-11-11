@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: cse4392.SeasonSwitchMergedTest
 -------------------------------------------------------------------------------
-Tests run: 32, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 0.097 s <<< FAILURE! -- in cse4392.SeasonSwitchMergedTest
+Tests run: 32, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 0.134 s <<< FAILURE! -- in cse4392.SeasonSwitchMergedTest
 cse4392.SeasonSwitchMergedTest.testHeatFromCool -- Time elapsed: 0.005 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)

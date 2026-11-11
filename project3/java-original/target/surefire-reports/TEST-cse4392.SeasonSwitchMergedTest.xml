@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="cse4392.SeasonSwitchMergedTest" time="0.097" tests="32" errors="0" skipped="0" failures="6">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="cse4392.SeasonSwitchMergedTest" time="0.134" tests="32" errors="0" skipped="0" failures="6">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/25.0.2/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/surefire/surefirebooter-20261109123039004_3.jar /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/surefire 2026-11-09T12-30-38_948-jvmRun1 surefire-20261109123039004_1tmp surefire_0-20261109123039004_2tmp"/>
+    <property name="sun.java.command" value="/Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/surefire/surefirebooter-20261111112335244_3.jar /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/surefire 2026-11-11T11-23-35_179-jvmRun1 surefire-20261111112335244_1tmp surefire_0-20261111112335244_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="cse4392.SeasonSwitchMergedTest"/>
@@ -31,7 +31,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.headless" value="true"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/surefire/surefirebooter-20261109123039004_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/surefire/surefirebooter-20261111112335244_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="25.0.2"/>
@@ -64,11 +64,11 @@
     <property name="java.class.version" value="69.0"/>
     <property name="maven.test.failure.ignore" value="true"/>
   </properties>
-  <testcase name="testOffFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.033">
+  <testcase name="testOffFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.078">
     <system-out><![CDATA[Cooling stopped. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testOffFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.002">
+  <testcase name="testOffFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Heating stopped. RmTemp=70
 ]]></system-out>
   </testcase>
@@ -92,7 +92,7 @@
     <system-out><![CDATA[Heating started. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testHeatFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testHeatFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
   <testcase name="testTimerOffWhenRoomTempGreaterThanHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Heating stopped. RmTemp=78
 ]]></system-out>
@@ -121,11 +121,11 @@
     <system-out><![CDATA[Cooling started. RmTemp=69
 ]]></system-out>
   </testcase>
-  <testcase name="testHeatWhenStateIsCool" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testHeatWhenStateIsCool" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Heating started. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testHeatWhenStateIsHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testHeatWhenStateIsHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
   <testcase name="testTimerOffWhenRoomTempLessThanCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <failure message="expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
@@ -142,17 +142,17 @@
     <system-out><![CDATA[Cooling stopped. RmTemp=67
 ]]></system-out>
   </testcase>
-  <testcase name="testTimerOffWhenRoomTempEqualsHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+  <testcase name="testTimerOffWhenRoomTempEqualsHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Heating stopped. RmTemp=77
 ]]></system-out>
   </testcase>
   <testcase name="testCoolWhenStateIsCool" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
-  <testcase name="testCoolWhenStateIsHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testCoolWhenStateIsHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Cooling started. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidStateValue" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testTimerOffWhenRoomTempEqualsCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testInvalidStateValue" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testTimerOffWhenRoomTempEqualsCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Cooling stopped. RmTemp=68
 ]]></system-out>
   </testcase>
@@ -172,7 +172,7 @@
     <system-out><![CDATA[Heating stopped. RmTemp=100
 ]]></system-out>
   </testcase>
-  <testcase name="testCoolFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testCoolFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
   <testcase name="testCoolFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <failure message="expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
@@ -201,12 +201,12 @@
     <system-out><![CDATA[Heating stopped. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testOffWhenStateIsOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
-  <testcase name="testHeatFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+  <testcase name="testOffWhenStateIsOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testHeatFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Heating started. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testTimerOffFromHeatWithLowTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+  <testcase name="testTimerOffFromHeatWithLowTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Heating started. RmTemp=70
 ]]></system-out>
   </testcase>
@@ -235,7 +235,7 @@
     <system-out><![CDATA[Heating stopped. RmTemp=80
 ]]></system-out>
   </testcase>
-  <testcase name="testOffFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testOffFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
   <testcase name="testTimerOffFromCoolWithHighTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Cooling started. RmTemp=75
 ]]></system-out>

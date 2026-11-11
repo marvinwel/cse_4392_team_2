@@ -1,6 +1,6 @@
 $ /opt/homebrew/bin/mvn -B -ntp -Dmaven.test.failure.ignore=true -Djacoco.haltOnFailure=false -Dsurefire.failIfNoSpecifiedTests=false -Dtest=cse4392.SeasonSwitchMergedTest clean verify
 (cwd: /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original)
-exit_code=0 timed_out=False duration_s=2.87
+exit_code=0 timed_out=False duration_s=3.48
 
 ===== STDOUT =====
 [INFO] Scanning for projects...
@@ -61,7 +61,7 @@ Cooling started. RmTemp=70
 Cooling stopped. RmTemp=0
 Heating stopped. RmTemp=80
 Cooling started. RmTemp=75
-[ERROR] Tests run: 32, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 0.097 s <<< FAILURE! -- in cse4392.SeasonSwitchMergedTest
+[ERROR] Tests run: 32, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 0.134 s <<< FAILURE! -- in cse4392.SeasonSwitchMergedTest
 [ERROR] cse4392.SeasonSwitchMergedTest.testHeatFromCool -- Time elapsed: 0.005 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
@@ -173,8 +173,8 @@ See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dump
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.841 s
-[INFO] Finished at: 2026-11-09T12:30:39-06:00
+[INFO] Total time:  1.896 s
+[INFO] Finished at: 2026-11-11T11:23:36-06:00
 [INFO] ------------------------------------------------------------------------
 
 ===== STDERR =====
