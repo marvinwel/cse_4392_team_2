@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HAND-BUILT FIXTURE in Surefire 3.5 format. Scenario: seeded defect in a COPY of SeasonSwitch
+     where timerOff() uses `room.temp >= coolTemp` instead of `>` and off() in COOL forgets timer.stop().
+     Replace with a real report once `mvn clean verify` has run. -->
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="cse4392.SeasonSwitchMergedTest" time="0.214" tests="5" errors="1" skipped="0" failures="2">
+  <properties>
+    <property name="java.version" value="21.0.5"/>
+    <property name="java.awt.headless" value="true"/>
+  </properties>
+  <testcase name="testCoolFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.031"/>
+  <testcase name="testHeatFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.004"/>
+  <testcase name="testTimerOffCoolAtThreshold68TurnsAcOff" classname="cse4392.SeasonSwitchMergedTest" time="0.006">
+    <failure message="AC should be off when room temp equals coolTemp (68) ==&gt; expected: &lt;false&gt; but was: &lt;true&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: AC should be off when room temp equals coolTemp (68) ==> expected: <false> but was: <true>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertFalse.failNotFalse(AssertFalse.java:63)
+	at org.junit.jupiter.api.Assertions.assertFalse(Assertions.java:226)
+	at cse4392.SeasonSwitchMergedTest.testTimerOffCoolAtThreshold68TurnsAcOff(SeasonSwitchMergedTest.java:142)
+]]></failure>
+    <system-out><![CDATA[Cooling started. RmTemp=70
+Cooling started. RmTemp=68
+]]></system-out>
+  </testcase>
+  <testcase name="testOffFromCoolStopsTimer" classname="cse4392.SeasonSwitchMergedTest" time="0.003">
+    <failure message="expected: &lt;false&gt; but was: &lt;true&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <false> but was: <true>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.Assertions.assertFalse(Assertions.java:226)
+	at cse4392.SeasonSwitchMergedTest.testOffFromCoolStopsTimer(SeasonSwitchMergedTest.java:178)
+]]></failure>
+  </testcase>
+  <testcase name="testRoomTickInCoolWithAcOn" classname="cse4392.SeasonSwitchMergedTest" time="0.002">
+    <error message="Cannot read field &quot;isOn&quot; because &quot;this.this$0.ac&quot; is null" type="java.lang.NullPointerException"><![CDATA[java.lang.NullPointerException: Cannot read field "isOn" because "this.this$0.ac" is null
+	at cse4392.SeasonSwitch$Room.actionPerformed(SeasonSwitch.java:137)
+	at cse4392.SeasonSwitchMergedTest.testRoomTickInCoolWithAcOn(SeasonSwitchMergedTest.java:203)
+]]></error>
+  </testcase>
+</testsuite>

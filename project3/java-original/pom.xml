@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CSE 4392 TA3 - original SeasonSwitch project (Person 3).
+
+  Human gate:   mvn -B clean verify
+                -> fails if any test fails OR branch coverage < 100%.
+
+  Agent run:    mvn -B clean verify -Dmaven.test.failure.ignore=true -Djacoco.haltOnFailure=false
+                -> always produces Surefire XML + JaCoCo XML/HTML so the graph can parse them
+                   (pass/fail and coverage are decided from the reports, not the exit code).
+
+  Reports:      target/surefire-reports/TEST-*.xml
+                target/site/jacoco/jacoco.xml   (+ index.html)
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>cse4392</groupId>
+  <artifactId>seasonswitch-original</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <!-- Compiles for Java 17; runs on JDK 17 or 21. -->
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Pinned versions -->
+    <junit.version>5.11.4</junit.version>
+    <compiler.plugin.version>3.13.0</compiler.plugin.version>
+    <surefire.plugin.version>3.5.2</surefire.plugin.version>
+    <jacoco.version>0.8.12</jacoco.version>
+
+    <!-- Coverage gate (professor requirement: 100% BRANCH, not line). -->
+    <coverage.branch.minimum>1.00</coverage.branch.minimum>
+    <!-- Set to false by the agent so a sub-100% run still finishes and reports. -->
+    <jacoco.haltOnFailure>true</jacoco.haltOnFailure>
+    <!-- Filled in by jacoco:prepare-agent; empty default keeps Surefire happy if JaCoCo is skipped. -->
+    <argLine></argLine>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.plugin.version}</version>
+        <configuration>
+          <!-- @{argLine} = late-bound JaCoCo agent; headless because SeasonSwitch uses javax.swing.Timer. -->
+          <argLine>@{argLine} -Djava.awt.headless=true</argLine>
+          <!-- SeasonSwitch.state is static: never run test methods concurrently. -->
+          <forkCount>1</forkCount>
+          <reuseForks>true</reuseForks>
+          <!-- Hard stop if a test hangs (e.g. calls main() which blocks forever). -->
+          <forkedProcessTimeoutInSeconds>120</forkedProcessTimeoutInSeconds>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals><goal>prepare-agent</goal></goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals><goal>report</goal></goals>
+            <configuration>
+              <formats>
+                <format>XML</format>
+                <format>HTML</format>
+                <format>CSV</format>
+              </formats>
+            </configuration>
+          </execution>
+          <execution>
+            <id>check</id>
+            <phase>verify</phase>
+            <goals><goal>check</goal></goals>
+            <configuration>
+              <haltOnFailure>${jacoco.haltOnFailure}</haltOnFailure>
+              <rules>
+                <rule>
+                  <!-- BUNDLE = every compiled class in this project, including the
+                       inner classes AC, Heater, Room and the main() method.
+                       See docs/coverage-scope.md before changing this. -->
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${coverage.branch.minimum}</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
