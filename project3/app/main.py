@@ -11,6 +11,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
 import subprocess
 from pathlib import Path
+from pydantic import BaseModel, Field
 
 # >>> PERSON 3 (Joseph) BEGIN: imports
 # Maven/JUnit/JaCoCo execution, coverage and evidence nodes (app/testing_nodes.py)
@@ -44,6 +45,13 @@ model = ChatBedrockConverse(
     disable_streaming=False,
 )
 
+model_review = ChatBedrockConverse(
+    model=GEMMA_MODEL,
+    region_name=REGION,
+    temperature=TEMPERATURE,
+    max_tokens=MAX_TOKENS,
+    disable_streaming=False,
+)
 
 # ---------------------------------------------------------------------------
 # State
@@ -68,6 +76,19 @@ class AgentState(TypedDict, total=False):
     coverage_scope: dict    # optional override of the measured scope
     saved_artifacts: dict   # written by save_results: {"original": path, ...}
     # <<< PERSON 3 (Joseph) END: state keys
+
+
+# ---------------------------------------------------------------------------
+# ai structured output
+# ---------------------------------------------------------------------------
+class TestReview(BaseModel):
+    approved: bool = Field(
+        description="True only if the generated tests meet all review requirements."
+    )
+
+    feedback: str = Field(
+        description="Specific corrections required. Empty when approved."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -273,22 +294,98 @@ def merge_tests(state: AgentState) -> dict:
 # ---------------------------------------------------------------------------
 # Node 5: Human Review of Generated Tests
 # ---------------------------------------------------------------------------
+@traceable(name="AI Test Reviewer")
 def review_tests(state: AgentState) -> dict:
-    decision = interrupt({
-        "message": "Review the generated JUnit test cases.",
-        "tests": state["merged_tests"],
-        "instructions": "Approve or reject with feedback."
+
+    print("\nAI reviewing generated JUnit tests...\n")
+
+    reviewer = model_review.with_structured_output(TestReview)
+
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", """
+        You are an expert Java JUnit 5 test reviewer.
+
+        Review the generated tests against the Java source.
+
+        Check:
+        1. Equivalence Partitioning coverage.
+        2. Boundary Value Analysis coverage.
+        3. Correct expected assertion values.
+        4. All public methods except main are tested.
+        5. Static variables are reset between tests.
+        6. Timers and threads are cleaned up.
+        7. No duplicate tests.
+        8. No nonexistent Java methods or fields.
+
+        If test execution results are provided, the tests FAILED when run.
+        Explain which tests failed and why (wrong expected value, missing
+        reset, nonexistent method, compile error), and how to fix each one.
+
+        Reject incorrect or incomplete tests.
+
+        Provide specific feedback explaining what
+        must be corrected.
+
+        Approve only when all requirements are satisfied.
+        """),
+        ("human", """
+        Java source:
+        {source_code}
+
+        Generated tests:
+        {merged_tests}
+
+        Test execution results:
+        {test_results}
+        """)
+    ])
+
+    chain = prompt | reviewer
+
+    # If run_tests sent us here, include the failures for the AI to review
+    report = state.get("test_report") or {}
+    tests_failed = bool(report) and report.get("all_passed") is not True
+    if tests_failed:
+        lines = [
+            f"{report.get('passed', 0)}/{report.get('total', 0)} passed, "
+            f"{report.get('failed', 0)} failed, {report.get('errors', 0)} errors"
+        ]
+        for f in report.get("failures", []):
+            lines.append(f"FAIL {f.get('test')}: {str(f.get('message', ''))[:500]}")
+        test_results = "\n".join(lines)
+    else:
+        test_results = "Not run yet."
+
+    result = chain.invoke({
+        "source_code": state["source_code"],
+        "merged_tests": state["merged_tests"],
+        "test_results": test_results,
     })
 
-    attempts = state.get("review_attempts", 0)
+    # Failing tests can never be approved, otherwise run_tests -> review loops forever
+    approved = result.approved and not tests_failed
+    feedback = result.feedback
+    if tests_failed and not feedback.strip():
+        feedback = "Fix the failing tests:\n" + test_results
+
+    print("Approved:", approved)
+    print("Feedback:", feedback)
 
     return {
-        "review_approved": decision["approved"],
-        "review_feedback": decision.get("feedback", ""),
-        "review_attempts": attempts + (0 if decision["approved"] else 1)
+        "review_approved": approved,
+        "review_feedback": feedback
     }
 
 
+
+
+def count_revision(state: AgentState) -> dict:
+    attempts = state.get("review_attempts", 0) + 1
+
+    print(f"AI modification attempt: {attempts}/{MAX_REVIEW_ATTEMPTS}")
+
+    # Clear old results so the next review sees only the new tests
+    return {"review_attempts": attempts, "test_report": None, "coverage": None}
 
 # ---------------------------------------------------------------------------
 # Conditional router R1
@@ -353,28 +450,8 @@ def route_coverage(state: AgentState) -> str:
 def generate_gap_tests(state: AgentState) -> dict:
     # TODO: Implement generation of tests for missed branches
     # TODO: Route new tests through human review and rerun
-    raise NotImplementedError("TODO: generate_gap_tests")
-
-
-# ------------------------------------------------------------
-# Node 10: State Pattern refactoring
-# Placeholder for Emily's implementation
-# ------------------------------------------------------------
-def refactor_agent(state: AgentState) -> dict:
-    # TODO: Preserve original-phase evidence before refactoring
-    # TODO: Implement State Pattern refactoring
-    # TODO: Connect to second human review
-    raise NotImplementedError("TODO: refactor_agent")
-
-# >>> PERSON 3 (Joseph) BEGIN: repair_agent placeholder (replace with Sarthak's node)
-def repair_agent_stub(state: AgentState) -> dict:
-    report = state.get("test_report", {})
-    print(f"{report.get('failed', 0)} failed / {report.get('errors', 0)} errors: "
-          "repair_agent is not implemented yet.")
-    return {
-        "workflow_status": "awaiting_repair_agent"
-    }
-# <<< PERSON 3 (Joseph) END: repair_agent placeholder
+    print("Coverage gap found: generate_gap_tests is not implemented yet.")
+    return {"workflow_status": "awaiting_gap_tests"}
 
 
 # Stop safely when human review reaches the retry limit
@@ -395,18 +472,17 @@ def build_graph():
     graph.add_node("ep_agent", generate_ep_tests)
     graph.add_node("bva_agent", generate_bv_tests)
     graph.add_node("merge_tests", merge_tests)
+    graph.add_node("count_revision", count_revision)
     graph.add_node("review_tests", review_tests)
 
     # >>> PERSON 3 (Joseph) BEGIN: nodes
     graph.add_node("run_tests", run_tests)
     graph.add_node("check_coverage", check_coverage)
     graph.add_node("save_results", save_results)
-    graph.add_node("repair_agent", repair_agent_stub)   # placeholder for Sarthak
     # <<< PERSON 3 (Joseph) END: nodes
 
     # R3 destination nodes
     graph.add_node("generate_gap_tests", generate_gap_tests)
-    graph.add_node("refactor_agent", refactor_agent)
 
     # Temporary nodes
     graph.add_node("escalate_review", escalate_review)
@@ -433,19 +509,20 @@ def build_graph():
         route_test_review,
         {
             "approved": "run_tests",
-            "regenerate": "load_source",
+            "regenerate": "count_revision",
             "max_attempts": "escalate_review"
         }
     )
+    graph.add_edge("count_revision", "load_source")
 
     # >>> PERSON 3 (Joseph) BEGIN: edges
-    # R2: passed -> coverage, failed -> repair
+    # R2: passed -> coverage, failed -> AI reviews the failure output
     graph.add_conditional_edges(
         "run_tests",
         route_test_results,
         {
             "passed": "check_coverage",
-            "failed": "repair_agent"
+            "failed": "review_tests"
         }
     )
 
@@ -457,21 +534,15 @@ def build_graph():
         route_coverage,
         {
             "gap": "generate_gap_tests",
-            "refactor": "refactor_agent",
+            "refactor": "save_results",   # no refactoring: save results and finish
             "complete": "save_results",
         }
     )
 
-    # TODO: Replace these temporary edges during integration.
-    # After gap tests: review, execute, and recheck coverage.
+    # TODO: After gap tests: review, execute, and recheck coverage.
     graph.add_edge("generate_gap_tests", END)
 
-    # After refactoring: second human review and test adaptation.
-    graph.add_edge("refactor_agent", END)
-
-    # Temporary endpoints until R3 / repair loop exist
     graph.add_edge("save_results", END)
-    graph.add_edge("repair_agent", END)
     # <<< PERSON 3 (Joseph) END: edges
 
     # Temporary endpoints
@@ -483,89 +554,115 @@ def build_graph():
 # ---------------------------------------------------------------------------
 # Quick test
 # ---------------------------------------------------------------------------
+# if __name__ == "__main__":
+#     app = build_graph()
+
+#     config = {
+#     "configurable": {
+#         "thread_id": "assignment3-001"
+#     },
+#     "recursion_limit": 50
+# }
+
+#     result = app.invoke({
+#         "source_path": str(BASE_DIR / "app" / "SeasonSwitch.java"),
+#         "class_name": "SeasonSwitch",
+#         "package_name": "cse4392",
+#         # >>> PERSON 3 (Joseph) BEGIN: initial phase
+#         "phase": "original",
+#         # <<< PERSON 3 (Joseph) END: initial phase
+#     },config=config)
+
+
+
+    
+#     if __name__ == "__main__":
+
+#         app = build_graph()
+
+#         config = {
+#             "configurable": {
+#                 "thread_id": "assignment3-001"
+#             }
+#         }
+
+#         result = app.invoke(
+#             {
+#                 "source_path": str(BASE_DIR / "app" / "SeasonSwitch.java"),
+#                 "class_name": "SeasonSwitch",
+#                 "package_name": "cse4392",
+#                 "phase": "original",
+#                 "review_attempts": 0,
+#                 "review_feedback": ""
+#             },
+#             config=config
+#         )
+
+#         print("\nWorkflow status:", result.get("workflow_status"))
+#         print("Review approved:", result.get("review_approved"))
+#         print("Review feedback:", result.get("review_feedback"))
+
+#     status = result.get("workflow_status", "unknown")
+#     print(f"\nWorkflow status: {status}")
+
+#     # >>> PERSON 3 (Joseph) BEGIN: results printout
+#     report = result.get("test_report")
+#     if report:
+#         print(f"Tests: {report['passed']}/{report['total']} passed, "
+#               f"{report['failed']} failed, {report['errors']} errors")
+#         for f in report["failures"]:
+#             print(f"  FAIL {f['test']}: {f['message'][:160]}")
+#     cov = result.get("coverage")
+#     if cov:
+#         b = cov["branch"]
+#         print(f"Branch coverage: {b['covered']}/{b['total']} = {b['percent']}% "
+#               f"(fully covered: {cov['fully_covered']})")
+#     if result.get("saved_artifacts"):
+#         print(f"Evidence saved: {result['saved_artifacts']}")
+#     # <<< PERSON 3 (Joseph) END: results printout
+
+#     if status == "review_exhausted":
+#            raise SystemExit(
+#                "Stopped: tests were not approved after 3 attempts."
+#            )
+
+#     out_dir = Path("generated_tests")
+#     out_dir.mkdir(exist_ok=True)
+#     (out_dir / "SeasonSwitchEPTest.java").write_text(result["ep_tests"])
+#     (out_dir / "SeasonSwitchBVTest.java").write_text(result["bv_tests"])
+#     (out_dir / "SeasonSwitchMergedTest.java").write_text(
+#     result["merged_tests"]
+# )
+
+#     print("=== Equivalence Partition tests ===\n", result["ep_tests"])
+#     print("\n=== Boundary Value tests ===\n", result["bv_tests"])
+
+
 if __name__ == "__main__":
+
     app = build_graph()
 
     config = {
-    "configurable": {
-        "thread_id": "assignment3-001"
+        "configurable": {
+            "thread_id": "assignment3-001"
+        },
+        "recursion_limit": 50
     }
-    }
 
-    result = app.invoke({
-        "source_path": str(BASE_DIR / "app" / "SeasonSwitch.java"),
-        "class_name": "SeasonSwitch",
-        "package_name": "cse4392",
-        # >>> PERSON 3 (Joseph) BEGIN: initial phase
-        "phase": "original",
-        # <<< PERSON 3 (Joseph) END: initial phase
-    },config=config)
+    result = app.invoke(
+        {
+            "source_path": str(BASE_DIR / "app" / "SeasonSwitch.java"),
+            "class_name": "SeasonSwitch",
+            "package_name": "cse4392",
+            "phase": "original",
+            "review_attempts": 0,
+            "review_feedback": ""
+        },
+        config=config
+    )
 
-
-
-    while "__interrupt__" in result:
-        review = result["__interrupt__"][0].value
-
-        print("\n=== Generated Tests for Review ===")
-        print(
-            f"\nReview file: "
-                f"{BASE_DIR / 'generated_tests' / 'SeasonSwitchMergedTest.java'}"
-        )
-        print(f"Number of generated tests: {review['tests'].count('@Test')}")
-
-        while True:
-            answer = input("\nApprove tests? (yes/no): ").strip().lower()
-
-            if answer in ("yes", "y", "no", "n"):
-                break
-
-            print("Please enter yes or no. Blank answers are not accepted.")
-
-        approved = answer in ("yes", "y")
-
-        feedback = ""
-        if not approved:
-            feedback = input("Enter your feedback: ").strip()
-
-        result = app.invoke(
-            Command(resume={
-                "approved": approved,
-                "feedback": feedback
-            }),
-            config=config
-        )
-
-    status = result.get("workflow_status", "unknown")
-    print(f"\nWorkflow status: {status}")
-
-    # >>> PERSON 3 (Joseph) BEGIN: results printout
-    report = result.get("test_report")
-    if report:
-        print(f"Tests: {report['passed']}/{report['total']} passed, "
-              f"{report['failed']} failed, {report['errors']} errors")
-        for f in report["failures"]:
-            print(f"  FAIL {f['test']}: {f['message'][:160]}")
-    cov = result.get("coverage")
-    if cov:
-        b = cov["branch"]
-        print(f"Branch coverage: {b['covered']}/{b['total']} = {b['percent']}% "
-              f"(fully covered: {cov['fully_covered']})")
-    if result.get("saved_artifacts"):
-        print(f"Evidence saved: {result['saved_artifacts']}")
-    # <<< PERSON 3 (Joseph) END: results printout
-
-    if status == "review_exhausted":
-           raise SystemExit(
-               "Stopped: tests were not approved after 3 attempts."
-           )
-
-    out_dir = Path("generated_tests")
-    out_dir.mkdir(exist_ok=True)
-    (out_dir / "SeasonSwitchEPTest.java").write_text(result["ep_tests"])
-    (out_dir / "SeasonSwitchBVTest.java").write_text(result["bv_tests"])
-    (out_dir / "SeasonSwitchMergedTest.java").write_text(
-    result["merged_tests"]
-)
-
-    print("=== Equivalence Partition tests ===\n", result["ep_tests"])
-    print("\n=== Boundary Value tests ===\n", result["bv_tests"])
+    print("\n=== Workflow Completed ===")
+    print("Status:", result.get("workflow_status"))
+    print("Approved:", result.get("review_approved"))
+    print("Feedback:", result.get("review_feedback"))
+    print("Revisions:", result.get("review_attempts", 0))
