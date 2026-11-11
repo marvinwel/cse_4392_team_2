@@ -32,6 +32,7 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 # us.amazon.nova-lite-v1:0, older and cheaper
 NOVA_MODEL = "us.amazon.nova-micro-v1:0" #support up to two tools, cheapest
 GEMMA_MODEL = "google.gemma-3-27b-it"
+REVIEW_MODEL = "us.amazon.nova-lite-v1:0"
 QWEN_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0" #Qwen3 Coder 30B A3B
 REGION = "us-east-1"
 TEMPERATURE = 0
@@ -46,7 +47,7 @@ model = ChatBedrockConverse(
 )
 
 model_review = ChatBedrockConverse(
-    model=GEMMA_MODEL,
+    model=REVIEW_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=MAX_TOKENS,
