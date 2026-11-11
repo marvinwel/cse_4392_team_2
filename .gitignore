@@ -21,3 +21,9 @@ __pycache__/
 # Streamlit configuration and secrets
 project2/chat-ui/.streamlit/*
 !project2/chat-ui/.streamlit/config.toml
+
+# Generated Java build artifacts and OS files
+java-original/target/
+java-refactored/target/
+.DS_Store
+junit-merger/dependency-reduced-pom.xml
