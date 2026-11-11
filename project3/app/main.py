@@ -55,6 +55,7 @@ MAX_REVIEW_REJECTIONS = 3     # per agent (EP / BVA), per round
 MAX_TEST_FIX_ROUNDS = 2       # how many times failed test runs go back for fixing
 
 GENERATOR_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0"   # Qwen3 Coder 30B A3B: writes the tests
+CLAUDE_MODEL = "us.anthropic.claude-sonnet-4-6"
 REVIEW_MODEL = "us.amazon.nova-micro-v1:0"          # Amazon Nova Micro: reviews the tests (cheapest)
 REVIEW_MAX_TOKENS = 4000                            # review answers are short JSON; keeps under Nova's output limit
 REGION = "us-east-1"
@@ -76,7 +77,7 @@ for _handler in (logging.StreamHandler(),
     log.addHandler(_handler)
 
 generator_model = ChatBedrockConverse(
-    model=GENERATOR_MODEL,
+    model=CLAUDE_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=MAX_TOKENS,

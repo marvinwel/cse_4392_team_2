@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 seasonswitch-original,cse4392,SeasonSwitch.AC,0,17,0,0,0,4,0,3,0,3
-seasonswitch-original,cse4392,SeasonSwitch,74,197,11,17,21,60,9,17,2,6
+seasonswitch-original,cse4392,SeasonSwitch,71,200,8,20,19,62,5,21,1,7
 seasonswitch-original,cse4392,SeasonSwitch.Room,41,16,8,0,6,3,6,1,1,1
 seasonswitch-original,cse4392,SeasonSwitch.Heater,0,17,0,0,0,4,0,3,0,3
