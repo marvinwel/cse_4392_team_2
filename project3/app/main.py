@@ -1,7 +1,7 @@
 """
 Team Assignment 3 - Multi-agent test generation for SeasonSwitch.
 
-Qwen generates the tests, Amazon Nova Micro reviews them.
+Claude generates the tests, Amazon Nova Micro reviews them.
 EP and BVA tests are each reviewed on their own before they are merged.
 
     load_source --+-- ep_agent  -- review_ep  --+-- ep_done  --+
@@ -272,12 +272,12 @@ def load_source(state: AgentState) -> dict:
     return {"source_code": Path(state["source_path"]).read_text(encoding="utf-8")}
 
 
-# ---- Node 2: Equivalence Partitioning generator (Qwen) ----
+# ---- Node 2: Equivalence Partitioning generator (Claude) ----
 @traceable(name="Generate EP tests", run_type="tool")
 def generate_ep_tests(state: AgentState) -> dict:
     previous_tests = state.get("ep_tests", "")
     feedback = state.get("ep_feedback", "")
-    log.info("[EP] Qwen %s Equivalence Partitioning tests...", "revising" if previous_tests else "generating")
+    log.info("[EP] Claude %s Equivalence Partitioning tests...", "revising" if previous_tests else "generating")
     response = (generate_prompt | generator_model).invoke({
         "method": EP_METHOD.format(class_name=state["class_name"]),
         "package_name": state["package_name"],
@@ -323,7 +323,7 @@ def generate_ep_tests(state: AgentState) -> dict:
 def generate_bv_tests(state: AgentState) -> dict:
     previous_tests = state.get("bv_tests", "")
     feedback = state.get("bv_feedback", "")
-    log.info("[BVA] Qwen %s Boundary Value Analysis tests...", "revising" if previous_tests else "generating")
+    log.info("[BVA] Claude %s Boundary Value Analysis tests...", "revising" if previous_tests else "generating")
     response = (generate_prompt | generator_model).invoke({
         "method": BV_METHOD.format(class_name=state["class_name"]),
         "package_name": state["package_name"],
@@ -760,6 +760,12 @@ if __name__ == "__main__":
             "package_name": "cse4392",
             "phase": "original",
             "change_log": [],
+             # Measure branch coverage for the SeasonSwitch class only:
+            # not its inner classes (AC, Heater, Room), and not main(), which is not tested.
+            "coverage_scope": {
+                "include_classes": ["SeasonSwitch"],
+                "exclude_methods": ["SeasonSwitch.main"],
+            },
         },
         config=config,
     )
