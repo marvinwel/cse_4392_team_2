@@ -31,7 +31,7 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 # us.amazon.nova-lite-v1:0, older and cheaper
 NOVA_MODEL = "us.amazon.nova-micro-v1:0" #support up to two tools, cheapest
 GEMMA_MODEL = "google.gemma-3-27b-it"
-QWEN_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0" #Qwen3 Coder 30B A3B 
+QWEN_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0" #Qwen3 Coder 30B A3B
 REGION = "us-east-1"
 TEMPERATURE = 0
 MAX_TOKENS = 8000
@@ -146,7 +146,7 @@ def generate_ep_tests(state: AgentState) -> dict:
         3. Pick ONE representative value from the middle of each class, not its edges.
         4. Write one test per equivalence class.
         """
-    
+
     print("Generating functional test cases using Equivalence Partitioning.......\n")
     response = chain.invoke({
         "system-message": ep_prompt,
@@ -303,6 +303,69 @@ def route_test_review(state: AgentState) -> str:
 
     return "regenerate"
 
+
+# ------------------------------------------------------------
+# Conditional Router R3: Branch coverage routing
+# Owner: Ryan
+# ------------------------------------------------------------
+def route_coverage(state: AgentState) -> str:
+    coverage = state.get("coverage") or {}
+    report = state.get("test_report") or {}
+    branch = coverage.get("branch") or {}
+    phase = state.get("phase")
+
+    # Verify results belong to this phase
+    if (
+        report.get("all_passed") is not True
+        or report.get("phase") != phase
+        or coverage.get("report_found") is not True
+        or coverage.get("phase") != phase
+        or phase not in ("original", "refactored")
+        or not isinstance(branch.get("total"), int)
+        or not isinstance(branch.get("covered"), int)
+        or not isinstance(branch.get("missed"), int)
+        or branch["total"] <= 0
+        or branch["covered"] < 0
+        or branch["missed"] < 0
+        or branch["covered"] + branch["missed"] != branch["total"]
+    ):
+        raise ValueError("Invalid or incomplete coverage results")
+
+    # Below 100% coverage
+    if branch["missed"] > 0:
+        return "gap"
+
+    if coverage.get("fully_covered") is not True:
+        raise ValueError("Inconsistent coverage result")
+
+    # Original code at 100%: begin State Pattern refactoring
+    if phase == "original":
+        return "refactor"
+
+    # Refactored code at 100%: archive final results
+    return "complete"
+
+
+# ------------------------------------------------------------
+# Node 09: Generate missing-branch tests
+# Placeholder for Sarthak's implementation
+# ------------------------------------------------------------
+def generate_gap_tests(state: AgentState) -> dict:
+    # TODO: Implement generation of tests for missed branches
+    # TODO: Route new tests through human review and rerun
+    raise NotImplementedError("TODO: generate_gap_tests")
+
+
+# ------------------------------------------------------------
+# Node 10: State Pattern refactoring
+# Placeholder for Emily's implementation
+# ------------------------------------------------------------
+def refactor_agent(state: AgentState) -> dict:
+    # TODO: Preserve original-phase evidence before refactoring
+    # TODO: Implement State Pattern refactoring
+    # TODO: Connect to second human review
+    raise NotImplementedError("TODO: refactor_agent")
+
 # >>> PERSON 3 (Joseph) BEGIN: repair_agent placeholder (replace with Sarthak's node)
 def repair_agent_stub(state: AgentState) -> dict:
     report = state.get("test_report", {})
@@ -340,6 +403,10 @@ def build_graph():
     graph.add_node("save_results", save_results)
     graph.add_node("repair_agent", repair_agent_stub)   # placeholder for Sarthak
     # <<< PERSON 3 (Joseph) END: nodes
+
+    # R3 destination nodes
+    graph.add_node("generate_gap_tests", generate_gap_tests)
+    graph.add_node("refactor_agent", refactor_agent)
 
     # Temporary nodes
     graph.add_node("escalate_review", escalate_review)
@@ -382,8 +449,25 @@ def build_graph():
         }
     )
 
-    # Until Ryan's R3 coverage router exists: always save the current evidence
-    graph.add_edge("check_coverage", "save_results")
+    # ------------------------------------------------------------
+    # R3: Route based on coverage and phase
+    # ------------------------------------------------------------
+    graph.add_conditional_edges(
+        "check_coverage",
+        route_coverage,
+        {
+            "gap": "generate_gap_tests",
+            "refactor": "refactor_agent",
+            "complete": "save_results",
+        }
+    )
+
+    # TODO: Replace these temporary edges during integration.
+    # After gap tests: review, execute, and recheck coverage.
+    graph.add_edge("generate_gap_tests", END)
+
+    # After refactoring: second human review and test adaptation.
+    graph.add_edge("refactor_agent", END)
 
     # Temporary endpoints until R3 / repair loop exist
     graph.add_edge("save_results", END)
