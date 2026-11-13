@@ -9,7 +9,7 @@ EP and BVA tests are each reviewed on their own before they are merged.
                   |                                            +-- merge_tests -- run_tests --+-- check_coverage -- R3
                   +-- bva_agent -- review_bva --+-- bva_done --+                              |
                          ^-------- rejected ----+                                             +-- review_failures
-                                                                                                 (Nova explains the failures, 
+                                                                                                 (Nova explains the failures,
                                                                                                   both agents regenerate)
     Too many rejections or failed test runs -> escalate_review
     Every ending (save_results / escalate_review / generate_gap_tests) -> save_change_log -> END
@@ -198,6 +198,10 @@ Method:
    - one INVALID class for values that match no case or are outside the allowed range
 3. Pick ONE representative value from the middle of each class, not its edges.
 4. Write one test per equivalence class.
+
+Name every @Test method using the testEP prefix.
+Example: testEPHeatFromOff().
+Every generated method name must be unique.
 """
 
 BV_METHOD = """You are a software testing expert.
@@ -214,6 +218,10 @@ Method:
 5. Use field names instead of hard-coded numbers where possible
    (e.g. coolTemp - 1 instead of 67).
 6. Write one test per boundary value.
+
+Name every @Test method using the testBVA prefix.
+Example: testBVAHeatFromOff().
+Every generated method name must be unique.
 """
 
 GENERATE_HUMAN = """Generate or revise {test_class_name}.
