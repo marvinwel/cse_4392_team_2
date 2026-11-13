@@ -9,7 +9,7 @@ EP and BVA tests are each reviewed on their own before they are merged.
                   |                                            +-- merge_tests -- run_tests --+-- check_coverage -- R3
                   +-- bva_agent -- review_bva --+-- bva_done --+                              |
                          ^-------- rejected ----+                                             +-- review_failures
-                                                                                                 (Nova explains the failures, 
+                                                                                                 (Nova explains the failures,
                                                                                                   both agents regenerate)
     Too many rejections or failed test runs -> escalate_review
     Every ending (save_results / escalate_review / generate_gap_tests) -> save_change_log -> END
@@ -23,19 +23,21 @@ import difflib
 import json
 import logging
 import operator
+import os
 import re
 import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Annotated, TypedDict
 
+from botocore.config import Config
 from dotenv import load_dotenv
 from langsmith import traceable
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_aws import ChatBedrockConverse
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.types import interrupt
+from langgraph.types import Command, interrupt
 
 try:
     from refactor_nodes import build_refactor_nodes
@@ -59,6 +61,16 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 
 MAX_REVIEW_REJECTIONS = 3     # per agent (EP / BVA), per round
 MAX_TEST_FIX_ROUNDS = 2       # how many times failed test runs go back for fixing
+MAX_HUMAN_REJECTIONS = 3      # how many times the human reviewer can request changes
+MAX_MERGE_FAILURES = 2        # how many times a failed EP/BVA merge goes back for fixing
+MAX_REFACTOR_ERRORS = 2       # how many unusable refactor replies are retried
+MAX_REFACTOR_FIX_ROUNDS = 2   # how many times failing refactored tests go back for fixing
+REFACTOR_MAX_TOKENS = 16000   # one reply holds every refactored file plus the adapted tests
+
+# Refactored phase: measure EVERY class, so the new State classes are counted.
+# main() stays excluded only because the original phase excludes it; the team still
+# has to settle main() and Room (docs/coverage-scope.md).
+REFACTORED_COVERAGE_SCOPE = {"include_classes": None, "exclude_methods": ["SeasonSwitch.main"]}
 
 GENERATOR_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0"   # Qwen3 Coder 30B A3B: writes the tests
 CLAUDE_MODEL = "us.anthropic.claude-sonnet-4-6"
@@ -98,9 +110,19 @@ review_model = ChatBedrockConverse(
     max_tokens=REVIEW_MAX_TOKENS,
 )
 
+# The refactor reply is long (all source files + the adapted tests in one JSON object),
+# so it gets a larger output limit and a longer read timeout than test generation.
+refactor_model = ChatBedrockConverse(
+    model=CLAUDE_MODEL,
+    region_name=REGION,
+    temperature=TEMPERATURE,
+    max_tokens=REFACTOR_MAX_TOKENS,
+    config=Config(read_timeout=600, retries={"max_attempts": 2}),
+)
+
 # Person 5 nodes. Ryan owns adding these callables to the graph and wiring R4.
 refactor_agent, review_refactor = build_refactor_nodes(
-    generator_model, BASE_DIR, interrupt,
+    refactor_model, BASE_DIR, interrupt,
 )
 
 
@@ -133,6 +155,16 @@ class AgentState(TypedDict, total=False):
     test_fix_rounds: int
     workflow_status: str
 
+    # Human review of the merged tests (R1, Ryan)
+    human_approved: bool
+    human_feedback: str
+    human_review_count: int
+    human_rejections: int
+
+    # Merge failure recovery (Ryan)
+    merge_error: str          # empty when the last merge worked
+    merge_failures: int
+
     # Person 5 State-pattern generation, test adaptation, and review gate.
     refactored_files: dict[str, str]
     refactored_tests: str
@@ -142,6 +174,11 @@ class AgentState(TypedDict, total=False):
     refactor_review_count: int
     refactor_revision_count: int
     refactor_status: str
+
+    # Refactored-phase orchestration (Ryan)
+    refactor_error: str       # empty when the last refactor reply was usable
+    refactor_errors: int
+    refactor_fix_rounds: int  # failed refactored test runs sent back for fixing
 
     # Change log: every node adds its entries; operator.add joins the lists,
     # so the parallel EP and BVA nodes can both add entries in the same step.
@@ -176,6 +213,26 @@ Rules:
 - If a field is static, reset it in a @BeforeEach method, because static values
   carry over between tests.
 - If the class starts timers or threads, stop them in an @AfterEach method.
+- SHARED FIXTURE: the EP and BVA classes are merged into ONE class, so both must
+  declare the SAME fixture, character for character. Copy exactly this, with no
+  extra modifiers, comments, fields, @BeforeEach or @AfterEach methods:
+
+    {class_name} ss;
+
+    @BeforeEach
+    void setUp() {{
+        {class_name}.state = {class_name}.OFF;
+        ss = new {class_name}();
+    }}
+
+    @AfterEach
+    void tearDown() {{
+        ss.timer.stop();
+        ss.room.timer.stop();
+        {class_name}.state = {class_name}.OFF;
+    }}
+
+  Put any extra per-test setup inside the test method itself.
 - Besides return values or state, assert observable side effects
   (devices on/off, timers running or stopped).
 - No duplicate tests: each test must use a different input or starting state.
@@ -198,6 +255,10 @@ Method:
    - one INVALID class for values that match no case or are outside the allowed range
 3. Pick ONE representative value from the middle of each class, not its edges.
 4. Write one test per equivalence class.
+
+Name every @Test method using the testEP prefix.
+Example: testEPHeatFromOff().
+Every generated method name must be unique.
 """
 
 BV_METHOD = """You are a software testing expert.
@@ -214,6 +275,10 @@ Method:
 5. Use field names instead of hard-coded numbers where possible
    (e.g. coolTemp - 1 instead of 67).
 6. Write one test per boundary value.
+
+Name every @Test method using the testBVA prefix.
+Example: testBVAHeatFromOff().
+Every generated method name must be unique.
 """
 
 GENERATE_HUMAN = """Generate or revise {test_class_name}.
@@ -514,11 +579,36 @@ def merge_tests(state: AgentState) -> dict:
     bv_file.write_text(state["bv_tests"], encoding="utf-8")
 
     log.info("Merging approved EP and BVA test cases and removing duplicates...")
-    subprocess.run(
+    merged_file.unlink(missing_ok=True)   # never let an old merged file be run by mistake
+    proc = subprocess.run(
         ["java", "-jar", str(MERGER_JAR), str(ep_file), str(bv_file),
          str(merged_file), f"{class_name}MergedTest"],
-        check=True,
+        capture_output=True, text=True,
     )
+    if proc.returncode != 0 or not merged_file.exists():
+        # The generated classes could not be combined: send the reason back to both agents.
+        error_lines = [line for line in proc.stderr.splitlines() if "Exception" in line]
+        error = (error_lines[0] if error_lines else proc.stderr.strip()[-500:]) or "unknown merger error"
+        failures = state.get("merge_failures", 0) + 1
+        log.warning("Merge failed (%d/%d): %s", failures, MAX_MERGE_FAILURES, error)
+        request = ("The EP and BVA test classes could NOT be merged into one class:\n"
+                   f"{error}\n"
+                   "Use exactly the required SHARED FIXTURE, declare no other fields or "
+                   "lifecycle methods, and keep every @Test method name unique.")
+        return {
+            "merge_error": error,
+            "merge_failures": failures,
+            "ep_feedback": request, "ep_approved": False, "ep_rejections": 0,
+            "bv_feedback": request, "bv_approved": False, "bv_rejections": 0,
+            "change_log": [{
+                "time": datetime.now().isoformat(timespec="seconds"),
+                "phase": state.get("phase"),
+                "node": "merge_tests",
+                "action": "merge_failed",
+                "attempt": failures,
+                "error": error,
+            }],
+        }
     merged = merged_file.read_text(encoding="utf-8")
     ep_count = state["ep_tests"].count("@Test")
     bv_count = state["bv_tests"].count("@Test")
@@ -528,6 +618,7 @@ def merge_tests(state: AgentState) -> dict:
 
     return {
         "merged_tests": merged,
+        "merge_error": "",
         "change_log": [{
             "time": datetime.now().isoformat(timespec="seconds"),
             "phase": state.get("phase"),
@@ -540,6 +631,54 @@ def merge_tests(state: AgentState) -> dict:
             "file": str(merged_file),
         }],
     }
+
+
+# ---- Human review of the merged tests (human in the loop, assignment step 4) ----
+def review_tests(state: AgentState) -> dict:
+    """Pause the graph and ask a person to approve the merged tests or request changes."""
+    count = state.get("human_review_count", 0) + 1
+    decision = interrupt({
+        "node": "review_tests",
+        "review_number": count,
+        "test_count": state["merged_tests"].count("@Test"),
+        "file": str(OUTPUT_DIR / f"{state['class_name']}MergedTest.java"),
+        "prior_feedback": state.get("human_feedback", ""),
+    })
+    if not isinstance(decision, dict) or not isinstance(decision.get("approved"), bool):
+        raise ValueError("Resume review_tests with {'approved': bool, 'feedback': str}")
+
+    approved = decision["approved"]
+    feedback = str(decision.get("feedback", "")).strip()
+    rejections = state.get("human_rejections", 0) + (0 if approved else 1)
+    log.info("[HUMAN] Approved: %s | review #%d | change requests: %d/%d",
+             approved, count, rejections, MAX_HUMAN_REJECTIONS)
+    if feedback:
+        log.info("[HUMAN] Feedback: %s", feedback)
+
+    update = {
+        "human_approved": approved,
+        "human_feedback": "" if approved else feedback,
+        "human_review_count": count,
+        "human_rejections": rejections,
+        "change_log": [{
+            "time": datetime.now().isoformat(timespec="seconds"),
+            "phase": state.get("phase"),
+            "node": "review_tests",
+            "action": ("auto_approved_no_human" if decision.get("auto")
+                       else "human_approved" if approved else "human_requested_changes"),
+            "review_number": count,
+            "feedback": feedback,
+        }],
+    }
+    if not approved:
+        # Send the request to both generators, the same way review_failures does.
+        request = ("A HUMAN REVIEWER requested these changes to the merged tests. "
+                   f"Apply every change that concerns YOUR tests:\n{feedback}")
+        update.update({
+            "ep_feedback": request, "ep_approved": False, "ep_rejections": 0,
+            "bv_feedback": request, "bv_approved": False, "bv_rejections": 0,
+        })
+    return update
 
 
 @traceable(name="Nova review test failures")
@@ -584,6 +723,62 @@ def review_failures(state: AgentState) -> dict:
     }
 
 
+# ---- Refactored phase: orchestration around Emily's nodes (Ryan) ----
+def run_refactor_agent(state: AgentState) -> dict:
+    """Call Emily's refactor_agent; an unusable model reply is retried instead of stopping the run."""
+    log.info("[REFACTOR] Claude %s the State-pattern refactoring...",
+             "revising" if state.get("refactored_files") else "generating")
+    try:
+        result = refactor_agent(state)
+    except ValueError as exc:
+        errors = state.get("refactor_errors", 0) + 1
+        log.warning("[REFACTOR] Unusable reply (%d/%d): %s", errors, MAX_REFACTOR_ERRORS, exc)
+        return {
+            "refactor_error": str(exc),
+            "refactor_errors": errors,
+            "refactor_feedback": (f"Your previous reply was rejected: {exc}\n"
+                                  "Return ONE complete, valid JSON object that follows every requirement."),
+            "change_log": [{
+                "time": datetime.now().isoformat(timespec="seconds"),
+                "phase": "refactored",
+                "node": "refactor_agent",
+                "action": "refactor_reply_rejected",
+                "attempt": errors,
+                "error": str(exc),
+            }],
+        }
+    log.info("[REFACTOR] Wrote %d source file(s) to java-refactored/.", len(result["refactored_files"]))
+    return {**result, "refactor_error": "", "coverage_scope": REFACTORED_COVERAGE_SCOPE}
+
+
+def refactor_failures(state: AgentState) -> dict:
+    """Refactored tests failed: send the results back to the refactor agent (assignment step 10)."""
+    rounds = state.get("refactor_fix_rounds", 0) + 1
+    report = state.get("test_report") or {}
+    lines = [f"{report.get('passed', 0)}/{report.get('total', 0)} passed, "
+             f"{report.get('failed', 0)} failed, {report.get('errors', 0)} errors"]
+    for f in report.get("failures", []):
+        lines.append(f"FAIL {f.get('test')}: {str(f.get('message', ''))[:500]}")
+    if report.get("build_output_tail"):
+        lines.append("Build output:\n" + report["build_output_tail"][-2000:])
+    test_results = "\n".join(lines)
+    log.warning("[REFACTOR] Refactored tests failed (fix round %d/%d).", rounds, MAX_REFACTOR_FIX_ROUNDS)
+    return {
+        "refactor_fix_rounds": rounds,
+        "refactor_feedback": ("The refactored code and adapted tests were run and FAILED. Fix the "
+                              "refactored code, or adapt a test only where the new design requires it. "
+                              f"Do not weaken any assertion.\n{test_results}"),
+        "change_log": [{
+            "time": datetime.now().isoformat(timespec="seconds"),
+            "phase": "refactored",
+            "node": "refactor_failures",
+            "action": "refactored_test_run_failed",
+            "fix_round": rounds,
+            "test_results": test_results,
+        }],
+    }
+
+
 # ------------------------------------------------------------
 # Node 09: Generate missing-branch tests
 # Placeholder for Sarthak's implementation
@@ -595,7 +790,19 @@ def generate_gap_tests(state: AgentState) -> dict:
 
 
 def escalate_review(state: AgentState) -> dict:
-    if state.get("test_fix_rounds", 0) > MAX_TEST_FIX_ROUNDS:
+    if state.get("refactor_status") == "refactor_review_exhausted":
+        log.error("Stopped: the refactoring was rejected the maximum number of times.")
+        status = "refactor_review_exhausted"
+    elif state.get("refactor_error"):
+        log.error("Stopped: the refactor agent did not return usable output.")
+        status = "refactor_generation_failed"
+    elif state.get("refactor_fix_rounds", 0) > MAX_REFACTOR_FIX_ROUNDS:
+        log.error("Stopped: refactored tests still fail after the maximum fix rounds.")
+        status = "refactor_fix_exhausted"
+    elif state.get("merge_error") and state.get("merge_failures", 0) > MAX_MERGE_FAILURES:
+        log.error("Stopped: the EP and BVA tests could not be merged.")
+        status = "merge_failed"
+    elif state.get("test_fix_rounds", 0) > MAX_TEST_FIX_ROUNDS:
         log.error("Stopped: tests still fail after the maximum fix rounds.")
         status = "test_fix_exhausted"
     else:
@@ -653,11 +860,72 @@ def route_bv_review(state: AgentState) -> str:
     return "regenerate"
 
 
+# After merge_tests: merged -> human review, failed -> both agents fix their classes
+def route_merge(state: AgentState):
+    if not state.get("merge_error"):
+        return "merged"
+    if state.get("merge_failures", 0) > MAX_MERGE_FAILURES:
+        return "max_attempts"
+    return ["ep_agent", "bva_agent"]
+
+
+# R1 (human): approved -> run the tests, changes requested -> both agents revise
+def route_test_review(state: AgentState):
+    if state.get("human_approved"):
+        return "approved"
+    if state.get("human_rejections", 0) >= MAX_HUMAN_REJECTIONS:
+        return "max_attempts"
+    return ["ep_agent", "bva_agent"]
+
+
 def route_after_failures(state: AgentState):
     """After failure review: both agents regenerate, unless out of fix rounds."""
     if state.get("test_fix_rounds", 0) > MAX_TEST_FIX_ROUNDS:
         return "max_attempts"
     return ["ep_agent", "bva_agent"]
+
+
+# R2 by phase: a failed refactored run goes to the refactor agent, not the EP/BVA agents
+def route_tests_by_phase(state: AgentState) -> str:
+    result = route_test_results(state)
+    if result == "failed" and state.get("phase") == "refactored":
+        return "refactor_failed"
+    return result
+
+
+def route_refactor_failures(state: AgentState) -> str:
+    if state.get("refactor_fix_rounds", 0) > MAX_REFACTOR_FIX_ROUNDS:
+        return "max_attempts"
+    return "revise"
+
+
+# After the refactor agent: usable reply -> human review, unusable -> retry
+def route_refactor_agent(state: AgentState) -> str:
+    if not state.get("refactor_error"):
+        return "review"
+    if state.get("refactor_errors", 0) > MAX_REFACTOR_ERRORS:
+        return "max_attempts"
+    return "retry"
+
+
+# ------------------------------------------------------------
+# Conditional Router R4: human review of the refactoring
+# Owner: Ryan
+# ------------------------------------------------------------
+def route_refactor_review(state: AgentState) -> str:
+    status = state.get("refactor_status")
+    if status == "refactor_approved":
+        return "approved"
+    if status == "refactor_review_exhausted":
+        return "max_attempts"
+    return "revise"
+
+
+# After the change log is saved: the original phase continues into refactoring
+def route_after_save(state: AgentState) -> str:
+    if state.get("workflow_status") == "original_saved":
+        return "refactor"
+    return "end"
 
 
 # ------------------------------------------------------------
@@ -711,6 +979,7 @@ def build_graph():
     graph.add_node("ep_done", ep_done)
     graph.add_node("bva_done", bva_done)
     graph.add_node("merge_tests", merge_tests)
+    graph.add_node("review_tests", review_tests)
     graph.add_node("review_failures", review_failures)
     graph.add_node("escalate_review", escalate_review)
     # >>> PERSON 3 (Joseph) BEGIN: nodes
@@ -720,6 +989,9 @@ def build_graph():
     # <<< PERSON 3 (Joseph) END: nodes
     graph.add_node("generate_gap_tests", generate_gap_tests)
     graph.add_node("save_change_log", save_change_log)
+    graph.add_node("refactor_agent", run_refactor_agent)
+    graph.add_node("review_refactor", review_refactor)
+    graph.add_node("refactor_failures", refactor_failures)
 
     # Generate in parallel
     graph.add_edge(START, "load_source")
@@ -738,12 +1010,23 @@ def build_graph():
 
     # Merge only after BOTH branches are approved
     graph.add_edge(["ep_done", "bva_done"], "merge_tests")
-    graph.add_edge("merge_tests", "run_tests")
+    # A failed merge goes back to both agents instead of stopping the run
+    graph.add_conditional_edges("merge_tests", route_merge, {
+        "merged": "review_tests", "ep_agent": "ep_agent", "bva_agent": "bva_agent",
+        "max_attempts": "escalate_review",
+    })
+
+    # R1 (human): a person approves the merged tests before they run
+    graph.add_conditional_edges("review_tests", route_test_review, {
+        "approved": "run_tests", "ep_agent": "ep_agent", "bva_agent": "bva_agent",
+        "max_attempts": "escalate_review",
+    })
 
     # >>> PERSON 3 (Joseph) BEGIN: edges
     # R2: passed -> coverage, failed -> Nova reviews the failures
-    graph.add_conditional_edges("run_tests", route_test_results, {
+    graph.add_conditional_edges("run_tests", route_tests_by_phase, {
         "passed": "check_coverage", "failed": "review_failures",
+        "refactor_failed": "refactor_failures",
     })
     # <<< PERSON 3 (Joseph) END: edges
 
@@ -754,7 +1037,7 @@ def build_graph():
     # R3: coverage and phase
     graph.add_conditional_edges("check_coverage", route_coverage, {
         "gap": "generate_gap_tests",
-        "refactor": "save_results",   # no refactoring: save results and finish
+        "refactor": "save_results",   # save the original evidence, then refactor (route_after_save)
         "complete": "save_results",
     })
 
@@ -762,7 +1045,20 @@ def build_graph():
     graph.add_edge("generate_gap_tests", "save_change_log")
     graph.add_edge("save_results", "save_change_log")
     graph.add_edge("escalate_review", "save_change_log")
-    graph.add_edge("save_change_log", END)
+    graph.add_conditional_edges("save_change_log", route_after_save, {
+        "refactor": "refactor_agent", "end": END,
+    })
+
+    # Refactored phase: generate -> human review (R4) -> run the adapted tests
+    graph.add_conditional_edges("refactor_agent", route_refactor_agent, {
+        "review": "review_refactor", "retry": "refactor_agent", "max_attempts": "escalate_review",
+    })
+    graph.add_conditional_edges("review_refactor", route_refactor_review, {
+        "approved": "run_tests", "revise": "refactor_agent", "max_attempts": "escalate_review",
+    })
+    graph.add_conditional_edges("refactor_failures", route_refactor_failures, {
+        "revise": "refactor_agent", "max_attempts": "escalate_review",
+    })
 
     return graph.compile(checkpointer=MemorySaver())
 
@@ -770,6 +1066,35 @@ def build_graph():
 # ===========================================================================
 # 7. Run
 # ===========================================================================
+def ask_human(payload: dict) -> dict:
+    """Show a paused human review on the terminal; return {'approved': bool, 'feedback': str}."""
+    print(f"\n=== HUMAN REVIEW REQUIRED: {payload.get('node')} "
+          f"(review #{payload.get('review_number')}) ===")
+    if payload.get("file"):
+        print(f"Open and read: {payload['file']} ({payload.get('test_count')} tests)")
+    for path in (payload.get("files") or {}):
+        print(f"Open and read: java-refactored/{path}")
+    if payload.get("adapted_tests"):
+        print("Open and read the adapted tests in: java-refactored/src/test/java/cse4392/")
+    if payload.get("explanation"):
+        print(f"Refactoring notes: {payload['explanation']}")
+    for item in payload.get("review_checklist") or []:
+        print(f"  [ ] {item}")
+    if payload.get("prior_feedback"):
+        print(f"Your previous feedback: {payload['prior_feedback']}")
+    while True:
+        answer = input("Approve? [y = approve / n = request changes]: ").strip().lower()
+        if answer in ("y", "yes"):
+            return {"approved": True, "feedback": ""}
+        if answer in ("n", "no"):
+            feedback = input("What must change? ").strip()
+            if feedback:
+                return {"approved": False, "feedback": feedback}
+            print("Feedback is required to request changes.")
+        else:
+            print("Please type y or n.")
+
+
 if __name__ == "__main__":
     app = build_graph()
     config = {"configurable": {"thread_id": "assignment3-001"}, "recursion_limit": 100}
@@ -790,6 +1115,19 @@ if __name__ == "__main__":
         },
         config=config,
     )
+    # Human in the loop: the graph pauses at interrupt(); ask on the terminal, then resume.
+    while True:
+        pending = [i for task in app.get_state(config).tasks for i in task.interrupts]
+        if not pending:
+            break
+        if os.environ.get("AUTO_APPROVE") == "1":
+            # Testing shortcut only. Final evidence runs must use the real human review.
+            print(f"AUTO_APPROVE=1: skipping human review at {pending[0].value.get('node')}")
+            answer = {"approved": True, "feedback": "", "auto": True}
+        else:
+            answer = ask_human(pending[0].value)
+        result = app.invoke(Command(resume=answer), config=config)
+
     print("\n=== Workflow Completed ===")
     print("Status:", result.get("workflow_status", "finished"))
     print(f"EP reviews:  {result.get('ep_review_count', 0)} (approved: {result.get('ep_approved')})")

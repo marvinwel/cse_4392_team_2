@@ -141,7 +141,8 @@ On Windows, use WSL or a compatible Unix environment.
 | Command | Description |
 |---|---|
 | `make help` | Display available commands |
-| `make run` | Run the current LangGraph workflow, automatically building the merger JAR if needed |
+| `make run` | Run the full LangGraph workflow with both human reviews, automatically building the merger JAR if needed |
+| `AUTO_APPROVE=1 make run` | Same workflow with the human reviews skipped. For development testing only |
 | `make test-original` | Copy the latest generated tests into the original Java project and run JUnit/JaCoCo |
 | `make test-original-current` | Rerun installed original tests without generating or copying new ones |
 | `make test-refactored` | Execute the installed adapted tests against the refactored Java implementation |
@@ -161,9 +162,69 @@ Generate and execute a new suite:
 make run
 ```
 
-The current workflow uses LLM-generated EP/BVA tests,
-merges them, performs an AI review, and executes tests
-when its review accepts the suite.
+The workflow runs both phases of the assignment in one command:
+
+1. Generate EP and BVA tests in parallel. An AI reviewer checks each set.
+2. Merge the two sets into one JUnit class.
+3. **Human review 1:** a person approves the merged tests or requests changes.
+4. Run the tests on the original code and measure branch coverage.
+5. Save the original-phase evidence, then refactor to the State pattern.
+6. **Human review 2:** a person approves the refactored code or requests changes.
+7. Run the adapted tests on the refactored code and measure branch coverage.
+
+### Human Review (Human in the Loop)
+
+The assignment requires a person to review the generated tests and the
+refactored code. The workflow pauses at each review and waits for an answer
+in the terminal:
+
+```text
+=== HUMAN REVIEW REQUIRED: review_tests (review #1) ===
+Open and read: .../generated_tests/SeasonSwitchMergedTest.java (45 tests)
+Approve? [y = approve / n = request changes]:
+```
+
+- Open the listed file or files and read them before answering.
+- `y` approves and the workflow continues.
+- `n` asks what must change. The feedback goes back to the generators
+  (review 1) or to the refactor agent (review 2), and the review repeats.
+- Three change requests at the same review stop the run with the status
+  `review_exhausted` (tests) or `refactor_review_exhausted` (refactoring).
+- Every decision is written to the change log
+  (`generated_tests/change_log_<phase>.json`).
+
+| Review | Node | When it pauses | What to read |
+|---|---|---|---|
+| 1. Generated tests | `review_tests` | After `merge_tests`, before any test runs | `generated_tests/SeasonSwitchMergedTest.java` |
+| 2. Refactored code | `review_refactor` | After `refactor_agent`, before the adapted tests run | `java-refactored/src/main/java/cse4392/` and `java-refactored/src/test/java/cse4392/` |
+
+#### Skipping the reviews while developing
+
+Answering the prompts on every test run is slow, so development runs can skip them:
+
+```bash
+AUTO_APPROVE=1 make run
+```
+
+- The test review is recorded in the change log as `auto_approved_no_human`,
+  so an automatic approval cannot be mistaken for a human one.
+- The refactor review is recorded as a plain `approved`. Check the terminal
+  output or the run command to tell the two apart.
+- **Evidence for submission must come from a plain `make run`** with a person
+  reading the files and answering both prompts.
+
+#### How a run can end
+
+| Status | Meaning |
+|---|---|
+| `refactored_saved` | Both phases finished and evidence was saved for each |
+| `awaiting_gap_tests` | Branch coverage is below 100% and the gap-test agent is not implemented yet |
+| `review_exhausted` | The generated tests were rejected the maximum number of times |
+| `merge_failed` | The EP and BVA classes could not be merged after the allowed retries |
+| `test_fix_exhausted` | Original-phase tests still fail after the allowed fix rounds |
+| `refactor_review_exhausted` | The refactoring was rejected the maximum number of times |
+| `refactor_generation_failed` | The refactor agent did not return usable output |
+| `refactor_fix_exhausted` | Refactored tests still fail after the allowed fix rounds |
 
 To independently execute the latest generated suite
 and display JUnit results and JaCoCo branch coverage:
@@ -294,9 +355,19 @@ incomplete coverage, or a build problem.
 The Makefile provides consistent commands for the
 workflow currently implemented.
 
-The project still needs its required human approval
-stages, complete repair/coverage-gap handling, and
-State-pattern refactoring integration.
+Implemented and wired into the workflow:
+
+- Both human review stages (generated tests and refactored code).
+- State-pattern refactoring, test adaptation, and the refactored test run.
+- Recovery from a failed EP/BVA merge and from failing refactored tests.
+
+Still needed:
+
+- Gap-test generation and the repair agent. Until then, any coverage gap
+  ends the run with `awaiting_gap_tests`.
+- Tests for `Room.actionPerformed` and a team decision on `main()`
+  (see `docs/coverage-scope.md`). The original phase currently measures a
+  narrowed scope, and the refactored phase stops below 100%.
 
 Running `make run` does not by itself establish
 completion of the professor's requirements.

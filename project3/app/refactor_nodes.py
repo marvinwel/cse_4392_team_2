@@ -32,9 +32,23 @@ object only, with exactly these keys:
 Requirements:
 - Keep the main class name, package, public method names, parameter lists, and
   observable behavior unchanged.
-- Use a State interface and concrete states for OFF, COOL, and HEAT. Put mode
-  behavior and transitions in those states; do not retain a switch ladder for
-  operating modes.
+- Use a State interface and one concrete state class each for OFF, COOL, and
+  HEAT. Put mode behavior and transitions in those classes. Each goes in its own
+  top-level file (State.java, OffState.java, CoolState.java, HeatState.java).
+  Do not use anonymous or nested classes for the states.
+- The main class must hold its current mode in a field of the State type:
+  "static State state". Redefine the constants OFF, COOL, and HEAT as State
+  objects (for example "static final State OFF = new OffState();"), so existing
+  test code such as "SeasonSwitch.state = SeasonSwitch.COOL" compiles unchanged.
+  Do not keep any int mode field or int mode constants.
+- No switch statement and no if/else chain on the mode anywhere, including
+  Room.actionPerformed: delegate to the current State object. The room
+  temperature step is state behavior too.
+- Tests that set an out-of-range int mode (for example state = -1 or state = 3)
+  cannot compile against a State-typed field. Adapt each of them to set
+  "SeasonSwitch.state = null" and keep its assertions that nothing else changes.
+  The main class must treat a null state as a no-op, as the original switch
+  treated unmatched values. A single null check per method is allowed.
 - Preserve all thresholds, strict comparison behavior, device effects, timer
   effects, messages, and room-temperature behavior.
 - Adapt the approved JUnit suite only as required by the new implementation
@@ -257,6 +271,14 @@ def build_refactor_nodes(
         if not project_dir.is_relative_to(root):
             raise ValueError("refactored_project_dir must remain inside the repository")
         filename = _test_filename(approved_tests, class_name, state)
+        # Remove Java sources left by an earlier revision that this one no longer contains,
+        # so a renamed or dropped class cannot break the build.
+        main_dir = project_dir / Path(*MAIN_SOURCE_DIR.parts)
+        keep = {(project_dir / Path(*PurePosixPath(path).parts)).resolve() for path in files}
+        if main_dir.is_dir():
+            for old_file in main_dir.rglob("*.java"):
+                if old_file.resolve() not in keep:
+                    old_file.unlink()
         _write_project_files(project_dir, files, filename, adapted_tests)
 
         before = state.get("refactored_tests", "")

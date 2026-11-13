@@ -61,6 +61,15 @@ public final class JunitMerger {
             || annotation.getNameAsString().equals("AfterEach")
         );
 }
+
+
+private static boolean isJUnitTestMethod(MethodDeclaration method) {
+    return method.getAnnotations().stream()
+        .anyMatch(annotation ->
+            annotation.getName().getIdentifier().equals("Test")
+        );
+}
+
     private static String uniqueLifecycleName(
         ClassOrInterfaceDeclaration merged,
         String originalName) {
@@ -153,7 +162,7 @@ public final class JunitMerger {
 
                     MethodDeclaration method = member.asMethodDeclaration();
 
-                    if (isLifecycleMethod(method)) {
+                    if (isLifecycleMethod(method) || isJUnitTestMethod(method)) {
 
                         String originalName = method.getNameAsString();
 
