@@ -23,6 +23,7 @@ import difflib
 import json
 import logging
 import operator
+import os
 import re
 import subprocess
 from datetime import datetime
@@ -35,7 +36,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_aws import ChatBedrockConverse
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.types import interrupt
+from langgraph.types import Command, interrupt
 
 try:
     from refactor_nodes import build_refactor_nodes
@@ -59,6 +60,8 @@ load_dotenv(Path(__file__).resolve().parent / ".env")
 
 MAX_REVIEW_REJECTIONS = 3     # per agent (EP / BVA), per round
 MAX_TEST_FIX_ROUNDS = 2       # how many times failed test runs go back for fixing
+MAX_HUMAN_REJECTIONS = 3      # how many times the human reviewer can request changes
+MAX_MERGE_FAILURES = 2        # how many times a failed EP/BVA merge goes back for fixing
 
 GENERATOR_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0"   # Qwen3 Coder 30B A3B: writes the tests
 CLAUDE_MODEL = "us.anthropic.claude-sonnet-4-6"
@@ -133,6 +136,16 @@ class AgentState(TypedDict, total=False):
     test_fix_rounds: int
     workflow_status: str
 
+    # Human review of the merged tests (R1, Ryan)
+    human_approved: bool
+    human_feedback: str
+    human_review_count: int
+    human_rejections: int
+
+    # Merge failure recovery (Ryan)
+    merge_error: str          # empty when the last merge worked
+    merge_failures: int
+
     # Person 5 State-pattern generation, test adaptation, and review gate.
     refactored_files: dict[str, str]
     refactored_tests: str
@@ -176,6 +189,26 @@ Rules:
 - If a field is static, reset it in a @BeforeEach method, because static values
   carry over between tests.
 - If the class starts timers or threads, stop them in an @AfterEach method.
+- SHARED FIXTURE: the EP and BVA classes are merged into ONE class, so both must
+  declare the SAME fixture, character for character. Copy exactly this, with no
+  extra modifiers, comments, fields, @BeforeEach or @AfterEach methods:
+
+    {class_name} ss;
+
+    @BeforeEach
+    void setUp() {{
+        {class_name}.state = {class_name}.OFF;
+        ss = new {class_name}();
+    }}
+
+    @AfterEach
+    void tearDown() {{
+        ss.timer.stop();
+        ss.room.timer.stop();
+        {class_name}.state = {class_name}.OFF;
+    }}
+
+  Put any extra per-test setup inside the test method itself.
 - Besides return values or state, assert observable side effects
   (devices on/off, timers running or stopped).
 - No duplicate tests: each test must use a different input or starting state.
@@ -522,11 +555,36 @@ def merge_tests(state: AgentState) -> dict:
     bv_file.write_text(state["bv_tests"], encoding="utf-8")
 
     log.info("Merging approved EP and BVA test cases and removing duplicates...")
-    subprocess.run(
+    merged_file.unlink(missing_ok=True)   # never let an old merged file be run by mistake
+    proc = subprocess.run(
         ["java", "-jar", str(MERGER_JAR), str(ep_file), str(bv_file),
          str(merged_file), f"{class_name}MergedTest"],
-        check=True,
+        capture_output=True, text=True,
     )
+    if proc.returncode != 0 or not merged_file.exists():
+        # The generated classes could not be combined: send the reason back to both agents.
+        error_lines = [line for line in proc.stderr.splitlines() if "Exception" in line]
+        error = (error_lines[0] if error_lines else proc.stderr.strip()[-500:]) or "unknown merger error"
+        failures = state.get("merge_failures", 0) + 1
+        log.warning("Merge failed (%d/%d): %s", failures, MAX_MERGE_FAILURES, error)
+        request = ("The EP and BVA test classes could NOT be merged into one class:\n"
+                   f"{error}\n"
+                   "Use exactly the required SHARED FIXTURE, declare no other fields or "
+                   "lifecycle methods, and keep every @Test method name unique.")
+        return {
+            "merge_error": error,
+            "merge_failures": failures,
+            "ep_feedback": request, "ep_approved": False, "ep_rejections": 0,
+            "bv_feedback": request, "bv_approved": False, "bv_rejections": 0,
+            "change_log": [{
+                "time": datetime.now().isoformat(timespec="seconds"),
+                "phase": state.get("phase"),
+                "node": "merge_tests",
+                "action": "merge_failed",
+                "attempt": failures,
+                "error": error,
+            }],
+        }
     merged = merged_file.read_text(encoding="utf-8")
     ep_count = state["ep_tests"].count("@Test")
     bv_count = state["bv_tests"].count("@Test")
@@ -536,6 +594,7 @@ def merge_tests(state: AgentState) -> dict:
 
     return {
         "merged_tests": merged,
+        "merge_error": "",
         "change_log": [{
             "time": datetime.now().isoformat(timespec="seconds"),
             "phase": state.get("phase"),
@@ -548,6 +607,54 @@ def merge_tests(state: AgentState) -> dict:
             "file": str(merged_file),
         }],
     }
+
+
+# ---- Human review of the merged tests (human in the loop, assignment step 4) ----
+def review_tests(state: AgentState) -> dict:
+    """Pause the graph and ask a person to approve the merged tests or request changes."""
+    count = state.get("human_review_count", 0) + 1
+    decision = interrupt({
+        "node": "review_tests",
+        "review_number": count,
+        "test_count": state["merged_tests"].count("@Test"),
+        "file": str(OUTPUT_DIR / f"{state['class_name']}MergedTest.java"),
+        "prior_feedback": state.get("human_feedback", ""),
+    })
+    if not isinstance(decision, dict) or not isinstance(decision.get("approved"), bool):
+        raise ValueError("Resume review_tests with {'approved': bool, 'feedback': str}")
+
+    approved = decision["approved"]
+    feedback = str(decision.get("feedback", "")).strip()
+    rejections = state.get("human_rejections", 0) + (0 if approved else 1)
+    log.info("[HUMAN] Approved: %s | review #%d | change requests: %d/%d",
+             approved, count, rejections, MAX_HUMAN_REJECTIONS)
+    if feedback:
+        log.info("[HUMAN] Feedback: %s", feedback)
+
+    update = {
+        "human_approved": approved,
+        "human_feedback": "" if approved else feedback,
+        "human_review_count": count,
+        "human_rejections": rejections,
+        "change_log": [{
+            "time": datetime.now().isoformat(timespec="seconds"),
+            "phase": state.get("phase"),
+            "node": "review_tests",
+            "action": ("auto_approved_no_human" if decision.get("auto")
+                       else "human_approved" if approved else "human_requested_changes"),
+            "review_number": count,
+            "feedback": feedback,
+        }],
+    }
+    if not approved:
+        # Send the request to both generators, the same way review_failures does.
+        request = ("A HUMAN REVIEWER requested these changes to the merged tests. "
+                   f"Apply every change that concerns YOUR tests:\n{feedback}")
+        update.update({
+            "ep_feedback": request, "ep_approved": False, "ep_rejections": 0,
+            "bv_feedback": request, "bv_approved": False, "bv_rejections": 0,
+        })
+    return update
 
 
 @traceable(name="Nova review test failures")
@@ -603,7 +710,10 @@ def generate_gap_tests(state: AgentState) -> dict:
 
 
 def escalate_review(state: AgentState) -> dict:
-    if state.get("test_fix_rounds", 0) > MAX_TEST_FIX_ROUNDS:
+    if state.get("merge_error") and state.get("merge_failures", 0) > MAX_MERGE_FAILURES:
+        log.error("Stopped: the EP and BVA tests could not be merged.")
+        status = "merge_failed"
+    elif state.get("test_fix_rounds", 0) > MAX_TEST_FIX_ROUNDS:
         log.error("Stopped: tests still fail after the maximum fix rounds.")
         status = "test_fix_exhausted"
     else:
@@ -659,6 +769,24 @@ def route_bv_review(state: AgentState) -> str:
     if state.get("bv_rejections", 0) >= MAX_REVIEW_REJECTIONS:
         return "max_attempts"
     return "regenerate"
+
+
+# After merge_tests: merged -> human review, failed -> both agents fix their classes
+def route_merge(state: AgentState):
+    if not state.get("merge_error"):
+        return "merged"
+    if state.get("merge_failures", 0) > MAX_MERGE_FAILURES:
+        return "max_attempts"
+    return ["ep_agent", "bva_agent"]
+
+
+# R1 (human): approved -> run the tests, changes requested -> both agents revise
+def route_test_review(state: AgentState):
+    if state.get("human_approved"):
+        return "approved"
+    if state.get("human_rejections", 0) >= MAX_HUMAN_REJECTIONS:
+        return "max_attempts"
+    return ["ep_agent", "bva_agent"]
 
 
 def route_after_failures(state: AgentState):
@@ -719,6 +847,7 @@ def build_graph():
     graph.add_node("ep_done", ep_done)
     graph.add_node("bva_done", bva_done)
     graph.add_node("merge_tests", merge_tests)
+    graph.add_node("review_tests", review_tests)
     graph.add_node("review_failures", review_failures)
     graph.add_node("escalate_review", escalate_review)
     # >>> PERSON 3 (Joseph) BEGIN: nodes
@@ -746,7 +875,17 @@ def build_graph():
 
     # Merge only after BOTH branches are approved
     graph.add_edge(["ep_done", "bva_done"], "merge_tests")
-    graph.add_edge("merge_tests", "run_tests")
+    # A failed merge goes back to both agents instead of stopping the run
+    graph.add_conditional_edges("merge_tests", route_merge, {
+        "merged": "review_tests", "ep_agent": "ep_agent", "bva_agent": "bva_agent",
+        "max_attempts": "escalate_review",
+    })
+
+    # R1 (human): a person approves the merged tests before they run
+    graph.add_conditional_edges("review_tests", route_test_review, {
+        "approved": "run_tests", "ep_agent": "ep_agent", "bva_agent": "bva_agent",
+        "max_attempts": "escalate_review",
+    })
 
     # >>> PERSON 3 (Joseph) BEGIN: edges
     # R2: passed -> coverage, failed -> Nova reviews the failures
@@ -778,6 +917,31 @@ def build_graph():
 # ===========================================================================
 # 7. Run
 # ===========================================================================
+def ask_human(payload: dict) -> dict:
+    """Show a paused human review on the terminal; return {'approved': bool, 'feedback': str}."""
+    print(f"\n=== HUMAN REVIEW REQUIRED: {payload.get('node')} "
+          f"(review #{payload.get('review_number')}) ===")
+    if payload.get("file"):
+        print(f"Open and read: {payload['file']} ({payload.get('test_count')} tests)")
+    for path in (payload.get("files") or {}):
+        print(f"Open and read: java-refactored/{path}")
+    for item in payload.get("review_checklist") or []:
+        print(f"  [ ] {item}")
+    if payload.get("prior_feedback"):
+        print(f"Your previous feedback: {payload['prior_feedback']}")
+    while True:
+        answer = input("Approve? [y = approve / n = request changes]: ").strip().lower()
+        if answer in ("y", "yes"):
+            return {"approved": True, "feedback": ""}
+        if answer in ("n", "no"):
+            feedback = input("What must change? ").strip()
+            if feedback:
+                return {"approved": False, "feedback": feedback}
+            print("Feedback is required to request changes.")
+        else:
+            print("Please type y or n.")
+
+
 if __name__ == "__main__":
     app = build_graph()
     config = {"configurable": {"thread_id": "assignment3-001"}, "recursion_limit": 100}
@@ -798,6 +962,19 @@ if __name__ == "__main__":
         },
         config=config,
     )
+    # Human in the loop: the graph pauses at interrupt(); ask on the terminal, then resume.
+    while True:
+        pending = [i for task in app.get_state(config).tasks for i in task.interrupts]
+        if not pending:
+            break
+        if os.environ.get("AUTO_APPROVE") == "1":
+            # Testing shortcut only. Final evidence runs must use the real human review.
+            print(f"AUTO_APPROVE=1: skipping human review at {pending[0].value.get('node')}")
+            answer = {"approved": True, "feedback": "", "auto": True}
+        else:
+            answer = ask_human(pending[0].value)
+        result = app.invoke(Command(resume=answer), config=config)
+
     print("\n=== Workflow Completed ===")
     print("Status:", result.get("workflow_status", "finished"))
     print(f"EP reviews:  {result.get('ep_review_count', 0)} (approved: {result.get('ep_approved')})")
