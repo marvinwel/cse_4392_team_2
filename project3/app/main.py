@@ -35,6 +35,12 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_aws import ChatBedrockConverse
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import interrupt
+
+try:
+    from refactor_nodes import build_refactor_nodes
+except ImportError:  # when run as `python -m app.main`
+    from app.refactor_nodes import build_refactor_nodes
 
 # >>> PERSON 3 (Joseph) BEGIN: imports
 # Maven/JUnit/JaCoCo execution, coverage and evidence nodes (app/testing_nodes.py)
@@ -92,6 +98,11 @@ review_model = ChatBedrockConverse(
     max_tokens=REVIEW_MAX_TOKENS,
 )
 
+# Person 5 nodes. Ryan owns adding these callables to the graph and wiring R4.
+refactor_agent, review_refactor = build_refactor_nodes(
+    generator_model, BASE_DIR, interrupt,
+)
+
 
 # ===========================================================================
 # 2. State
@@ -121,6 +132,16 @@ class AgentState(TypedDict, total=False):
     merged_tests: str
     test_fix_rounds: int
     workflow_status: str
+
+    # Person 5 State-pattern generation, test adaptation, and review gate.
+    refactored_files: dict[str, str]
+    refactored_tests: str
+    refactor_explanation: str
+    refactor_feedback: str
+    refactor_approved: bool
+    refactor_review_count: int
+    refactor_revision_count: int
+    refactor_status: str
 
     # Change log: every node adds its entries; operator.add joins the lists,
     # so the parallel EP and BVA nodes can both add entries in the same step.
