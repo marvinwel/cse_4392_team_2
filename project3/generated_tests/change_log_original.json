@@ -1,0 +1,316 @@
+{
+  "class_name": "SeasonSwitch",
+  "phase": "original",
+  "workflow_status": "original_saved",
+  "ep_review_count": 1,
+  "bv_review_count": 1,
+  "test_fix_rounds": 0,
+  "final_test_report": {
+    "reports_found": true,
+    "report_files": [
+      "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/surefire-reports/TEST-cse4392.SeasonSwitchMergedTest.xml"
+    ],
+    "total": 43,
+    "passed": 43,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "time_s": 0.097,
+    "all_passed": true,
+    "failures": [],
+    "tests": [
+      {
+        "test": "SeasonSwitchMergedTest.testActionPerformedDelegatesToTimerOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_coolState_tempBelowCoolTemp_ACTurnsOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testOffFromCool",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testOffFromHeat",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.heat_fromStateOFF_startsHeaterAndSetsHeatState",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testHeatFromCool",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testHeatFromHeat",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_stateThree_noEffect",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_stateOFF_isNoOp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_coolState_tempAboveCoolTemp_ACTurnsOn",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testTimerOffCoolRoomTempEqualsCoolTemp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.heat_fromStateMinusOne_noEffect",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.heat_fromStateHEAT_isNoOp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.off_fromStateHEAT_stopsHeaterAndTimer",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testCoolFromOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.heat_fromStateThree_noEffect",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testTimerOffHeatRoomTempBelowHeatTemp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_heatState_tempAboveHeatTemp_HeaterTurnsOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.off_fromStateMinusOne_noEffect",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.heatThenOff_timerStops",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.off_fromStateThree_noEffect",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testTimerOffHeatRoomTempEqualsHeatTemp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testCoolFromCool",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testCoolFromHeat",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testTimerOffCoolRoomTempAboveCoolTemp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.coolThenOff_timerStops",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.off_fromStateOFF_isNoOp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.cool_fromStateMinusOne_noEffect",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_heatState_tempEqualHeatTemp_HeaterTurnsOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_coolState_tempEqualCoolTemp_ACTurnsOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_heatState_tempBelowHeatTemp_HeaterTurnsOn",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testTimerOffWhenStateOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testHeatFromOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.cool_fromStateThree_noEffect",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.off_fromStateCOOL_stopsACAndTimer",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testTimerOffCoolRoomTempAtOrBelowCoolTemp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.timerOff_stateMinusOne_noEffect",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.cool_fromStateCOOL_isNoOp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.cool_fromStateOFF_startsACAndSetsCoolState",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.heat_fromStateCOOL_turnsACOffAndStartsHeater",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testTimerOffHeatRoomTempAtOrAboveHeatTemp",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.cool_fromStateHEAT_turnsHeaterOffAndStartsAC",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testOffFromOff",
+        "status": "passed"
+      }
+    ],
+    "phase": "original",
+    "test_class": "SeasonSwitchMergedTest",
+    "test_file": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/src/test/java/cse4392/SeasonSwitchMergedTest.java",
+    "build": {
+      "command": [
+        "/Users/marvinwellington/tools/apache-maven/bin/mvn",
+        "-B",
+        "-ntp",
+        "-Dmaven.test.failure.ignore=true",
+        "-Djacoco.haltOnFailure=false",
+        "-Dsurefire.failIfNoSpecifiedTests=false",
+        "-Dtest=cse4392.SeasonSwitchMergedTest",
+        "clean",
+        "verify"
+      ],
+      "cwd": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_s": 4.89,
+      "compile_error": false,
+      "log_path": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/agent-maven.log"
+    },
+    "build_output_tail": ""
+  },
+  "final_coverage": {
+    "report_found": true,
+    "xml_path": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/site/jacoco/jacoco.xml",
+    "scope": {
+      "include_classes": [
+        "SeasonSwitch"
+      ],
+      "exclude_methods": [
+        "SeasonSwitch.main"
+      ]
+    },
+    "excluded_methods": [
+      "SeasonSwitch.main"
+    ],
+    "branch": {
+      "covered": 20,
+      "missed": 0,
+      "total": 20,
+      "percent": 100.0
+    },
+    "line": {
+      "covered": 62,
+      "missed": 0,
+      "total": 62,
+      "percent": 100.0
+    },
+    "fully_covered": true,
+    "missed_branches": [],
+    "classes": {
+      "SeasonSwitch": {
+        "source_file": "SeasonSwitch.java",
+        "branch": {
+          "missed": 0,
+          "covered": 20,
+          "total": 20
+        },
+        "line": {
+          "missed": 0,
+          "covered": 62,
+          "total": 62
+        }
+      }
+    },
+    "phase": "original",
+    "html_report": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/site/jacoco/index.html"
+  },
+  "changes": [
+    {
+      "time": "2026-11-11T16:43:42",
+      "phase": "original",
+      "node": "bva_agent",
+      "action": "generated_tests",
+      "reason": "initial generation",
+      "test_count": 26,
+      "lines_added": 355,
+      "lines_removed": 0,
+      "diff": ""
+    },
+    {
+      "time": "2026-11-11T16:43:34",
+      "phase": "original",
+      "node": "ep_agent",
+      "action": "generated_tests",
+      "reason": "initial generation",
+      "test_count": 17,
+      "lines_added": 227,
+      "lines_removed": 0,
+      "diff": ""
+    },
+    {
+      "time": "2026-11-11T16:43:43",
+      "phase": "original",
+      "node": "review_bva",
+      "action": "approved",
+      "review_number": 1,
+      "feedback": ""
+    },
+    {
+      "time": "2026-11-11T16:43:43",
+      "phase": "original",
+      "node": "review_ep",
+      "action": "approved",
+      "review_number": 1,
+      "feedback": ""
+    },
+    {
+      "time": "2026-11-11T16:43:43",
+      "phase": "original",
+      "node": "merge_tests",
+      "action": "merged_tests",
+      "ep_tests": 17,
+      "bv_tests": 26,
+      "merged_tests": 43,
+      "duplicates_removed": 0,
+      "file": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/generated_tests/SeasonSwitchMergedTest.java"
+    }
+  ]
+}

@@ -33,7 +33,7 @@ import java.util.concurrent.CountDownLatch;
       }
 <span class="fc" id="L34">   }</span>
    public void heat() {
-<span class="pc bpc" id="L36" title="1 of 4 branches missed.">      switch (state) {</span>
+<span class="fc bfc" id="L36" title="All 4 branches covered.">      switch (state) {</span>
          case OFF:
 <span class="fc" id="L38">            heater.on();</span>
 <span class="fc" id="L39">            timer.start();</span>
@@ -51,7 +51,7 @@ import java.util.concurrent.CountDownLatch;
       }
 <span class="fc" id="L52">   }</span>
    public void off() {
-<span class="pc bpc" id="L54" title="1 of 4 branches missed.">      switch (state) {</span>
+<span class="fc bfc" id="L54" title="All 4 branches covered.">      switch (state) {</span>
 <span class="fc" id="L55">         case OFF: break;</span>
          case HEAT:
 <span class="fc" id="L57">            heater.off();</span>
@@ -68,10 +68,10 @@ import java.util.concurrent.CountDownLatch;
       }
 <span class="fc" id="L69">   }</span>
    public void actionPerformed(ActionEvent e) {
-<span class="nc" id="L71">      timerOff();</span>
-<span class="nc" id="L72">   }</span>
+<span class="fc" id="L71">      timerOff();</span>
+<span class="fc" id="L72">   }</span>
    public void timerOff() {
-<span class="pc bpc" id="L74" title="1 of 4 branches missed.">      switch (state) {</span>
+<span class="fc bfc" id="L74" title="All 4 branches covered.">      switch (state) {</span>
 <span class="fc" id="L75">         case OFF: break;</span>
          case COOL:
 <span class="fc bfc" id="L77" title="All 2 branches covered.">            if (room.temp&gt;coolTemp) {</span>

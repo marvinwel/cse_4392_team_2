@@ -1,6 +1,6 @@
-$ /opt/homebrew/bin/mvn -B -ntp -Dmaven.test.failure.ignore=true -Djacoco.haltOnFailure=false -Dsurefire.failIfNoSpecifiedTests=false -Dtest=cse4392.SeasonSwitchMergedTest clean verify
-(cwd: /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original)
-exit_code=0 timed_out=False duration_s=3.48
+$ /Users/marvinwellington/tools/apache-maven/bin/mvn -B -ntp -Dmaven.test.failure.ignore=true -Djacoco.haltOnFailure=false -Dsurefire.failIfNoSpecifiedTests=false -Dtest=cse4392.SeasonSwitchMergedTest clean verify
+(cwd: /Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original)
+exit_code=0 timed_out=False duration_s=4.89
 
 ===== STDOUT =====
 [INFO] Scanning for projects...
@@ -11,20 +11,20 @@ exit_code=0 timed_out=False duration_s=3.48
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
 [INFO] --- clean:3.2.0:clean (default-clean) @ seasonswitch-original ---
-[INFO] Deleting /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target
+[INFO] Deleting /Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target
 [INFO] 
 [INFO] --- jacoco:0.8.12:prepare-agent (prepare-agent) @ seasonswitch-original ---
-[INFO] argLine set to -javaagent:/Users/joseph/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/jacoco.exec
+[INFO] argLine set to -javaagent:/Users/marvinwellington/.m2/repository/org/jacoco/org.jacoco.agent/0.8.12/org.jacoco.agent-0.8.12-runtime.jar=destfile=/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/jacoco.exec
 [INFO] 
-[INFO] --- resources:3.3.1:resources (default-resources) @ seasonswitch-original ---
-[INFO] skip non existing resourceDirectory /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/src/main/resources
+[INFO] --- resources:3.4.0:resources (default-resources) @ seasonswitch-original ---
+[INFO] skip non existing resourceDirectory /Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/src/main/resources
 [INFO] 
 [INFO] --- compiler:3.13.0:compile (default-compile) @ seasonswitch-original ---
 [INFO] Recompiling the module because of changed source code.
 [INFO] Compiling 1 source file with javac [debug release 17] to target/classes
 [INFO] 
-[INFO] --- resources:3.3.1:testResources (default-testResources) @ seasonswitch-original ---
-[INFO] skip non existing resourceDirectory /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/src/test/resources
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ seasonswitch-original ---
+[INFO] skip non existing resourceDirectory /Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/src/test/resources
 [INFO] 
 [INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ seasonswitch-original ---
 [INFO] Recompiling the module because of changed dependency.
@@ -37,149 +37,60 @@ exit_code=0 timed_out=False duration_s=3.48
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running cse4392.SeasonSwitchMergedTest
+Cooling started. RmTemp=72
+Cooling stopped. RmTemp=67
 Cooling stopped. RmTemp=70
 Heating stopped. RmTemp=70
 Heating started. RmTemp=70
 Heating started. RmTemp=70
-Heating stopped. RmTemp=78
-Heating started. RmTemp=76
-Cooling started. RmTemp=70
 Cooling started. RmTemp=69
+Cooling stopped. RmTemp=68
+Heating stopped. RmTemp=70
+Cooling started. RmTemp=70
+Heating started. RmTemp=74
+Heating stopped. RmTemp=78
 Heating started. RmTemp=70
-Cooling stopped. RmTemp=67
+Heating stopped. RmTemp=70
 Heating stopped. RmTemp=77
 Cooling started. RmTemp=70
-Cooling stopped. RmTemp=68
-Heating stopped. RmTemp=100
 Cooling started. RmTemp=70
-Cooling stopped. RmTemp=65
+Cooling started. RmTemp=70
 Cooling stopped. RmTemp=70
-Heating stopped. RmTemp=70
+Heating stopped. RmTemp=77
+Cooling stopped. RmTemp=68
+Heating started. RmTemp=76
 Heating started. RmTemp=70
-Heating started. RmTemp=70
+Cooling stopped. RmTemp=70
+Cooling stopped. RmTemp=65
 Cooling started. RmTemp=70
-Cooling stopped. RmTemp=0
+Heating started. RmTemp=70
 Heating stopped. RmTemp=80
-Cooling started. RmTemp=75
-[ERROR] Tests run: 32, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 0.134 s <<< FAILURE! -- in cse4392.SeasonSwitchMergedTest
-[ERROR] cse4392.SeasonSwitchMergedTest.testHeatFromCool -- Time elapsed: 0.005 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)
-	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)
-	at cse4392.SeasonSwitchMergedTest.testHeatFromCool(SeasonSwitchMergedTest.java:106)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-
-[ERROR] cse4392.SeasonSwitchMergedTest.testTimerOffWhenRoomTempGreaterThanCoolTemp -- Time elapsed: 0.001 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <false> but was: <true>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertFalse.failNotFalse(AssertFalse.java:63)
-	at org.junit.jupiter.api.AssertFalse.assertFalse(AssertFalse.java:36)
-	at org.junit.jupiter.api.AssertFalse.assertFalse(AssertFalse.java:31)
-	at org.junit.jupiter.api.Assertions.assertFalse(Assertions.java:231)
-	at cse4392.SeasonSwitchMergedTest.testTimerOffWhenRoomTempGreaterThanCoolTemp(SeasonSwitchMergedTest.java:362)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-
-[ERROR] cse4392.SeasonSwitchMergedTest.testTimerOffWhenRoomTempLessThanCoolTemp -- Time elapsed: 0.001 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)
-	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)
-	at cse4392.SeasonSwitchMergedTest.testTimerOffWhenRoomTempLessThanCoolTemp(SeasonSwitchMergedTest.java:353)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-
-[ERROR] cse4392.SeasonSwitchMergedTest.testRoomTempAboveValidRange -- Time elapsed: 0.001 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)
-	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)
-	at cse4392.SeasonSwitchMergedTest.testRoomTempAboveValidRange(SeasonSwitchMergedTest.java:407)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-
-[ERROR] cse4392.SeasonSwitchMergedTest.testCoolFromHeat -- Time elapsed: 0.001 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)
-	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)
-	at cse4392.SeasonSwitchMergedTest.testCoolFromHeat(SeasonSwitchMergedTest.java:67)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-
-[ERROR] cse4392.SeasonSwitchMergedTest.testRoomTempBelowValidRange -- Time elapsed: 0.001 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
-	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:31)
-	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:183)
-	at cse4392.SeasonSwitchMergedTest.testRoomTempBelowValidRange(SeasonSwitchMergedTest.java:398)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
-
+Cooling started. RmTemp=70
+[INFO] Tests run: 43, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.138 s -- in cse4392.SeasonSwitchMergedTest
 [INFO] 
 [INFO] Results:
 [INFO] 
-[ERROR] Failures: 
-[ERROR]   SeasonSwitchMergedTest.testCoolFromHeat:67 expected: <true> but was: <false>
-[ERROR]   SeasonSwitchMergedTest.testHeatFromCool:106 expected: <true> but was: <false>
-[ERROR]   SeasonSwitchMergedTest.testRoomTempAboveValidRange:407 expected: <true> but was: <false>
-[ERROR]   SeasonSwitchMergedTest.testRoomTempBelowValidRange:398 expected: <true> but was: <false>
-[ERROR]   SeasonSwitchMergedTest.testTimerOffWhenRoomTempGreaterThanCoolTemp:362 expected: <false> but was: <true>
-[ERROR]   SeasonSwitchMergedTest.testTimerOffWhenRoomTempLessThanCoolTemp:353 expected: <true> but was: <false>
+[INFO] Tests run: 43, Failures: 0, Errors: 0, Skipped: 0
 [INFO] 
-[ERROR] Tests run: 32, Failures: 6, Errors: 0, Skipped: 0
 [INFO] 
-[ERROR] There are test failures.
-
-See /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/surefire-reports for the individual test results.
-See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
-[INFO] 
-[INFO] --- jar:3.4.1:jar (default-jar) @ seasonswitch-original ---
-[INFO] Building jar: /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/seasonswitch-original-1.0.0.jar
+[INFO] --- jar:3.5.0:jar (default-jar) @ seasonswitch-original ---
+[INFO] Building jar: /Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/seasonswitch-original-1.0.0.jar
 [INFO] 
 [INFO] --- jacoco:0.8.12:report (report) @ seasonswitch-original ---
-[INFO] Loading execution data file /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/jacoco.exec
+[INFO] Loading execution data file /Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/jacoco.exec
 [INFO] Analyzed bundle 'seasonswitch-original' with 4 classes
 [INFO] 
 [INFO] --- jacoco:0.8.12:check (check) @ seasonswitch-original ---
-[INFO] Loading execution data file /Users/joseph/school/Fall_26/Special-topics/cse_4392_team_2/project3/java-original/target/jacoco.exec
+[INFO] Loading execution data file /Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/jacoco.exec
 [INFO] Analyzed bundle 'seasonswitch-original' with 4 classes
-[WARNING] Rule violated for bundle seasonswitch-original: branches covered ratio is 0.47, but expected minimum is 1.00
+[WARNING] Rule violated for bundle seasonswitch-original: branches covered ratio is 0.55, but expected minimum is 1.00
 [WARNING] Coverage checks have not been met. See log for details.
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.896 s
-[INFO] Finished at: 2026-11-11T11:23:36-06:00
+[INFO] Total time:  2.754 s
+[INFO] Finished at: 2026-11-11T16:43:48-06:00
 [INFO] ------------------------------------------------------------------------
 
 ===== STDERR =====
-WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
-WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/opt/homebrew/Cellar/maven/3.9.11/libexec/lib/guice-5.1.0-classes.jar)
-WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
-WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
 

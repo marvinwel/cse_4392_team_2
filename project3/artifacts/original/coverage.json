@@ -1,0 +1,46 @@
+{
+  "report_found": true,
+  "xml_path": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/site/jacoco/jacoco.xml",
+  "scope": {
+    "include_classes": [
+      "SeasonSwitch"
+    ],
+    "exclude_methods": [
+      "SeasonSwitch.main"
+    ]
+  },
+  "excluded_methods": [
+    "SeasonSwitch.main"
+  ],
+  "branch": {
+    "covered": 20,
+    "missed": 0,
+    "total": 20,
+    "percent": 100.0
+  },
+  "line": {
+    "covered": 62,
+    "missed": 0,
+    "total": 62,
+    "percent": 100.0
+  },
+  "fully_covered": true,
+  "missed_branches": [],
+  "classes": {
+    "SeasonSwitch": {
+      "source_file": "SeasonSwitch.java",
+      "branch": {
+        "missed": 0,
+        "covered": 20,
+        "total": 20
+      },
+      "line": {
+        "missed": 0,
+        "covered": 62,
+        "total": 62
+      }
+    }
+  },
+  "phase": "original",
+  "html_report": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/site/jacoco/index.html"
+}
