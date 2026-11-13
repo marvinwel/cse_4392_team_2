@@ -28,11 +28,17 @@ objects, one top-level file per state class, no switch or if/else chain on the m
 (including `Room.actionPerformed`), and out-of-range-mode tests adapted to a `null`
 state that the main class treats as a no-op.
 
-**Result:** _fill in after the run: files produced, tests passed/total, branch coverage,
-whether any switch or int mode remains._
+**Result (run through the agent system, Claude Sonnet on Bedrock):**
+- 51/51 adapted tests passed on the refactored code.
+- Five files: `State.java`, `OffState.java`, `CoolState.java`, `HeatState.java`, `SeasonSwitch.java`.
+- `static State state`, with OFF/COOL/HEAT as State objects. No int mode and no switch remain.
+- `Room.actionPerformed` delegates to `state.roomTick(...)`.
+- Branch coverage 12/18 (main() excluded). All 6 missed branches are room-tick code
+  (`Room.actionPerformed`, `CoolState.roomTick`, `HeatState.roomTick`), which no test calls yet.
 
-**Verdict:** _satisfactory / not satisfactory, and why._
+**Verdict:** satisfactory as a State-pattern design. Coverage is not yet 100%; that
+needs Room tests, not a prompt change.
 
 ## Final prompt
 
-_State which variation is used in the submitted agent system._
+Variation 2 is the prompt used in the submitted agent system.
