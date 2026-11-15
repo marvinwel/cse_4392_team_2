@@ -11,8 +11,9 @@ EP and BVA tests are each reviewed on their own before they are merged.
                          ^-------- rejected ----+                                             +-- review_failures
                                                                                                  (Nova explains the failures,
                                                                                                   both agents regenerate)
-    Too many rejections or failed test runs -> escalate_review
-    Every ending (save_results / escalate_review / generate_gap_tests) -> save_change_log -> END
+    Failed test run -> repair_agent -> rerun (or human review of changed tests)
+    Missed JaCoCo branches -> generate_gap_tests -> human review -> rerun
+    Exhausted/invalid proposals -> escalate_review -> save_change_log -> END
 
 Logging:
     generated_tests/agent_run.log           - everything shown during the run
@@ -51,6 +52,12 @@ try:
 except ImportError:  # when run as `python -m app.main`
     from app.testing_nodes import run_tests, check_coverage, save_results, route_test_results
 # <<< PERSON 3 (Joseph) END: imports
+
+# Person 4 (Sarthak): bounded failure repairs and measured coverage-gap tests.
+try:
+    from repair_nodes import build_repair_nodes, route_after_repair, route_after_gap
+except ImportError:  # when run as `python -m app.main`
+    from app.repair_nodes import build_repair_nodes, route_after_repair, route_after_gap
 
 
 # ===========================================================================
@@ -124,6 +131,7 @@ refactor_model = ChatBedrockConverse(
 refactor_agent, review_refactor = build_refactor_nodes(
     refactor_model, BASE_DIR, interrupt,
 )
+repair_agent, generate_gap_tests = build_repair_nodes(generator_model, BASE_DIR)
 
 
 # ===========================================================================
@@ -192,6 +200,17 @@ class AgentState(TypedDict, total=False):
     coverage_scope: dict    # optional override of the measured scope
     saved_artifacts: dict   # written by save_results: {"original": path, ...}
     # <<< PERSON 3 (Joseph) END: state keys
+
+    # Person 4: phase-scoped bounded loops and reviewed JUnit additions.
+    repair_attempts_by_phase: dict
+    coverage_rounds_by_phase: dict
+    repair_action: str
+    repair_error: str
+    gap_action: str
+    gap_error: str
+    gap_tests: list
+    review_context: str     # "repair" or "gap" for a proposed change needing approval
+    pre_review_tests: str   # last approved suite; restored on human rejection
 
 
 # ===========================================================================
@@ -637,12 +656,17 @@ def merge_tests(state: AgentState) -> dict:
 def review_tests(state: AgentState) -> dict:
     """Pause the graph and ask a person to approve the merged tests or request changes."""
     count = state.get("human_review_count", 0) + 1
+    recent_changes = state.get("change_log") or []
+    last_change = recent_changes[-1] if recent_changes else {}
+    pending = state.get("review_context") in ("repair", "gap")
     decision = interrupt({
         "node": "review_tests",
         "review_number": count,
         "test_count": state["merged_tests"].count("@Test"),
         "file": str(OUTPUT_DIR / f"{state['class_name']}MergedTest.java"),
         "prior_feedback": state.get("human_feedback", ""),
+        "proposed_diff": last_change.get("diff", "") if pending else "",
+        "review_context": state.get("review_context", ""),
     })
     if not isinstance(decision, dict) or not isinstance(decision.get("approved"), bool):
         raise ValueError("Resume review_tests with {'approved': bool, 'feedback': str}")
@@ -660,6 +684,8 @@ def review_tests(state: AgentState) -> dict:
         "human_feedback": "" if approved else feedback,
         "human_review_count": count,
         "human_rejections": rejections,
+        "review_context": "" if approved else state.get("review_context", ""),
+        "pre_review_tests": "" if approved else state.get("pre_review_tests", ""),
         "change_log": [{
             "time": datetime.now().isoformat(timespec="seconds"),
             "phase": state.get("phase"),
@@ -671,13 +697,18 @@ def review_tests(state: AgentState) -> dict:
         }],
     }
     if not approved:
-        # Send the request to both generators, the same way review_failures does.
-        request = ("A HUMAN REVIEWER requested these changes to the merged tests. "
-                   f"Apply every change that concerns YOUR tests:\n{feedback}")
-        update.update({
-            "ep_feedback": request, "ep_approved": False, "ep_rejections": 0,
-            "bv_feedback": request, "bv_approved": False, "bv_rejections": 0,
-        })
+        if pending:
+            # The candidate was never approved or written to Maven. Restore the
+            # last approved tests before asking Person 4's node for a revision.
+            update["merged_tests"] = state["pre_review_tests"]
+        else:
+            # Standard first-stage human review is still owned by Marvin/Ryan.
+            request = ("A HUMAN REVIEWER requested these changes to the merged tests. "
+                       f"Apply every change that concerns YOUR tests:\n{feedback}")
+            update.update({
+                "ep_feedback": request, "ep_approved": False, "ep_rejections": 0,
+                "bv_feedback": request, "bv_approved": False, "bv_rejections": 0,
+            })
     return update
 
 
@@ -779,18 +810,12 @@ def refactor_failures(state: AgentState) -> dict:
     }
 
 
-# ------------------------------------------------------------
-# Node 09: Generate missing-branch tests
-# Placeholder for Sarthak's implementation
-# ------------------------------------------------------------
-def generate_gap_tests(state: AgentState) -> dict:
-    # TODO: Implement generation of tests for missed branches, then review, run and recheck coverage
-    log.warning("Coverage gap found: generate_gap_tests is not implemented yet.")
-    return {"workflow_status": "awaiting_gap_tests"}
-
-
 def escalate_review(state: AgentState) -> dict:
-    if state.get("refactor_status") == "refactor_review_exhausted":
+    if state.get("workflow_status") in ("repair_exhausted", "repair_blocked",
+                                        "gap_exhausted", "gap_blocked"):
+        status = state["workflow_status"]
+        log.error("Stopped: %s: %s", status, state.get("repair_error") or state.get("gap_error", ""))
+    elif state.get("refactor_status") == "refactor_review_exhausted":
         log.error("Stopped: the refactoring was rejected the maximum number of times.")
         status = "refactor_review_exhausted"
     elif state.get("refactor_error"):
@@ -875,6 +900,10 @@ def route_test_review(state: AgentState):
         return "approved"
     if state.get("human_rejections", 0) >= MAX_HUMAN_REJECTIONS:
         return "max_attempts"
+    if state.get("review_context") == "repair":
+        return "retry_repair"
+    if state.get("review_context") == "gap":
+        return "retry_gap"
     return ["ep_agent", "bva_agent"]
 
 
@@ -885,12 +914,10 @@ def route_after_failures(state: AgentState):
     return ["ep_agent", "bva_agent"]
 
 
-# R2 by phase: a failed refactored run goes to the refactor agent, not the EP/BVA agents
+# R2: Sarthak's single repair node handles both original and refactored failures.
 def route_tests_by_phase(state: AgentState) -> str:
-    result = route_test_results(state)
-    if result == "failed" and state.get("phase") == "refactored":
-        return "refactor_failed"
-    return result
+    # Person 4's single repair node handles failures in both phases.
+    return route_test_results(state)
 
 
 def route_refactor_failures(state: AgentState) -> str:
@@ -980,8 +1007,9 @@ def build_graph():
     graph.add_node("bva_done", bva_done)
     graph.add_node("merge_tests", merge_tests)
     graph.add_node("review_tests", review_tests)
-    graph.add_node("review_failures", review_failures)
+    graph.add_node("review_failures", review_failures)  # legacy fallback; not routed by R2
     graph.add_node("escalate_review", escalate_review)
+    graph.add_node("repair_agent", repair_agent)
     # >>> PERSON 3 (Joseph) BEGIN: nodes
     graph.add_node("run_tests", run_tests)
     graph.add_node("check_coverage", check_coverage)
@@ -1019,14 +1047,17 @@ def build_graph():
     # R1 (human): a person approves the merged tests before they run
     graph.add_conditional_edges("review_tests", route_test_review, {
         "approved": "run_tests", "ep_agent": "ep_agent", "bva_agent": "bva_agent",
+        "retry_repair": "repair_agent", "retry_gap": "generate_gap_tests",
         "max_attempts": "escalate_review",
     })
 
     # >>> PERSON 3 (Joseph) BEGIN: edges
-    # R2: passed -> coverage, failed -> Nova reviews the failures
+    # R2: passed -> coverage; failed -> Sarthak's bounded repair node in either phase.
     graph.add_conditional_edges("run_tests", route_tests_by_phase, {
-        "passed": "check_coverage", "failed": "review_failures",
-        "refactor_failed": "refactor_failures",
+        "passed": "check_coverage", "failed": "repair_agent",
+    })
+    graph.add_conditional_edges("repair_agent", route_after_repair, {
+        "run": "run_tests", "review": "review_tests", "escalate": "escalate_review",
     })
     # <<< PERSON 3 (Joseph) END: edges
 
@@ -1041,8 +1072,13 @@ def build_graph():
         "complete": "save_results",
     })
 
+    # Missing branches produce new methods requiring human test approval
+    # BEFORE run_tests. Exhausted/invalid proposals escalate instead of looping.
+    graph.add_conditional_edges("generate_gap_tests", route_after_gap, {
+        "review": "review_tests", "escalate": "escalate_review",
+    })
+
     # Every ending writes the change log first
-    graph.add_edge("generate_gap_tests", "save_change_log")
     graph.add_edge("save_results", "save_change_log")
     graph.add_edge("escalate_review", "save_change_log")
     graph.add_conditional_edges("save_change_log", route_after_save, {
@@ -1080,6 +1116,10 @@ def ask_human(payload: dict) -> dict:
         print(f"Refactoring notes: {payload['explanation']}")
     for item in payload.get("review_checklist") or []:
         print(f"  [ ] {item}")
+    if payload.get("proposed_diff"):
+        print("\nProposed changes requiring your explicit approval:")
+        print(payload["proposed_diff"])
+        print("The proposed tests have NOT been written or executed yet.")
     if payload.get("prior_feedback"):
         print(f"Your previous feedback: {payload['prior_feedback']}")
     while True:
