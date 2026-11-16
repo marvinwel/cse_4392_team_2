@@ -1,24 +1,50 @@
-10:12:55 | INFO    | [BVA] Claude generating Boundary Value Analysis tests...
-10:12:55 | INFO    | [EP] Claude generating Equivalence Partitioning tests...
-10:13:06 | INFO    | [EP] generated_tests: 17 tests (+212 / -0 lines)
-10:13:15 | INFO    | [BVA] generated_tests: 28 tests (+345 / -0 lines)
-10:13:15 | INFO    | [EP] Claude reviewing Equivalence Partitioning tests (review #1)...
-10:13:15 | INFO    | [BVA] Claude reviewing Boundary Value Analysis tests (review #1)...
-10:13:22 | INFO    | [EP] Approved: True | reviews: 1 | rejections this round: 0/3
-10:13:24 | INFO    | [BVA] Approved: False | reviews: 1 | rejections this round: 1/3
-10:13:24 | INFO    | [BVA] Feedback: 1. INVENTED BOUNDARIES FOR STATE: The state variable is not a numeric range with a MIN/MAX that the code compares against — it is an enumerated constant (OFF=0, COOL=1, HEAT=2) used only in switch statements. BVA does not apply to switch-on-enum values the same way it applies to numeric ranges. Testing state=-1 and state=3 as 'MIN-1' and 'MAX+1' invents boundaries that have no basis in the source code. There is no comparison like 'if (state >= 0 && state <= 2)'; the switch simply has no default. These eight tests (testBVACoolStateInvalidBelowMin, testBVACoolStateInvalidAboveMax, testBVAHeatStateInvalidBelowMin, testBVAHeatStateInvalidAboveMax, testBVAOffStateInvalidBelowMin, testBVAOffStateInvalidAboveMax, testBVATimerOffStateInvalidBelowMin, testBVATimerOffStateInvalidAboveMax) must be removed per check #3 ('No invented boundaries for things with no numeric comparison or range'). 2. MISSING BOUNDARY POINT FOR coolTemp: The condition is room.temp > coolTemp (i.e., > 68). BVA requires testing at N-1=67, N=68, and N+1=69. The tests cover 67, 68, and 69, which is correct, but the comment framework labels these as 'below boundary', 'at boundary', and 'above boundary' without explicitly noting that N=68 is the exact comparison value. This is acceptable as written, but the comment on testBVATimerOffCoolTempBelowBoundary says 'room.temp = coolTemp - 1' which is correct. No change needed here. 3. MISSING BOUNDARY POINT FOR heatTemp: Similarly, the condition is room.temp < heatTemp (i.e., < 77). Tests at 76, 77, and 78 are present and correct. No change needed here. 4. TIMER NOT STOPPED FOR TESTS THAT START THE TIMER: In testBVACoolFromOffStateMin, testBVACoolFromHeatStateMax, testBVAHeatFromOffStateMin, and testBVAHeatFromCoolStateMid, ss.cool() or ss.heat() starts ss.timer. The @AfterEach calls ss.timer.stop() and ss.room.timer.stop(), which is correct and sufficient — no change needed here. 5. ROOM TIMER NOT STARTED IN setUp: ss.room.timer is never started in setUp, so ss.room.timer.stop() in tearDown is harmless but the room timer is not running during tests. This is acceptable since tests do not rely on the room timer firing. 6. SUMMARY OF REQUIRED CHANGES: Remove the eight invalid-state tests for cool(), heat(), off(), and timerOff() that use state=-1 and state=3, as these represent invented boundaries not present in the source code.
-10:13:24 | INFO    | [BVA] Claude revising Boundary Value Analysis tests...
-10:13:24 | INFO    | [EP] Tests approved after 1 review(s).
-10:13:41 | INFO    | [BVA] revised_tests: 22 tests (+78 / -125 lines)
-10:13:41 | INFO    | [BVA] Claude reviewing Boundary Value Analysis tests (review #2)...
-10:13:49 | INFO    | [BVA] Approved: True | reviews: 2 | rejections this round: 1/3
-10:13:49 | INFO    | [BVA] Tests approved after 2 review(s).
-10:13:49 | INFO    | Merging approved EP and BVA test cases and removing duplicates...
-10:13:49 | INFO    | Merged 17 EP + 22 BVA tests into 39 tests (0 duplicates removed).
-10:14:07 | INFO    | [HUMAN] Approved: True | review #1 | change requests: 0/3
-10:14:33 | INFO    | [HUMAN] Approved: True | review #2 | change requests: 0/3
-10:14:55 | INFO    | [HUMAN] Approved: True | review #3 | change requests: 0/3
-10:15:03 | INFO    | Change log saved: /Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/generated_tests/change_log_original.json (12 entries)
-10:15:03 | INFO    | [REFACTOR] Claude generating the State-pattern refactoring...
-10:15:49 | INFO    | [REFACTOR] Wrote 5 source file(s) to java-refactored/.
-10:17:06 | INFO    | Change log saved: /Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/generated_tests/change_log_refactored.json (14 entries)
+10:45:37 | INFO    | [BVA] Claude generating Boundary Value Analysis tests...
+10:45:37 | INFO    | [EP] Claude generating Equivalence Partitioning tests...
+10:45:49 | INFO    | [EP] generated_tests: 17 tests (+215 / -0 lines)
+10:46:01 | INFO    | [BVA] generated_tests: 28 tests (+376 / -0 lines)
+10:46:01 | INFO    | [EP] Claude reviewing Equivalence Partitioning tests (review #1)...
+10:46:01 | INFO    | [BVA] Claude reviewing Boundary Value Analysis tests (review #1)...
+10:46:08 | INFO    | [EP] Approved: True | reviews: 1 | rejections this round: 0/3
+10:46:12 | INFO    | [BVA] Approved: False | reviews: 1 | rejections this round: 1/3
+10:46:12 | INFO    | [BVA] Feedback: Two categories of problems must be fixed:
+
+1. INVENTED BOUNDARIES (state as numeric range): The `state` field is used only in switch/case statements matching discrete named constants (OFF=0, COOL=1, HEAT=2). There is no numeric comparison like `state > N` or `state < N`, so BVA does not apply to state values. Remove all six tests that use state=-1 or state=3 as 'MIN-1'/'MAX+1' boundaries: testBVACoolStateInvalidBelowMin, testBVAHeatStateInvalidAboveMax, testBVAOffStateInvalidBelowMin, testBVAOffStateInvalidAboveMax, testBVATimerOffStateInvalidBelowMin, testBVATimerOffStateInvalidAboveMax.
+
+2. DUPLICATE TESTS: The four timer-transition tests at the bottom duplicate assertions already made in earlier tests. testBVACoolFromOffTimerStarted duplicates the timer assertion in testBVACoolFromOffStateMin. testBVAHeatFromOffTimerStarted duplicates the timer assertion in testBVAHeatFromOffStateMin. testBVAOffFromCoolTimerStopped duplicates the timer assertion in testBVAOffFromCoolStateMiddle. testBVAOffFromHeatTimerStopped duplicates the timer assertion in testBVAOffFromHeatStateMax. Remove these four duplicate tests.
+10:46:12 | INFO    | [BVA] Claude revising Boundary Value Analysis tests...
+10:46:12 | INFO    | [EP] Tests approved after 1 review(s).
+10:46:28 | INFO    | [BVA] revised_tests: 18 tests (+6 / -119 lines)
+10:46:28 | INFO    | [BVA] Claude reviewing Boundary Value Analysis tests (review #2)...
+10:46:41 | INFO    | [BVA] Approved: False | reviews: 2 | rejections this round: 2/3
+10:46:41 | INFO    | [BVA] Feedback: 1. Technique check – missing N-1 and N+1 for the state-based switch/case: The tests treat OFF=0, COOL=1, HEAT=2 as a MIN/MAX range and test only the three named values, but they never test the out-of-range neighbours (state = -1, i.e. OFF-1, and state = 3, i.e. HEAT+1). BVA on a range MIN..MAX requires MIN-1 and MAX+1 as well. Either add tests for state=-1 and state=3 (both should be no-ops for every method because no switch case matches), or explicitly justify why those boundaries are excluded. Without them the technique check fails.
+2. Technique check – actionPerformed boundary coverage is incomplete: actionPerformed is tested only at coolTemp+1 (TRUE branch) and heatTemp-1 (TRUE branch). The boundary values at coolTemp (FALSE), coolTemp-1 (FALSE), heatTemp (FALSE), and heatTemp+1 (FALSE) are not covered through actionPerformed itself. Because actionPerformed is a distinct public method it needs its own full N-1/N/N+1 coverage, not just two spot-checks.
+3. Technique check – no invented boundaries comment is violated for state: The comment says 'BVA applies only to the named values themselves, not to numeric neighbors,' but that contradicts the BVA rule that every range MIN..MAX must be tested at MIN-1 and MAX+1. The comment is used to justify omitting required boundary points; this is incorrect.
+4. General check – timer not stopped in testBVACoolFromOffStateMin, testBVACoolFromHeatStateMax, testBVAHeatFromOffStateMin, testBVAHeatFromCoolStateMiddle: These tests call ss.cool() or ss.heat() which call ss.timer.start(), but the @AfterEach only calls ss.timer.stop() on the shared ss instance. Because SeasonSwitch.state is static and shared, if a previous test leaves the timer running and state=COOL or HEAT, the Room.actionPerformed callback can fire during a subsequent test and mutate room.temp or device state unexpectedly. The tearDown must also reset ss.ac.isOn and ss.heater.isOn to false to guarantee a clean slate, since those fields are instance-level and setUp creates a new instance but state is static and could cause the Room timer (not started in these tests but potentially left running) to interfere.
+5. General check – ss.room.timer is never started in any test, so Room.actionPerformed cannot fire, which is fine; however tearDown calls ss.room.timer.stop() unconditionally. This is harmless but should be noted as correct defensive practice – no change needed here.
+6. Correctness check – testBVACoolFromCoolStateMiddle asserts assertTrue(ss.timer.isRunning()) is NOT present, which is correct (cool() from COOL is a no-op and timer is not started), but the test does not assert assertFalse(ss.timer.isRunning()) either. This is an omission: the no-op case should assert the timer was NOT started to distinguish it from the active cases.
+7. Correctness check – testBVAHeatFromHeatStateMax similarly omits assertFalse(ss.timer.isRunning()), leaving the no-op incompletely verified.
+8. Correctness check – testBVAOffFromOffStateMin does not assert assertFalse(ss.timer.isRunning()), which should be verified for the no-op case.
+9. Summary of required changes: (a) Add tests for state=-1 and state=3 for cool(), heat(), off(), and timerOff() (all should be no-ops). (b) Add the remaining N/N-1/N+1 boundary tests for actionPerformed() (at coolTemp, coolTemp-1, heatTemp, heatTemp+1). (c) Add assertFalse(ss.timer.isRunning()) to the three no-op state tests (COOL→cool, HEAT→heat, OFF→off). (d) Remove or correct the comment that claims BVA does not apply to numeric neighbours of state constants.
+10:46:41 | INFO    | [BVA] Claude revising Boundary Value Analysis tests...
+10:47:08 | INFO    | [BVA] revised_tests: 30 tests (+305 / -151 lines)
+10:47:08 | INFO    | [BVA] Claude reviewing Boundary Value Analysis tests (review #3)...
+10:47:22 | INFO    | [BVA] Approved: False | reviews: 3 | rejections this round: 3/3
+10:47:22 | INFO    | [BVA] Feedback: 1. INVENTED BOUNDARIES (Technique Check #3): The state variable (OFF=0, COOL=1, HEAT=2) is not a documented numeric range; testing state=-1 and state=3 invents boundaries that do not exist in the specification. All 10 tests using OFF-1 or HEAT+1 as state values must be removed. 2. DUPLICATE TESTS (General Check): actionPerformed() delegates entirely to timerOff() with no added logic. The 6 testBVAActionPerformed* tests are exact duplicates of the 6 testBVATimerOff* COOL/HEAT boundary tests and must be removed. 3. INVENTED RANGE FRAMING: testBVACoolFromCoolStateMiddle and testBVAHeatFromHeatStateMax are framed as BVA range-boundary tests (middle and MAX of an invented 0..2 range), which is invalid under BVA Technique Check #3. These must be reframed as plain state-transition tests or removed. 4. What should remain: the three coolTemp boundary tests (coolTemp-1, coolTemp, coolTemp+1) and three heatTemp boundary tests (heatTemp-1, heatTemp, heatTemp+1) in timerOff(), plus straightforward state-transition tests for cool(), heat(), and off() covering each non-trivial switch case, none framed as numeric range BVA.
+10:47:22 | WARNING | [BVA] Reviewer rejected 3 times; handing the tests to the human review.
+10:47:22 | INFO    | [BVA] Reviewer did not approve after 3 review(s); the human review decides.
+10:47:22 | INFO    | Merging approved EP and BVA test cases and removing duplicates...
+10:47:22 | INFO    | Duplicate removed: testBVACoolFromOffStateMin (same test case as testEPCoolFromOff, 0 assertion(s) moved over)
+10:47:22 | INFO    | Duplicate removed: testBVAHeatFromOffStateMin (same test case as testEPHeatFromOff, 0 assertion(s) moved over)
+10:47:22 | INFO    | Duplicate removed: testBVAOffFromOffStateMin (same test case as testEPOffFromOff, 0 assertion(s) moved over)
+10:47:22 | INFO    | Duplicate removed: testBVAOffFromHeatStateMax (same test case as testEPOffFromHeat, 0 assertion(s) moved over)
+10:47:22 | INFO    | Duplicate removed: testBVAOffFromCoolStateMiddle (same test case as testEPOffFromCool, 0 assertion(s) moved over)
+10:47:22 | INFO    | Merged 17 EP + 30 BVA tests into 42 tests (5 duplicates removed).
+10:48:02 | INFO    | [HUMAN] Approved: True | review #1 | change requests: 0/3
+10:48:20 | INFO    | [HUMAN] Approved: True | review #2 | change requests: 0/3
+10:48:38 | INFO    | [HUMAN] Approved: True | review #3 | change requests: 0/3
+10:48:46 | INFO    | Change log saved: /Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/generated_tests/change_log_original.json (14 entries)
+10:48:46 | INFO    | [REFACTOR] Claude generating the State-pattern refactoring...
+10:49:42 | WARNING | [REFACTOR] Unusable reply (1/2): Refactor model returned invalid JSON: Expecting property name enclosed in double quotes: line 2 column 13 (char 14)
+10:49:42 | INFO    | [REFACTOR] Claude generating the State-pattern refactoring...
+10:50:30 | INFO    | [REFACTOR] Wrote 5 source file(s) to java-refactored/.
+10:50:48 | INFO    | Change log saved: /Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/generated_tests/change_log_refactored.json (17 entries)

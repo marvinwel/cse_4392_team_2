@@ -3,7 +3,6 @@ package cse4392;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SeasonSwitchEPTest {
@@ -151,6 +150,7 @@ public class SeasonSwitchEPTest {
         ss.room.temp = 72; // 72 > 68 (coolTemp)
         ss.timerOff();
         assertTrue(ss.ac.isOn);
+        assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
     }
 
     // Partition: timerOff() when state == COOL and room.temp <= coolTemp (65 <= 68) -> AC turns off
@@ -161,6 +161,7 @@ public class SeasonSwitchEPTest {
         ss.room.temp = 65; // 65 <= 68 (coolTemp)
         ss.timerOff();
         assertFalse(ss.ac.isOn);
+        assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
     }
 
     // Partition: timerOff() when state == HEAT and room.temp < heatTemp (74 < 77) -> heater turns on
@@ -170,6 +171,7 @@ public class SeasonSwitchEPTest {
         ss.room.temp = 74; // 74 < 77 (heatTemp)
         ss.timerOff();
         assertTrue(ss.heater.isOn);
+        assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
     }
 
     // Partition: timerOff() when state == HEAT and room.temp >= heatTemp (80 >= 77) -> heater turns off
@@ -180,6 +182,7 @@ public class SeasonSwitchEPTest {
         ss.room.temp = 80; // 80 >= 77 (heatTemp)
         ss.timerOff();
         assertFalse(ss.heater.isOn);
+        assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
     }
 
     // --- actionPerformed() tests ---
@@ -188,7 +191,7 @@ public class SeasonSwitchEPTest {
     @Test
     void testEPActionPerformedCoolTempAboveThreshold() {
         SeasonSwitch.state = SeasonSwitch.COOL;
-        ss.room.temp = 75; // 75 > 68
+        ss.room.temp = 73; // 73 > 68
         ss.actionPerformed(null);
         assertTrue(ss.ac.isOn);
     }
@@ -197,7 +200,7 @@ public class SeasonSwitchEPTest {
     @Test
     void testEPActionPerformedHeatTempBelowThreshold() {
         SeasonSwitch.state = SeasonSwitch.HEAT;
-        ss.room.temp = 73; // 73 < 77
+        ss.room.temp = 75; // 75 < 77
         ss.actionPerformed(null);
         assertTrue(ss.heater.isOn);
     }

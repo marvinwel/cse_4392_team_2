@@ -167,7 +167,10 @@ make run
 The workflow runs both phases of the assignment in one command:
 
 1. Generate EP and BVA tests in parallel. An AI reviewer checks each set.
-2. Merge the two sets into one JUnit class.
+2. Merge the two sets into one JUnit class and remove duplicate test cases
+   (`app/dedupe_tests.py`): two tests with the same setup and the same call are one
+   test case. The one with more assertions is kept and gets any assertion only the
+   other had. Removed pairs are logged and listed in `change_log_<phase>.json`.
 3. **Human review 1:** a person approves the merged tests or requests changes.
 4. Run the tests on the original code and measure branch coverage.
 5. Save the original-phase evidence, then refactor to the State pattern.
@@ -401,9 +404,9 @@ Implemented and wired into the workflow:
 
 Final evidence, from a run on 2026-11-16 with a person answering every review:
 
-- Original program: 54/54 tests pass, 36/36 branches covered (100%, full
+- Original program: 53/53 tests pass, 36/36 branches covered (100%, full
   program). Saved in `artifacts/original/`.
-- Refactored program: 54/54 tests pass, 26/26 branches covered (100%, full
+- Refactored program: 53/53 tests pass, 26/26 branches covered (100%, full
   program). Saved in `artifacts/refactored/`.
 - The review decisions are recorded in
   `generated_tests/change_log_original.json` and

@@ -12,7 +12,7 @@ public class HeatState implements State {
 
     @Override
     public void heat(SeasonSwitch ss) {
-        // no-op: already heating
+        // already heating, no-op
     }
 
     @Override
