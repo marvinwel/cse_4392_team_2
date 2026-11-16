@@ -183,6 +183,22 @@ class Person4NodeTests(unittest.TestCase):
                 _, generate, _ = self.nodes(reply)
                 self.assertEqual(route_after_gap(generate(self.state)), "review")
 
+    def test_json_after_an_explanation_with_java_code_is_accepted(self):
+        # Real run 2026-11-16: the reply began with prose and a Java snippet, so the
+        # first "{" in the reply was Java, not the JSON object. The run stopped gap_blocked.
+        raw = json.dumps({"tests": [add_test("@Test\nvoid testGap() {\n    assertEquals(0, 0);\n}", gap=self.gap)]})
+        prose = ("Looking at line 134 in the Room class's `actionPerformed` method:\n\n"
+                 "```java\npublic void actionPerformed(ActionEvent ae) {\n    switch (state) {\n"
+                 "        case OFF: break;\n    }\n}\n```\n\nThe default branch is missed.\n\n")
+        for reply in (prose + raw, prose + "```json\n" + raw + "\n```", prose + raw + "\nDone."):
+            with self.subTest(reply=reply[-12:]):
+                _, generate, _ = self.nodes(reply)
+                self.assertEqual(route_after_gap(generate(self.state)), "review")
+
+    def test_reply_with_only_java_braces_is_still_rejected(self):
+        _, generate, _ = self.nodes("```java\nvoid f() { switch (x) { } }\n```")
+        self.assertEqual(generate(self.state)["workflow_status"], "gap_retry")
+
     def test_invalid_json_error_explains_what_was_wrong(self):
         repair, _, _ = self.nodes('{"target": "code", "path": ')
         result = repair(self.state)

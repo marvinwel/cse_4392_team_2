@@ -141,11 +141,12 @@ public class SeasonSwitchEPTest {
         ss.timerOff();
         assertFalse(ss.ac.isOn);
         assertFalse(ss.heater.isOn);
+        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
     }
 
     // Partition: timerOff() when state == COOL and room.temp > coolTemp (70 > 68) -> AC turns on
     @Test
-    void testEPTimerOffCoolTempAboveCoolThreshold() {
+    void testEPTimerOffCoolRoomTempAboveCoolTemp() {
         SeasonSwitch.state = SeasonSwitch.COOL;
         ss.room.temp = 72; // 72 > 68 (coolTemp)
         ss.timerOff();
@@ -154,7 +155,7 @@ public class SeasonSwitchEPTest {
 
     // Partition: timerOff() when state == COOL and room.temp <= coolTemp (65 <= 68) -> AC turns off
     @Test
-    void testEPTimerOffCoolTempAtOrBelowCoolThreshold() {
+    void testEPTimerOffCoolRoomTempAtOrBelowCoolTemp() {
         SeasonSwitch.state = SeasonSwitch.COOL;
         ss.ac.on();
         ss.room.temp = 65; // 65 <= 68 (coolTemp)
@@ -164,7 +165,7 @@ public class SeasonSwitchEPTest {
 
     // Partition: timerOff() when state == HEAT and room.temp < heatTemp (74 < 77) -> heater turns on
     @Test
-    void testEPTimerOffHeatTempBelowHeatThreshold() {
+    void testEPTimerOffHeatRoomTempBelowHeatTemp() {
         SeasonSwitch.state = SeasonSwitch.HEAT;
         ss.room.temp = 74; // 74 < 77 (heatTemp)
         ss.timerOff();
@@ -173,7 +174,7 @@ public class SeasonSwitchEPTest {
 
     // Partition: timerOff() when state == HEAT and room.temp >= heatTemp (80 >= 77) -> heater turns off
     @Test
-    void testEPTimerOffHeatTempAtOrAboveHeatThreshold() {
+    void testEPTimerOffHeatRoomTempAtOrAboveHeatTemp() {
         SeasonSwitch.state = SeasonSwitch.HEAT;
         ss.heater.on();
         ss.room.temp = 80; // 80 >= 77 (heatTemp)

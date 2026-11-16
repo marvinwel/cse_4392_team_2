@@ -108,19 +108,25 @@ def _model_json(model: Any, prompt: str) -> dict:
     first_error = None
     result = None
     for candidate in candidates:
+        # Try every "{" in turn, not only the first one. Real run 2026-11-16: the model
+        # explained its plan with a Java snippet ("switch (state) {") before the JSON,
+        # so the first "{" was Java. A Java brace never parses as a JSON object, and the
+        # outer JSON object starts before any object nested inside it.
         start = candidate.find("{")
-        if start < 0:
-            continue
-        try:
-            result, _ = decoder.raw_decode(candidate, start)
+        while start >= 0 and result is None:
+            try:
+                result, _ = decoder.raw_decode(candidate, start)
+            except json.JSONDecodeError as exc:
+                first_error = first_error or exc
+                start = candidate.find("{", start + 1)
+        if result is not None:
             break
-        except json.JSONDecodeError as exc:
-            first_error = first_error or exc
     if result is None:
         exc = first_error or json.JSONDecodeError("no JSON object found", text, 0)
         # The detail goes back to the model on the retry and into the change log.
         raise ValueError(f"Model returned invalid JSON ({exc.msg}, line {exc.lineno} "
-                         f"column {exc.colno}). Reply began: {text[:160]!r}")
+                         f"column {exc.colno}). Reply began: {text[:160]!r}. "
+                         "Reply with ONLY the JSON object: no explanation and no code before it.")
     if not isinstance(result, dict):
         raise ValueError("Expected a JSON object")
     return result
