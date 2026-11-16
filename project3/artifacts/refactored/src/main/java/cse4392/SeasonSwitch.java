@@ -44,7 +44,7 @@ public class SeasonSwitch implements ActionListener {
 
     public static void main(String[] args) {
         System.out.println("Enter off, cool or heat to run. " +
-                "Press Ctrl-c to exit.");
+            "Press Ctrl-c to exit.");
         SeasonSwitch s = new SeasonSwitch();
         s.room.timer.start();
         if (args.length == 0) s.cool(); else

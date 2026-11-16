@@ -19,7 +19,7 @@ public class OffState implements State {
 
     @Override
     public void off(SeasonSwitch ss) {
-        // no-op
+        // already off, no-op
     }
 
     @Override

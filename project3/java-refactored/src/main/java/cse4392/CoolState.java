@@ -3,7 +3,7 @@ package cse4392;
 public class CoolState implements State {
     @Override
     public void cool(SeasonSwitch ss) {
-        // no-op: already cooling
+        // already cooling, no-op
     }
 
     @Override

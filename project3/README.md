@@ -404,9 +404,9 @@ Implemented and wired into the workflow:
 
 Final evidence, from a run on 2026-11-16 with a person answering every review:
 
-- Original program: 54/54 tests pass, 36/36 branches covered (100%, full
+- Original program: 53/53 tests pass, 36/36 branches covered (100%, full
   program). Saved in `artifacts/original/`.
-- Refactored program: 54/54 tests pass, 26/26 branches covered (100%, full
+- Refactored program: 53/53 tests pass, 26/26 branches covered (100%, full
   program). Saved in `artifacts/refactored/`.
 - The review decisions are recorded in
   `generated_tests/change_log_original.json` and
