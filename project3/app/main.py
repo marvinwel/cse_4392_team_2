@@ -174,6 +174,7 @@ class AgentState(TypedDict, total=False):
     human_feedback: str
     human_review_count: int
     human_rejections: int
+    human_test_feedback: dict  # {test method name: comment} from the last change request
 
     # Merge failure recovery (Ryan)
     merge_error: str          # empty when the last merge worked
@@ -711,10 +712,18 @@ def review_tests(state: AgentState) -> dict:
 
     approved = decision["approved"]
     feedback = str(decision.get("feedback", "")).strip()
+    # Optional per-test comments from the terminal UI: {test method name: comment}.
+    # They apply only to the standard review, not to a repair or gap proposal.
+    test_feedback = {} if approved or pending else {
+        str(name): str(comment).strip()
+        for name, comment in (decision.get("test_feedback") or {}).items()
+    }
     # A rejected repair or gap proposal uses that agent's own tries, not the R1 limit.
     rejections = state.get("human_rejections", 0) + (0 if approved or pending else 1)
     log.info("[HUMAN] Approved: %s | review #%d | change requests: %d/%d",
              approved, count, rejections, MAX_HUMAN_REJECTIONS)
+    for name, comment in test_feedback.items():
+        log.info("[HUMAN] %s: %s", name, comment or "(marked for changes, no comment)")
     if feedback:
         log.info("[HUMAN] Feedback: %s", feedback)
 
@@ -723,6 +732,7 @@ def review_tests(state: AgentState) -> dict:
         "human_feedback": "" if approved else feedback,
         "human_review_count": count,
         "human_rejections": rejections,
+        "human_test_feedback": test_feedback,
         "review_context": "" if approved else state.get("review_context", ""),
         "pre_review_tests": "" if approved else state.get("pre_review_tests", ""),
         "change_log": [{
@@ -733,6 +743,7 @@ def review_tests(state: AgentState) -> dict:
                        else "human_approved" if approved else "human_requested_changes"),
             "review_number": count,
             "feedback": feedback,
+            "test_feedback": test_feedback,
         }],
     }
     if pending:
@@ -752,13 +763,31 @@ def review_tests(state: AgentState) -> dict:
             update["pending_code_repair"] = None
         else:
             # Standard first-stage human review is still owned by Marvin/Ryan.
-            request = ("A HUMAN REVIEWER requested these changes to the merged tests. "
-                       f"Apply every change that concerns YOUR tests:\n{feedback}")
+            # Both generators run again; each one is told only about its own tests.
+            def request(prefix: str) -> str:
+                """One generator's change request. Only test names starting with
+                `prefix` (testEP or testBVA) belong to that generator."""
+                own = {name: comment for name, comment in test_feedback.items()
+                       if name.startswith(prefix) or not name.startswith(("testEP", "testBVA"))}
+                lines = ["A HUMAN REVIEWER requested these changes to the merged tests."]
+                if feedback:
+                    lines.append(f"Apply every change that concerns YOUR tests:\n{feedback}")
+                if own:
+                    lines.append("Change ONLY these tests of yours, by method name, and keep "
+                                 "every other test exactly as it is:")
+                    lines += [f"- {name}: {comment or 'revise this test'}"
+                              for name, comment in own.items()]
+                elif test_feedback and not feedback:
+                    lines.append("None of the flagged tests are yours. Return your previous "
+                                 "tests unchanged, character for character.")
+                return "\n".join(lines)
+
             update.update({
-                "ep_feedback": request, "ep_approved": False, "ep_rejections": 0,
-                "bv_feedback": request, "bv_approved": False, "bv_rejections": 0,
+                "ep_feedback": request("testEP"), "ep_approved": False, "ep_rejections": 0,
+                "bv_feedback": request("testBVA"), "bv_approved": False, "bv_rejections": 0,
             })
     return update
+
 
 
 # ---- Refactored phase: orchestration around Emily's nodes (Ryan) ----
@@ -1123,37 +1152,69 @@ def ask_human(payload: dict) -> dict:
             print("Please type y or n.")
 
 
-if __name__ == "__main__":
-    app = build_graph()
-    config = {"configurable": {"thread_id": "assignment3-001"}, "recursion_limit": 100}
+RUN_CONFIG = {"configurable": {"thread_id": "assignment3-001"}, "recursion_limit": 100}
 
-    result = app.invoke(
-        {
-            "source_path": str(BASE_DIR / "app" / "SeasonSwitch.java"),
-            "class_name": "SeasonSwitch",
-            "package_name": "cse4392",
-            "phase": "original",
-            "change_log": [],
-            # Measure the full program: every class and main() (team decision 2026-11-15).
-            "coverage_scope": FULL_PROGRAM_SCOPE,
-        },
-        config=config,
-    )
-    # Human in the loop: the graph pauses at interrupt(); ask on the terminal, then resume.
+
+def initial_state() -> dict:
+    return {
+        "source_path": str(BASE_DIR / "app" / "SeasonSwitch.java"),
+        "class_name": "SeasonSwitch",
+        "package_name": "cse4392",
+        "phase": "original",
+        "change_log": [],
+        # Measure the full program: every class and main() (team decision 2026-11-15).
+        "coverage_scope": FULL_PROGRAM_SCOPE,
+    }
+
+
+def run_workflow(answer_review, on_event=None) -> dict:
+    """Run the whole graph and return the final state.
+
+    answer_review(payload) -> {'approved': bool, 'feedback': str, ...}
+        called each time the graph pauses at a human review (interrupt()).
+    on_event(kind, node, data, values)
+        optional; called as each step starts ("start") and finishes ("finish"), and just
+        before a human review is asked ("review"), so a screen can update while the run
+        is going. `values` is the state saved so far.
+
+    The graph is streamed instead of invoked in one blocking call. The nodes, the
+    routing and the results are the same.
+    """
+    app = build_graph()
+    payload = initial_state()
     while True:
-        pending = [i for task in app.get_state(config).tasks for i in task.interrupts]
+        for mode, chunk in app.stream(payload, config=RUN_CONFIG, stream_mode=["tasks", "updates"]):
+            if on_event is None or mode != "tasks":
+                continue
+            if "input" in chunk:
+                on_event("start", chunk["name"], {}, app.get_state(RUN_CONFIG).values)
+            elif not chunk.get("interrupts"):
+                on_event("finish", chunk["name"], chunk.get("result") or {},
+                         app.get_state(RUN_CONFIG).values)
+        # Human in the loop: the graph pauses at interrupt(); ask, then resume.
+        pending = [i for task in app.get_state(RUN_CONFIG).tasks for i in task.interrupts]
         if not pending:
             break
-        if os.environ.get("AUTO_APPROVE") == "1":
-            # Testing shortcut only. Final evidence runs must use the real human review.
-            print(f"AUTO_APPROVE=1: skipping human review at {pending[0].value.get('node')}")
-            for name in (pending[0].value.get("ai_review_notes") or {}):
-                print(f"WARNING: the AI reviewer rejected the {name} tests 3 times; "
-                      "auto-approved without a person checking them.")
-            answer = {"approved": True, "feedback": "", "auto": True}
-        else:
-            answer = ask_human(pending[0].value)
-        result = app.invoke(Command(resume=answer), config=config)
+        if on_event is not None:
+            on_event("review", pending[0].value.get("node"), {}, app.get_state(RUN_CONFIG).values)
+        payload = Command(resume=answer_review(pending[0].value))
+    return app.get_state(RUN_CONFIG).values
+
+
+def answer_on_terminal(payload: dict) -> dict:
+    if os.environ.get("AUTO_APPROVE") == "1":
+        # Testing shortcut only. Final evidence runs must use the real human review.
+        print(f"AUTO_APPROVE=1: skipping human review at {payload.get('node')}")
+        for name in (payload.get("ai_review_notes") or {}):
+            print(f"WARNING: the AI reviewer rejected the {name} tests 3 times; "
+                  "auto-approved without a person checking them.")
+        return {"approved": True, "feedback": "", "auto": True}
+    return ask_human(payload)
+
+
+def run_plain() -> dict:
+    """The plain (no dashboard) run: same prompts and printout as before."""
+    result = run_workflow(answer_on_terminal)
 
     print("\n=== Workflow Completed ===")
     print("Status:", result.get("workflow_status", "finished"))
@@ -1183,3 +1244,8 @@ if __name__ == "__main__":
     if result.get("saved_artifacts"):
         print(f"Evidence saved: {result['saved_artifacts']}")
     # <<< PERSON 3 (Joseph) END: results printout
+    return result
+
+
+if __name__ == "__main__":
+    run_plain()

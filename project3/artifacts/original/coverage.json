@@ -1,46 +1,79 @@
 {
   "report_found": true,
-  "xml_path": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/site/jacoco/jacoco.xml",
+  "xml_path": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/site/jacoco/jacoco.xml",
   "scope": {
-    "include_classes": [
-      "SeasonSwitch"
-    ],
-    "exclude_methods": [
-      "SeasonSwitch.main"
-    ]
+    "include_classes": null,
+    "exclude_methods": []
   },
-  "excluded_methods": [
-    "SeasonSwitch.main"
-  ],
+  "excluded_methods": [],
   "branch": {
-    "covered": 20,
+    "covered": 36,
     "missed": 0,
-    "total": 20,
+    "total": 36,
     "percent": 100.0
   },
   "line": {
-    "covered": 62,
-    "missed": 0,
-    "total": 62,
-    "percent": 100.0
+    "covered": 89,
+    "missed": 9,
+    "total": 98,
+    "percent": 90.82
   },
   "fully_covered": true,
   "missed_branches": [],
   "classes": {
+    "SeasonSwitch$AC": {
+      "source_file": "SeasonSwitch.java",
+      "branch": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      },
+      "line": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
+      }
+    },
     "SeasonSwitch": {
       "source_file": "SeasonSwitch.java",
       "branch": {
         "missed": 0,
-        "covered": 20,
-        "total": 20
+        "covered": 28,
+        "total": 28
+      },
+      "line": {
+        "missed": 9,
+        "covered": 72,
+        "total": 81
+      }
+    },
+    "SeasonSwitch$Room": {
+      "source_file": "SeasonSwitch.java",
+      "branch": {
+        "missed": 0,
+        "covered": 8,
+        "total": 8
       },
       "line": {
         "missed": 0,
-        "covered": 62,
-        "total": 62
+        "covered": 9,
+        "total": 9
+      }
+    },
+    "SeasonSwitch$Heater": {
+      "source_file": "SeasonSwitch.java",
+      "branch": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      },
+      "line": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
       }
     }
   },
   "phase": "original",
-  "html_report": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/site/jacoco/index.html"
+  "html_report": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/site/jacoco/index.html"
 }
