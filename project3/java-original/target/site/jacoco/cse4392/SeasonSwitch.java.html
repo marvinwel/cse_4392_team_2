@@ -94,19 +94,19 @@ import java.util.concurrent.CountDownLatch;
       }
 <span class="fc" id="L95">   }    </span>
    public static void main(String[] args) {
-<span class="nc" id="L97">      System.out.println(&quot;Enter off, cool or heat to run. &quot;+</span>
+<span class="fc" id="L97">      System.out.println(&quot;Enter off, cool or heat to run. &quot;+</span>
          &quot;Press Ctrl-c to exit.&quot;);
-<span class="nc" id="L99">      SeasonSwitch s=new SeasonSwitch();</span>
-<span class="nc" id="L100">      s.room.timer.start();</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">      if (args.length==0) s.cool(); else</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">      if (&quot;off&quot;.compareTo(args[0])==0) {</span>
-<span class="nc" id="L103">         s.off(); </span>
-<span class="nc" id="L104">         System.out.println(&quot;System off. System exits.&quot;);</span>
+<span class="fc" id="L99">      SeasonSwitch s=new SeasonSwitch();</span>
+<span class="fc" id="L100">      s.room.timer.start();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">      if (args.length==0) s.cool(); else</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">      if (&quot;off&quot;.compareTo(args[0])==0) {</span>
+<span class="fc" id="L103">         s.off(); </span>
+<span class="fc" id="L104">         System.out.println(&quot;System off. System exits.&quot;);</span>
 <span class="nc" id="L105">         System.exit(0);</span>
       } else
-<span class="nc bnc" id="L107" title="All 2 branches missed.">      if (&quot;cool&quot;.compareTo(args[0])==0) s.cool(); else</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">      if (&quot;heat&quot;.compareTo(args[0])==0) s.heat(); else {</span>
-<span class="nc" id="L109">         System.out.println(&quot;Unknown command. System exits.&quot;);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">      if (&quot;cool&quot;.compareTo(args[0])==0) s.cool(); else</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">      if (&quot;heat&quot;.compareTo(args[0])==0) s.heat(); else {</span>
+<span class="fc" id="L109">         System.out.println(&quot;Unknown command. System exits.&quot;);</span>
 <span class="nc" id="L110">         System.exit(1);</span>
       }
       try {
@@ -131,16 +131,16 @@ import java.util.concurrent.CountDownLatch;
 <span class="fc" id="L131">   public int temp=70;</span>
 <span class="fc" id="L132">   Timer timer=new Timer(400, this);</span>
    public void actionPerformed(ActionEvent ae) {
-<span class="nc bnc" id="L134" title="All 4 branches missed.">      switch (state) {</span>
-<span class="nc" id="L135">         case OFF: return;</span>
+<span class="fc bfc" id="L134" title="All 4 branches covered.">      switch (state) {</span>
+<span class="fc" id="L135">         case OFF: return;</span>
          case COOL: 
-<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (ac.isOn) temp--; else temp++;</span>
-<span class="nc" id="L138">            break;</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            if (ac.isOn) temp--; else temp++;</span>
+<span class="fc" id="L138">            break;</span>
          case HEAT:
-<span class="nc bnc" id="L140" title="All 2 branches missed.">            if (heater.isOn) temp++; else temp--;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">            if (heater.isOn) temp++; else temp--;</span>
             break;
       } 
-<span class="nc" id="L143">   }   </span>
+<span class="fc" id="L143">   }   </span>
 } // end of Room class
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

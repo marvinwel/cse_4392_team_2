@@ -14,13 +14,15 @@ MERGER_JAR := junit-merger/target/junit-merger-1.0.0.jar
 MERGER_SOURCES := $(shell find junit-merger/src/main/java -type f -name '*.java')
 
 .DEFAULT_GOAL := help
-.PHONY: help check test-python run build-merger test-original \
+.PHONY: help check test-python run auto ui build-merger test-original \
         test-original-current test-refactored verify-original \
         verify-refactored clean clean-all
 
 help:
 	@echo 'CSE 4392 - Team Assignment 3'
 	@echo '  make run                    Generate/review/run tests through current LangGraph'
+	@echo '  make auto                   Same run with the human reviews auto-approved (testing only)'
+	@echo '  make ui                     Open the terminal dashboard (menu, live graph, reviews)'
 	@echo '  make test-original          Copy latest merged tests; run JUnit + JaCoCo'
 	@echo '  make test-original-current  Run installed original tests (no copying)'
 	@echo '  make test-refactored        Run installed refactored tests (when ready)'
@@ -38,6 +40,16 @@ $(MERGER_JAR): $(MERGER_POM) $(MERGER_SOURCES)
 
 run: $(MERGER_JAR)
 	$(PYTHON) app/main.py
+
+# Testing shortcut: every human review is approved automatically.
+# Evidence for submission must come from a run with the real human reviews.
+auto: $(MERGER_JAR)
+	AUTO_APPROVE=1 $(PYTHON) app/main.py
+
+# Optional terminal dashboard (needs the `rich` package from app/requirements.txt).
+# Everything above and below works the same without it.
+ui:
+	@$(PYTHON) app/tui.py menu
 
 # The Python runner already calls Maven with "clean verify".
 test-original:

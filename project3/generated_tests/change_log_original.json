@@ -3,201 +3,323 @@
   "phase": "original",
   "workflow_status": "original_saved",
   "ep_review_count": 1,
-  "bv_review_count": 1,
-  "test_fix_rounds": 0,
+  "bv_review_count": 2,
+  "repair_attempts_by_phase": {},
+  "coverage_rounds_by_phase": {
+    "original": 2
+  },
+  "repair_log": [
+    {
+      "time": "2026-11-16T16:14:23+00:00",
+      "kind": "gap",
+      "phase": "original",
+      "outcome": "proposed",
+      "attempt": 1,
+      "tests": [
+        "testMainNoArgs",
+        "testMainOffArg",
+        "testMainCoolArg",
+        "testMainHeatArg",
+        "testMainUnknownArg",
+        "testRoomActionPerformedStateOff",
+        "testRoomActionPerformedCoolAcOn",
+        "testRoomActionPerformedCoolAcOff",
+        "testRoomActionPerformedHeatHeaterOn",
+        "testRoomActionPerformedHeatHeaterOff"
+      ],
+      "diagnosis": "SeasonSwitch line 101: main() line 101: args.length==0 branch (no args -> cool() called); SeasonSwitch line 102: main() line 102: args[0]==\"off\" branch -> System.exit(0); SeasonSwitch line 107: main() line 107: args[0]==\"cool\" branch -> cool() called, keeps running; SeasonSwitch line 108: main() line 108: args[0]==\"heat\" branch -> heat() called, keeps running; SeasonSwitch line 108: main() line 108 else: unknown command -> System.exit(1); SeasonSwitch$Room line 134: Room.actionPerformed line 134: switch with state==OFF -> return; SeasonSwitch$Room line 137: Room.actionPerformed line 137: state==COOL, ac.isOn true -> temp decrements; SeasonSwitch$Room line 137: Room.actionPerformed line 137: state==COOL, ac.isOn false -> temp increments; SeasonSwitch$Room line 140: Room.actionPerformed line 140: state==HEAT, heater.isOn true -> temp increments; SeasonSwitch$Room line 140: Room.actionPerformed line 140: state==HEAT, heater.isOn false -> temp decrements",
+      "target": "test",
+      "path": "approved merged JUnit suite",
+      "diff": "--- approved JUnit suite (before)\n+++ approved JUnit suite (after)\n@@ -457,4 +457,85 @@\n         ss.actionPerformed(null);\n         assertFalse(ss.heater.isOn);\n     }\n+\n+    @Test\n+    void testMainNoArgs() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(1500);\n+        assertFalse(r.exitedByItself);\n+        assertTrue(r.output.contains(\"Cooling started\"));\n+    }\n+\n+    @Test\n+    void testMainOffArg() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(\"off\");\n+        assertTrue(r.exitedByItself);\n+        assertEquals(0, r.exitCode);\n+        assertTrue(r.output.contains(\"System off\"));\n+    }\n+\n+    @Test\n+    void testMainCoolArg() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(1500, \"cool\");\n+        assertFalse(r.exitedByItself);\n+        assertTrue(r.output.contains(\"Cooling started\"));\n+    }\n+\n+    @Test\n+    void testMainHeatArg() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(1500, \"heat\");\n+        assertFalse(r.exitedByItself);\n+        assertTrue(r.output.contains(\"Heating started\"));\n+    }\n+\n+    @Test\n+    void testMainUnknownArg() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(\"unknown\");\n+        assertTrue(r.exitedByItself);\n+        assertEquals(1, r.exitCode);\n+        assertTrue(r.output.contains(\"Unknown command\"));\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedStateOff() {\n+        SeasonSwitch.state = SeasonSwitch.OFF;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore, ss.room.temp);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedCoolAcOn() {\n+        SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.ac.isOn = true;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore - 1, ss.room.temp);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedCoolAcOff() {\n+        SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.ac.isOn = false;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore + 1, ss.room.temp);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedHeatHeaterOn() {\n+        SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.heater.isOn = true;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore + 1, ss.room.temp);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedHeatHeaterOff() {\n+        SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.heater.isOn = false;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore - 1, ss.room.temp);\n+    }\n }"
+    },
+    {
+      "time": "2026-11-16T16:14:33+00:00",
+      "kind": "gap",
+      "phase": "original",
+      "outcome": "approved",
+      "feedback": "",
+      "auto": false
+    },
+    {
+      "time": "2026-11-16T16:14:41+00:00",
+      "kind": "gap",
+      "phase": "original",
+      "outcome": "rerun_passed",
+      "passed": 49,
+      "total": 49
+    },
+    {
+      "time": "2026-11-16T16:14:48+00:00",
+      "kind": "gap",
+      "phase": "original",
+      "outcome": "proposed",
+      "attempt": 2,
+      "tests": [
+        "testCoolDefaultBranch",
+        "testHeatDefaultBranch",
+        "testOffDefaultBranch",
+        "testTimerOffDefaultBranch",
+        "testRoomActionPerformedDefaultBranch"
+      ],
+      "diagnosis": "SeasonSwitch line 18: Reaches the implicit default branch of the switch in cool() at line 18 by passing an unrecognized state value; SeasonSwitch line 36: Reaches the implicit default branch of the switch in heat() at line 36 by passing an unrecognized state value; SeasonSwitch line 54: Reaches the implicit default branch of the switch in off() at line 54 by passing an unrecognized state value; SeasonSwitch line 74: Reaches the implicit default branch of the switch in timerOff() at line 74 by passing an unrecognized state value; SeasonSwitch$Room line 134: Reaches the implicit default branch of the switch in Room.actionPerformed() at line 134 by passing an unrecognized state value",
+      "target": "test",
+      "path": "approved merged JUnit suite",
+      "diff": "--- approved JUnit suite (before)\n+++ approved JUnit suite (after)\n@@ -538,4 +538,48 @@\n         ss.room.actionPerformed(null);\n         assertEquals(tempBefore - 1, ss.room.temp);\n     }\n+\n+    @Test\n+    void testCoolDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        ss.cool();\n+        assertEquals(99, SeasonSwitch.state);\n+        assertFalse(ss.ac.isOn);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    @Test\n+    void testHeatDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        ss.heat();\n+        assertEquals(99, SeasonSwitch.state);\n+        assertFalse(ss.ac.isOn);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    @Test\n+    void testOffDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        ss.off();\n+        assertEquals(99, SeasonSwitch.state);\n+        assertFalse(ss.ac.isOn);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    @Test\n+    void testTimerOffDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        ss.timerOff();\n+        assertEquals(99, SeasonSwitch.state);\n+        assertFalse(ss.ac.isOn);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore, ss.room.temp);\n+    }\n }"
+    },
+    {
+      "time": "2026-11-16T16:14:55+00:00",
+      "kind": "gap",
+      "phase": "original",
+      "outcome": "approved",
+      "feedback": "",
+      "auto": false
+    },
+    {
+      "time": "2026-11-16T16:15:03+00:00",
+      "kind": "gap",
+      "phase": "original",
+      "outcome": "rerun_passed",
+      "passed": 54,
+      "total": 54
+    }
+  ],
   "final_test_report": {
     "reports_found": true,
     "report_files": [
-      "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/surefire-reports/TEST-cse4392.SeasonSwitchMergedTest.xml"
+      "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/surefire-reports/TEST-cse4392.SeasonSwitchMergedTest.xml"
     ],
-    "total": 43,
-    "passed": 43,
+    "total": 54,
+    "passed": 54,
     "failed": 0,
     "errors": 0,
     "skipped": 0,
-    "time_s": 0.097,
+    "time_s": 5.842,
     "all_passed": true,
     "failures": [],
     "tests": [
       {
-        "test": "SeasonSwitchMergedTest.testActionPerformedDelegatesToTimerOff",
+        "test": "SeasonSwitchMergedTest.testRoomActionPerformedHeatHeaterOn",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_coolState_tempBelowCoolTemp_ACTurnsOff",
+        "test": "SeasonSwitchMergedTest.testRoomActionPerformedHeatHeaterOff",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testOffFromCool",
+        "test": "SeasonSwitchMergedTest.testEPTimerOffStateOff",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testOffFromHeat",
+        "test": "SeasonSwitchMergedTest.testBVAOffFromHeatStateMax",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.heat_fromStateOFF_startsHeaterAndSetsHeatState",
+        "test": "SeasonSwitchMergedTest.testBVATimerOffHeatTempAtBoundary",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testHeatFromCool",
+        "test": "SeasonSwitchMergedTest.testOffDefaultBranch",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testHeatFromHeat",
+        "test": "SeasonSwitchMergedTest.testBVAHeatFromCoolStateMid",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_stateThree_noEffect",
+        "test": "SeasonSwitchMergedTest.testEPHeatFromOff",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_stateOFF_isNoOp",
+        "test": "SeasonSwitchMergedTest.testEPHeatFromCool",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_coolState_tempAboveCoolTemp_ACTurnsOn",
+        "test": "SeasonSwitchMergedTest.testEPHeatFromHeat",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testTimerOffCoolRoomTempEqualsCoolTemp",
+        "test": "SeasonSwitchMergedTest.testBVAActionPerformedCoolTempAtBoundary",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.heat_fromStateMinusOne_noEffect",
+        "test": "SeasonSwitchMergedTest.testEPTimerOffCoolRoomTempAtOrBelowCoolTemp",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.heat_fromStateHEAT_isNoOp",
+        "test": "SeasonSwitchMergedTest.testMainHeatArg",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.off_fromStateHEAT_stopsHeaterAndTimer",
+        "test": "SeasonSwitchMergedTest.testMainCoolArg",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testCoolFromOff",
+        "test": "SeasonSwitchMergedTest.testEPTimerOffHeatRoomTempBelowHeatTemp",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.heat_fromStateThree_noEffect",
+        "test": "SeasonSwitchMergedTest.testEPOffFromOff",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testTimerOffHeatRoomTempBelowHeatTemp",
+        "test": "SeasonSwitchMergedTest.testEPActionPerformedCoolTempAboveThreshold",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_heatState_tempAboveHeatTemp_HeaterTurnsOff",
+        "test": "SeasonSwitchMergedTest.testMainNoArgs",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.off_fromStateMinusOne_noEffect",
+        "test": "SeasonSwitchMergedTest.testMainOffArg",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.heatThenOff_timerStops",
+        "test": "SeasonSwitchMergedTest.testHeatDefaultBranch",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.off_fromStateThree_noEffect",
+        "test": "SeasonSwitchMergedTest.testBVAActionPerformedHeatTempAtBoundary",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testTimerOffHeatRoomTempEqualsHeatTemp",
+        "test": "SeasonSwitchMergedTest.testEPActionPerformedStateOff",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testCoolFromCool",
+        "test": "SeasonSwitchMergedTest.testEPTimerOffHeatRoomTempAtOrAboveHeatTemp",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testCoolFromHeat",
+        "test": "SeasonSwitchMergedTest.testBVACoolFromHeatStateMax",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testTimerOffCoolRoomTempAboveCoolTemp",
+        "test": "SeasonSwitchMergedTest.testBVAActionPerformedCoolTempAboveBoundary",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.coolThenOff_timerStops",
+        "test": "SeasonSwitchMergedTest.testBVAOffFromCoolStateMid",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.off_fromStateOFF_isNoOp",
+        "test": "SeasonSwitchMergedTest.testCoolDefaultBranch",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.cool_fromStateMinusOne_noEffect",
+        "test": "SeasonSwitchMergedTest.testEPOffFromCool",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_heatState_tempEqualHeatTemp_HeaterTurnsOff",
+        "test": "SeasonSwitchMergedTest.testEPOffFromHeat",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_coolState_tempEqualCoolTemp_ACTurnsOff",
+        "test": "SeasonSwitchMergedTest.testBVAActionPerformedCoolTempBelowBoundary",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_heatState_tempBelowHeatTemp_HeaterTurnsOn",
+        "test": "SeasonSwitchMergedTest.testRoomActionPerformedCoolAcOn",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testTimerOffWhenStateOff",
+        "test": "SeasonSwitchMergedTest.testBVAOffFromOffStateMin",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testHeatFromOff",
+        "test": "SeasonSwitchMergedTest.testBVATimerOffStateOff",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.cool_fromStateThree_noEffect",
+        "test": "SeasonSwitchMergedTest.testRoomActionPerformedDefaultBranch",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.off_fromStateCOOL_stopsACAndTimer",
+        "test": "SeasonSwitchMergedTest.testBVAActionPerformedHeatTempAboveBoundary",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testTimerOffCoolRoomTempAtOrBelowCoolTemp",
+        "test": "SeasonSwitchMergedTest.testMainUnknownArg",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.timerOff_stateMinusOne_noEffect",
+        "test": "SeasonSwitchMergedTest.testEPTimerOffCoolRoomTempAboveCoolTemp",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.cool_fromStateCOOL_isNoOp",
+        "test": "SeasonSwitchMergedTest.testEPCoolFromCool",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.cool_fromStateOFF_startsACAndSetsCoolState",
+        "test": "SeasonSwitchMergedTest.testEPCoolFromHeat",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.heat_fromStateCOOL_turnsACOffAndStartsHeater",
+        "test": "SeasonSwitchMergedTest.testBVAActionPerformedHeatTempBelowBoundary",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testTimerOffHeatRoomTempAtOrAboveHeatTemp",
+        "test": "SeasonSwitchMergedTest.testEPCoolFromOff",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.cool_fromStateHEAT_turnsHeaterOffAndStartsAC",
+        "test": "SeasonSwitchMergedTest.testBVAHeatFromOffStateMin",
         "status": "passed"
       },
       {
-        "test": "SeasonSwitchMergedTest.testOffFromOff",
+        "test": "SeasonSwitchMergedTest.testBVACoolFromOffStateMin",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testBVAHeatFromHeatStateMax",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testRoomActionPerformedCoolAcOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testBVATimerOffCoolTempAboveBoundary",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testBVATimerOffCoolTempBelowBoundary",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testBVACoolFromCoolStateMid",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testBVATimerOffHeatTempAboveBoundary",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testBVATimerOffHeatTempBelowBoundary",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testRoomActionPerformedStateOff",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testBVATimerOffCoolTempAtBoundary",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testEPActionPerformedHeatTempBelowThreshold",
+        "status": "passed"
+      },
+      {
+        "test": "SeasonSwitchMergedTest.testTimerOffDefaultBranch",
         "status": "passed"
       }
     ],
     "phase": "original",
     "test_class": "SeasonSwitchMergedTest",
-    "test_file": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/src/test/java/cse4392/SeasonSwitchMergedTest.java",
+    "test_file": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/src/test/java/cse4392/SeasonSwitchMergedTest.java",
     "build": {
       "command": [
-        "/Users/marvinwellington/tools/apache-maven/bin/mvn",
+        "/opt/homebrew/bin/mvn",
         "-B",
         "-ntp",
         "-Dmaven.test.failure.ignore=true",
@@ -207,94 +329,127 @@
         "clean",
         "verify"
       ],
-      "cwd": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original",
+      "cwd": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original",
       "exit_code": 0,
       "timed_out": false,
-      "duration_s": 4.89,
+      "duration_s": 8.02,
       "compile_error": false,
-      "log_path": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/agent-maven.log"
+      "log_path": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/agent-maven.log"
     },
     "build_output_tail": ""
   },
   "final_coverage": {
     "report_found": true,
-    "xml_path": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/site/jacoco/jacoco.xml",
+    "xml_path": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/site/jacoco/jacoco.xml",
     "scope": {
-      "include_classes": [
-        "SeasonSwitch"
-      ],
-      "exclude_methods": [
-        "SeasonSwitch.main"
-      ]
+      "include_classes": null,
+      "exclude_methods": []
     },
-    "excluded_methods": [
-      "SeasonSwitch.main"
-    ],
+    "excluded_methods": [],
     "branch": {
-      "covered": 20,
+      "covered": 36,
       "missed": 0,
-      "total": 20,
+      "total": 36,
       "percent": 100.0
     },
     "line": {
-      "covered": 62,
-      "missed": 0,
-      "total": 62,
-      "percent": 100.0
+      "covered": 89,
+      "missed": 9,
+      "total": 98,
+      "percent": 90.82
     },
     "fully_covered": true,
     "missed_branches": [],
     "classes": {
+      "SeasonSwitch$AC": {
+        "source_file": "SeasonSwitch.java",
+        "branch": {
+          "missed": 0,
+          "covered": 0,
+          "total": 0
+        },
+        "line": {
+          "missed": 0,
+          "covered": 4,
+          "total": 4
+        }
+      },
       "SeasonSwitch": {
         "source_file": "SeasonSwitch.java",
         "branch": {
           "missed": 0,
-          "covered": 20,
-          "total": 20
+          "covered": 28,
+          "total": 28
+        },
+        "line": {
+          "missed": 9,
+          "covered": 72,
+          "total": 81
+        }
+      },
+      "SeasonSwitch$Room": {
+        "source_file": "SeasonSwitch.java",
+        "branch": {
+          "missed": 0,
+          "covered": 8,
+          "total": 8
         },
         "line": {
           "missed": 0,
-          "covered": 62,
-          "total": 62
+          "covered": 9,
+          "total": 9
+        }
+      },
+      "SeasonSwitch$Heater": {
+        "source_file": "SeasonSwitch.java",
+        "branch": {
+          "missed": 0,
+          "covered": 0,
+          "total": 0
+        },
+        "line": {
+          "missed": 0,
+          "covered": 4,
+          "total": 4
         }
       }
     },
     "phase": "original",
-    "html_report": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/java-original/target/site/jacoco/index.html"
+    "html_report": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/site/jacoco/index.html"
   },
   "changes": [
     {
-      "time": "2026-11-11T16:43:42",
+      "time": "2026-11-16T10:13:15",
       "phase": "original",
       "node": "bva_agent",
       "action": "generated_tests",
       "reason": "initial generation",
-      "test_count": 26,
-      "lines_added": 355,
+      "test_count": 28,
+      "lines_added": 345,
       "lines_removed": 0,
       "diff": ""
     },
     {
-      "time": "2026-11-11T16:43:34",
+      "time": "2026-11-16T10:13:06",
       "phase": "original",
       "node": "ep_agent",
       "action": "generated_tests",
       "reason": "initial generation",
       "test_count": 17,
-      "lines_added": 227,
+      "lines_added": 212,
       "lines_removed": 0,
       "diff": ""
     },
     {
-      "time": "2026-11-11T16:43:43",
+      "time": "2026-11-16T10:13:24",
       "phase": "original",
       "node": "review_bva",
-      "action": "approved",
+      "action": "rejected",
       "review_number": 1,
-      "feedback": ""
+      "feedback": "1. INVENTED BOUNDARIES FOR STATE: The state variable is not a numeric range with a MIN/MAX that the code compares against \u2014 it is an enumerated constant (OFF=0, COOL=1, HEAT=2) used only in switch statements. BVA does not apply to switch-on-enum values the same way it applies to numeric ranges. Testing state=-1 and state=3 as 'MIN-1' and 'MAX+1' invents boundaries that have no basis in the source code. There is no comparison like 'if (state >= 0 && state <= 2)'; the switch simply has no default. These eight tests (testBVACoolStateInvalidBelowMin, testBVACoolStateInvalidAboveMax, testBVAHeatStateInvalidBelowMin, testBVAHeatStateInvalidAboveMax, testBVAOffStateInvalidBelowMin, testBVAOffStateInvalidAboveMax, testBVATimerOffStateInvalidBelowMin, testBVATimerOffStateInvalidAboveMax) must be removed per check #3 ('No invented boundaries for things with no numeric comparison or range'). 2. MISSING BOUNDARY POINT FOR coolTemp: The condition is room.temp > coolTemp (i.e., > 68). BVA requires testing at N-1=67, N=68, and N+1=69. The tests cover 67, 68, and 69, which is correct, but the comment framework labels these as 'below boundary', 'at boundary', and 'above boundary' without explicitly noting that N=68 is the exact comparison value. This is acceptable as written, but the comment on testBVATimerOffCoolTempBelowBoundary says 'room.temp = coolTemp - 1' which is correct. No change needed here. 3. MISSING BOUNDARY POINT FOR heatTemp: Similarly, the condition is room.temp < heatTemp (i.e., < 77). Tests at 76, 77, and 78 are present and correct. No change needed here. 4. TIMER NOT STOPPED FOR TESTS THAT START THE TIMER: In testBVACoolFromOffStateMin, testBVACoolFromHeatStateMax, testBVAHeatFromOffStateMin, and testBVAHeatFromCoolStateMid, ss.cool() or ss.heat() starts ss.timer. The @AfterEach calls ss.timer.stop() and ss.room.timer.stop(), which is correct and sufficient \u2014 no change needed here. 5. ROOM TIMER NOT STARTED IN setUp: ss.room.timer is never started in setUp, so ss.room.timer.stop() in tearDown is harmless but the room timer is not running during tests. This is acceptable since tests do not rely on the room timer firing. 6. SUMMARY OF REQUIRED CHANGES: Remove the eight invalid-state tests for cool(), heat(), off(), and timerOff() that use state=-1 and state=3, as these represent invented boundaries not present in the source code."
     },
     {
-      "time": "2026-11-11T16:43:43",
+      "time": "2026-11-16T10:13:22",
       "phase": "original",
       "node": "review_ep",
       "action": "approved",
@@ -302,15 +457,222 @@
       "feedback": ""
     },
     {
-      "time": "2026-11-11T16:43:43",
+      "time": "2026-11-16T10:13:41",
+      "phase": "original",
+      "node": "bva_agent",
+      "action": "revised_tests",
+      "reason": "1. INVENTED BOUNDARIES FOR STATE: The state variable is not a numeric range with a MIN/MAX that the code compares against \u2014 it is an enumerated constant (OFF=0, COOL=1, HEAT=2) used only in switch statements. BVA does not apply to switch-on-enum values the same way it applies to numeric ranges. Testing state=-1 and state=3 as 'MIN-1' and 'MAX+1' invents boundaries that have no basis in the source code. There is no comparison like 'if (state >= 0 && state <= 2)'; the switch simply has no default. These eight tests (testBVACoolStateInvalidBelowMin, testBVACoolStateInvalidAboveMax, testBVAHeatStateInvalidBelowMin, testBVAHeatStateInvalidAboveMax, testBVAOffStateInvalidBelowMin, testBVAOffStateInvalidAboveMax, testBVATimerOffStateInvalidBelowMin, testBVATimerOffStateInvalidAboveMax) must be removed per check #3 ('No invented boundaries for things with no numeric comparison or range'). 2. MISSING BOUNDARY POINT FOR coolTemp: The condition is room.temp > coolTemp (i.e., > 68). BVA requires testing at N-1=67, N=68, and N+1=69. The tests cover 67, 68, and 69, which is correct, but the comment framework labels these as 'below boundary', 'at boundary', and 'above boundary' without explicitly noting that N=68 is the exact comparison value. This is acceptable as written, but the comment on testBVATimerOffCoolTempBelowBoundary says 'room.temp = coolTemp - 1' which is correct. No change needed here. 3. MISSING BOUNDARY POINT FOR heatTemp: Similarly, the condition is room.temp < heatTemp (i.e., < 77). Tests at 76, 77, and 78 are present and correct. No change needed here. 4. TIMER NOT STOPPED FOR TESTS THAT START THE TIMER: In testBVACoolFromOffStateMin, testBVACoolFromHeatStateMax, testBVAHeatFromOffStateMin, and testBVAHeatFromCoolStateMid, ss.cool() or ss.heat() starts ss.timer. The @AfterEach calls ss.timer.stop() and ss.room.timer.stop(), which is correct and sufficient \u2014 no change needed here. 5. ROOM TIMER NOT STARTED IN setUp: ss.room.timer is never started in setUp, so ss.room.timer.stop() in tearDown is harmless but the room timer is not running during tests. This is acceptable since tests do not rely on the room timer firing. 6. SUMMARY OF REQUIRED CHANGES: Remove the eight invalid-state tests for cool(), heat(), off(), and timerOff() that use state=-1 and state=3, as these represent invented boundaries not present in the source code.",
+      "test_count": 22,
+      "lines_added": 78,
+      "lines_removed": 125,
+      "diff": "--- SeasonSwitchBVTest.java (before)\n+++ SeasonSwitchBVTest.java (after)\n@@ -24,11 +24,10 @@\n     }\n \n     // -----------------------------------------------------------------------\n-    // Boundaries for state constants: OFF=0, COOL=1, HEAT=2\n-    // Valid range: 0..2; invalid below: -1; invalid above: 3\n-    // -----------------------------------------------------------------------\n-\n-    // state = OFF (MIN valid boundary = 0): cool() from OFF should start AC\n+    // cool() \u2014 valid state boundaries: OFF=0, COOL=1, HEAT=2\n+    // -----------------------------------------------------------------------\n+\n+    // state = OFF (0): cool() from OFF should start AC and timer, set state=COOL\n     @Test\n     void testBVACoolFromOffStateMin() {\n         // state == OFF (0), MIN valid boundary\n@@ -38,7 +37,7 @@\n         assertTrue(ss.timer.isRunning());\n     }\n \n-    // state = COOL (mid valid boundary = 1): cool() from COOL is no-op\n+    // state = COOL (1): cool() from COOL is no-op\n     @Test\n     void testBVACoolFromCoolStateMid() {\n         // state == COOL (1), mid valid boundary\n@@ -49,7 +48,7 @@\n         assertTrue(ss.ac.isOn);\n     }\n \n-    // state = HEAT (MAX valid boundary = 2): cool() from HEAT should switch\n+    // state = HEAT (2): cool() from HEAT should turn off heater, start AC, set state=COOL\n     @Test\n     void testBVACoolFromHeatStateMax() {\n         // state == HEAT (2), MAX valid boundary\n@@ -62,29 +61,11 @@\n         assertTrue(ss.timer.isRunning());\n     }\n \n-    // state = -1 (MIN-1, invalid): cool() switch has no default, nothing happens\n-    @Test\n-    void testBVACoolStateInvalidBelowMin() {\n-        // state == -1, below valid range; switch has no default, no-op\n-        SeasonSwitch.state = -1;\n-        ss.cool();\n-        assertEquals(-1, SeasonSwitch.state);\n-        assertFalse(ss.ac.isOn);\n-        assertFalse(ss.timer.isRunning());\n-    }\n-\n-    // state = 3 (MAX+1, invalid): cool() switch has no default, nothing happens\n-    @Test\n-    void testBVACoolStateInvalidAboveMax() {\n-        // state == 3, above valid range; switch has no default, no-op\n-        SeasonSwitch.state = 3;\n-        ss.cool();\n-        assertEquals(3, SeasonSwitch.state);\n-        assertFalse(ss.ac.isOn);\n-        assertFalse(ss.timer.isRunning());\n-    }\n-\n-    // state = OFF (MIN valid boundary = 0): heat() from OFF should start heater\n+    // -----------------------------------------------------------------------\n+    // heat() \u2014 valid state boundaries: OFF=0, COOL=1, HEAT=2\n+    // -----------------------------------------------------------------------\n+\n+    // state = OFF (0): heat() from OFF should start heater and timer, set state=HEAT\n     @Test\n     void testBVAHeatFromOffStateMin() {\n         // state == OFF (0), MIN valid boundary\n@@ -94,7 +75,7 @@\n         assertTrue(ss.timer.isRunning());\n     }\n \n-    // state = HEAT (MAX valid boundary = 2): heat() from HEAT is no-op\n+    // state = HEAT (2): heat() from HEAT is no-op\n     @Test\n     void testBVAHeatFromHeatStateMax() {\n         // state == HEAT (2), MAX valid boundary\n@@ -105,7 +86,7 @@\n         assertTrue(ss.heater.isOn);\n     }\n \n-    // state = COOL (mid valid boundary = 1): heat() from COOL should switch\n+    // state = COOL (1): heat() from COOL should turn off AC, start heater, set state=HEAT\n     @Test\n     void testBVAHeatFromCoolStateMid() {\n         // state == COOL (1), mid valid boundary\n@@ -118,27 +99,11 @@\n         assertTrue(ss.timer.isRunning());\n     }\n \n-    // state = -1 (MIN-1, invalid): heat() switch has no default, nothing happens\n-    @Test\n-    void testBVAHeatStateInvalidBelowMin() {\n-        SeasonSwitch.state = -1;\n-        ss.heat();\n-        assertEquals(-1, SeasonSwitch.state);\n-        assertFalse(ss.heater.isOn);\n-        assertFalse(ss.timer.isRunning());\n-    }\n-\n-    // state = 3 (MAX+1, invalid): heat() switch has no default, nothing happens\n-    @Test\n-    void testBVAHeatStateInvalidAboveMax() {\n-        SeasonSwitch.state = 3;\n-        ss.heat();\n-        assertEquals(3, SeasonSwitch.state);\n-        assertFalse(ss.heater.isOn);\n-        assertFalse(ss.timer.isRunning());\n-    }\n-\n-    // state = OFF (MIN valid boundary = 0): off() from OFF is no-op\n+    // -----------------------------------------------------------------------\n+    // off() \u2014 valid state boundaries: OFF=0, COOL=1, HEAT=2\n+    // -----------------------------------------------------------------------\n+\n+    // state = OFF (0): off() from OFF is no-op\n     @Test\n     void testBVAOffFromOffStateMin() {\n         // state == OFF (0), MIN valid boundary; off() is no-op\n@@ -147,7 +112,7 @@\n         assertFalse(ss.timer.isRunning());\n     }\n \n-    // state = COOL (mid valid boundary = 1): off() from COOL stops AC\n+    // state = COOL (1): off() from COOL stops AC and timer, sets state=OFF\n     @Test\n     void testBVAOffFromCoolStateMid() {\n         // state == COOL (1), mid valid boundary\n@@ -160,7 +125,7 @@\n         assertFalse(ss.timer.isRunning());\n     }\n \n-    // state = HEAT (MAX valid boundary = 2): off() from HEAT stops heater\n+    // state = HEAT (2): off() from HEAT stops heater and timer, sets state=OFF\n     @Test\n     void testBVAOffFromHeatStateMax() {\n         // state == HEAT (2), MAX valid boundary\n@@ -173,25 +138,9 @@\n         assertFalse(ss.timer.isRunning());\n     }\n \n-    // state = -1 (MIN-1, invalid): off() switch has no default, nothing happens\n-    @Test\n-    void testBVAOffStateInvalidBelowMin() {\n-        SeasonSwitch.state = -1;\n-        ss.off();\n-        assertEquals(-1, SeasonSwitch.state);\n-    }\n-\n-    // state = 3 (MAX+1, invalid): off() switch has no default, nothing happens\n-    @Test\n-    void testBVAOffStateInvalidAboveMax() {\n-        SeasonSwitch.state = 3;\n-        ss.off();\n-        assertEquals(3, SeasonSwitch.state);\n-    }\n-\n-    // -----------------------------------------------------------------------\n-    // Boundaries for timerOff() in COOL state: condition is room.temp > coolTemp\n-    // coolTemp = 68; boundaries at coolTemp-1=67, coolTemp=68, coolTemp+1=69\n+    // -----------------------------------------------------------------------\n+    // timerOff() in COOL state: condition is room.temp > coolTemp (strict >)\n+    // coolTemp = 68; test at coolTemp-1=67, coolTemp=68, coolTemp+1=69\n     // At exactly coolTemp (68): 68 > 68 is FALSE => ac.off()\n     // -----------------------------------------------------------------------\n \n@@ -200,16 +149,18 @@\n     void testBVATimerOffCoolTempBelowBoundary() {\n         // room.temp = coolTemp - 1; condition room.temp > coolTemp is FALSE\n         SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.ac.isOn = true;\n         ss.room.temp = ss.coolTemp - 1; // 67\n         ss.timerOff();\n         assertFalse(ss.ac.isOn);\n     }\n \n-    // room.temp = coolTemp = 68: 68 > 68 is FALSE => ac.off()\n+    // room.temp = coolTemp = 68: 68 > 68 is FALSE (strict >) => ac.off()\n     @Test\n     void testBVATimerOffCoolTempAtBoundary() {\n         // room.temp = coolTemp exactly; condition room.temp > coolTemp is FALSE (strict >)\n         SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.ac.isOn = true;\n         ss.room.temp = ss.coolTemp; // 68\n         ss.timerOff();\n         assertFalse(ss.ac.isOn);\n@@ -226,8 +177,8 @@\n     }\n \n     // -----------------------------------------------------------------------\n-    // Boundaries for timerOff() in HEAT state: condition is room.temp < heatTemp\n-    // heatTemp = 77; boundaries at heatTemp-1=76, heatTemp=77, heatTemp+1=78\n+    // timerOff() in HEAT state: condition is room.temp < heatTemp (strict <)\n+    // heatTemp = 77; test at heatTemp-1=76, heatTemp=77, heatTemp+1=78\n     // At exactly heatTemp (77): 77 < 77 is FALSE => heater.off()\n     // -----------------------------------------------------------------------\n \n@@ -241,11 +192,12 @@\n         assertTrue(ss.heater.isOn);\n     }\n \n-    // room.temp = heatTemp = 77: 77 < 77 is FALSE => heater.off()\n+    // room.temp = heatTemp = 77: 77 < 77 is FALSE (strict <) => heater.off()\n     @Test\n     void testBVATimerOffHeatTempAtBoundary() {\n         // room.temp = heatTemp exactly; condition room.temp < heatTemp is FALSE (strict <)\n         SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.heater.isOn = true;\n         ss.room.temp = ss.heatTemp; // 77\n         ss.timerOff();\n         assertFalse(ss.heater.isOn);\n@@ -256,6 +208,7 @@\n     void testBVATimerOffHeatTempAboveBoundary() {\n         // room.temp = heatTemp + 1; condition room.temp < heatTemp is FALSE\n         SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.heater.isOn = true;\n         ss.room.temp = ss.heatTemp + 1; // 78\n         ss.timerOff();\n         assertFalse(ss.heater.isOn);\n@@ -276,69 +229,69 @@\n     }\n \n     // -----------------------------------------------------------------------\n-    // timerOff() with invalid state values (no default in switch)\n-    // -----------------------------------------------------------------------\n-\n-    // state = -1 (MIN-1, invalid): timerOff() switch has no default, nothing happens\n-    @Test\n-    void testBVATimerOffStateInvalidBelowMin() {\n-        SeasonSwitch.state = -1;\n-        ss.timerOff();\n-        assertFalse(ss.ac.isOn);\n-        assertFalse(ss.heater.isOn);\n-    }\n-\n-    // state = 3 (MAX+1, invalid): timerOff() switch has no default, nothing happens\n-    @Test\n-    void testBVATimerOffStateInvalidAboveMax() {\n-        SeasonSwitch.state = 3;\n-        ss.timerOff();\n-        assertFalse(ss.ac.isOn);\n-        assertFalse(ss.heater.isOn);\n-    }\n-\n-    // -----------------------------------------------------------------------\n     // actionPerformed() delegates to timerOff(); verify via observable state\n     // -----------------------------------------------------------------------\n \n     // actionPerformed() in COOL state with room.temp > coolTemp => ac.on()\n     @Test\n     void testBVAActionPerformedCoolTempAboveBoundary() {\n-        // actionPerformed calls timerOff(); room.temp = coolTemp+1 => ac.on()\n-        SeasonSwitch.state = SeasonSwitch.COOL;\n-        ss.room.temp = ss.coolTemp + 1; // 69 > 68 TRUE\n-        ss.actionPerformed(null);\n-        assertTrue(ss.ac.isOn);\n+        // actionPerformed calls timerOff(); room.temp = coolTemp+1 => 69 > 68 TRUE => ac.on()\n+        SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.room.temp = ss.coolTemp + 1; // 69\n+        ss.actionPerformed(null);\n+        assertTrue(ss.ac.isOn);\n+    }\n+\n+    // actionPerformed() in COOL state with room.temp = coolTemp => ac.off()\n+    @Test\n+    void testBVAActionPerformedCoolTempAtBoundary() {\n+        // actionPerformed calls timerOff(); room.temp = coolTemp exactly => 68 > 68 FALSE => ac.off()\n+        SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.ac.isOn = true;\n+        ss.room.temp = ss.coolTemp; // 68\n+        ss.actionPerformed(null);\n+        assertFalse(ss.ac.isOn);\n+    }\n+\n+    // actionPerformed() in COOL state with room.temp = coolTemp - 1 => ac.off()\n+    @Test\n+    void testBVAActionPerformedCoolTempBelowBoundary() {\n+        // actionPerformed calls timerOff(); room.temp = coolTemp-1 => 67 > 68 FALSE => ac.off()\n+        SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.ac.isOn = true;\n+        ss.room.temp = ss.coolTemp - 1; // 67\n+        ss.actionPerformed(null);\n+        assertFalse(ss.ac.isOn);\n     }\n \n     // actionPerformed() in HEAT state with room.temp < heatTemp => heater.on()\n     @Test\n     void testBVAActionPerformedHeatTempBelowBoundary() {\n-        // actionPerformed calls timerOff(); room.temp = heatTemp-1 => heater.on()\n-        SeasonSwitch.state = SeasonSwitch.HEAT;\n-        ss.room.temp = ss.heatTemp - 1; // 76 < 77 TRUE\n-        ss.actionPerformed(null);\n-        assertTrue(ss.heater.isOn);\n-    }\n-\n-    // actionPerformed() in COOL state with room.temp = coolTemp => ac.off()\n-    @Test\n-    void testBVAActionPerformedCoolTempAtBoundary() {\n-        // actionPerformed calls timerOff(); room.temp = coolTemp exactly => ac.off()\n-        SeasonSwitch.state = SeasonSwitch.COOL;\n-        ss.ac.isOn = true;\n-        ss.room.temp = ss.coolTemp; // 68 > 68 FALSE\n-        ss.actionPerformed(null);\n-        assertFalse(ss.ac.isOn);\n+        // actionPerformed calls timerOff(); room.temp = heatTemp-1 => 76 < 77 TRUE => heater.on()\n+        SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.room.temp = ss.heatTemp - 1; // 76\n+        ss.actionPerformed(null);\n+        assertTrue(ss.heater.isOn);\n     }\n \n     // actionPerformed() in HEAT state with room.temp = heatTemp => heater.off()\n     @Test\n     void testBVAActionPerformedHeatTempAtBoundary() {\n-        // actionPerformed calls timerOff(); room.temp = heatTemp exactly => heater.off()\n-        SeasonSwitch.state = SeasonSwitch.HEAT;\n-        ss.heater.isOn = true;\n-        ss.room.temp = ss.heatTemp; // 77 < 77 FALSE\n+        // actionPerformed calls timerOff(); room.temp = heatTemp exactly => 77 < 77 FALSE => heater.off()\n+        SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.heater.isOn = true;\n+        ss.room.temp = ss.heatTemp; // 77\n+        ss.actionPerformed(null);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    // actionPerformed() in HEAT state with room.temp = heatTemp + 1 => heater.off()\n+    @Test\n+    void testBVAActionPerformedHeatTempAboveBoundary() {\n+        // actionPerformed calls timerOff(); room.temp = heatTemp+1 => 78 < 77 FALSE => heater.off()\n+        SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.heater.isOn = true;\n+        ss.room.temp = ss.heatTemp + 1; // 78\n         ss.actionPerformed(null);\n         assertFalse(ss.heater.isOn);\n     }"
+    },
+    {
+      "time": "2026-11-16T10:13:49",
+      "phase": "original",
+      "node": "review_bva",
+      "action": "approved",
+      "review_number": 2,
+      "feedback": ""
+    },
+    {
+      "time": "2026-11-16T10:13:49",
       "phase": "original",
       "node": "merge_tests",
       "action": "merged_tests",
       "ep_tests": 17,
-      "bv_tests": 26,
-      "merged_tests": 43,
+      "bv_tests": 22,
+      "merged_tests": 39,
       "duplicates_removed": 0,
-      "file": "/Users/marvinwellington/uta/gen_ai_5320/team-projects/project3/generated_tests/SeasonSwitchMergedTest.java"
+      "file": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/generated_tests/SeasonSwitchMergedTest.java"
+    },
+    {
+      "time": "2026-11-16T10:14:07",
+      "phase": "original",
+      "node": "review_tests",
+      "action": "human_approved",
+      "review_number": 1,
+      "feedback": "",
+      "test_feedback": {}
+    },
+    {
+      "time": "2026-11-16T16:14:23+00:00",
+      "phase": "original",
+      "node": "generate_gap_tests",
+      "action": "coverage_tests_proposed",
+      "target": "test",
+      "path": "approved merged JUnit suite",
+      "reason": "Target 10 measured missing branch line(s)",
+      "diff": "--- approved JUnit suite (before)\n+++ approved JUnit suite (after)\n@@ -457,4 +457,85 @@\n         ss.actionPerformed(null);\n         assertFalse(ss.heater.isOn);\n     }\n+\n+    @Test\n+    void testMainNoArgs() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(1500);\n+        assertFalse(r.exitedByItself);\n+        assertTrue(r.output.contains(\"Cooling started\"));\n+    }\n+\n+    @Test\n+    void testMainOffArg() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(\"off\");\n+        assertTrue(r.exitedByItself);\n+        assertEquals(0, r.exitCode);\n+        assertTrue(r.output.contains(\"System off\"));\n+    }\n+\n+    @Test\n+    void testMainCoolArg() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(1500, \"cool\");\n+        assertFalse(r.exitedByItself);\n+        assertTrue(r.output.contains(\"Cooling started\"));\n+    }\n+\n+    @Test\n+    void testMainHeatArg() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(1500, \"heat\");\n+        assertFalse(r.exitedByItself);\n+        assertTrue(r.output.contains(\"Heating started\"));\n+    }\n+\n+    @Test\n+    void testMainUnknownArg() throws Exception {\n+        ExitTrap.Result r = ExitTrap.runMain(\"unknown\");\n+        assertTrue(r.exitedByItself);\n+        assertEquals(1, r.exitCode);\n+        assertTrue(r.output.contains(\"Unknown command\"));\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedStateOff() {\n+        SeasonSwitch.state = SeasonSwitch.OFF;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore, ss.room.temp);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedCoolAcOn() {\n+        SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.ac.isOn = true;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore - 1, ss.room.temp);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedCoolAcOff() {\n+        SeasonSwitch.state = SeasonSwitch.COOL;\n+        ss.ac.isOn = false;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore + 1, ss.room.temp);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedHeatHeaterOn() {\n+        SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.heater.isOn = true;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore + 1, ss.room.temp);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedHeatHeaterOff() {\n+        SeasonSwitch.state = SeasonSwitch.HEAT;\n+        ss.heater.isOn = false;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore - 1, ss.room.temp);\n+    }\n }",
+      "tests": [
+        {
+          "id": "COV-01",
+          "technique": "COVERAGE",
+          "description": "main() line 101: args.length==0 branch (no args -> cool() called)",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 101,
+          "test_method": "testMainNoArgs"
+        },
+        {
+          "id": "COV-02",
+          "technique": "COVERAGE",
+          "description": "main() line 102: args[0]==\"off\" branch -> System.exit(0)",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 102,
+          "test_method": "testMainOffArg"
+        },
+        {
+          "id": "COV-03",
+          "technique": "COVERAGE",
+          "description": "main() line 107: args[0]==\"cool\" branch -> cool() called, keeps running",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 107,
+          "test_method": "testMainCoolArg"
+        },
+        {
+          "id": "COV-04",
+          "technique": "COVERAGE",
+          "description": "main() line 108: args[0]==\"heat\" branch -> heat() called, keeps running",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 108,
+          "test_method": "testMainHeatArg"
+        },
+        {
+          "id": "COV-05",
+          "technique": "COVERAGE",
+          "description": "main() line 108 else: unknown command -> System.exit(1)",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 108,
+          "test_method": "testMainUnknownArg"
+        },
+        {
+          "id": "COV-06",
+          "technique": "COVERAGE",
+          "description": "Room.actionPerformed line 134: switch with state==OFF -> return",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch$Room",
+          "line": 134,
+          "test_method": "testRoomActionPerformedStateOff"
+        },
+        {
+          "id": "COV-07",
+          "technique": "COVERAGE",
+          "description": "Room.actionPerformed line 137: state==COOL, ac.isOn true -> temp decrements",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch$Room",
+          "line": 137,
+          "test_method": "testRoomActionPerformedCoolAcOn"
+        },
+        {
+          "id": "COV-08",
+          "technique": "COVERAGE",
+          "description": "Room.actionPerformed line 137: state==COOL, ac.isOn false -> temp increments",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch$Room",
+          "line": 137,
+          "test_method": "testRoomActionPerformedCoolAcOff"
+        },
+        {
+          "id": "COV-09",
+          "technique": "COVERAGE",
+          "description": "Room.actionPerformed line 140: state==HEAT, heater.isOn true -> temp increments",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch$Room",
+          "line": 140,
+          "test_method": "testRoomActionPerformedHeatHeaterOn"
+        },
+        {
+          "id": "COV-10",
+          "technique": "COVERAGE",
+          "description": "Room.actionPerformed line 140: state==HEAT, heater.isOn false -> temp decrements",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch$Room",
+          "line": 140,
+          "test_method": "testRoomActionPerformedHeatHeaterOff"
+        }
+      ],
+      "round": 1
+    },
+    {
+      "time": "2026-11-16T10:14:33",
+      "phase": "original",
+      "node": "review_tests",
+      "action": "human_approved",
+      "review_number": 2,
+      "feedback": "",
+      "test_feedback": {}
+    },
+    {
+      "time": "2026-11-16T16:14:48+00:00",
+      "phase": "original",
+      "node": "generate_gap_tests",
+      "action": "coverage_tests_proposed",
+      "target": "test",
+      "path": "approved merged JUnit suite",
+      "reason": "Target 5 measured missing branch line(s)",
+      "diff": "--- approved JUnit suite (before)\n+++ approved JUnit suite (after)\n@@ -538,4 +538,48 @@\n         ss.room.actionPerformed(null);\n         assertEquals(tempBefore - 1, ss.room.temp);\n     }\n+\n+    @Test\n+    void testCoolDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        ss.cool();\n+        assertEquals(99, SeasonSwitch.state);\n+        assertFalse(ss.ac.isOn);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    @Test\n+    void testHeatDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        ss.heat();\n+        assertEquals(99, SeasonSwitch.state);\n+        assertFalse(ss.ac.isOn);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    @Test\n+    void testOffDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        ss.off();\n+        assertEquals(99, SeasonSwitch.state);\n+        assertFalse(ss.ac.isOn);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    @Test\n+    void testTimerOffDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        ss.timerOff();\n+        assertEquals(99, SeasonSwitch.state);\n+        assertFalse(ss.ac.isOn);\n+        assertFalse(ss.heater.isOn);\n+    }\n+\n+    @Test\n+    void testRoomActionPerformedDefaultBranch() {\n+        SeasonSwitch.state = 99;\n+        int tempBefore = ss.room.temp;\n+        ss.room.actionPerformed(null);\n+        assertEquals(tempBefore, ss.room.temp);\n+    }\n }",
+      "tests": [
+        {
+          "id": "COV-01",
+          "technique": "COVERAGE",
+          "description": "Reaches the implicit default branch of the switch in cool() at line 18 by passing an unrecognized state value",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 18,
+          "test_method": "testCoolDefaultBranch"
+        },
+        {
+          "id": "COV-02",
+          "technique": "COVERAGE",
+          "description": "Reaches the implicit default branch of the switch in heat() at line 36 by passing an unrecognized state value",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 36,
+          "test_method": "testHeatDefaultBranch"
+        },
+        {
+          "id": "COV-03",
+          "technique": "COVERAGE",
+          "description": "Reaches the implicit default branch of the switch in off() at line 54 by passing an unrecognized state value",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 54,
+          "test_method": "testOffDefaultBranch"
+        },
+        {
+          "id": "COV-04",
+          "technique": "COVERAGE",
+          "description": "Reaches the implicit default branch of the switch in timerOff() at line 74 by passing an unrecognized state value",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch",
+          "line": 74,
+          "test_method": "testTimerOffDefaultBranch"
+        },
+        {
+          "id": "COV-05",
+          "technique": "COVERAGE",
+          "description": "Reaches the implicit default branch of the switch in Room.actionPerformed() at line 134 by passing an unrecognized state value",
+          "source_file": "SeasonSwitch.java",
+          "class": "SeasonSwitch$Room",
+          "line": 134,
+          "test_method": "testRoomActionPerformedDefaultBranch"
+        }
+      ],
+      "round": 2
+    },
+    {
+      "time": "2026-11-16T10:14:55",
+      "phase": "original",
+      "node": "review_tests",
+      "action": "human_approved",
+      "review_number": 3,
+      "feedback": "",
+      "test_feedback": {}
     }
   ]
 }

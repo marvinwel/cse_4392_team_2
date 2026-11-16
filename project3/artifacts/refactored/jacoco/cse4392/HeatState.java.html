@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeatState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">seasonswitch-refactored</a> &gt; <a href="index.source.html" class="el_package">cse4392</a> &gt; <span class="el_source">HeatState.java</span></div><h1>HeatState.java</h1><pre class="source lang-java linenums">package cse4392;
+
+<span class="fc" id="L3">public class HeatState implements State {</span>
+    @Override
+    public void cool(SeasonSwitch ss) {
+<span class="fc" id="L6">        ss.heater.off();</span>
+<span class="fc" id="L7">        ss.ac.on();</span>
+<span class="fc" id="L8">        ss.timer.start();</span>
+<span class="fc" id="L9">        SeasonSwitch.state = SeasonSwitch.COOL;</span>
+<span class="fc" id="L10">        System.out.println(&quot;Cooling started. RmTemp=&quot; + ss.room.temp);</span>
+<span class="fc" id="L11">    }</span>
+
+    @Override
+    public void heat(SeasonSwitch ss) {
+        // no-op: already heating
+<span class="fc" id="L16">    }</span>
+
+    @Override
+    public void off(SeasonSwitch ss) {
+<span class="fc" id="L20">        ss.heater.off();</span>
+<span class="fc" id="L21">        ss.timer.stop();</span>
+<span class="fc" id="L22">        SeasonSwitch.state = SeasonSwitch.OFF;</span>
+<span class="fc" id="L23">        System.out.println(&quot;Heating stopped. RmTemp=&quot; + ss.room.temp);</span>
+<span class="fc" id="L24">    }</span>
+
+    @Override
+    public void timerOff(SeasonSwitch ss) {
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (ss.room.temp &lt; ss.heatTemp) {</span>
+<span class="fc" id="L29">            ss.heater.on();</span>
+<span class="fc" id="L30">            System.out.println(&quot;Heating started. RmTemp=&quot; + ss.room.temp);</span>
+        } else {
+<span class="fc" id="L32">            ss.heater.off();</span>
+<span class="fc" id="L33">            System.out.println(&quot;Heating stopped. RmTemp=&quot; + ss.room.temp);</span>
+        }
+<span class="fc" id="L35">    }</span>
+
+    @Override
+    public void roomTick(SeasonSwitch ss) {
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (ss.heater.isOn) ss.room.temp++; else ss.room.temp--;</span>
+<span class="fc" id="L40">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

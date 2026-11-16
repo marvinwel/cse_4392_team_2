@@ -5,3 +5,4 @@ langchain-aws
 langsmith 
 python-dotenv
 pydantic
+rich

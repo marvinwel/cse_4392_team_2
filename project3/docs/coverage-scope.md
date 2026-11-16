@@ -1,4 +1,4 @@
-# JaCoCo coverage scope: original SeasonSwitch (Person 3 proposal, needs team sign-off)
+# JaCoCo coverage scope: original SeasonSwitch (decided: full program)
 
 The professor requires **100% BRANCH coverage** (not line coverage) for the original and the refactored code.
 This note fixes **what is measured** so nobody quietly excludes the hard branches later.
@@ -37,7 +37,7 @@ How Option A would test `main` without editing the source:
 
 1. **no args / `cool` / `heat`:** run `SeasonSwitch.main(args)` on a separate thread, wait until `SeasonSwitch.state` changes, then `thread.interrupt()`. The `catch` stops both timers and `main` returns. All of this stays in the test JVM, so JaCoCo records it.
 2. **`off` / unknown:** run `java -cp target/classes cse4392.SeasonSwitch off` (and `bogus`) as a **child JVM** from the test, with the same JaCoCo agent attached (`append=true`). Then assert exit codes 0 and 1 and check stdout. The child JVM writes its coverage to `jacoco.exec` on exit.
-   - Pom change if we choose this: pass the agent string into the test with `<jacoco.agent.argLine>` / `@{argLine}`. Person 3 owns this.
+   - Implemented in `app/java_helpers/ExitTrap.java`. It copies the JaCoCo `-javaagent` argument from the test JVM, so no pom change was needed. A no-args/`cool`/`heat` run that keeps going is stopped with a normal terminate signal so JaCoCo still writes its data. Checked on 2026-11-15: `main()` 8/8 and the full program 36/36 with the merged suite plus Room and ExitTrap tests.
 
 ## What is enforced where
 
@@ -47,6 +47,5 @@ How Option A would test `main` without editing the source:
 
 ## Decision (fill in at the meeting)
 
-- [ ] Option chosen: ____ Agreed by: ____ Date: ____
-- [ ] If B: justification sentence for the slides: ____
-- [ ] Refactored phase uses the same rule. A State-pattern refactor adds new classes (`State`, `OffState`, …). All of them are included, and `SeasonSwitch.main` follows the same option.
+- [x] Option chosen: **A, full scope**. Agreed by: Ryan. Date: 2026-11-15.
+- [x] Refactored phase uses the same rule. Every class, including the new State classes, and `SeasonSwitch.main` are measured (`FULL_PROGRAM_SCOPE` in `app/main.py`).
