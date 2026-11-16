@@ -1,0 +1,131 @@
+{
+  "report_found": true,
+  "xml_path": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/site/jacoco/jacoco.xml",
+  "scope": {
+    "include_classes": null,
+    "exclude_methods": []
+  },
+  "excluded_methods": [],
+  "branch": {
+    "covered": 26,
+    "missed": 0,
+    "total": 26,
+    "percent": 100.0
+  },
+  "line": {
+    "covered": 105,
+    "missed": 9,
+    "total": 114,
+    "percent": 92.11
+  },
+  "fully_covered": true,
+  "missed_branches": [],
+  "classes": {
+    "CoolState": {
+      "source_file": "CoolState.java",
+      "branch": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
+      },
+      "line": {
+        "missed": 0,
+        "covered": 21,
+        "total": 21
+      }
+    },
+    "SeasonSwitch$AC": {
+      "source_file": "SeasonSwitch.java",
+      "branch": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      },
+      "line": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "SeasonSwitch": {
+      "source_file": "SeasonSwitch.java",
+      "branch": {
+        "missed": 0,
+        "covered": 16,
+        "total": 16
+      },
+      "line": {
+        "missed": 9,
+        "covered": 35,
+        "total": 44
+      }
+    },
+    "State": {
+      "source_file": "State.java",
+      "branch": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      },
+      "line": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      }
+    },
+    "OffState": {
+      "source_file": "OffState.java",
+      "branch": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      },
+      "line": {
+        "missed": 0,
+        "covered": 14,
+        "total": 14
+      }
+    },
+    "SeasonSwitch$Room": {
+      "source_file": "SeasonSwitch.java",
+      "branch": {
+        "missed": 0,
+        "covered": 2,
+        "total": 2
+      },
+      "line": {
+        "missed": 0,
+        "covered": 6,
+        "total": 6
+      }
+    },
+    "SeasonSwitch$Heater": {
+      "source_file": "SeasonSwitch.java",
+      "branch": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      },
+      "line": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
+      }
+    },
+    "HeatState": {
+      "source_file": "HeatState.java",
+      "branch": {
+        "missed": 0,
+        "covered": 4,
+        "total": 4
+      },
+      "line": {
+        "missed": 0,
+        "covered": 21,
+        "total": 21
+      }
+    }
+  },
+  "phase": "refactored",
+  "html_report": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/site/jacoco/index.html"
+}

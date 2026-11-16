@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="cse4392.SeasonSwitchMergedTest" time="5.84" tests="54" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="26"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/test-classes:/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/classes:/Users/mryanpatterson/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.4/junit-jupiter-5.11.4.jar:/Users/mryanpatterson/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/Users/mryanpatterson/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mryanpatterson/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/Users/mryanpatterson/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mryanpatterson/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:/Users/mryanpatterson/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.4/junit-jupiter-engine-5.11.4.jar:/Users/mryanpatterson/.m2/repository/org/junit/platform/junit-platform-engine/1.11.4/junit-platform-engine-1.11.4.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="26"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/temurin-26.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/surefire/surefirebooter-20261116101659754_3.jar /Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/surefire 2026-11-16T10-16-59_701-jvmRun1 surefire-20261116101659754_1tmp surefire_0-20261116101659754_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="test" value="cse4392.SeasonSwitchMergedTest"/>
+    <property name="surefire.test.class.path" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/test-classes:/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/classes:/Users/mryanpatterson/.m2/repository/org/junit/jupiter/junit-jupiter/5.11.4/junit-jupiter-5.11.4.jar:/Users/mryanpatterson/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/Users/mryanpatterson/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/mryanpatterson/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/Users/mryanpatterson/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/mryanpatterson/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:/Users/mryanpatterson/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.11.4/junit-jupiter-engine-5.11.4.jar:/Users/mryanpatterson/.m2/repository/org/junit/platform/junit-platform-engine/1.11.4/junit-platform-engine-1.11.4.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/mryanpatterson"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-08-18"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/temurin-26.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored"/>
+    <property name="java.vm.compressedOopsMode" value="Non-zero disjoint base"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.awt.headless" value="true"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/surefire/surefirebooter-20261116101659754_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="26.0.2.1+1"/>
+    <property name="user.name" value="mryanpatterson"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="27.2.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="surefire.failIfNoSpecifiedTests" value="false"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-26.0.2.1+1"/>
+    <property name="localRepository" value="/Users/mryanpatterson/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="jacoco.haltOnFailure" value="false"/>
+    <property name="java.io.tmpdir" value="/var/folders/4d/glbsv1ws1yj3lmz1sn7zb80r0000gn/T/"/>
+    <property name="java.version" value="26.0.2.1"/>
+    <property name="user.dir" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/mryanpatterson/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="26.0.2.1+1"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="70.0"/>
+    <property name="maven.test.failure.ignore" value="true"/>
+  </properties>
+  <testcase name="testRoomActionPerformedHeatHeaterOn" classname="cse4392.SeasonSwitchMergedTest" time="0.032"/>
+  <testcase name="testRoomActionPerformedHeatHeaterOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testEPTimerOffStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.002"/>
+  <testcase name="testBVAOffFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating stopped. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVATimerOffHeatTempAtBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating stopped. RmTemp=77
+]]></system-out>
+  </testcase>
+  <testcase name="testOffDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testBVAHeatFromCoolStateMid" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testEPHeatFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testEPHeatFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testEPHeatFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testBVAActionPerformedCoolTempAtBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling stopped. RmTemp=68
+]]></system-out>
+  </testcase>
+  <testcase name="testEPTimerOffCoolRoomTempAtOrBelowCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling stopped. RmTemp=65
+]]></system-out>
+  </testcase>
+  <testcase name="testMainHeatArg" classname="cse4392.SeasonSwitchMergedTest" time="1.831"/>
+  <testcase name="testMainCoolArg" classname="cse4392.SeasonSwitchMergedTest" time="1.817"/>
+  <testcase name="testEPTimerOffHeatRoomTempBelowHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating started. RmTemp=74
+]]></system-out>
+  </testcase>
+  <testcase name="testEPOffFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testEPActionPerformedCoolTempAboveThreshold" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=75
+]]></system-out>
+  </testcase>
+  <testcase name="testMainNoArgs" classname="cse4392.SeasonSwitchMergedTest" time="1.823"/>
+  <testcase name="testMainOffArg" classname="cse4392.SeasonSwitchMergedTest" time="0.144"/>
+  <testcase name="testHeatDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testBVAActionPerformedHeatTempAtBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating stopped. RmTemp=77
+]]></system-out>
+  </testcase>
+  <testcase name="testEPActionPerformedStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testEPTimerOffHeatRoomTempAtOrAboveHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating stopped. RmTemp=80
+]]></system-out>
+  </testcase>
+  <testcase name="testBVACoolFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAActionPerformedCoolTempAboveBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=69
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAOffFromCoolStateMid" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling stopped. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testCoolDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testEPOffFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling stopped. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testEPOffFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating stopped. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAActionPerformedCoolTempBelowBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling stopped. RmTemp=67
+]]></system-out>
+  </testcase>
+  <testcase name="testRoomActionPerformedCoolAcOn" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVAOffFromOffStateMin" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVATimerOffStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testRoomActionPerformedDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVAActionPerformedHeatTempAboveBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating stopped. RmTemp=78
+]]></system-out>
+  </testcase>
+  <testcase name="testMainUnknownArg" classname="cse4392.SeasonSwitchMergedTest" time="0.142"/>
+  <testcase name="testEPTimerOffCoolRoomTempAboveCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=72
+]]></system-out>
+  </testcase>
+  <testcase name="testEPCoolFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testEPCoolFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAActionPerformedHeatTempBelowBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating started. RmTemp=76
+]]></system-out>
+  </testcase>
+  <testcase name="testEPCoolFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAHeatFromOffStateMin" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVACoolFromOffStateMin" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAHeatFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testRoomActionPerformedCoolAcOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVATimerOffCoolTempAboveBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Cooling started. RmTemp=69
+]]></system-out>
+  </testcase>
+  <testcase name="testBVATimerOffCoolTempBelowBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Cooling stopped. RmTemp=67
+]]></system-out>
+  </testcase>
+  <testcase name="testBVACoolFromCoolStateMid" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVATimerOffHeatTempAboveBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating stopped. RmTemp=78
+]]></system-out>
+  </testcase>
+  <testcase name="testBVATimerOffHeatTempBelowBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=76
+]]></system-out>
+  </testcase>
+  <testcase name="testRoomActionPerformedStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testBVATimerOffCoolTempAtBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling stopped. RmTemp=68
+]]></system-out>
+  </testcase>
+  <testcase name="testEPActionPerformedHeatTempBelowThreshold" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating started. RmTemp=73
+]]></system-out>
+  </testcase>
+  <testcase name="testTimerOffDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+</testsuite>

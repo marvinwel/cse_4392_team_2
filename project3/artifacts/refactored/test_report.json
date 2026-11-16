@@ -1,0 +1,255 @@
+{
+  "reports_found": true,
+  "report_files": [
+    "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/surefire-reports/TEST-cse4392.SeasonSwitchMergedTest.xml"
+  ],
+  "total": 54,
+  "passed": 54,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "time_s": 5.81,
+  "all_passed": true,
+  "failures": [],
+  "tests": [
+    {
+      "test": "SeasonSwitchMergedTest.testRoomActionPerformedHeatHeaterOn",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testRoomActionPerformedHeatHeaterOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPTimerOffStateOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAOffFromHeatStateMax",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVATimerOffHeatTempAtBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testOffDefaultBranch",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAHeatFromCoolStateMid",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPHeatFromOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPHeatFromCool",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPHeatFromHeat",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAActionPerformedCoolTempAtBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPTimerOffCoolRoomTempAtOrBelowCoolTemp",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testMainHeatArg",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testMainCoolArg",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPTimerOffHeatRoomTempBelowHeatTemp",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPOffFromOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPActionPerformedCoolTempAboveThreshold",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testMainNoArgs",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testMainOffArg",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testHeatDefaultBranch",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAActionPerformedHeatTempAtBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPActionPerformedStateOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPTimerOffHeatRoomTempAtOrAboveHeatTemp",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVACoolFromHeatStateMax",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAActionPerformedCoolTempAboveBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAOffFromCoolStateMid",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testCoolDefaultBranch",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPOffFromCool",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPOffFromHeat",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAActionPerformedCoolTempBelowBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testRoomActionPerformedCoolAcOn",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAOffFromOffStateMin",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVATimerOffStateOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testRoomActionPerformedDefaultBranch",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAActionPerformedHeatTempAboveBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testMainUnknownArg",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPTimerOffCoolRoomTempAboveCoolTemp",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPCoolFromCool",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPCoolFromHeat",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAActionPerformedHeatTempBelowBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPCoolFromOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAHeatFromOffStateMin",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVACoolFromOffStateMin",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVAHeatFromHeatStateMax",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testRoomActionPerformedCoolAcOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVATimerOffCoolTempAboveBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVATimerOffCoolTempBelowBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVACoolFromCoolStateMid",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVATimerOffHeatTempAboveBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVATimerOffHeatTempBelowBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testRoomActionPerformedStateOff",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testBVATimerOffCoolTempAtBoundary",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testEPActionPerformedHeatTempBelowThreshold",
+      "status": "passed"
+    },
+    {
+      "test": "SeasonSwitchMergedTest.testTimerOffDefaultBranch",
+      "status": "passed"
+    }
+  ],
+  "phase": "refactored",
+  "test_class": "SeasonSwitchMergedTest",
+  "test_file": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/src/test/java/cse4392/SeasonSwitchMergedTest.java",
+  "build": {
+    "command": [
+      "/opt/homebrew/bin/mvn",
+      "-B",
+      "-ntp",
+      "-Dmaven.test.failure.ignore=true",
+      "-Djacoco.haltOnFailure=false",
+      "-Dsurefire.failIfNoSpecifiedTests=false",
+      "-Dtest=cse4392.SeasonSwitchMergedTest",
+      "clean",
+      "verify"
+    ],
+    "cwd": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored",
+    "exit_code": 0,
+    "timed_out": false,
+    "duration_s": 8.18,
+    "compile_error": false,
+    "log_path": "/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-refactored/target/agent-maven.log"
+  },
+  "build_output_tail": ""
+}
