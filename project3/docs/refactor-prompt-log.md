@@ -39,6 +39,62 @@ state that the main class treats as a no-op.
 **Verdict:** satisfactory as a State-pattern design. Coverage is not yet 100%; that
 needs Room tests, not a prompt change.
 
+## Web LLM iterations (2026-11-16)
+
+The assignment asks for prompt variations with a web-based LLM. Each version below was
+pasted into a new temporary chat in ChatGPT (GPT 6, High), together with the original
+`SeasonSwitch.java`. The prompt texts are in `docs/web-llm-prompts/`. Each answer was
+then checked against the approved JUnit suite of the human-reviewed run (53 tests).
+
+### Web version 1: plain request
+
+**Prompt:** "Refactor this Java class to use the State design pattern."
+
+**Result:**
+- One file. The State interface, the three states, AC, Heater and Room are all
+  `private` nested classes.
+- `state` became a private instance field. The `OFF`, `COOL` and `HEAT` constants were removed.
+- No `switch` remains, and Room delegates to `state.updateRoom()`.
+
+**Verdict:** this is a real State pattern, but it breaks the interface. The tests read
+`ss.ac`, `ss.heater` and `SeasonSwitch.state`, which are now private or gone, so the suite
+cannot compile against it (found by reading the code). This led to adding the
+assignment's hint about keeping the class name and interface.
+
+### Web version 2: keep the class name and interface
+
+**Change:** "Keep the class name SeasonSwitch, its package, and every public method name
+and parameter list exactly the same, so the existing JUnit tests can be reused."
+
+**Result:**
+- Five files: `SeasonSwitch`, the `SeasonState` interface, `OffState`, `CoolingState`, `HeatingState`.
+- It kept `static int state` and the int constants "for compatibility". The real mode is
+  a separate private `currentState` field.
+- Run against the 53 approved original tests: 19 pass, **34 fail**. Tests that set
+  `SeasonSwitch.state = SeasonSwitch.COOL` no longer change the behavior, because
+  the int field is only a copy.
+
+**Verdict:** not satisfactory. It has two sources of truth for the mode. The prompt has
+to require a State-typed `state` field and State-object constants.
+
+### Web version 3: final prompt (same requirements as the agent's `REFACTOR_PROMPT`)
+
+**Change:** the full requirement list from `app/refactor_nodes.py`: a State-typed
+`static State state`, `OFF`/`COOL`/`HEAT` as State objects, one top-level file per state,
+no switch or if/else on the mode (including `Room.actionPerformed`), and a null
+state as a no-op. The JSON output format and the test-adaptation lines were left
+out, because they only matter inside the agent.
+
+**Result:**
+- Five files: `State`, `OffState`, `CoolState`, `HeatState`, `SeasonSwitch`.
+- `static State state = OFF`, and the constants are State objects. No int mode and no `switch` remain.
+- Run against the adapted tests from the human-reviewed run: **53/53 pass, 26/26
+  branches (100%)**.
+
+**Verdict:** satisfactory. It matches the design the agent produces with the same
+requirements. This confirms the final prompt that is used in the agent system.
+
 ## Final prompt
 
-Variation 2 is the prompt used in the submitted agent system.
+Variation 2 is the prompt used in the submitted agent system. Web version 3 above
+confirms it on a web-based LLM.
