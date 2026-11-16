@@ -27,271 +27,274 @@ public class SeasonSwitchMergedTest {
     @Test
     void testEPCoolFromOff() {
         ss.cool();
+        assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
         assertTrue(ss.ac.isOn);
         assertFalse(ss.heater.isOn);
         assertTrue(ss.timer.isRunning());
-        assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
     }
 
     // Partition: cool() called when state == COOL -> no change (already cooling)
     @Test
     void testEPCoolFromCool() {
-        SeasonSwitch.state = SeasonSwitch.COOL;
-        ss.ac.on();
-        ss.timer.start();
+        // move to COOL
         ss.cool();
-        // State remains COOL, AC still on
-        assertTrue(ss.ac.isOn);
+        // manually alter to detect no-op
+        ss.ac.isOn = false;
+        // should do nothing
+        ss.cool();
         assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
+        // unchanged
+        assertFalse(ss.ac.isOn);
     }
 
     // Partition: cool() called when state == HEAT -> heater off, AC on, timer starts, state becomes COOL
     @Test
     void testEPCoolFromHeat() {
-        SeasonSwitch.state = SeasonSwitch.HEAT;
-        ss.heater.on();
-        ss.timer.start();
+        // move to HEAT
+        ss.heat();
+        assertTrue(ss.heater.isOn);
         ss.cool();
-        assertFalse(ss.heater.isOn);
-        assertTrue(ss.ac.isOn);
-        assertTrue(ss.timer.isRunning());
         assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
+        assertTrue(ss.ac.isOn);
+        assertFalse(ss.heater.isOn);
+        assertTrue(ss.timer.isRunning());
     }
 
     // Partition: heat() called when state == OFF -> heater turns on, timer starts, state becomes HEAT
     @Test
     void testEPHeatFromOff() {
         ss.heat();
+        assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
         assertTrue(ss.heater.isOn);
         assertFalse(ss.ac.isOn);
         assertTrue(ss.timer.isRunning());
-        assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
     }
 
     // Partition: heat() called when state == HEAT -> no change (already heating)
     @Test
     void testEPHeatFromHeat() {
-        SeasonSwitch.state = SeasonSwitch.HEAT;
-        ss.heater.on();
-        ss.timer.start();
+        // move to HEAT
         ss.heat();
-        // State remains HEAT, heater still on
-        assertTrue(ss.heater.isOn);
+        // manually alter to detect no-op
+        ss.heater.isOn = false;
+        // should do nothing
+        ss.heat();
         assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
+        // unchanged
+        assertFalse(ss.heater.isOn);
     }
 
     // Partition: heat() called when state == COOL -> AC off, heater on, timer starts, state becomes HEAT
     @Test
     void testEPHeatFromCool() {
-        SeasonSwitch.state = SeasonSwitch.COOL;
-        ss.ac.on();
-        ss.timer.start();
+        // move to COOL
+        ss.cool();
+        assertTrue(ss.ac.isOn);
         ss.heat();
-        assertFalse(ss.ac.isOn);
-        assertTrue(ss.heater.isOn);
-        assertTrue(ss.timer.isRunning());
         assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
+        assertTrue(ss.heater.isOn);
+        assertFalse(ss.ac.isOn);
+        assertTrue(ss.timer.isRunning());
     }
 
-    // Partition: off() called when state == OFF -> no change
+    // Partition: off() called when state == OFF -> no change (already off)
     @Test
     void testEPOffFromOff() {
         ss.off();
+        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
         assertFalse(ss.ac.isOn);
         assertFalse(ss.heater.isOn);
         assertFalse(ss.timer.isRunning());
-        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
     }
 
     // Partition: off() called when state == HEAT -> heater off, timer stops, state becomes OFF
     @Test
     void testEPOffFromHeat() {
-        SeasonSwitch.state = SeasonSwitch.HEAT;
-        ss.heater.on();
-        ss.timer.start();
+        // move to HEAT
+        ss.heat();
+        assertTrue(ss.timer.isRunning());
         ss.off();
+        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
         assertFalse(ss.heater.isOn);
         assertFalse(ss.timer.isRunning());
-        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
     }
 
     // Partition: off() called when state == COOL -> AC off, timer stops, state becomes OFF
     @Test
     void testEPOffFromCool() {
-        SeasonSwitch.state = SeasonSwitch.COOL;
-        ss.ac.on();
-        ss.timer.start();
+        // move to COOL
+        ss.cool();
+        assertTrue(ss.timer.isRunning());
         ss.off();
+        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
         assertFalse(ss.ac.isOn);
         assertFalse(ss.timer.isRunning());
-        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
     }
 
-    // Partition: timerOff() when state == OFF -> no change to AC or heater
+    // Partition: timerOff() when state == OFF -> no change
     @Test
-    void testEPTimerOffStateOff() {
+    void testEPTimerOffWhenOff() {
         ss.timerOff();
+        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
         assertFalse(ss.ac.isOn);
         assertFalse(ss.heater.isOn);
-        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
     }
 
-    // Partition: timerOff() when state == COOL and room.temp > coolTemp (70 > 68) -> AC turns on
+    // Partition: timerOff() when state == COOL and room.temp > coolTemp (72 > 68) -> AC turns on
     @Test
     void testEPTimerOffCoolRoomTempAboveCoolTemp() {
-        SeasonSwitch.state = SeasonSwitch.COOL;
-        // 72 > 68 (coolTemp)
+        // state = COOL
+        ss.cool();
+        // 72 > 68 (coolTemp), middle of above-threshold class
         ss.room.temp = 72;
         ss.timerOff();
         assertTrue(ss.ac.isOn);
-        assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
     }
 
     // Partition: timerOff() when state == COOL and room.temp <= coolTemp (65 <= 68) -> AC turns off
     @Test
     void testEPTimerOffCoolRoomTempAtOrBelowCoolTemp() {
-        SeasonSwitch.state = SeasonSwitch.COOL;
-        ss.ac.on();
-        // 65 <= 68 (coolTemp)
+        // state = COOL
+        ss.cool();
+        // 65 <= 68 (coolTemp), middle of at-or-below class
         ss.room.temp = 65;
         ss.timerOff();
         assertFalse(ss.ac.isOn);
-        assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
     }
 
     // Partition: timerOff() when state == HEAT and room.temp < heatTemp (74 < 77) -> heater turns on
     @Test
     void testEPTimerOffHeatRoomTempBelowHeatTemp() {
-        SeasonSwitch.state = SeasonSwitch.HEAT;
-        // 74 < 77 (heatTemp)
+        // state = HEAT
+        ss.heat();
+        // 74 < 77 (heatTemp), middle of below-threshold class
         ss.room.temp = 74;
         ss.timerOff();
         assertTrue(ss.heater.isOn);
-        assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
     }
 
     // Partition: timerOff() when state == HEAT and room.temp >= heatTemp (80 >= 77) -> heater turns off
     @Test
     void testEPTimerOffHeatRoomTempAtOrAboveHeatTemp() {
-        SeasonSwitch.state = SeasonSwitch.HEAT;
-        ss.heater.on();
-        // 80 >= 77 (heatTemp)
+        // state = HEAT
+        ss.heat();
+        // 80 >= 77 (heatTemp), middle of at-or-above class
         ss.room.temp = 80;
         ss.timerOff();
         assertFalse(ss.heater.isOn);
-        assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
     }
 
-    // Partition: actionPerformed() delegates to timerOff() when state == COOL and temp > coolTemp
+    // Partition: actionPerformed() delegates to timerOff(); state == COOL, temp > coolTemp -> AC on
     @Test
     void testEPActionPerformedCoolTempAboveThreshold() {
-        SeasonSwitch.state = SeasonSwitch.COOL;
-        // 73 > 68
+        // state = COOL
+        ss.cool();
+        // 73 > 68, middle of above-threshold class
         ss.room.temp = 73;
         ss.actionPerformed(null);
         assertTrue(ss.ac.isOn);
     }
 
-    // Partition: actionPerformed() delegates to timerOff() when state == HEAT and temp < heatTemp
+    // Partition: actionPerformed() delegates to timerOff(); state == HEAT, temp < heatTemp -> heater on
     @Test
     void testEPActionPerformedHeatTempBelowThreshold() {
-        SeasonSwitch.state = SeasonSwitch.HEAT;
-        // 75 < 77
+        // state = HEAT
+        ss.heat();
+        // 75 < 77, middle of below-threshold class
         ss.room.temp = 75;
         ss.actionPerformed(null);
         assertTrue(ss.heater.isOn);
     }
 
-    // Partition: actionPerformed() delegates to timerOff() when state == OFF -> no device change
+    // Partition: actionPerformed() delegates to timerOff(); state == OFF -> no effect
     @Test
-    void testEPActionPerformedStateOff() {
+    void testEPActionPerformedWhenOff() {
         ss.actionPerformed(null);
+        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
         assertFalse(ss.ac.isOn);
         assertFalse(ss.heater.isOn);
     }
 
-    // state = OFF (MIN of valid range): cool() from OFF should start AC
+    // state = OFF: cool() from OFF should start AC and set state to COOL
     @Test
     void testBVACoolFromOffStateMin() {
-        // state == OFF (0), boundary MIN of valid state range
+        SeasonSwitch.state = SeasonSwitch.OFF;
         ss.cool();
         assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
         assertTrue(ss.ac.isOn);
+        assertFalse(ss.heater.isOn);
         assertTrue(ss.timer.isRunning());
     }
 
-    // state = COOL (middle of valid range): cool() from COOL is no-op
+    // state = COOL: cool() from COOL is a no-op
     @Test
-    void testBVACoolFromCoolStateMid() {
-        // state == COOL (1), middle of valid state range
+    void testBVACoolFromCoolStateMiddle() {
         SeasonSwitch.state = SeasonSwitch.COOL;
         ss.ac.isOn = true;
         ss.cool();
         assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
+        // unchanged
         assertTrue(ss.ac.isOn);
     }
 
-    // state = HEAT (MAX of valid range): cool() from HEAT should switch
+    // state = HEAT: cool() from HEAT should turn off heater, turn on AC, set state to COOL
     @Test
     void testBVACoolFromHeatStateMax() {
-        // state == HEAT (2), boundary MAX of valid state range
         SeasonSwitch.state = SeasonSwitch.HEAT;
         ss.heater.isOn = true;
         ss.cool();
         assertEquals(SeasonSwitch.COOL, SeasonSwitch.state);
-        assertFalse(ss.heater.isOn);
         assertTrue(ss.ac.isOn);
+        assertFalse(ss.heater.isOn);
         assertTrue(ss.timer.isRunning());
     }
 
-    // state = OFF (MIN): heat() from OFF should start heater
+    // state = OFF: heat() from OFF should start heater and set state to HEAT
     @Test
     void testBVAHeatFromOffStateMin() {
-        // state == OFF (0), boundary MIN of valid state range
+        SeasonSwitch.state = SeasonSwitch.OFF;
         ss.heat();
         assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
         assertTrue(ss.heater.isOn);
         assertTrue(ss.timer.isRunning());
     }
 
-    // state = HEAT (MAX): heat() from HEAT is no-op
+    // state = HEAT: heat() from HEAT is a no-op
     @Test
     void testBVAHeatFromHeatStateMax() {
-        // state == HEAT (2), boundary MAX of valid state range
         SeasonSwitch.state = SeasonSwitch.HEAT;
         ss.heater.isOn = true;
         ss.heat();
         assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
+        // unchanged
         assertTrue(ss.heater.isOn);
     }
 
-    // state = COOL (middle): heat() from COOL should switch
+    // state = COOL: heat() from COOL should turn off AC, turn on heater, set state to HEAT
     @Test
-    void testBVAHeatFromCoolStateMid() {
-        // state == COOL (1), middle of valid state range
+    void testBVAHeatFromCoolStateMiddle() {
         SeasonSwitch.state = SeasonSwitch.COOL;
         ss.ac.isOn = true;
         ss.heat();
         assertEquals(SeasonSwitch.HEAT, SeasonSwitch.state);
-        assertFalse(ss.ac.isOn);
         assertTrue(ss.heater.isOn);
+        assertFalse(ss.ac.isOn);
         assertTrue(ss.timer.isRunning());
     }
 
-    // state = OFF (MIN): off() from OFF is no-op
+    // state = OFF: off() from OFF is a no-op (case OFF: break)
     @Test
     void testBVAOffFromOffStateMin() {
-        // state == OFF (0), boundary MIN of valid state range
+        SeasonSwitch.state = SeasonSwitch.OFF;
         ss.off();
         assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
         assertFalse(ss.ac.isOn);
         assertFalse(ss.heater.isOn);
     }
 
-    // state = HEAT (MAX): off() from HEAT should stop heater
+    // state = HEAT: off() from HEAT should stop heater and timer, set state to OFF
     @Test
     void testBVAOffFromHeatStateMax() {
-        // state == HEAT (2), boundary MAX of valid state range
         SeasonSwitch.state = SeasonSwitch.HEAT;
         ss.heater.isOn = true;
         ss.timer.start();
@@ -301,10 +304,9 @@ public class SeasonSwitchMergedTest {
         assertFalse(ss.timer.isRunning());
     }
 
-    // state = COOL (middle): off() from COOL should stop AC
+    // state = COOL: off() from COOL should stop AC and timer, set state to OFF
     @Test
-    void testBVAOffFromCoolStateMid() {
-        // state == COOL (1), middle of valid state range
+    void testBVAOffFromCoolStateMiddle() {
         SeasonSwitch.state = SeasonSwitch.COOL;
         ss.ac.isOn = true;
         ss.timer.start();
@@ -314,140 +316,200 @@ public class SeasonSwitchMergedTest {
         assertFalse(ss.timer.isRunning());
     }
 
-    // state = -1 (MIN-1, invalid): cool() has no matching case, does nothing
-    @Test
-    void testBVACoolStateInvalidBelowMin() {
-        // state == -1, one below MIN of valid state range; switch has no default
-        SeasonSwitch.state = -1;
-        ss.cool();
-        // No case matches; state unchanged, AC stays off
-        assertEquals(-1, SeasonSwitch.state);
-        assertFalse(ss.ac.isOn);
-        assertFalse(ss.timer.isRunning());
-    }
-
-    // state = 3 (MAX+1, invalid): heat() has no matching case, does nothing
-    @Test
-    void testBVAHeatStateInvalidAboveMax() {
-        // state == 3, one above MAX of valid state range; switch has no default
-        SeasonSwitch.state = 3;
-        ss.heat();
-        // No case matches; state unchanged, heater stays off
-        assertEquals(3, SeasonSwitch.state);
-        assertFalse(ss.heater.isOn);
-        assertFalse(ss.timer.isRunning());
-    }
-
-    // state = -1 (MIN-1, invalid): off() has no matching case, does nothing
-    @Test
-    void testBVAOffStateInvalidBelowMin() {
-        // state == -1, one below MIN of valid state range; switch has no default
-        SeasonSwitch.state = -1;
-        ss.off();
-        assertEquals(-1, SeasonSwitch.state);
-    }
-
-    // state = 3 (MAX+1, invalid): timerOff() has no matching case, does nothing
-    @Test
-    void testBVATimerOffStateInvalidAboveMax() {
-        // state == 3, one above MAX of valid state range; switch has no default
-        SeasonSwitch.state = 3;
-        ss.timerOff();
-        assertEquals(3, SeasonSwitch.state);
-        assertFalse(ss.ac.isOn);
-        assertFalse(ss.heater.isOn);
-    }
-
-    // room.temp = coolTemp - 1 = 67: condition (temp > coolTemp) is FALSE -> AC off
+    // room.temp = coolTemp - 1 = 67: condition (temp > coolTemp) is FALSE -> ac.off()
     @Test
     void testBVATimerOffCoolTempMinusOne() {
-        // temp=67, coolTemp=68; 67 > 68 is false -> ac.off()
         SeasonSwitch.state = SeasonSwitch.COOL;
-        // 67
+        // 67, 67 > 68 is FALSE
         ss.room.temp = ss.coolTemp - 1;
         ss.timerOff();
+        // ac turned off
         assertFalse(ss.ac.isOn);
     }
 
-    // room.temp = coolTemp = 68: condition (temp > coolTemp) is FALSE (strict >) -> AC off
+    // room.temp = coolTemp = 68: condition (temp > coolTemp) is FALSE at exactly N -> ac.off()
     @Test
-    void testBVATimerOffCoolTempExact() {
-        // temp=68, coolTemp=68; 68 > 68 is false -> ac.off()
+    void testBVATimerOffCoolTempAtBoundary() {
         SeasonSwitch.state = SeasonSwitch.COOL;
-        // 68
+        // 68, 68 > 68 is FALSE (strict >)
         ss.room.temp = ss.coolTemp;
         ss.timerOff();
+        // ac turned off
         assertFalse(ss.ac.isOn);
     }
 
-    // room.temp = coolTemp + 1 = 69: condition (temp > coolTemp) is TRUE -> AC on
+    // room.temp = coolTemp + 1 = 69: condition (temp > coolTemp) is TRUE -> ac.on()
     @Test
     void testBVATimerOffCoolTempPlusOne() {
-        // temp=69, coolTemp=68; 69 > 68 is true -> ac.on()
         SeasonSwitch.state = SeasonSwitch.COOL;
-        // 69
+        // 69, 69 > 68 is TRUE
         ss.room.temp = ss.coolTemp + 1;
         ss.timerOff();
+        // ac turned on
         assertTrue(ss.ac.isOn);
     }
 
-    // room.temp = heatTemp - 1 = 76: condition (temp < heatTemp) is TRUE -> heater on
+    // room.temp = heatTemp - 1 = 76: condition (temp < heatTemp) is TRUE -> heater.on()
     @Test
     void testBVATimerOffHeatTempMinusOne() {
-        // temp=76, heatTemp=77; 76 < 77 is true -> heater.on()
         SeasonSwitch.state = SeasonSwitch.HEAT;
-        // 76
+        // 76, 76 < 77 is TRUE
         ss.room.temp = ss.heatTemp - 1;
         ss.timerOff();
+        // heater turned on
         assertTrue(ss.heater.isOn);
     }
 
-    // room.temp = heatTemp = 77: condition (temp < heatTemp) is FALSE (strict <) -> heater off
+    // room.temp = heatTemp = 77: condition (temp < heatTemp) is FALSE at exactly N -> heater.off()
     @Test
-    void testBVATimerOffHeatTempExact() {
-        // temp=77, heatTemp=77; 77 < 77 is false -> heater.off()
+    void testBVATimerOffHeatTempAtBoundary() {
         SeasonSwitch.state = SeasonSwitch.HEAT;
-        // 77
+        // 77, 77 < 77 is FALSE (strict <)
         ss.room.temp = ss.heatTemp;
-        ss.heater.isOn = true;
         ss.timerOff();
+        // heater turned off
         assertFalse(ss.heater.isOn);
     }
 
-    // room.temp = heatTemp + 1 = 78: condition (temp < heatTemp) is FALSE -> heater off
+    // room.temp = heatTemp + 1 = 78: condition (temp < heatTemp) is FALSE -> heater.off()
     @Test
     void testBVATimerOffHeatTempPlusOne() {
-        // temp=78, heatTemp=77; 78 < 77 is false -> heater.off()
         SeasonSwitch.state = SeasonSwitch.HEAT;
-        // 78
+        // 78, 78 < 77 is FALSE
         ss.room.temp = ss.heatTemp + 1;
-        ss.heater.isOn = true;
         ss.timerOff();
+        // heater turned off
         assertFalse(ss.heater.isOn);
     }
 
-    // state = OFF: timerOff() does nothing (break in switch)
+    // state = OFF: timerOff() hits case OFF: break, no device changes
     @Test
-    void testBVATimerOffWhenOff() {
-        // state == OFF; switch hits case OFF: break -> no side effects
+    void testBVATimerOffStateOff() {
         SeasonSwitch.state = SeasonSwitch.OFF;
+        // would trigger AC if in COOL
+        ss.room.temp = ss.coolTemp + 1;
         ss.timerOff();
-        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
         assertFalse(ss.ac.isOn);
         assertFalse(ss.heater.isOn);
+        assertEquals(SeasonSwitch.OFF, SeasonSwitch.state);
     }
 
-    // actionPerformed() with state=COOL and temp > coolTemp: AC should turn on
+    @Test
+    void testBVACoolTimerStartsFromOff() {
+        SeasonSwitch.state = SeasonSwitch.OFF;
+        assertFalse(ss.timer.isRunning());
+        ss.cool();
+        assertTrue(ss.timer.isRunning());
+    }
+
+    @Test
+    void testBVAHeatTimerStartsFromOff() {
+        SeasonSwitch.state = SeasonSwitch.OFF;
+        assertFalse(ss.timer.isRunning());
+        ss.heat();
+        assertTrue(ss.timer.isRunning());
+    }
+
+    @Test
+    void testBVAOffTimerStopsFromCool() {
+        SeasonSwitch.state = SeasonSwitch.COOL;
+        ss.timer.start();
+        assertTrue(ss.timer.isRunning());
+        ss.off();
+        assertFalse(ss.timer.isRunning());
+    }
+
+    @Test
+    void testBVAOffTimerStopsFromHeat() {
+        SeasonSwitch.state = SeasonSwitch.HEAT;
+        ss.timer.start();
+        assertTrue(ss.timer.isRunning());
+        ss.off();
+        assertFalse(ss.timer.isRunning());
+    }
+
+    // calls timerOff() which calls ac.on()
     @Test
     void testBVAActionPerformedCoolTempAboveCoolTemp() {
-        // actionPerformed delegates to timerOff();
-        // state=COOL, temp=69 > coolTemp=68 -> ac.on()
         SeasonSwitch.state = SeasonSwitch.COOL;
-        // 69
+        // 69 > 68, condition TRUE -> ac.on()
         ss.room.temp = ss.coolTemp + 1;
         ss.ac.isOn = false;
         ss.actionPerformed(new ActionEvent(ss, ActionEvent.ACTION_PERFORMED, ""));
+        // timerOff() turned AC on
         assertTrue(ss.ac.isOn);
+        assertFalse(ss.heater.isOn);
+    }
+
+    // calls timerOff() which calls heater.on()
+    @Test
+    void testBVAActionPerformedHeatTempBelowHeatTemp() {
+        SeasonSwitch.state = SeasonSwitch.HEAT;
+        // 76 < 77, condition TRUE -> heater.on()
+        ss.room.temp = ss.heatTemp - 1;
+        ss.heater.isOn = false;
+        ss.actionPerformed(new ActionEvent(ss, ActionEvent.ACTION_PERFORMED, ""));
+        // timerOff() turned heater on
+        assertTrue(ss.heater.isOn);
+        assertFalse(ss.ac.isOn);
+    }
+
+    // calls timerOff() which calls ac.off()
+    @Test
+    void testBVAActionPerformedCoolTempAtCoolBoundary() {
+        SeasonSwitch.state = SeasonSwitch.COOL;
+        // 68, 68 > 68 is FALSE -> ac.off()
+        ss.room.temp = ss.coolTemp;
+        ss.ac.isOn = true;
+        ss.actionPerformed(new ActionEvent(ss, ActionEvent.ACTION_PERFORMED, ""));
+        // timerOff() turned AC off
+        assertFalse(ss.ac.isOn);
+    }
+
+    // calls timerOff() which calls heater.off()
+    @Test
+    void testBVAActionPerformedHeatTempAtHeatBoundary() {
+        SeasonSwitch.state = SeasonSwitch.HEAT;
+        // 77, 77 < 77 is FALSE -> heater.off()
+        ss.room.temp = ss.heatTemp;
+        ss.heater.isOn = true;
+        ss.actionPerformed(new ActionEvent(ss, ActionEvent.ACTION_PERFORMED, ""));
+        // timerOff() turned heater off
+        assertFalse(ss.heater.isOn);
+    }
+
+    @Test
+    void testCoolSwitchDefaultBranch() {
+        SeasonSwitch.state = 99;
+        ss.cool();
+        assertEquals(99, SeasonSwitch.state);
+        assertFalse(ss.ac.isOn);
+    }
+
+    @Test
+    void testHeatSwitchDefaultBranch() {
+        SeasonSwitch.state = 99;
+        ss.heat();
+        assertEquals(99, SeasonSwitch.state);
+        assertFalse(ss.heater.isOn);
+    }
+
+    @Test
+    void testOffSwitchDefaultBranch() {
+        SeasonSwitch.state = 99;
+        ss.off();
+        assertEquals(99, SeasonSwitch.state);
+        assertFalse(ss.ac.isOn);
+        assertFalse(ss.heater.isOn);
+    }
+
+    @Test
+    void testTimerOffSwitchDefaultBranch() {
+        SeasonSwitch.state = 99;
+        ss.timerOff();
+        assertEquals(99, SeasonSwitch.state);
+        assertFalse(ss.ac.isOn);
+        assertFalse(ss.heater.isOn);
     }
 
     @Test
@@ -458,7 +520,7 @@ public class SeasonSwitchMergedTest {
     }
 
     @Test
-    void testMainArgOff() throws Exception {
+    void testMainOffArg() throws Exception {
         ExitTrap.Result r = ExitTrap.runMain("off");
         assertTrue(r.exitedByItself);
         assertEquals(0, r.exitCode);
@@ -466,14 +528,14 @@ public class SeasonSwitchMergedTest {
     }
 
     @Test
-    void testMainArgCool() throws Exception {
+    void testMainCoolArg() throws Exception {
         ExitTrap.Result r = ExitTrap.runMain(1500, "cool");
         assertFalse(r.exitedByItself);
         assertTrue(r.output.contains("Cooling started"));
     }
 
     @Test
-    void testMainArgUnknown() throws Exception {
+    void testMainUnknownArg() throws Exception {
         ExitTrap.Result r = ExitTrap.runMain("unknown");
         assertTrue(r.exitedByItself);
         assertEquals(1, r.exitCode);
@@ -481,8 +543,8 @@ public class SeasonSwitchMergedTest {
     }
 
     @Test
-    void testRoomActionPerformedStateOff() {
-        SeasonSwitch.state = SeasonSwitch.OFF;
+    void testRoomActionPerformedDefaultBranch() {
+        SeasonSwitch.state = 99;
         int tempBefore = ss.room.temp;
         ss.room.actionPerformed(null);
         assertEquals(tempBefore, ss.room.temp);
@@ -495,9 +557,15 @@ public class SeasonSwitchMergedTest {
         int tempBefore = ss.room.temp;
         ss.room.actionPerformed(null);
         assertEquals(tempBefore - 1, ss.room.temp);
+    }
+
+    @Test
+    void testRoomActionPerformedCoolAcOff() {
+        SeasonSwitch.state = SeasonSwitch.COOL;
         ss.ac.isOn = false;
+        int tempBefore = ss.room.temp;
         ss.room.actionPerformed(null);
-        assertEquals(tempBefore, ss.room.temp);
+        assertEquals(tempBefore + 1, ss.room.temp);
     }
 
     @Test
@@ -507,21 +575,27 @@ public class SeasonSwitchMergedTest {
         int tempBefore = ss.room.temp;
         ss.room.actionPerformed(null);
         assertEquals(tempBefore + 1, ss.room.temp);
-        ss.heater.isOn = false;
-        ss.room.actionPerformed(null);
-        assertEquals(tempBefore, ss.room.temp);
     }
 
     @Test
-    void testMainArgHeat() throws Exception {
+    void testRoomActionPerformedHeatHeaterOff() {
+        SeasonSwitch.state = SeasonSwitch.HEAT;
+        ss.heater.isOn = false;
+        int tempBefore = ss.room.temp;
+        ss.room.actionPerformed(null);
+        assertEquals(tempBefore - 1, ss.room.temp);
+    }
+
+    @Test
+    void testMainHeatArg() throws Exception {
         ExitTrap.Result r = ExitTrap.runMain(1500, "heat");
         assertFalse(r.exitedByItself);
         assertTrue(r.output.contains("Heating started"));
     }
 
     @Test
-    void testRoomActionPerformedInvalidState() {
-        SeasonSwitch.state = -1;
+    void testRoomActionPerformedStateOff() {
+        SeasonSwitch.state = SeasonSwitch.OFF;
         int tempBefore = ss.room.temp;
         ss.room.actionPerformed(null);
         assertEquals(tempBefore, ss.room.temp);

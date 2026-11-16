@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: cse4392.SeasonSwitchMergedTest
 -------------------------------------------------------------------------------
-Tests run: 47, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.875 s -- in cse4392.SeasonSwitchMergedTest
+Tests run: 56, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.873 s -- in cse4392.SeasonSwitchMergedTest

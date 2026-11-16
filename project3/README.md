@@ -143,6 +143,8 @@ On Windows, use WSL or a compatible Unix environment.
 | `make help` | Display available commands |
 | `make run` | Run the full LangGraph workflow with both human reviews, automatically building the merger JAR if needed |
 | `AUTO_APPROVE=1 make run` | Same workflow with the human reviews skipped. For development testing only |
+| `make auto` | Short form of `AUTO_APPROVE=1 make run` |
+| `make ui` | Optional terminal dashboard: menu, live workflow graph, human reviews on screen. Runs the same workflow as `make run`. See [9. Terminal Dashboard](#9-terminal-dashboard-optional) |
 | `make test-original` | Copy the latest generated tests into the original Java project and run JUnit/JaCoCo |
 | `make test-original-current` | Rerun installed original tests without generating or copying new ones |
 | `make test-refactored` | Execute the installed adapted tests against the refactored Java implementation |
@@ -394,6 +396,8 @@ Implemented and wired into the workflow:
   (see "Repair and gap-test loop" above and `docs/person4-repair-coverage.md`).
 - Full-program coverage in both phases: every class and `main()`
   (see `docs/coverage-scope.md`).
+- An optional terminal dashboard, `make ui`
+  (see "9. Terminal Dashboard (optional)" below).
 
 Still needed:
 
@@ -402,3 +406,213 @@ Still needed:
 
 Running `make run` does not by itself establish
 completion of the professor's requirements.
+
+
+## 9. Terminal Dashboard (optional)
+
+`make ui` opens a full-screen dashboard in the terminal. It runs the **same
+LangGraph workflow** as `make run`: same agents, same human reviews, same log
+files, same evidence folders. It only changes how you watch the run and how you
+answer the reviews.
+
+| Command | What you get |
+|---|---|
+| `make ui` | The dashboard (this section) |
+| `make run` | The plain run: log lines and `y`/`n` prompts, no dashboard |
+| `make auto` | The plain run with `AUTO_APPROVE=1` (testing only), no dashboard |
+
+The dashboard is an extra. Nothing depends on it, and `make run` and
+`make auto` work without it.
+
+### Requirements
+
+- The `rich` package. It is in `app/requirements.txt`, so
+  `uv pip install -r app/requirements.txt` installs it.
+- A terminal window of at least 80 columns by 20 rows. A smaller window shows
+  a "make the window larger" notice until you resize it.
+- If `rich` is missing, or the output is not a terminal (a pipe, CI), the
+  plain command runs instead.
+
+### Keys that work everywhere
+
+| Key | What it does |
+|---|---|
+| `Esc` | Go back one page. Every page also shows a **◀ Back** button at the top |
+| `↑` `↓` | Scroll the page, or move the selection on pages that have one |
+| `Space` | Next page of a long screen |
+| `q` | Quit. It asks first if a run is still going |
+| `?` | Help for the main menu |
+
+The keys for the current page are always listed in the bottom rows of the screen.
+
+### About the screenshots
+
+The pictures below were captured from the real dashboard code. To make them
+repeatable without AWS, the AI replies were replayed from a recording of an
+earlier run, and one test was broken on purpose so the repair screen had
+something to show (`testBVADeliberateFailure`). Maven, JUnit and JaCoCo ran for
+real on those tests. The numbers in the pictures describe that demonstration
+run. They are **not** the team's submission evidence, which is in `artifacts/`.
+
+### Main menu
+
+![Main menu](docs/ui/01-main-menu.png)
+
+Five groups, one for each kind of Makefile target. Press `1` to `5`, or move
+with the arrows and press `Enter`. Every item runs the same command as the
+plain Makefile target named under it.
+
+Press `?` for a list of what each item runs:
+
+![Help](docs/ui/14-help.png)
+
+### Starting a run
+
+![Run choice](docs/ui/02-run-choice.png)
+
+Menu item 1 asks how the human reviews are answered.
+
+- **1 Run with human review** is the same as `make run`. Use this for final evidence.
+- **2 Test run with auto-approve** is the same as `make auto`. Every review is
+  approved with nobody checking. The workflow screen shows an amber
+  AUTO-APPROVE banner for the whole run, and the results screen repeats it.
+
+### Workflow screen: Overview
+
+![Workflow overview](docs/ui/03-workflow-overview.png)
+
+The run updates live. Press `O`, `G` or `D` to switch between the three views.
+
+- The strip at the top shows **STEP n OF 11**, the step before, and the step after.
+- **WORKFLOW PROGRESS** lists the 11 steps: Done, Active, Pending, or Stopped.
+- Steps that call an AI model show which model, read from `app/main.py` when
+  the run starts. Steps that need no model show nothing about models.
+- When the workflow needs you, the pill at the top right says
+  **WAITING FOR YOUR REVIEW**. Press `Enter` to open the review.
+
+### Workflow screen: Graph
+
+![Workflow graph](docs/ui/04-workflow-graph.png)
+
+Press `G`. Each box is one LangGraph node from `build_graph()` in `app/main.py`,
+in the order the nodes run.
+
+- Amber heavy border: **RUNNING NOW**. Cyan heavy border: **NEEDS YOUR REVIEW**.
+- Green: done, with a count when a node ran more than once. Grey: not reached.
+- The boxes on the right are the side loops: the Repair Agent beside the JUnit
+  run, and gap-test generation beside the coverage check.
+- The page follows the running node by itself.
+
+### Workflow screen: Detailed
+
+![Workflow detailed](docs/ui/05-workflow-detailed.png)
+
+Press `D`. This adds the event history of the run: each node as it starts and
+finishes, the model it calls, the workflow's log lines, and each review
+decision. Credentials are redacted. The complete log is still written to
+`generated_tests/agent_run.log`, as in a plain run.
+
+### Human review 1: generated tests
+
+![Test review](docs/ui/06-test-review.png)
+
+This is the `review_tests` pause. The merged tests are grouped by the Java
+method they test, EP in blue and BVA in purple.
+
+| Key | What it does |
+|---|---|
+| `←` `→` | Change group |
+| `↑` `↓` | Change test |
+| `Enter` | Show the selected test's real Java code |
+| `Space` | Mark the selected test for changes, with a comment |
+| `A` | Approve all tests |
+| `R` | Preview the list of marked tests before sending it |
+| `X` | Reject with one overall comment |
+
+Comments are sent back by test name, so each generator is told to change only
+its own marked tests. If the AI reviewer rejected a test set 3 times, a
+WARNING panel at the top shows its last feedback.
+
+### Repair proposal
+
+![Repair proposal](docs/ui/07-repair-proposal.png)
+
+When a test fails, the Repair Agent proposes one change. This screen shows
+what it wants to change, why, which tests failed, and the diff. **Nothing is
+written or run until you approve.** `A` approves. `X` rejects and asks for a
+reason, and the agent tries again with it.
+
+### Coverage-gap test proposal
+
+![Gap-test proposal](docs/ui/08-gap-proposal.png)
+
+When branch coverage is below 100%, the gap-test agent proposes new tests for
+the exact lines JaCoCo reported as missed. The screen works like the repair
+proposal: read the diff, then `A` or `X`.
+
+### Human review 2: refactored code
+
+![Refactoring review](docs/ui/09-refactoring-review.png)
+
+This is the `review_refactor` pause. Pick a generated Java file with `←` `→`.
+For each file the page answers four questions and then shows the code.
+
+1. Why change it?
+2. What changed?
+3. What should still work?
+4. What should I check? Tick each check with `1` to `6`.
+5. Inspect Java Implementation: the whole file. `C` shows the changes, `F` the
+   refactored file, `O` the original file.
+
+`N` marks a file for changes with a note. `A` approves all files. `X` rejects.
+Notes for several files are joined into one comment for the refactoring agent.
+
+### Results
+
+![Results](docs/ui/10-results.png)
+
+Shown when the run ends. It lists only what the automated checks found: JUnit
+and full-program branch coverage for the original and the refactored program,
+and how often the repair and gap-test agents were used.
+
+- A run that stopped early says **INCOMPLETE** and names the step where it stopped.
+- A report file older than this run is marked **OLD REPORT**.
+- An auto-approve run says so here too.
+
+The buttons at the end of the page: `T` test results, `C` coverage, `R` run again, `M` main menu, `Q` exit.
+
+### JUnit and repair details
+
+![JUnit](docs/ui/11-junit.png)
+
+Reads the Surefire report on disk. Failed tests are expanded with their
+messages. Passed tests stay collapsed until you press `P`. The repair panel
+shows one card for each try of the Repair Agent, from the run's `repair_log`.
+
+### Coverage details
+
+![Coverage](docs/ui/12-coverage.png)
+
+Reads the JaCoCo report on disk. The number is **full-program branch
+coverage**: every class and `main()`, with nothing excluded. Missed branches
+are listed by class and line, and each try of the gap-test agent is shown as
+one card.
+
+### Tools and maintenance
+
+Menu item 5 runs `make help` and `make build-merger`, and holds the two cleanup
+commands. `make clean` and `make clean-all` first list the folders they would
+delete, with file counts read from disk. Nothing is deleted until you tick the
+box and confirm.
+
+### Where the dashboard code lives
+
+| File | What it does |
+|---|---|
+| `app/tui.py` | Entry point for `make ui` |
+| `app/ui/runner.py` | Runs the workflow on a background thread and records each step |
+| `app/ui/screens.py` | Every screen |
+| `app/ui/data.py` | Reads the reports and change logs from disk |
+| `app/ui/term.py`, `app/ui/theme.py` | Keyboard, drawing, colors |
+| `docs/repair-agent-ui-contract.md` | Which workflow fields the repair and gap panels read |
+| `tests/test_ui_data.py` | Unit tests, run by `make test-python` |

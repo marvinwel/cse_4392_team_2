@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="cse4392.SeasonSwitchMergedTest" time="5.875" tests="47" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="cse4392.SeasonSwitchMergedTest" time="5.873" tests="56" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="26"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/temurin-26.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/surefire/surefirebooter-20261115203006206_3.jar /Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/surefire 2026-11-15T20-30-06_162-jvmRun1 surefire-20261115203006206_1tmp surefire_0-20261115203006206_2tmp"/>
+    <property name="sun.java.command" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/surefire/surefirebooter-20261116090401390_3.jar /Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/surefire 2026-11-16T09-04-01_342-jvmRun1 surefire-20261116090401390_1tmp surefire_0-20261116090401390_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="cse4392.SeasonSwitchMergedTest"/>
@@ -25,13 +25,13 @@
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/temurin-26.jdk/Contents/Home"/>
     <property name="file.separator" value="/"/>
     <property name="basedir" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original"/>
-    <property name="java.vm.compressedOopsMode" value="Non-zero disjoint base"/>
+    <property name="java.vm.compressedOopsMode" value="Non-zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.headless" value="true"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/surefire/surefirebooter-20261115203006206_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/mryanpatterson/Documents/CSE4392/cse_4392_team_2/project3/java-original/target/surefire/surefirebooter-20261116090401390_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="26.0.2.1+1"/>
@@ -64,75 +64,113 @@
     <property name="java.class.version" value="70.0"/>
     <property name="maven.test.failure.ignore" value="true"/>
   </properties>
-  <testcase name="testRoomActionPerformedHeatHeaterOn" classname="cse4392.SeasonSwitchMergedTest" time="0.028"/>
-  <testcase name="testMainArgUnknown" classname="cse4392.SeasonSwitchMergedTest" time="0.131"/>
-  <testcase name="testEPTimerOffStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVAOffFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
-    <system-out><![CDATA[Heating stopped. RmTemp=70
-]]></system-out>
-  </testcase>
-  <testcase name="testBVAHeatFromCoolStateMid" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
-    <system-out><![CDATA[Heating started. RmTemp=70
-]]></system-out>
-  </testcase>
-  <testcase name="testEPHeatFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
-    <system-out><![CDATA[Heating started. RmTemp=70
-]]></system-out>
-  </testcase>
-  <testcase name="testEPHeatFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
-    <system-out><![CDATA[Heating started. RmTemp=70
-]]></system-out>
-  </testcase>
-  <testcase name="testEPHeatFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVATimerOffWhenOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testEPTimerOffCoolRoomTempAtOrBelowCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
-    <system-out><![CDATA[Cooling stopped. RmTemp=65
-]]></system-out>
-  </testcase>
-  <testcase name="testMainArgOff" classname="cse4392.SeasonSwitchMergedTest" time="0.122"/>
-  <testcase name="testEPTimerOffHeatRoomTempBelowHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.002">
-    <system-out><![CDATA[Heating started. RmTemp=74
-]]></system-out>
-  </testcase>
-  <testcase name="testEPOffFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
-  <testcase name="testEPActionPerformedCoolTempAboveThreshold" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
-    <system-out><![CDATA[Cooling started. RmTemp=73
-]]></system-out>
-  </testcase>
-  <testcase name="testMainNoArgs" classname="cse4392.SeasonSwitchMergedTest" time="1.835"/>
-  <testcase name="testEPActionPerformedStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.002"/>
-  <testcase name="testEPTimerOffHeatRoomTempAtOrAboveHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.002">
-    <system-out><![CDATA[Heating stopped. RmTemp=80
-]]></system-out>
-  </testcase>
-  <testcase name="testBVACoolFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.002">
+  <testcase name="testRoomActionPerformedHeatHeaterOn" classname="cse4392.SeasonSwitchMergedTest" time="0.034"/>
+  <testcase name="testBVACoolTimerStartsFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.002">
     <system-out><![CDATA[Cooling started. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testBVAOffFromCoolStateMid" classname="cse4392.SeasonSwitchMergedTest" time="0.002">
+  <testcase name="testRoomActionPerformedHeatHeaterOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVAOffFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating stopped. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVATimerOffHeatTempAtBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating stopped. RmTemp=77
+]]></system-out>
+  </testcase>
+  <testcase name="testEPHeatFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testTimerOffSwitchDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testEPHeatFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testEPHeatFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAActionPerformedHeatTempAtHeatBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating stopped. RmTemp=77
+]]></system-out>
+  </testcase>
+  <testcase name="testEPActionPerformedWhenOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testOffSwitchDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testEPTimerOffCoolRoomTempAtOrBelowCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+Cooling stopped. RmTemp=65
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAHeatFromCoolStateMiddle" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testMainHeatArg" classname="cse4392.SeasonSwitchMergedTest" time="1.837"/>
+  <testcase name="testMainCoolArg" classname="cse4392.SeasonSwitchMergedTest" time="1.839"/>
+  <testcase name="testBVAOffTimerStopsFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Cooling stopped. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testEPOffFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
-    <system-out><![CDATA[Cooling stopped. RmTemp=70
+  <testcase name="testBVAOffTimerStopsFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating stopped. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testEPTimerOffHeatRoomTempBelowHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=70
+Heating started. RmTemp=74
+]]></system-out>
+  </testcase>
+  <testcase name="testEPOffFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testEPActionPerformedCoolTempAboveThreshold" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+Cooling started. RmTemp=73
+]]></system-out>
+  </testcase>
+  <testcase name="testMainNoArgs" classname="cse4392.SeasonSwitchMergedTest" time="1.834"/>
+  <testcase name="testMainOffArg" classname="cse4392.SeasonSwitchMergedTest" time="0.142"/>
+  <testcase name="testEPTimerOffHeatRoomTempAtOrAboveHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=70
+Heating stopped. RmTemp=80
+]]></system-out>
+  </testcase>
+  <testcase name="testBVACoolFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testEPOffFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling started. RmTemp=70
+Cooling stopped. RmTemp=70
 ]]></system-out>
   </testcase>
   <testcase name="testEPOffFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
-    <system-out><![CDATA[Heating stopped. RmTemp=70
+    <system-out><![CDATA[Heating started. RmTemp=70
+Heating stopped. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testRoomActionPerformedCoolAcOn" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVAOffFromOffStateMin" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testRoomActionPerformedCoolAcOn" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVACoolFromCoolStateMiddle" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testBVAOffFromOffStateMin" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVATimerOffStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testRoomActionPerformedDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testHeatSwitchDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testMainUnknownArg" classname="cse4392.SeasonSwitchMergedTest" time="0.138"/>
   <testcase name="testEPTimerOffCoolRoomTempAboveCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
-    <system-out><![CDATA[Cooling started. RmTemp=72
+    <system-out><![CDATA[Cooling started. RmTemp=70
+Cooling started. RmTemp=72
 ]]></system-out>
   </testcase>
-  <testcase name="testEPCoolFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testEPCoolFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+  <testcase name="testEPCoolFromCool" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Cooling started. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testEPCoolFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testEPCoolFromHeat" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+    <system-out><![CDATA[Heating started. RmTemp=70
+Cooling started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testEPCoolFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Cooling started. RmTemp=70
 ]]></system-out>
   </testcase>
@@ -140,7 +178,7 @@
     <system-out><![CDATA[Heating started. RmTemp=76
 ]]></system-out>
   </testcase>
-  <testcase name="testBVATimerOffCoolTempMinusOne" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testBVATimerOffCoolTempMinusOne" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Cooling stopped. RmTemp=67
 ]]></system-out>
   </testcase>
@@ -148,42 +186,50 @@
     <system-out><![CDATA[Heating started. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testBVATimerOffHeatTempExact" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
-    <system-out><![CDATA[Heating stopped. RmTemp=77
+  <testcase name="testBVAOffFromCoolStateMiddle" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling stopped. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testRoomActionPerformedInvalidState" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVACoolFromOffStateMin" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testBVACoolFromOffStateMin" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Cooling started. RmTemp=70
 ]]></system-out>
   </testcase>
-  <testcase name="testBVAHeatFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVAOffStateInvalidBelowMin" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVACoolStateInvalidBelowMin" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVATimerOffCoolTempPlusOne" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testBVAActionPerformedCoolTempAtCoolBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Cooling stopped. RmTemp=68
+]]></system-out>
+  </testcase>
+  <testcase name="testBVAHeatFromHeatStateMax" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testRoomActionPerformedCoolAcOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testEPTimerOffWhenOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testCoolSwitchDefaultBranch" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testBVATimerOffCoolTempPlusOne" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Cooling started. RmTemp=69
 ]]></system-out>
   </testcase>
-  <testcase name="testBVAHeatStateInvalidAboveMax" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
+  <testcase name="testBVAActionPerformedHeatTempBelowHeatTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=76
+]]></system-out>
+  </testcase>
   <testcase name="testBVAActionPerformedCoolTempAboveCoolTemp" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Cooling started. RmTemp=69
 ]]></system-out>
   </testcase>
-  <testcase name="testBVATimerOffCoolTempExact" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testBVAHeatTimerStartsFromOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=70
+]]></system-out>
+  </testcase>
+  <testcase name="testRoomActionPerformedStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.0"/>
+  <testcase name="testBVATimerOffCoolTempAtBoundary" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
     <system-out><![CDATA[Cooling stopped. RmTemp=68
 ]]></system-out>
   </testcase>
-  <testcase name="testBVACoolFromCoolStateMid" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVATimerOffStateInvalidAboveMax" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testMainArgCool" classname="cse4392.SeasonSwitchMergedTest" time="1.845"/>
-  <testcase name="testMainArgHeat" classname="cse4392.SeasonSwitchMergedTest" time="1.841"/>
-  <testcase name="testRoomActionPerformedStateOff" classname="cse4392.SeasonSwitchMergedTest" time="0.001"/>
-  <testcase name="testBVATimerOffHeatTempPlusOne" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
+  <testcase name="testBVATimerOffHeatTempPlusOne" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
     <system-out><![CDATA[Heating stopped. RmTemp=78
 ]]></system-out>
   </testcase>
-  <testcase name="testEPActionPerformedHeatTempBelowThreshold" classname="cse4392.SeasonSwitchMergedTest" time="0.001">
-    <system-out><![CDATA[Heating started. RmTemp=75
+  <testcase name="testEPActionPerformedHeatTempBelowThreshold" classname="cse4392.SeasonSwitchMergedTest" time="0.0">
+    <system-out><![CDATA[Heating started. RmTemp=70
+Heating started. RmTemp=75
 ]]></system-out>
   </testcase>
 </testsuite>
