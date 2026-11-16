@@ -1,5 +1,10 @@
 """Person 4 (Sarthak): bounded repair and missed-branch test generation.
 
+Every proposed change (production code or tests) waits for the human review in
+review_tests before it is written or run. An unusable model reply is retried with
+the validation error until the per-phase cap is used up. Each step is recorded in
+state["repair_log"] (see repair_log_entry) so the change log and UI can show it.
+
 The existing Bedrock model is injected by main.py.  No additional agent, model,
 package, or Maven runner is created here.  Both nodes write LangGraph state
 updates; Joseph's run_tests/check_coverage remain the execution/evidence tools.
@@ -30,7 +35,7 @@ For target=code, path MUST name one of the listed existing Java production files
 For target=test, path MUST be the existing approved JUnit test class filename.
 Fix only the observed failure; preserve Java package, public class/method API,
 all required behavior and all existing test scenarios. NEVER remove or weaken a
-passing assertion to hide a code defect. Test changes require human approval.
+passing assertion to hide a code defect. Every code and test change requires human approval.
 No shell commands, file deletion, or extra files. Do not alter the original fixture.
 
 Phase: {phase}
@@ -42,6 +47,7 @@ Surefire/Maven failure evidence:
 {report}
 Previous repair attempts for this phase: {attempts}
 Human reviewer feedback on a prior proposed repair: {feedback}
+Why your previous proposal was rejected by validation (fix this): {error}
 """
 
 GAP_PROMPT = """You are writing JUnit 5 test METHODS for specifically measured JaCoCo
@@ -56,6 +62,16 @@ exactly one full @Test method declaration with a new unique name and assertions.
 Use the existing suite fixture, imports, package and style; do not repeat the
 Java class wrapper or add imports. Avoid assumptions about expected results:
 trace the Java behavior first. Preserve all existing tests and assertions.
+A missed line inside an inner class (for example Room) is reached through the
+fixture's fields, e.g. ss.room.actionPerformed(null).
+NEVER call SeasonSwitch.main(...) directly: System.exit would stop the test run and
+some paths never return. For any missed line in main(), use the ExitTrap helper that
+is already in the test package (declare the method `throws Exception`):
+  ExitTrap.Result r = ExitTrap.runMain("off");        // waits up to 3 s for exit
+  assertTrue(r.exitedByItself); assertEquals(0, r.exitCode);
+  ExitTrap.Result r = ExitTrap.runMain(1500, "cool"); // paths that keep running
+  assertFalse(r.exitedByItself); assertTrue(r.output.contains("..."));
+r.output holds everything main() printed.
 
 Phase: {phase}
 Production Java source files:
@@ -65,6 +81,7 @@ Approved JUnit suite:
 JaCoCo missed-branch evidence (only these are eligible):
 {gaps}
 Human reviewer feedback on prior gap-test proposal: {feedback}
+Why your previous proposal was rejected by validation (fix this): {error}
 """
 
 
@@ -80,13 +97,30 @@ def _model_json(model: Any, prompt: str) -> dict:
     if not isinstance(content, str):
         raise ValueError("Model returned no text")
     text = content.strip()
-    fence = re.fullmatch(r"```(?:json)?\s*(.*?)\s*```", text, re.I | re.S)
-    if fence:
-        text = fence.group(1)
-    try:
-        result = json.loads(text)
-    except json.JSONDecodeError as exc:
-        raise ValueError("Model returned invalid JSON") from exc
+    # Try the whole reply first. A fence search alone is wrong when the JSON
+    # itself holds a ```java block inside a string: the search would grab that
+    # inner block instead of the object. Fenced blocks are only a fallback.
+    candidates = [text] + [m.group(1) for m in
+                           re.finditer(r"```(?:json)?[ \t]*\n(.*?)\n?```", text, re.I | re.S)]
+    # strict=False accepts raw newlines inside strings, which models often put in
+    # multi-line Java code. raw_decode also skips any prose before or after the object.
+    decoder = json.JSONDecoder(strict=False)
+    first_error = None
+    result = None
+    for candidate in candidates:
+        start = candidate.find("{")
+        if start < 0:
+            continue
+        try:
+            result, _ = decoder.raw_decode(candidate, start)
+            break
+        except json.JSONDecodeError as exc:
+            first_error = first_error or exc
+    if result is None:
+        exc = first_error or json.JSONDecodeError("no JSON object found", text, 0)
+        # The detail goes back to the model on the retry and into the change log.
+        raise ValueError(f"Model returned invalid JSON ({exc.msg}, line {exc.lineno} "
+                         f"column {exc.colno}). Reply began: {text[:160]!r}")
     if not isinstance(result, dict):
         raise ValueError("Expected a JSON object")
     return result
@@ -114,6 +148,26 @@ def _entry(phase: str, action: str, **details: Any) -> dict:
         "action": action,
         **details,
     }
+
+
+def repair_log_entry(kind: str, phase: str, outcome: str, **details: Any) -> dict:
+    """One row of the repair list shown in the change log and the terminal UI.
+
+    kind:    "repair" (failed test run) or "gap" (missed branches)
+    outcome: "proposed", "ai_error", "human_rejected", "approved", "applied",
+             "rerun_passed", "rerun_failed", "exhausted"
+    """
+    return {"time": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "kind": kind, "phase": phase, "outcome": outcome, **details}
+
+
+def _failing_tests(report: Any) -> list[str]:
+    if not isinstance(report, dict):
+        return []
+    names = [str(f.get("test")) for f in report.get("failures") or [] if isinstance(f, dict)]
+    if not names and (report.get("build") or {}).get("compile_error"):
+        names = ["(compile error)"]
+    return names
 
 
 def _diff(path: str, before: str, after: str) -> str:
@@ -201,10 +255,14 @@ def _validate_test_replacement(old: str, new: str) -> None:
         raise ValueError("Test patch removed an assertion")
 
 
-def _result_error(phase: str, action: str, message: str, **fields: Any) -> dict:
+def _result_error(phase: str, action: str, message: str, retry: bool = False,
+                  **fields: Any) -> dict:
+    """retry=True: the model's reply was unusable but attempts remain, so the
+    router sends the node back to itself with the error as feedback."""
     return {
-        "workflow_status": action,
-        "repair_action" if action.startswith("repair") else "gap_action": "escalate",
+        "workflow_status": action.replace("_blocked", "_retry") if retry else action,
+        "repair_action" if action.startswith("repair") else "gap_action":
+            "retry" if retry else "escalate",
         "repair_error" if action.startswith("repair") else "gap_error": message,
         "change_log": [_entry(phase, action, reason=message)],
         **fields,
@@ -220,8 +278,11 @@ def build_repair_nodes(model: Any, repo_root: str | Path):
         attempts = _counts(state, "repair_attempts_by_phase")
         used = attempts.get(phase, 0)
         if used >= MAX_REPAIR_ATTEMPTS:
-            return _result_error(phase, "repair_exhausted", "Maximum repair attempts reached")
+            return {**_result_error(phase, "repair_exhausted", "Maximum repair attempts reached"),
+                    "repair_log": [repair_log_entry("repair", phase, "exhausted", attempt=used,
+                                                    tests=_failing_tests(state.get("test_report")))]}
         attempts[phase] = used + 1
+        model_called = False
         try:
             folder, files = _source_files(root, phase)
             tests = state.get("merged_tests")
@@ -232,10 +293,12 @@ def build_repair_nodes(model: Any, repo_root: str | Path):
                 raise ValueError("No failing test report available for repair")
             if report.get("phase") != phase:
                 raise ValueError("Failure report belongs to a different phase")
+            model_called = True
             proposal = _model_json(model, REPAIR_PROMPT.format(
                 phase=phase, sources=json.dumps(files, indent=2), tests=tests,
                 report=json.dumps(report, indent=2, default=str), attempts=used,
                 feedback=state.get("human_feedback", ""),
+                error=state.get("repair_error", ""),
             ))
             target = proposal.get("target")
             new = proposal.get("new_content")
@@ -266,24 +329,21 @@ def build_repair_nodes(model: Any, repo_root: str | Path):
                 "repair_attempts_by_phase": attempts,
                 "repair_error": "",
                 "change_log": [change],
+                "repair_log": [repair_log_entry(
+                    "repair", phase, "proposed", attempt=used + 1,
+                    tests=_failing_tests(report), diagnosis=reason.strip(),
+                    target=target, path=name, diff=change["diff"])],
             }
             if target == "code":
-                # Only an existing, phase-specific working Java file is modified.
-                _atomic_write(path, new)
-                update.update({"repair_action": "run", "workflow_status": "code_repaired"})
-                if phase == "original" and name == "SeasonSwitch.java":
-                    update["source_code"] = new
-                if phase == "refactored":
-                    refactored = dict(state.get("refactored_files") or {})
-                    matched = False
-                    for key in refactored:
-                        if PurePosixPath(key).name == name:
-                            refactored[key] = new
-                            matched = True
-                    if not matched:
-                        refactored[(SOURCE_DIR / name).as_posix()] = new
-                    update["refactored_files"] = refactored
-                change["action"] = "repair_applied"
+                # No write yet. A person approves the code diff in review_tests
+                # first; apply_code_repair writes it only after that approval.
+                update.update({
+                    "repair_action": "review", "workflow_status": "repair_pending_review",
+                    "human_approved": False, "review_context": "repair",
+                    "pre_review_tests": tests,
+                    "pending_code_repair": {"phase": phase, "path": name,
+                                            "old": old, "new": new},
+                })
             else:
                 # No write. Ryan's existing review_tests interrupt must approve
                 # the changed suite before run_tests is allowed to write/execute it.
@@ -294,16 +354,24 @@ def build_repair_nodes(model: Any, repo_root: str | Path):
                 })
             return update
         except (ValueError, OSError, TypeError) as exc:
-            return _result_error(phase, "repair_blocked", str(exc),
-                                 repair_attempts_by_phase=attempts)
+            result = _result_error(phase, "repair_blocked", str(exc),
+                                   retry=model_called and attempts[phase] < MAX_REPAIR_ATTEMPTS,
+                                   repair_attempts_by_phase=attempts)
+            if model_called:
+                result["repair_log"] = [repair_log_entry(
+                    "repair", phase, "ai_error", attempt=used + 1, error=str(exc),
+                    tests=_failing_tests(state.get("test_report")))]
+            return result
 
     def generate_gap_tests(state: dict) -> dict:
         phase = _phase(state)
         rounds = _counts(state, "coverage_rounds_by_phase")
         used = rounds.get(phase, 0)
         if used >= MAX_COVERAGE_ROUNDS:
-            return _result_error(phase, "gap_exhausted", "Maximum coverage rounds reached")
+            return {**_result_error(phase, "gap_exhausted", "Maximum coverage rounds reached"),
+                    "repair_log": [repair_log_entry("gap", phase, "exhausted", attempt=used)]}
         rounds[phase] = used + 1
+        model_called = False
         try:
             _, files = _source_files(root, phase)
             cov = state.get("coverage")
@@ -318,10 +386,12 @@ def build_repair_nodes(model: Any, repo_root: str | Path):
                 raise ValueError("JaCoCo did not identify any missed source lines")
             if not isinstance(suite, str) or not suite.strip() or not re.search(r"\}\s*$", suite):
                 raise ValueError("Missing complete approved JUnit suite")
+            model_called = True
             response = _model_json(model, GAP_PROMPT.format(
                 phase=phase, sources=json.dumps(files, indent=2), tests=suite,
                 gaps=json.dumps(gaps, indent=2),
                 feedback=state.get("human_feedback", ""),
+                error=state.get("gap_error", ""),
             ))
             additions = response.get("tests")
             if not isinstance(additions, list) or not additions:
@@ -333,7 +403,10 @@ def build_repair_nodes(model: Any, repo_root: str | Path):
             for item in additions:
                 if not isinstance(item, dict) or item.get("technique") != "COVERAGE":
                     raise ValueError("Every gap test must be a COVERAGE record")
-                target = (item.get("source_file"), item.get("class"), item.get("line"))
+                line = item.get("line")
+                if isinstance(line, str) and line.strip().isdigit():
+                    line = int(line)   # models often send "42" instead of 42
+                target = (item.get("source_file"), item.get("class"), line)
                 method = item.get("method")
                 if target not in allowed or not isinstance(method, str):
                     raise ValueError("Gap test does not match a measured JaCoCo line")
@@ -365,6 +438,12 @@ def build_repair_nodes(model: Any, repo_root: str | Path):
                             diff=_diff("approved JUnit suite", suite, revised),
                             tests=evidence, round=used + 1)
             return {
+                "repair_log": [repair_log_entry(
+                    "gap", phase, "proposed", attempt=used + 1,
+                    tests=[e["test_method"] for e in evidence],
+                    diagnosis="; ".join(f"{e['class']} line {e['line']}: {e['description']}"
+                                        for e in evidence),
+                    target="test", path="approved merged JUnit suite", diff=change["diff"])],
                 "coverage_rounds_by_phase": rounds, "gap_action": "review",
                 "gap_error": "", "workflow_status": "gap_tests_pending_review",
                 "gap_tests": list(state.get("gap_tests") or []) + evidence,
@@ -373,15 +452,65 @@ def build_repair_nodes(model: Any, repo_root: str | Path):
                 "change_log": [change],
             }
         except (ValueError, KeyError, OSError, TypeError) as exc:
-            return _result_error(phase, "gap_blocked", str(exc),
-                                 coverage_rounds_by_phase=rounds)
+            result = _result_error(phase, "gap_blocked", str(exc),
+                                   retry=model_called and rounds[phase] < MAX_COVERAGE_ROUNDS,
+                                   coverage_rounds_by_phase=rounds)
+            if model_called:
+                result["repair_log"] = [repair_log_entry("gap", phase, "ai_error",
+                                                         attempt=used + 1, error=str(exc))]
+            return result
 
     return repair_agent, generate_gap_tests
 
 
+def build_apply_code_repair(repo_root: str | Path):
+    """Return the node that writes a code repair AFTER a person approved its diff."""
+    root = Path(repo_root).resolve()
+
+    def apply_code_repair(state: dict) -> dict:
+        pending = state.get("pending_code_repair") or {}
+        phase = _phase(state)
+        try:
+            if pending.get("phase") != phase:
+                raise ValueError("Approved code repair belongs to a different phase")
+            folder, files = _source_files(root, phase)
+            name = _source_name(pending.get("path"), files)
+            if files[name] != pending.get("old"):
+                raise ValueError(f"{name} changed after the repair was proposed")
+            new = pending.get("new")
+            _validate_java_source(name, files[name], new)
+            _atomic_write(folder / name, new)
+        except (ValueError, OSError, TypeError) as exc:
+            return {**_result_error(phase, "repair_blocked", str(exc)),
+                    "pending_code_repair": None}
+        update = {
+            "pending_code_repair": None, "repair_action": "run",
+            "workflow_status": "code_repaired",
+            "change_log": [_entry(phase, "repair_applied", target="code", path=name,
+                                  reason="Human approved the proposed code diff")],
+            "repair_log": [repair_log_entry("repair", phase, "applied", target="code", path=name)],
+        }
+        if phase == "original" and name == "SeasonSwitch.java":
+            update["source_code"] = new
+        if phase == "refactored":
+            refactored = dict(state.get("refactored_files") or {})
+            keys = [k for k in refactored if PurePosixPath(k).name == name]
+            for key in keys or [(SOURCE_DIR / name).as_posix()]:
+                refactored[key] = new
+            update["refactored_files"] = refactored
+        return update
+
+    return apply_code_repair
+
+
 def route_after_repair(state: dict) -> str:
-    return {"run": "run", "review": "review"}.get(state.get("repair_action"), "escalate")
+    return {"run": "run", "review": "review", "retry": "retry"}.get(
+        state.get("repair_action"), "escalate")
+
+
+def route_after_apply(state: dict) -> str:
+    return "run" if state.get("repair_action") == "run" else "escalate"
 
 
 def route_after_gap(state: dict) -> str:
-    return "review" if state.get("gap_action") == "review" else "escalate"
+    return {"review": "review", "retry": "retry"}.get(state.get("gap_action"), "escalate")

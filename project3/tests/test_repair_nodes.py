@@ -15,7 +15,8 @@ sys.path.insert(0, str(ROOT / "app"))
 
 from java_tools import parse_jacoco, parse_surefire
 from repair_nodes import (MAX_COVERAGE_ROUNDS, MAX_REPAIR_ATTEMPTS,
-                          build_repair_nodes, route_after_gap, route_after_repair)
+                          build_apply_code_repair, build_repair_nodes, repair_log_entry,
+                          route_after_apply, route_after_gap, route_after_repair)
 
 SOURCE = (ROOT / "app/SeasonSwitch.java").read_text(encoding="utf-8")
 TESTS = """package cse4392;
@@ -78,15 +79,33 @@ class Person4NodeTests(unittest.TestCase):
         model = FakeModel(*replies)
         return (*build_repair_nodes(model, self.root), model)
 
+    def approve_and_apply(self, state, proposal):
+        """What happens after the person approves a code diff in review_tests."""
+        self.assertEqual(route_after_repair(proposal), "review")
+        merged = {**state, **proposal, "human_approved": True}
+        applied = build_apply_code_repair(self.root)(merged)
+        self.assertEqual(route_after_apply(applied), "run")
+        return applied
+
     def test_code_repair_updates_working_copy_and_state_not_original_fixture(self):
         self.working.write_text(self.broken)
         repair, _, model = self.nodes(patch())
         output = repair(self.state)
-        self.assertEqual(route_after_repair(output), "run")
-        self.assertEqual(output["workflow_status"], "code_repaired")
+        # Nothing is written until the person approves the diff.
+        self.assertEqual(route_after_repair(output), "review")
+        self.assertEqual(output["workflow_status"], "repair_pending_review")
+        self.assertEqual(output["review_context"], "repair")
+        self.assertEqual(self.working.read_text(), self.broken)
         self.assertEqual(output["repair_attempts_by_phase"]["original"], 1)
+        self.assertEqual(output["repair_log"][0]["outcome"], "proposed")
+        self.assertEqual(output["repair_log"][0]["tests"], ["SeasonSwitchMergedTest.testBoundary"])
+        self.assertEqual(output["repair_log"][0]["diagnosis"], "Correct boundary comparison")
+        applied = self.approve_and_apply(self.state, output)
+        self.assertEqual(applied["workflow_status"], "code_repaired")
+        self.assertEqual(applied["repair_log"][0]["outcome"], "applied")
+        self.assertIsNone(applied["pending_code_repair"])
         self.assertEqual(self.working.read_text(), SOURCE)
-        self.assertEqual(output["source_code"], SOURCE)
+        self.assertEqual(applied["source_code"], SOURCE)
         self.assertIn("-            if (room.temp>=coolTemp)", output["change_log"][0]["diff"])
         self.assertIn("+            if (room.temp>coolTemp)", output["change_log"][0]["diff"])
         self.assertFalse((self.root / "app/SeasonSwitch.java").exists())
@@ -108,14 +127,17 @@ class Person4NodeTests(unittest.TestCase):
         reduced = TESTS.replace("    @Test void testOff() { assertEquals(0, 0); }\n", "")
         repair, _, _ = self.nodes(patch("test", reduced, path="SeasonSwitchMergedTest.java"))
         result = repair(self.state)
-        self.assertEqual(result["workflow_status"], "repair_blocked")
-        self.assertEqual(route_after_repair(result), "escalate")
+        # An unusable reply is retried while tries remain, with the error as feedback.
+        self.assertEqual(result["workflow_status"], "repair_retry")
+        self.assertEqual(route_after_repair(result), "retry")
+        self.assertIn("removed an approved @Test", result["repair_error"])
+        self.assertEqual(result["repair_log"][0]["outcome"], "ai_error")
         self.assertEqual(self.working.read_text(), SOURCE)
 
     def test_removing_assertion_is_rejected(self):
         reduced = TESTS.replace("assertTrue(true);", "System.out.println(0);")
         repair, _, _ = self.nodes(patch("test", reduced, path="SeasonSwitchMergedTest.java"))
-        self.assertEqual(repair(self.state)["workflow_status"], "repair_blocked")
+        self.assertEqual(repair(self.state)["workflow_status"], "repair_retry")
 
     def test_path_traversal_and_unknown_paths_are_rejected(self):
         for path in ("../../unsafe.java", "../SeasonSwitch.java", "src/main/java/other/SeasonSwitch.java",
@@ -123,35 +145,82 @@ class Person4NodeTests(unittest.TestCase):
             with self.subTest(path=path):
                 repair, _, _ = self.nodes(patch(path=path, new=SOURCE.replace("OFF=0", "OFF=10")))
                 result = repair(self.state)
-                self.assertEqual(route_after_repair(result), "escalate")
+                self.assertEqual(route_after_repair(result), "retry")
+                self.assertNotIn("pending_code_repair", result)
                 self.assertEqual(self.working.read_text(), SOURCE)
 
     def test_unchanged_patch_rejected(self):
         repair, _, _ = self.nodes(patch())
-        self.assertEqual(repair(self.state)["workflow_status"], "repair_blocked")
+        self.assertEqual(repair(self.state)["workflow_status"], "repair_retry")
 
     def test_wrong_package_rejected(self):
         repair, _, _ = self.nodes(patch(new=SOURCE.replace("package cse4392;", "package evil;")))
-        self.assertEqual(repair(self.state)["workflow_status"], "repair_blocked")
+        self.assertEqual(repair(self.state)["workflow_status"], "repair_retry")
 
     def test_invalid_json_and_llm_error_stop_safely(self):
         for reply in ("garbled model response", RuntimeError("unavailable")):
             with self.subTest(reply=reply):
                 repair, _, _ = self.nodes(reply)
                 result = repair(self.state)
-                self.assertEqual(result["workflow_status"], "repair_blocked")
-                self.assertEqual(route_after_repair(result), "escalate")
+                self.assertEqual(result["workflow_status"], "repair_retry")
+                self.assertEqual(route_after_repair(result), "retry")
+
+    def test_json_with_raw_newlines_or_prose_is_accepted(self):
+        item = add_test("@Test\nvoid testGap() {\n    assertEquals(0, 0);\n}", gap=self.gap)
+        raw = json.dumps({"tests": [item]}).replace("\\n", "\n")   # real newlines in the string
+        for reply in (raw, "Here are the tests:\n```json\n" + raw + "\n```\nDone."):
+            with self.subTest(reply=reply[:20]):
+                _, generate, _ = self.nodes(reply)
+                self.assertEqual(route_after_gap(generate(self.state)), "review")
+
+    def test_json_holding_a_java_code_fence_is_accepted(self):
+        # Real run 2026-11-16: the model put a ```java block inside a JSON string,
+        # and the old fence search grabbed that block instead of the object.
+        body = "@Test\nvoid testGap() {\n    // ```java\n    assertEquals(0, 0);\n    // ```\n}"
+        raw = json.dumps({"tests": [add_test(body, gap=self.gap)]})
+        for reply in (raw, "```json\n" + raw + "\n```"):
+            with self.subTest(reply=reply[:10]):
+                _, generate, _ = self.nodes(reply)
+                self.assertEqual(route_after_gap(generate(self.state)), "review")
+
+    def test_invalid_json_error_explains_what_was_wrong(self):
+        repair, _, _ = self.nodes('{"target": "code", "path": ')
+        result = repair(self.state)
+        self.assertIn("Reply began:", result["repair_error"])
+        self.assertIn("line 1", result["repair_error"])
+
+    def test_bad_reply_on_last_try_escalates(self):
+        repair, _, _ = self.nodes("garbled model response")
+        result = repair({**self.state, "repair_attempts_by_phase": {"original": MAX_REPAIR_ATTEMPTS - 1}})
+        self.assertEqual(result["workflow_status"], "repair_blocked")
+        self.assertEqual(route_after_repair(result), "escalate")
+
+    def test_retry_prompt_includes_previous_validation_error(self):
+        repair, _, model = self.nodes(patch())
+        repair({**self.state, "repair_error": "Java patch must retain package cse4392"})
+        self.assertIn("Java patch must retain package cse4392", model.prompts[0])
+
+    def test_approved_code_fix_refused_if_file_changed_since_proposal(self):
+        self.working.write_text(self.broken)
+        repair, _, _ = self.nodes(patch())
+        proposal = repair(self.state)
+        self.working.write_text(self.broken + "\n// edited by hand\n")
+        applied = build_apply_code_repair(self.root)({**self.state, **proposal})
+        self.assertEqual(route_after_apply(applied), "escalate")
+        self.assertIn("changed after the repair was proposed", applied["repair_error"])
 
     def test_missing_report_or_wrong_phase_rejected_without_llm_call(self):
         repair, _, model = self.nodes()
         r = repair({**self.state, "test_report": {"phase": "refactored", "all_passed": False}})
-        self.assertEqual(r["workflow_status"], "repair_blocked")
+        self.assertEqual(r["workflow_status"], "repair_blocked")   # not retried: no model call
+        self.assertEqual(route_after_repair(r), "escalate")
         self.assertEqual(model.prompts, [])
 
     def test_retry_cap_stops_without_model_call(self):
         repair, _, model = self.nodes()
         result = repair({**self.state, "repair_attempts_by_phase": {"original": MAX_REPAIR_ATTEMPTS}})
         self.assertEqual(result["workflow_status"], "repair_exhausted")
+        self.assertEqual(result["repair_log"][0]["outcome"], "exhausted")
         self.assertEqual(model.prompts, [])
 
     def test_per_phase_counter_refactored_file_repaired(self):
@@ -161,11 +230,13 @@ class Person4NodeTests(unittest.TestCase):
         (refactor / "pom.xml").write_text("<project/>")
         (source_dir / "SeasonSwitch.java").write_text(self.broken)
         repair, _, _ = self.nodes(patch())
-        result = repair({**self.state, "phase": "refactored",
-                         "test_report": {**self.report, "phase": "refactored"},
-                         "repair_attempts_by_phase": {"original": 3},
-                         "refactored_files": {"src/main/java/cse4392/SeasonSwitch.java": self.broken}})
-        self.assertEqual(result["repair_attempts_by_phase"], {"original": 3, "refactored": 1})
+        state = {**self.state, "phase": "refactored",
+                 "test_report": {**self.report, "phase": "refactored"},
+                 "repair_attempts_by_phase": {"original": 3},
+                 "refactored_files": {"src/main/java/cse4392/SeasonSwitch.java": self.broken}}
+        proposal = repair(state)
+        self.assertEqual(proposal["repair_attempts_by_phase"], {"original": 3, "refactored": 1})
+        result = self.approve_and_apply(state, proposal)
         self.assertEqual((source_dir / "SeasonSwitch.java").read_text(), SOURCE)
         self.assertEqual(result["refactored_files"]["src/main/java/cse4392/SeasonSwitch.java"], SOURCE)
         self.assertNotIn("source_code", result)
@@ -183,7 +254,10 @@ class Person4NodeTests(unittest.TestCase):
         self.assertEqual(result["gap_tests"][0]["technique"], "COVERAGE")
         self.assertEqual(result["gap_tests"][0]["line"], self.gap["line"])
         self.assertEqual(result["coverage_rounds_by_phase"], {"original": 1})
+        self.assertEqual(result["repair_log"][0]["kind"], "gap")
+        self.assertEqual(result["repair_log"][0]["tests"], ["testGap"])
         self.assertIn('"missed_branches"', model.prompts[0])
+        self.assertIn("ExitTrap.runMain", model.prompts[0])
         self.assertIn(self.gap["source_file"], model.prompts[0])
 
     @unittest.skipUnless(shutil.which("javac"), "Requires Java JDK")
@@ -217,16 +291,24 @@ class Person4NodeTests(unittest.TestCase):
     def test_invalid_gap_reference_is_rejected(self):
         item = add_test(gap=self.gap)
         item["line"] = 9999
-        _, generate, _ = self.nodes({"tests": [item]})
+        _, generate, _ = self.nodes({"tests": [item]}, {"tests": [item]})
         result = generate(self.state)
-        self.assertEqual(result["workflow_status"], "gap_blocked")
-        self.assertEqual(route_after_gap(result), "escalate")
+        self.assertEqual(result["workflow_status"], "gap_retry")
+        self.assertEqual(route_after_gap(result), "retry")
+        last = generate({**self.state, "coverage_rounds_by_phase": {"original": MAX_COVERAGE_ROUNDS - 1}})
+        self.assertEqual(route_after_gap(last), "escalate")
+
+    def test_line_number_sent_as_text_is_accepted(self):
+        item = add_test(gap=self.gap)
+        item["line"] = str(self.gap["line"])
+        _, generate, _ = self.nodes({"tests": [item]})
+        self.assertEqual(route_after_gap(generate(self.state)), "review")
 
     def test_duplicate_method_or_missing_assertion_is_rejected(self):
         for method in ("@Test void testCool() { assertTrue(true); }",
                        "@Test void emptyMethod() { System.out.println(0); }"):
             _, generate, _ = self.nodes({"tests": [add_test(method, gap=self.gap)]})
-            self.assertEqual(generate(self.state)["workflow_status"], "gap_blocked")
+            self.assertEqual(generate(self.state)["workflow_status"], "gap_retry")
 
     def test_empty_coverage_list_and_fake_100_percent_are_rejected(self):
         _, generate, model = self.nodes()
@@ -251,8 +333,10 @@ class Person4NodeTests(unittest.TestCase):
         (source_dir / "State.java").write_text(original)
         (source_dir / "SeasonSwitch.java").write_text(SOURCE)
         repair, _, _ = self.nodes(patch(path="State.java", new=fixed))
-        result = repair({**self.state, "phase": "refactored", "test_report": {**self.report, "phase": "refactored"}})
-        self.assertEqual(route_after_repair(result), "run")
+        state = {**self.state, "phase": "refactored", "test_report": {**self.report, "phase": "refactored"}}
+        proposal = repair(state)
+        self.assertEqual((source_dir / "State.java").read_text(), original)
+        self.approve_and_apply(state, proposal)
         self.assertEqual((source_dir / "State.java").read_text(), fixed)
 
     @unittest.skipUnless(shutil.which("javac") and shutil.which("java"), "Requires Java JDK")
@@ -285,10 +369,40 @@ public class BoundaryCheck {
         self.assertNotEqual(before.returncode, 0)
         self.assertIn("AC must be off at 68", before.stderr)
         repair, _, _ = self.nodes(patch())
-        updated = repair(self.state)
+        updated = self.approve_and_apply(self.state, repair(self.state))
         self.assertEqual(updated["repair_action"], "run")
         after = run()
         self.assertEqual(after.returncode, 0, after.stderr)
+
+
+class ExitTrapHelperTests(unittest.TestCase):
+    """The helper gap tests use for main(): real javac/java, no Maven."""
+
+    @unittest.skipUnless(shutil.which("javac") and shutil.which("java"), "Requires Java JDK")
+    def test_exit_codes_and_blocking_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            driver = tmp / "Driver.java"
+            driver.write_text("""package cse4392;
+public class Driver {
+  public static void main(String[] a) throws Exception {
+    ExitTrap.Result off = ExitTrap.runMain("off");
+    ExitTrap.Result bad = ExitTrap.runMain("nonsense");
+    ExitTrap.Result cool = ExitTrap.runMain(1500, "cool");
+    System.out.println(off.exitedByItself + " " + off.exitCode + " " + off.output.contains("System off"));
+    System.out.println(bad.exitedByItself + " " + bad.exitCode);
+    System.out.println(cool.exitedByItself);
+  }
+}
+""")
+            out = tmp / "classes"
+            subprocess.run(["javac", "-d", str(out), str(ROOT / "app/SeasonSwitch.java"),
+                            str(ROOT / "app/java_helpers/ExitTrap.java"), str(driver)],
+                           check=True, capture_output=True, text=True, timeout=60)
+            run = subprocess.run(["java", "-Djava.awt.headless=true", "-cp", str(out), "cse4392.Driver"],
+                                 capture_output=True, text=True, timeout=60)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertEqual(run.stdout.split("\n")[-4:-1], ["true 0 true", "true 1", "false"])
 
 
 class HumanApprovalWiringTests(unittest.TestCase):
@@ -301,7 +415,8 @@ class HumanApprovalWiringTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         tree = ast.parse((ROOT / "app/main.py").read_text())
-        names = {"review_tests", "route_test_review", "route_tests_by_phase", "route_coverage"}
+        names = {"review_tests", "route_test_review", "route_tests_by_phase", "route_coverage",
+                 "run_tests_step"}
         nodes = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name in names]
         cls.functions = compile(ast.Module(body=nodes, type_ignores=[]), "app/main.py", "exec")
 
@@ -309,7 +424,7 @@ class HumanApprovalWiringTests(unittest.TestCase):
         env = {"AgentState": dict,
                "interrupt": lambda payload: {"approved": approved, "feedback": feedback},
                "log": logging.getLogger("test-review"), "datetime": __import__("datetime").datetime,
-               "MAX_HUMAN_REJECTIONS": 3, "MAX_TEST_FIX_ROUNDS": 2,
+               "MAX_HUMAN_REJECTIONS": 3, "repair_log_entry": repair_log_entry,
                "OUTPUT_DIR": ROOT / "generated_tests", "MAX_REVIEW_REJECTIONS": 3,
                "route_test_results": lambda state: "passed" if state["test_report"]["all_passed"] else "failed"}
         exec(self.functions, env)
@@ -322,6 +437,8 @@ class HumanApprovalWiringTests(unittest.TestCase):
                  "change_log": [{"diff": "+ candidate"}]}
         result, env = self.run_review(state, False, "Correct boundary value")
         self.assertEqual(result["merged_tests"], TESTS)
+        self.assertEqual(result["repair_log"][0]["outcome"], "human_rejected")
+        self.assertEqual(result["repair_log"][0]["kind"], "gap")
         self.assertEqual(result["human_feedback"], "Correct boundary value")
         self.assertEqual(env["route_test_review"]({**state, **result}), "retry_gap")
 
@@ -338,12 +455,53 @@ class HumanApprovalWiringTests(unittest.TestCase):
         self.assertEqual(env["route_test_review"]({**state, **result}), "approved")
         self.assertEqual(result["review_context"], "")
         self.assertEqual(result["pre_review_tests"], "")
+        self.assertEqual(result["awaiting_rerun"], "gap")
+        self.assertEqual(result["repair_log"][0]["outcome"], "approved")
 
-    def test_review_rejections_are_bounded(self):
+    def test_approved_code_fix_goes_to_apply_step(self):
+        pending = {"phase": "original", "path": "SeasonSwitch.java", "old": "a", "new": "b"}
+        state = {"merged_tests": TESTS, "pre_review_tests": TESTS, "review_context": "repair",
+                 "pending_code_repair": pending, "change_log": [{"diff": "-a\n+b"}]}
+        result, env = self.run_review(state, True)
+        self.assertEqual(env["route_test_review"]({**state, **result}), "apply_repair")
+
+    def test_rejected_code_fix_is_dropped(self):
+        pending = {"phase": "original", "path": "SeasonSwitch.java", "old": "a", "new": "b"}
+        state = {"merged_tests": TESTS, "pre_review_tests": TESTS, "review_context": "repair",
+                 "pending_code_repair": pending, "change_log": [{"diff": "-a\n+b"}]}
+        result, env = self.run_review(state, False, "Wrong fix")
+        self.assertIsNone(result["pending_code_repair"])
+        self.assertEqual(env["route_test_review"]({**state, **result}), "retry_repair")
+
+    def test_repair_rejections_do_not_use_up_r1_rejections(self):
+        """Rejecting a repair/gap proposal uses that agent's own cap, not the R1 limit."""
         state = {"merged_tests": TESTS, "pre_review_tests": TESTS, "review_context": "gap",
                  "human_rejections": 2}
         result, env = self.run_review(state, False, "Need more tests")
+        self.assertEqual(result["human_rejections"], 2)
+        self.assertEqual(env["route_test_review"]({**state, **result}), "retry_gap")
+
+    def test_r1_rejections_are_still_bounded(self):
+        state = {"merged_tests": TESTS, "review_context": "", "human_rejections": 2}
+        result, env = self.run_review(state, False, "More BVA tests")
         self.assertEqual(env["route_test_review"]({**state, **result}), "max_attempts")
+
+    def test_rerun_after_approved_change_is_logged_and_helper_copied(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            helper = base / "ExitTrap.java"
+            helper.write_text("// helper")
+            env = {"AgentState": dict, "BASE_DIR": base, "EXIT_TRAP_SOURCE": helper,
+                   "shutil": shutil, "repair_log_entry": repair_log_entry,
+                   "run_tests": lambda state: {"test_report": {"all_passed": False, "passed": 4,
+                                                               "total": 5}}}
+            exec(self.functions, env)
+            result = env["run_tests_step"]({"phase": "refactored", "awaiting_rerun": "repair"})
+            self.assertTrue((base / "java-refactored/src/test/java/cse4392/ExitTrap.java").is_file())
+            self.assertEqual(result["awaiting_rerun"], "")
+            self.assertEqual(result["repair_log"][0]["outcome"], "rerun_failed")
+            plain = env["run_tests_step"]({"phase": "refactored"})
+            self.assertNotIn("repair_log", plain)
 
     def test_original_generator_review_still_routes_to_original_agents(self):
         state = {"merged_tests": TESTS, "review_context": ""}
@@ -404,9 +562,12 @@ class HumanApprovalWiringTests(unittest.TestCase):
             routing[name] = mapping
         self.assertEqual(routing["run_tests"]["failed"], "repair_agent")
         self.assertEqual(routing["repair_agent"], {"run": "run_tests", "review": "review_tests",
+                                                   "retry": "repair_agent",
                                                    "escalate": "escalate_review"})
         self.assertEqual(routing["generate_gap_tests"], {"review": "review_tests",
+                                                         "retry": "generate_gap_tests",
                                                          "escalate": "escalate_review"})
+        self.assertEqual(routing["review_tests"]["apply_repair"], "apply_code_repair")
         self.assertEqual(routing["review_tests"]["retry_gap"], "generate_gap_tests")
         self.assertEqual(routing["review_tests"]["retry_repair"], "repair_agent")
 

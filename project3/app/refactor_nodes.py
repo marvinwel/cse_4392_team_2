@@ -18,6 +18,9 @@ from typing import Any, Callable
 MAX_REFACTOR_REVISIONS = 3
 MAIN_SOURCE_DIR = PurePosixPath("src/main/java/cse4392")
 TEST_SOURCE_DIR = PurePosixPath("src/test/java/cse4392")
+# Test-only helpers the workflow copies into the test folder itself. A copy in
+# src/main would be measured by JaCoCo as production code, so it is never written there.
+TEST_HELPER_FILES = {"ExitTrap.java"}
 
 REFACTOR_PROMPT = """You are refactoring a Java class for a course assignment.
 
@@ -56,6 +59,8 @@ Requirements:
   weaken, remove, or silently change an oracle. Keep package cse4392 and JUnit 5.
 - Include every Java source needed to compile the refactored project. The map
   keys must be file names or paths below src/main/java/cse4392.
+- ExitTrap is a test helper that the workflow already places in the test
+  folder. Do not include ExitTrap.java (or any other test helper) in "files".
 - Return complete source files, not diffs. Do not include markdown fences.
 
 Original Java source:
@@ -267,6 +272,10 @@ def build_refactor_nodes(
         files, adapted_tests, explanation = _validate_and_normalize_result(
             parsed, approved_tests, class_name,
         )
+        files = {path: code for path, code in files.items()
+                 if PurePosixPath(path).name not in TEST_HELPER_FILES}
+        if not files:
+            raise ValueError("Refactor result contains no production Java source")
         project_dir = Path(state.get("refactored_project_dir", root / "java-refactored")).resolve()
         if not project_dir.is_relative_to(root):
             raise ValueError("refactored_project_dir must remain inside the repository")

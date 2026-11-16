@@ -190,12 +190,21 @@ Approve? [y = approve / n = request changes]:
   (review 1) or to the refactor agent (review 2), and the review repeats.
 - Three change requests at the same review stop the run with the status
   `review_exhausted` (tests) or `refactor_review_exhausted` (refactoring).
+- Before review 1, Claude reviews the EP and BVA tests on its own. If it rejects
+  them 3 times, the run does **not** stop: your review opens with a WARNING banner
+  and the AI's last feedback, so check those points carefully before you approve.
+- Review 1 also pauses for every **repair or gap-test proposal**. The terminal
+  prints the proposed diff and the file it changes (a Java source file or the
+  tests). Nothing is written or run until you answer `y`. `n` throws the
+  proposal away and the agent tries again with your feedback. These rejections
+  use the agent's own 3 tries, not the 3 change requests above.
 - Every decision is written to the change log
   (`generated_tests/change_log_<phase>.json`).
 
 | Review | Node | When it pauses | What to read |
 |---|---|---|---|
 | 1. Generated tests | `review_tests` | After `merge_tests`, before any test runs | `generated_tests/SeasonSwitchMergedTest.java` |
+| 1. Repair or gap-test proposal | `review_tests` | After `repair_agent` or `generate_gap_tests`, before the change is written | The diff printed in the terminal |
 | 2. Refactored code | `review_refactor` | After `refactor_agent`, before the adapted tests run | `java-refactored/src/main/java/cse4392/` and `java-refactored/src/test/java/cse4392/` |
 
 #### Skipping the reviews while developing
@@ -218,13 +227,34 @@ AUTO_APPROVE=1 make run
 | Status | Meaning |
 |---|---|
 | `refactored_saved` | Both phases finished and evidence was saved for each |
-| `awaiting_gap_tests` | Branch coverage is below 100% and the gap-test agent is not implemented yet |
-| `review_exhausted` | The generated tests were rejected the maximum number of times |
+| `review_exhausted` | You (the human reviewer) requested changes to the generated tests 3 times |
 | `merge_failed` | The EP and BVA classes could not be merged after the allowed retries |
-| `test_fix_exhausted` | Original-phase tests still fail after the allowed fix rounds |
+| `repair_exhausted` | Tests still fail after 3 repair tries in this phase |
+| `repair_blocked` | The repair agent could not run (no failure report, or an approved fix could not be written), or its last try was unusable |
+| `gap_exhausted` | Coverage is still below 100% after 3 gap-test rounds in this phase |
+| `gap_blocked` | The gap-test agent could not run (no JaCoCo report or missed lines), or its last try was unusable |
 | `refactor_review_exhausted` | The refactoring was rejected the maximum number of times |
 | `refactor_generation_failed` | The refactor agent did not return usable output |
-| `refactor_fix_exhausted` | Refactored tests still fail after the allowed fix rounds |
+
+Statuses you may see while the run is still going: `repair_pending_review`,
+`gap_tests_pending_review` (waiting for your review), `code_repaired` (an
+approved code fix was written), and `repair_retry` / `gap_retry` (the AI's reply
+was unusable and is being retried with the error).
+
+#### Repair and gap-test loop
+
+| Step | What happens |
+|---|---|
+| Tests fail (either phase) | `repair_agent` proposes one change to a Java source file or to the tests |
+| You review it | `review_tests` shows the diff; `y` writes and reruns it, `n` asks for another proposal |
+| Coverage below 100% | `generate_gap_tests` proposes new `COVERAGE` test methods for the exact missed lines |
+| Limits | 3 repair tries and 3 gap-test rounds per phase; an unusable AI reply counts as a try |
+| Record | Every proposal, AI error, decision and rerun result goes into `repair_log` in `generated_tests/change_log_<phase>.json` |
+
+`main()` calls `System.exit`, so gap tests reach it through
+`app/java_helpers/ExitTrap.java`. It runs `main()` in a separate Java process
+with JaCoCo attached. `run_tests` copies it into the phase's test folder before
+every Maven run; edit the file in `app/java_helpers/`, not the copy.
 
 To independently execute the latest generated suite
 and display JUnit results and JaCoCo branch coverage:
@@ -359,15 +389,16 @@ Implemented and wired into the workflow:
 
 - Both human review stages (generated tests and refactored code).
 - State-pattern refactoring, test adaptation, and the refactored test run.
-- Recovery from a failed EP/BVA merge and from failing refactored tests.
+- Recovery from a failed EP/BVA merge.
+- The repair agent and gap-test generation, with human review of every change
+  (see "Repair and gap-test loop" above and `docs/person4-repair-coverage.md`).
+- Full-program coverage in both phases: every class and `main()`
+  (see `docs/coverage-scope.md`).
 
 Still needed:
 
-- Gap-test generation and the repair agent. Until then, any coverage gap
-  ends the run with `awaiting_gap_tests`.
-- Tests for `Room.actionPerformed` and a team decision on `main()`
-  (see `docs/coverage-scope.md`). The original phase currently measures a
-  narrowed scope, and the refactored phase stops below 100%.
+- A full `make run` with real human reviews to confirm both phases reach
+  100% branch coverage.
 
 Running `make run` does not by itself establish
 completion of the professor's requirements.

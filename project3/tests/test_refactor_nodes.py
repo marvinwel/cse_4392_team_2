@@ -74,6 +74,20 @@ class RefactorAgentTests(unittest.TestCase):
         self.assertEqual(result["refactor_status"], "awaiting_review")
         self.assertIn("Approved JUnit suite", self.model.prompts[0])
 
+    def test_test_helper_is_never_written_as_production_code(self):
+        # Real run 2026-11-16: the model added its own ExitTrap.java to src/main,
+        # and JaCoCo counted its 4 branches as uncovered production code.
+        stale = self.root / "java-refactored/src/main/java/cse4392/ExitTrap.java"
+        stale.parent.mkdir(parents=True)
+        stale.write_text("package cse4392; class ExitTrap {}")
+        model = FakeModel(response(files={"SeasonSwitch.java": SOURCE,
+                                          "ExitTrap.java": "package cse4392; class ExitTrap {}"}))
+        refactor_agent, _ = build_refactor_nodes(model, self.root, lambda _: {"approved": True})
+        result = refactor_agent(self.state)
+        self.assertEqual([Path(p).name for p in result["refactored_files"]], ["SeasonSwitch.java"])
+        self.assertFalse(stale.exists())
+        self.assertIn("Do not include ExitTrap.java", model.prompts[0])
+
     def test_rejects_path_traversal(self):
         model = FakeModel(response(files={"../../outside.java": SOURCE}))
         refactor_agent, _ = build_refactor_nodes(model, self.root, lambda _: {"approved": True})

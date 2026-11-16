@@ -1,17 +1,15 @@
 """
 Team Assignment 3 - Multi-agent test generation for SeasonSwitch.
 
-Claude generates the tests, Amazon Nova Micro reviews them.
+Claude generates the tests and Claude reviews them; a person makes the final call.
 EP and BVA tests are each reviewed on their own before they are merged.
 
     load_source --+-- ep_agent  -- review_ep  --+-- ep_done  --+
                   |      ^-------- rejected ----+              |
-                  |                                            +-- merge_tests -- run_tests --+-- check_coverage -- R3
-                  +-- bva_agent -- review_bva --+-- bva_done --+                              |
-                         ^-------- rejected ----+                                             +-- review_failures
-                                                                                                 (Nova explains the failures,
-                                                                                                  both agents regenerate)
-    Failed test run -> repair_agent -> rerun (or human review of changed tests)
+                  |                                            +-- merge_tests -- review_tests -- run_tests --+-- check_coverage -- R3
+                  +-- bva_agent -- review_bva --+-- bva_done --+                                              |
+                         ^-------- rejected ----+                                                             +-- repair_agent
+    Failed test run -> repair_agent -> human review of the code or test diff -> rerun
     Missed JaCoCo branches -> generate_gap_tests -> human review -> rerun
     Exhausted/invalid proposals -> escalate_review -> save_change_log -> END
 
@@ -26,6 +24,7 @@ import logging
 import operator
 import os
 import re
+import shutil
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -55,9 +54,11 @@ except ImportError:  # when run as `python -m app.main`
 
 # Person 4 (Sarthak): bounded failure repairs and measured coverage-gap tests.
 try:
-    from repair_nodes import build_repair_nodes, route_after_repair, route_after_gap
+    from repair_nodes import (build_repair_nodes, build_apply_code_repair, repair_log_entry,
+                              route_after_repair, route_after_apply, route_after_gap)
 except ImportError:  # when run as `python -m app.main`
-    from app.repair_nodes import build_repair_nodes, route_after_repair, route_after_gap
+    from app.repair_nodes import (build_repair_nodes, build_apply_code_repair, repair_log_entry,
+                                  route_after_repair, route_after_apply, route_after_gap)
 
 
 # ===========================================================================
@@ -67,22 +68,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
 MAX_REVIEW_REJECTIONS = 3     # per agent (EP / BVA), per round
-MAX_TEST_FIX_ROUNDS = 2       # how many times failed test runs go back for fixing
 MAX_HUMAN_REJECTIONS = 3      # how many times the human reviewer can request changes
 MAX_MERGE_FAILURES = 2        # how many times a failed EP/BVA merge goes back for fixing
 MAX_REFACTOR_ERRORS = 2       # how many unusable refactor replies are retried
-MAX_REFACTOR_FIX_ROUNDS = 2   # how many times failing refactored tests go back for fixing
 REFACTOR_MAX_TOKENS = 16000   # one reply holds every refactored file plus the adapted tests
 
-# Refactored phase: measure EVERY class, so the new State classes are counted.
-# main() stays excluded only because the original phase excludes it; the team still
-# has to settle main() and Room (docs/coverage-scope.md).
-REFACTORED_COVERAGE_SCOPE = {"include_classes": None, "exclude_methods": ["SeasonSwitch.main"]}
+# Team decision (2026-11-15): both phases measure the FULL program, with nothing left out:
+# every class (inner classes AC, Heater, Room and the new State classes) and main().
+# main()'s System.exit branches are covered through ExitTrap (app/java_helpers/).
+FULL_PROGRAM_SCOPE = {"include_classes": None, "exclude_methods": []}
 
 GENERATOR_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0"   # Qwen3 Coder 30B A3B: writes the tests
 CLAUDE_MODEL = "us.anthropic.claude-sonnet-4-6"
-REVIEW_MODEL = "us.amazon.nova-micro-v1:0"          # Amazon Nova Micro: reviews the tests (cheapest)
-REVIEW_MAX_TOKENS = 4000                            # review answers are short JSON; keeps under Nova's output limit
+# Reviewer: Claude (2026-11-16). Nova Micro gave contradictory feedback and stopped runs.
+REVIEW_MODEL = CLAUDE_MODEL
+REVIEW_MAX_TOKENS = 4000                            # review answers are short JSON
 REGION = "us-east-1"
 TEMPERATURE = 0
 MAX_TOKENS = 8000
@@ -131,7 +131,12 @@ refactor_model = ChatBedrockConverse(
 refactor_agent, review_refactor = build_refactor_nodes(
     refactor_model, BASE_DIR, interrupt,
 )
-repair_agent, generate_gap_tests = build_repair_nodes(generator_model, BASE_DIR)
+# Repairs send back a whole Java file inside JSON, so they use the 16000-token model.
+repair_agent, generate_gap_tests = build_repair_nodes(refactor_model, BASE_DIR)
+apply_code_repair = build_apply_code_repair(BASE_DIR)
+
+# Copied into every Maven test folder before a run; gap tests use it to cover main().
+EXIT_TRAP_SOURCE = BASE_DIR / "app" / "java_helpers" / "ExitTrap.java"
 
 
 # ===========================================================================
@@ -149,18 +154,19 @@ class AgentState(TypedDict, total=False):
     ep_tests: str
     ep_approved: bool
     ep_feedback: str
-    ep_review_count: int      # total Nova reviews of the EP tests
+    ep_review_count: int      # total AI reviews of the EP tests
     ep_rejections: int        # rejections in the current round
+    ep_ai_unresolved: str     # reviewer's last feedback when it hit the cap; shown at human review
 
     # Boundary Value Analysis branch
     bv_tests: str
     bv_approved: bool
     bv_feedback: str
-    bv_review_count: int      # total Nova reviews of the BVA tests
+    bv_review_count: int      # total AI reviews of the BVA tests
     bv_rejections: int
+    bv_ai_unresolved: str
 
     merged_tests: str
-    test_fix_rounds: int
     workflow_status: str
 
     # Human review of the merged tests (R1, Ryan)
@@ -186,7 +192,6 @@ class AgentState(TypedDict, total=False):
     # Refactored-phase orchestration (Ryan)
     refactor_error: str       # empty when the last refactor reply was usable
     refactor_errors: int
-    refactor_fix_rounds: int  # failed refactored test runs sent back for fixing
 
     # Change log: every node adds its entries; operator.add joins the lists,
     # so the parallel EP and BVA nodes can both add entries in the same step.
@@ -211,6 +216,10 @@ class AgentState(TypedDict, total=False):
     gap_tests: list
     review_context: str     # "repair" or "gap" for a proposed change needing approval
     pre_review_tests: str   # last approved suite; restored on human rejection
+    pending_code_repair: dict  # proposed code fix waiting for review: phase, path, old, new
+    awaiting_rerun: str        # "repair"/"gap": the next test run shows if the change worked
+    # The repair list: one row per proposal, AI error, human decision and rerun result.
+    repair_log: Annotated[list, operator.add]
 
 
 # ===========================================================================
@@ -357,22 +366,22 @@ review_prompt = ChatPromptTemplate.from_messages([
     ("human", "Java source:\n{source_code}\n\n{technique} tests:\n{tests}"),
 ])
 
-FAILURE_SYSTEM = """You are an expert Java JUnit 5 test reviewer.
-The merged EP + BVA test class below was run and some tests FAILED.
-For each failing test, explain why it failed (wrong expected value, missing reset,
-nonexistent method, compile error, ...) and exactly how to fix it.
-Name each failing test method so the EP and BVA authors can find their own tests.
-Answer in plain text."""
-
-failure_prompt = ChatPromptTemplate.from_messages([
-    ("system", FAILURE_SYSTEM),
-    ("human", "Java source:\n{source_code}\n\nMerged tests:\n{merged_tests}\n\nTest results:\n{test_results}"),
-])
-
-
 # ===========================================================================
 # 4. Nodes
 # ===========================================================================
+def extract_java(text: str) -> str:
+    """Return only the Java code from a model reply.
+
+    Handles a closed ``` fence (keeps the longest fenced block), an unclosed fence,
+    and prose before the package line, so the merger always gets plain Java."""
+    blocks = re.findall(r"```[ \t]*(?:java)?[ \t]*\n?(.*?)```", text, re.S | re.I)
+    if blocks:
+        return max(blocks, key=len).strip()
+    code = "\n".join(line for line in text.splitlines() if not line.strip().startswith("```"))
+    start = re.search(r"(?m)^\s*(?:package|import)\s", code)
+    return (code[start.start():] if start else code).strip()
+
+
 def load_source(state: AgentState) -> dict:
     return {"source_code": Path(state["source_path"]).read_text(encoding="utf-8")}
 
@@ -396,9 +405,8 @@ def generate_ep_tests(state: AgentState) -> dict:
     content = response.content
     text = content if isinstance(content, str) else "".join(
         b.get("text", "") for b in content if isinstance(b, dict))
-    # Keep only the Java code if the model wrapped it in ``` fences
-    match = re.search(r"```(?:java)?\s*(.*?)```", text, re.S)
-    new_tests = (match.group(1) if match else text).strip()
+    # Keep only the Java code, even if the model wrapped it in ``` fences
+    new_tests = extract_java(text)
 
     # Log what changed and why
     test_file = f"{state['class_name']}EPTest.java"
@@ -442,9 +450,8 @@ def generate_bv_tests(state: AgentState) -> dict:
     content = response.content
     text = content if isinstance(content, str) else "".join(
         b.get("text", "") for b in content if isinstance(b, dict))
-    # Keep only the Java code if the model wrapped it in ``` fences
-    match = re.search(r"```(?:java)?\s*(.*?)```", text, re.S)
-    new_tests = (match.group(1) if match else text).strip()
+    # Keep only the Java code, even if the model wrapped it in ``` fences
+    new_tests = extract_java(text)
 
     # Log what changed and why
     test_file = f"{state['class_name']}BVTest.java"
@@ -469,11 +476,11 @@ def generate_bv_tests(state: AgentState) -> dict:
     return {"bv_tests": new_tests, "change_log": [entry]}
 
 
-# ---- Node 4: EP review (Nova) - returns how many EP reviews have been done ----
-@traceable(name="Nova review EP tests")
+# ---- Node 4: EP review (AI reviewer) - returns how many EP reviews have been done ----
+@traceable(name="AI review EP tests")
 def review_ep_tests(state: AgentState) -> dict:
     count = state.get("ep_review_count", 0) + 1
-    log.info("[EP] Nova reviewing Equivalence Partitioning tests (review #%d)...", count)
+    log.info("[EP] Claude reviewing Equivalence Partitioning tests (review #%d)...", count)
 
     response = (review_prompt | review_model).invoke({
         "technique": "Equivalence Partitioning",
@@ -498,33 +505,41 @@ def review_ep_tests(state: AgentState) -> dict:
         feedback = text.strip() or "Reviewer returned no output."
 
     rejections = state.get("ep_rejections", 0) + (0 if approved else 1)
+    # At the cap the run does not stop: the tests go on to the human review, which
+    # shows this last feedback. The person makes the final call (assignment step 4).
+    handoff = not approved and rejections >= MAX_REVIEW_REJECTIONS
 
     log.info("[EP] Approved: %s | reviews: %d | rejections this round: %d/%d",
              approved, count, rejections, MAX_REVIEW_REJECTIONS)
     if feedback:
         log.info("[EP] Feedback: %s", feedback)
+    if handoff:
+        log.warning("[EP] Reviewer rejected %d times; handing the tests to the human review.",
+                    rejections)
 
     return {
         "ep_approved": approved,
         "ep_feedback": "" if approved else feedback,
         "ep_review_count": count,
         "ep_rejections": rejections,
+        "ep_ai_unresolved": feedback if handoff else "",
         "change_log": [{
             "time": datetime.now().isoformat(timespec="seconds"),
             "phase": state.get("phase"),
             "node": "review_ep",
-            "action": "approved" if approved else "rejected",
+            "action": ("approved" if approved else
+                       "rejected_handed_to_human" if handoff else "rejected"),
             "review_number": count,
             "feedback": feedback,
         }],
     }
 
 
-# ---- Node 5: BVA review (Nova) - returns how many BVA reviews have been done ----
-@traceable(name="Nova review BVA tests")
+# ---- Node 5: BVA review (AI reviewer) - returns how many BVA reviews have been done ----
+@traceable(name="AI review BVA tests")
 def review_bv_tests(state: AgentState) -> dict:
     count = state.get("bv_review_count", 0) + 1
-    log.info("[BVA] Nova reviewing Boundary Value Analysis tests (review #%d)...", count)
+    log.info("[BVA] Claude reviewing Boundary Value Analysis tests (review #%d)...", count)
 
     response = (review_prompt | review_model).invoke({
         "technique": "Boundary Value Analysis",
@@ -549,22 +564,30 @@ def review_bv_tests(state: AgentState) -> dict:
         feedback = text.strip() or "Reviewer returned no output."
 
     rejections = state.get("bv_rejections", 0) + (0 if approved else 1)
+    # At the cap the run does not stop: the tests go on to the human review, which
+    # shows this last feedback. The person makes the final call (assignment step 4).
+    handoff = not approved and rejections >= MAX_REVIEW_REJECTIONS
 
     log.info("[BVA] Approved: %s | reviews: %d | rejections this round: %d/%d",
              approved, count, rejections, MAX_REVIEW_REJECTIONS)
     if feedback:
         log.info("[BVA] Feedback: %s", feedback)
+    if handoff:
+        log.warning("[BVA] Reviewer rejected %d times; handing the tests to the human review.",
+                    rejections)
 
     return {
         "bv_approved": approved,
         "bv_feedback": "" if approved else feedback,
         "bv_review_count": count,
         "bv_rejections": rejections,
+        "bv_ai_unresolved": feedback if handoff else "",
         "change_log": [{
             "time": datetime.now().isoformat(timespec="seconds"),
             "phase": state.get("phase"),
             "node": "review_bva",
-            "action": "approved" if approved else "rejected",
+            "action": ("approved" if approved else
+                       "rejected_handed_to_human" if handoff else "rejected"),
             "review_number": count,
             "feedback": feedback,
         }],
@@ -572,12 +595,20 @@ def review_bv_tests(state: AgentState) -> dict:
 
 # ---- Nodes 6a / 6b: mark each branch approved; merge_tests waits for both ----
 def ep_done(state: AgentState) -> dict:
-    log.info("[EP] Tests approved after %d review(s).", state.get("ep_review_count", 0))
+    if state.get("ep_ai_unresolved"):
+        log.info("[EP] Reviewer did not approve after %d review(s); the human review decides.",
+                 state.get("ep_review_count", 0))
+    else:
+        log.info("[EP] Tests approved after %d review(s).", state.get("ep_review_count", 0))
     return {"ep_approved": state.get("ep_approved", True)}
 
 
 def bva_done(state: AgentState) -> dict:
-    log.info("[BVA] Tests approved after %d review(s).", state.get("bv_review_count", 0))
+    if state.get("bv_ai_unresolved"):
+        log.info("[BVA] Reviewer did not approve after %d review(s); the human review decides.",
+                 state.get("bv_review_count", 0))
+    else:
+        log.info("[BVA] Tests approved after %d review(s).", state.get("bv_review_count", 0))
     return {"bv_approved": state.get("bv_approved", True)}
 
 
@@ -667,13 +698,21 @@ def review_tests(state: AgentState) -> dict:
         "prior_feedback": state.get("human_feedback", ""),
         "proposed_diff": last_change.get("diff", "") if pending else "",
         "review_context": state.get("review_context", ""),
+        # Which file the proposal changes: a Java source name for a code fix, else the tests.
+        "proposed_target": ((state.get("pending_code_repair") or {}).get("path")
+                            or "the merged JUnit tests") if pending else "",
+        # Feedback the AI reviewer still had when it hit its limit: {"EP": "...", "BVA": "..."}
+        "ai_review_notes": {} if pending else {
+            name: note for name, note in (("EP", state.get("ep_ai_unresolved")),
+                                          ("BVA", state.get("bv_ai_unresolved"))) if note},
     })
     if not isinstance(decision, dict) or not isinstance(decision.get("approved"), bool):
         raise ValueError("Resume review_tests with {'approved': bool, 'feedback': str}")
 
     approved = decision["approved"]
     feedback = str(decision.get("feedback", "")).strip()
-    rejections = state.get("human_rejections", 0) + (0 if approved else 1)
+    # A rejected repair or gap proposal uses that agent's own tries, not the R1 limit.
+    rejections = state.get("human_rejections", 0) + (0 if approved or pending else 1)
     log.info("[HUMAN] Approved: %s | review #%d | change requests: %d/%d",
              approved, count, rejections, MAX_HUMAN_REJECTIONS)
     if feedback:
@@ -696,11 +735,21 @@ def review_tests(state: AgentState) -> dict:
             "feedback": feedback,
         }],
     }
+    if pending:
+        kind = state["review_context"]
+        update["repair_log"] = [repair_log_entry(
+            kind, state.get("phase", "original"),
+            "approved" if approved else "human_rejected", feedback=feedback,
+            auto=bool(decision.get("auto")))]
+        if approved:
+            update["awaiting_rerun"] = kind
     if not approved:
         if pending:
             # The candidate was never approved or written to Maven. Restore the
-            # last approved tests before asking Person 4's node for a revision.
+            # last approved tests and drop any proposed code fix before asking
+            # Person 4's node for a revision.
             update["merged_tests"] = state["pre_review_tests"]
+            update["pending_code_repair"] = None
         else:
             # Standard first-stage human review is still owned by Marvin/Ryan.
             request = ("A HUMAN REVIEWER requested these changes to the merged tests. "
@@ -710,48 +759,6 @@ def review_tests(state: AgentState) -> dict:
                 "bv_feedback": request, "bv_approved": False, "bv_rejections": 0,
             })
     return update
-
-
-@traceable(name="Nova review test failures")
-def review_failures(state: AgentState) -> dict:
-    """Tests failed when run: Nova explains why, and both agents get the feedback."""
-    rounds = state.get("test_fix_rounds", 0) + 1
-    log.warning("Tests failed. Nova reviewing the failures (fix round %d/%d)...",
-                rounds, MAX_TEST_FIX_ROUNDS)
-
-    report = state.get("test_report") or {}
-    lines = [f"{report.get('passed', 0)}/{report.get('total', 0)} passed, "
-             f"{report.get('failed', 0)} failed, {report.get('errors', 0)} errors"]
-    for f in report.get("failures", []):
-        lines.append(f"FAIL {f.get('test')}: {str(f.get('message', ''))[:500]}")
-    test_results = "\n".join(lines)
-
-    response = (failure_prompt | review_model).invoke({
-        "source_code": state["source_code"],
-        "merged_tests": state["merged_tests"],
-        "test_results": test_results,
-    })
-    content = response.content
-    text = content if isinstance(content, str) else "".join(
-        b.get("text", "") for b in content if isinstance(b, dict))
-    feedback = text.strip() or f"Fix the failing tests:\n{test_results}"
-    feedback = f"These tests FAILED when run. Fix any of YOUR tests listed here:\n{feedback}"
-    log.info("Failure feedback: %s", feedback)
-
-    return {
-        "test_fix_rounds": rounds,
-        "ep_feedback": feedback, "ep_approved": False, "ep_rejections": 0,
-        "bv_feedback": feedback, "bv_approved": False, "bv_rejections": 0,
-        "change_log": [{
-            "time": datetime.now().isoformat(timespec="seconds"),
-            "phase": state.get("phase"),
-            "node": "review_failures",
-            "action": "test_run_failed",
-            "fix_round": rounds,
-            "test_results": test_results,
-            "fix_instructions": feedback,
-        }],
-    }
 
 
 # ---- Refactored phase: orchestration around Emily's nodes (Ryan) ----
@@ -779,35 +786,26 @@ def run_refactor_agent(state: AgentState) -> dict:
             }],
         }
     log.info("[REFACTOR] Wrote %d source file(s) to java-refactored/.", len(result["refactored_files"]))
-    return {**result, "refactor_error": "", "coverage_scope": REFACTORED_COVERAGE_SCOPE}
+    return {**result, "refactor_error": "", "coverage_scope": FULL_PROGRAM_SCOPE}
 
 
-def refactor_failures(state: AgentState) -> dict:
-    """Refactored tests failed: send the results back to the refactor agent (assignment step 10)."""
-    rounds = state.get("refactor_fix_rounds", 0) + 1
-    report = state.get("test_report") or {}
-    lines = [f"{report.get('passed', 0)}/{report.get('total', 0)} passed, "
-             f"{report.get('failed', 0)} failed, {report.get('errors', 0)} errors"]
-    for f in report.get("failures", []):
-        lines.append(f"FAIL {f.get('test')}: {str(f.get('message', ''))[:500]}")
-    if report.get("build_output_tail"):
-        lines.append("Build output:\n" + report["build_output_tail"][-2000:])
-    test_results = "\n".join(lines)
-    log.warning("[REFACTOR] Refactored tests failed (fix round %d/%d).", rounds, MAX_REFACTOR_FIX_ROUNDS)
-    return {
-        "refactor_fix_rounds": rounds,
-        "refactor_feedback": ("The refactored code and adapted tests were run and FAILED. Fix the "
-                              "refactored code, or adapt a test only where the new design requires it. "
-                              f"Do not weaken any assertion.\n{test_results}"),
-        "change_log": [{
-            "time": datetime.now().isoformat(timespec="seconds"),
-            "phase": "refactored",
-            "node": "refactor_failures",
-            "action": "refactored_test_run_failed",
-            "fix_round": rounds,
-            "test_results": test_results,
-        }],
-    }
+def run_tests_step(state: AgentState) -> dict:
+    """Joseph's run_tests, plus two things around it:
+    - copy the ExitTrap helper into the phase's test folder (gap tests use it for main());
+    - after an approved repair or gap change, record whether the rerun passed."""
+    phase = state.get("phase") or "original"
+    helper_dir = BASE_DIR / f"java-{phase}" / "src" / "test" / "java" / "cse4392"
+    helper_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(EXIT_TRAP_SOURCE, helper_dir / "ExitTrap.java")
+
+    result = run_tests(state)
+    kind = state.get("awaiting_rerun")
+    if kind:
+        report = result.get("test_report") or {}
+        result = {**result, "awaiting_rerun": "", "repair_log": [repair_log_entry(
+            kind, phase, "rerun_passed" if report.get("all_passed") else "rerun_failed",
+            passed=report.get("passed"), total=report.get("total"))]}
+    return result
 
 
 def escalate_review(state: AgentState) -> dict:
@@ -821,15 +819,9 @@ def escalate_review(state: AgentState) -> dict:
     elif state.get("refactor_error"):
         log.error("Stopped: the refactor agent did not return usable output.")
         status = "refactor_generation_failed"
-    elif state.get("refactor_fix_rounds", 0) > MAX_REFACTOR_FIX_ROUNDS:
-        log.error("Stopped: refactored tests still fail after the maximum fix rounds.")
-        status = "refactor_fix_exhausted"
     elif state.get("merge_error") and state.get("merge_failures", 0) > MAX_MERGE_FAILURES:
         log.error("Stopped: the EP and BVA tests could not be merged.")
         status = "merge_failed"
-    elif state.get("test_fix_rounds", 0) > MAX_TEST_FIX_ROUNDS:
-        log.error("Stopped: tests still fail after the maximum fix rounds.")
-        status = "test_fix_exhausted"
     else:
         log.error("Stopped: tests were rejected the maximum number of times.")
         status = "review_exhausted"
@@ -854,7 +846,9 @@ def save_change_log(state: AgentState) -> dict:
         "workflow_status": state.get("workflow_status", "finished"),
         "ep_review_count": state.get("ep_review_count", 0),
         "bv_review_count": state.get("bv_review_count", 0),
-        "test_fix_rounds": state.get("test_fix_rounds", 0),
+        "repair_attempts_by_phase": state.get("repair_attempts_by_phase", {}),
+        "coverage_rounds_by_phase": state.get("coverage_rounds_by_phase", {}),
+        "repair_log": state.get("repair_log", []),
         "final_test_report": state.get("test_report"),
         "final_coverage": state.get("coverage"),
         "changes": state.get("change_log", []),
@@ -872,7 +866,7 @@ def route_ep_review(state: AgentState) -> str:
     if state.get("ep_approved"):
         return "approved"
     if state.get("ep_rejections", 0) >= MAX_REVIEW_REJECTIONS:
-        return "max_attempts"
+        return "handoff"          # the human review decides instead of stopping the run
     return "regenerate"
 
 
@@ -881,7 +875,7 @@ def route_bv_review(state: AgentState) -> str:
     if state.get("bv_approved"):
         return "approved"
     if state.get("bv_rejections", 0) >= MAX_REVIEW_REJECTIONS:
-        return "max_attempts"
+        return "handoff"          # the human review decides instead of stopping the run
     return "regenerate"
 
 
@@ -897,19 +891,14 @@ def route_merge(state: AgentState):
 # R1 (human): approved -> run the tests, changes requested -> both agents revise
 def route_test_review(state: AgentState):
     if state.get("human_approved"):
-        return "approved"
-    if state.get("human_rejections", 0) >= MAX_HUMAN_REJECTIONS:
-        return "max_attempts"
+        # An approved code fix is written first; approved tests go straight to Maven.
+        return "apply_repair" if state.get("pending_code_repair") else "approved"
+    # Rejected repair/gap proposals go back to their agent, which enforces its own cap.
     if state.get("review_context") == "repair":
         return "retry_repair"
     if state.get("review_context") == "gap":
         return "retry_gap"
-    return ["ep_agent", "bva_agent"]
-
-
-def route_after_failures(state: AgentState):
-    """After failure review: both agents regenerate, unless out of fix rounds."""
-    if state.get("test_fix_rounds", 0) > MAX_TEST_FIX_ROUNDS:
+    if state.get("human_rejections", 0) >= MAX_HUMAN_REJECTIONS:
         return "max_attempts"
     return ["ep_agent", "bva_agent"]
 
@@ -918,12 +907,6 @@ def route_after_failures(state: AgentState):
 def route_tests_by_phase(state: AgentState) -> str:
     # Person 4's single repair node handles failures in both phases.
     return route_test_results(state)
-
-
-def route_refactor_failures(state: AgentState) -> str:
-    if state.get("refactor_fix_rounds", 0) > MAX_REFACTOR_FIX_ROUNDS:
-        return "max_attempts"
-    return "revise"
 
 
 # After the refactor agent: usable reply -> human review, unusable -> retry
@@ -1007,11 +990,11 @@ def build_graph():
     graph.add_node("bva_done", bva_done)
     graph.add_node("merge_tests", merge_tests)
     graph.add_node("review_tests", review_tests)
-    graph.add_node("review_failures", review_failures)  # legacy fallback; not routed by R2
     graph.add_node("escalate_review", escalate_review)
     graph.add_node("repair_agent", repair_agent)
+    graph.add_node("apply_code_repair", apply_code_repair)
     # >>> PERSON 3 (Joseph) BEGIN: nodes
-    graph.add_node("run_tests", run_tests)
+    graph.add_node("run_tests", run_tests_step)
     graph.add_node("check_coverage", check_coverage)
     graph.add_node("save_results", save_results)
     # <<< PERSON 3 (Joseph) END: nodes
@@ -1019,7 +1002,6 @@ def build_graph():
     graph.add_node("save_change_log", save_change_log)
     graph.add_node("refactor_agent", run_refactor_agent)
     graph.add_node("review_refactor", review_refactor)
-    graph.add_node("refactor_failures", refactor_failures)
 
     # Generate in parallel
     graph.add_edge(START, "load_source")
@@ -1030,10 +1012,10 @@ def build_graph():
     graph.add_edge("ep_agent", "review_ep")
     graph.add_edge("bva_agent", "review_bva")
     graph.add_conditional_edges("review_ep", route_ep_review, {
-        "approved": "ep_done", "regenerate": "ep_agent", "max_attempts": "escalate_review",
+        "approved": "ep_done", "regenerate": "ep_agent", "handoff": "ep_done",
     })
     graph.add_conditional_edges("review_bva", route_bv_review, {
-        "approved": "bva_done", "regenerate": "bva_agent", "max_attempts": "escalate_review",
+        "approved": "bva_done", "regenerate": "bva_agent", "handoff": "bva_done",
     })
 
     # Merge only after BOTH branches are approved
@@ -1047,6 +1029,7 @@ def build_graph():
     # R1 (human): a person approves the merged tests before they run
     graph.add_conditional_edges("review_tests", route_test_review, {
         "approved": "run_tests", "ep_agent": "ep_agent", "bva_agent": "bva_agent",
+        "apply_repair": "apply_code_repair",
         "retry_repair": "repair_agent", "retry_gap": "generate_gap_tests",
         "max_attempts": "escalate_review",
     })
@@ -1057,13 +1040,14 @@ def build_graph():
         "passed": "check_coverage", "failed": "repair_agent",
     })
     graph.add_conditional_edges("repair_agent", route_after_repair, {
-        "run": "run_tests", "review": "review_tests", "escalate": "escalate_review",
+        "run": "run_tests", "review": "review_tests", "retry": "repair_agent",
+        "escalate": "escalate_review",
+    })
+    # A code fix is written only after the person approved its diff in review_tests.
+    graph.add_conditional_edges("apply_code_repair", route_after_apply, {
+        "run": "run_tests", "escalate": "escalate_review",
     })
     # <<< PERSON 3 (Joseph) END: edges
-
-    graph.add_conditional_edges("review_failures", route_after_failures, {
-        "ep_agent": "ep_agent", "bva_agent": "bva_agent", "max_attempts": "escalate_review",
-    })
 
     # R3: coverage and phase
     graph.add_conditional_edges("check_coverage", route_coverage, {
@@ -1075,7 +1059,7 @@ def build_graph():
     # Missing branches produce new methods requiring human test approval
     # BEFORE run_tests. Exhausted/invalid proposals escalate instead of looping.
     graph.add_conditional_edges("generate_gap_tests", route_after_gap, {
-        "review": "review_tests", "escalate": "escalate_review",
+        "review": "review_tests", "retry": "generate_gap_tests", "escalate": "escalate_review",
     })
 
     # Every ending writes the change log first
@@ -1091,9 +1075,6 @@ def build_graph():
     })
     graph.add_conditional_edges("review_refactor", route_refactor_review, {
         "approved": "run_tests", "revise": "refactor_agent", "max_attempts": "escalate_review",
-    })
-    graph.add_conditional_edges("refactor_failures", route_refactor_failures, {
-        "revise": "refactor_agent", "max_attempts": "escalate_review",
     })
 
     return graph.compile(checkpointer=MemorySaver())
@@ -1117,9 +1098,16 @@ def ask_human(payload: dict) -> dict:
     for item in payload.get("review_checklist") or []:
         print(f"  [ ] {item}")
     if payload.get("proposed_diff"):
-        print("\nProposed changes requiring your explicit approval:")
+        print(f"\nProposed change to {payload.get('proposed_target') or 'the tests'} "
+              "(needs your approval):")
         print(payload["proposed_diff"])
-        print("The proposed tests have NOT been written or executed yet.")
+        print("The proposed change has NOT been written or run yet.")
+    for name, note in (payload.get("ai_review_notes") or {}).items():
+        print("\n" + "!" * 70)
+        print(f"WARNING: the AI reviewer REJECTED the {name} tests 3 times.")
+        print("Review these points carefully before you approve:")
+        print(note)
+        print("!" * 70)
     if payload.get("prior_feedback"):
         print(f"Your previous feedback: {payload['prior_feedback']}")
     while True:
@@ -1146,12 +1134,8 @@ if __name__ == "__main__":
             "package_name": "cse4392",
             "phase": "original",
             "change_log": [],
-             # Measure branch coverage for the SeasonSwitch class only:
-            # not its inner classes (AC, Heater, Room), and not main(), which is not tested.
-            "coverage_scope": {
-                "include_classes": ["SeasonSwitch"],
-                "exclude_methods": ["SeasonSwitch.main"],
-            },
+            # Measure the full program: every class and main() (team decision 2026-11-15).
+            "coverage_scope": FULL_PROGRAM_SCOPE,
         },
         config=config,
     )
@@ -1163,6 +1147,9 @@ if __name__ == "__main__":
         if os.environ.get("AUTO_APPROVE") == "1":
             # Testing shortcut only. Final evidence runs must use the real human review.
             print(f"AUTO_APPROVE=1: skipping human review at {pending[0].value.get('node')}")
+            for name in (pending[0].value.get("ai_review_notes") or {}):
+                print(f"WARNING: the AI reviewer rejected the {name} tests 3 times; "
+                      "auto-approved without a person checking them.")
             answer = {"approved": True, "feedback": "", "auto": True}
         else:
             answer = ask_human(pending[0].value)
@@ -1172,7 +1159,14 @@ if __name__ == "__main__":
     print("Status:", result.get("workflow_status", "finished"))
     print(f"EP reviews:  {result.get('ep_review_count', 0)} (approved: {result.get('ep_approved')})")
     print(f"BVA reviews: {result.get('bv_review_count', 0)} (approved: {result.get('bv_approved')})")
-    print("Test fix rounds:", result.get("test_fix_rounds", 0))
+    print("Repair attempts:", result.get("repair_attempts_by_phase") or {},
+          "| Gap-test rounds:", result.get("coverage_rounds_by_phase") or {})
+    repair_log = result.get("repair_log") or []
+    if repair_log:
+        counts = {}
+        for row in repair_log:
+            counts[row["outcome"]] = counts.get(row["outcome"], 0) + 1
+        print("Repair list:", ", ".join(f"{k} {v}" for k, v in counts.items()))
 
     # >>> PERSON 3 (Joseph) BEGIN: results printout
     report = result.get("test_report")
