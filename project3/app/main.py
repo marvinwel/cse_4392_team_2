@@ -60,6 +60,12 @@ except ImportError:  # when run as `python -m app.main`
     from app.repair_nodes import (build_repair_nodes, build_apply_code_repair, repair_log_entry,
                                   route_after_repair, route_after_apply, route_after_gap)
 
+# Merge step: remove EP/BVA tests that repeat the same test case (assignment step 3).
+try:
+    from dedupe_tests import remove_duplicate_tests
+except ImportError:  # when run as `python -m app.main`
+    from app.dedupe_tests import remove_duplicate_tests
+
 
 # ===========================================================================
 # 1. Config
@@ -661,6 +667,12 @@ def merge_tests(state: AgentState) -> dict:
             }],
         }
     merged = merged_file.read_text(encoding="utf-8")
+    # The merger only skips identical text; drop tests that repeat the same test case.
+    merged, duplicate_pairs = remove_duplicate_tests(merged)
+    merged_file.write_text(merged, encoding="utf-8")
+    for pair in duplicate_pairs:
+        log.info("Duplicate removed: %s (same test case as %s, %d assertion(s) moved over)",
+                 pair["removed"], pair["kept"], pair["assertions_added"])
     ep_count = state["ep_tests"].count("@Test")
     bv_count = state["bv_tests"].count("@Test")
     merged_count = merged.count("@Test")
@@ -679,6 +691,7 @@ def merge_tests(state: AgentState) -> dict:
             "bv_tests": bv_count,
             "merged_tests": merged_count,
             "duplicates_removed": ep_count + bv_count - merged_count,
+            "duplicate_pairs": duplicate_pairs,
             "file": str(merged_file),
         }],
     }
@@ -697,6 +710,9 @@ def review_tests(state: AgentState) -> dict:
         "test_count": state["merged_tests"].count("@Test"),
         "file": str(OUTPUT_DIR / f"{state['class_name']}MergedTest.java"),
         "prior_feedback": state.get("human_feedback", ""),
+        # Tests the merge step removed as duplicates: [{"kept", "removed", "assertions_added"}]
+        "removed_duplicates": (last_change.get("duplicate_pairs") or []
+                               if last_change.get("node") == "merge_tests" else []),
         "proposed_diff": last_change.get("diff", "") if pending else "",
         "review_context": state.get("review_context", ""),
         # Which file the proposal changes: a Java source name for a code fix, else the tests.
