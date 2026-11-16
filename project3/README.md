@@ -164,7 +164,8 @@ Generate and execute a new suite:
 make run
 ```
 
-The workflow runs both phases of the assignment in one command:
+The workflow runs both phases of the assignment in one command (UML activity diagram:
+`docs/activity-diagram.png`, source `docs/activity-diagram.puml`):
 
 1. Generate EP and BVA tests in parallel. An AI reviewer checks each set.
 2. Merge the two sets into one JUnit class and remove duplicate test cases

@@ -1,0 +1,103 @@
+@startuml activity-diagram
+' UML activity diagram of the Project 3 multi-agent system (app/main.py, build_graph).
+' Render: java -jar plantuml.jar docs/activity-diagram.puml   (writes activity-diagram.png)
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 13
+skinparam dpi 150
+skinparam ActivityBorderColor #5b6b7a
+skinparam ActivityDiamondBackgroundColor #fff7d6
+skinparam PartitionBorderColor #8a99a8
+skinparam ArrowColor #44515e
+skinparam NoteBackgroundColor #f4f6f8
+skinparam NoteBorderColor #a0aab4
+title Multi-agent system for testing and refactoring SeasonSwitch.java
+
+start
+#E2EFDA:Load SeasonSwitch.java;
+
+partition "Phase 1: original code" {
+  repeat
+    fork
+      repeat
+        #DDEBF7:EP agent generates
+        Equivalence Partitioning tests;
+        #DDEBF7:AI reviewer checks the EP tests;
+      repeat while (EP approved, or rejected 3 times?) is (no: revise) not (yes)
+    fork again
+      repeat
+        #DDEBF7:BVA agent generates
+        Boundary Value Analysis tests;
+        #DDEBF7:AI reviewer checks the BVA tests;
+      repeat while (BVA approved, or rejected 3 times?) is (no: revise) not (yes)
+    end fork
+    note right
+      The two generators run in parallel
+      and join before the merge.
+      A failed merge sends the reason back
+      to both agents (at most 2 times).
+    end note
+    #E2EFDA:Merge EP and BVA classes (JUnit merger);
+    #E2EFDA:Remove duplicate test cases
+    (same setup and call = one test case);
+    #FCE4D6:Human review 1: read the merged tests;
+  repeat while (Human approves the tests?) is (no: changes requested) not (yes)
+
+  repeat
+    #E2EFDA:Run the JUnit tests on the original code (Maven);
+    if (All tests pass?) then (no)
+      #DDEBF7:Repair agent diagnoses the failure and
+      proposes a fix to the tests and/or the code;
+      #FCE4D6:Human approves the proposed fix;
+      #E2EFDA:Apply the fix and log the change;
+    else (yes)
+      #E2EFDA:Measure branch coverage (JaCoCo);
+      if (100% branch coverage?) then (no)
+        #DDEBF7:Gap agent writes tests for the missed branches;
+        #FCE4D6:Human approves the new tests;
+      else (yes)
+      endif
+    endif
+  repeat while (All pass and 100% branch coverage?) is (no) not (yes)
+  #E2EFDA:Save original tests, results, coverage and change log;
+}
+
+partition "Phase 2: refactored code" {
+  repeat
+    #DDEBF7:Refactor agent applies the State pattern
+    with the final prompt and adapts the tests
+    (same SeasonSwitch class name and interface);
+    #FCE4D6:Human review 2: check the code against the State pattern;
+  repeat while (Team approves the refactored code?) is (no: feedback, revise prompt) not (yes)
+
+  repeat
+    #E2EFDA:Run the adapted tests on the refactored code (Maven);
+    if (All tests pass?) then (no)
+      #DDEBF7:Repair agent proposes a fix to the tests and/or the code;
+      #FCE4D6:Human approves the proposed fix;
+      #E2EFDA:Apply the fix and log the change;
+    else (yes)
+      #E2EFDA:Measure branch coverage (JaCoCo);
+      if (100% branch coverage?) then (no)
+        #DDEBF7:Gap agent writes more tests;
+        #FCE4D6:Human approves the new tests;
+      else (yes)
+      endif
+    endif
+  repeat while (All pass and 100% branch coverage?) is (no) not (yes)
+  #E2EFDA:Save refactored tests, results, coverage and change log;
+}
+stop
+
+note right
+  Every loop has a limit (3 rejections or attempts).
+  At the limit the run escalates:
+  it saves the change log and stops.
+end note
+
+legend right
+  |= Color |= Done by |
+  |<#DDEBF7>| AI agent (Claude on AWS Bedrock) |
+  |<#FCE4D6>| Human in the loop |
+  |<#E2EFDA>| Tool (merger, Maven, JUnit, JaCoCo) |
+endlegend
+@enduml
