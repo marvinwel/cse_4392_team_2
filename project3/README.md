@@ -399,10 +399,18 @@ Implemented and wired into the workflow:
 - An optional terminal dashboard, `make ui`
   (see "9. Terminal Dashboard (optional)" below).
 
-Still needed:
+Final evidence, from a run on 2026-11-16 with a person answering every review:
 
-- A full `make run` with real human reviews to confirm both phases reach
-  100% branch coverage.
+- Original program: 54/54 tests pass, 36/36 branches covered (100%, full
+  program). Saved in `artifacts/original/`.
+- Refactored program: 54/54 tests pass, 26/26 branches covered (100%, full
+  program). Saved in `artifacts/refactored/`.
+- The review decisions are recorded in
+  `generated_tests/change_log_original.json` and
+  `generated_tests/change_log_refactored.json`.
+
+Every new run generates new tests and overwrites these files. Do not commit
+the output of an `AUTO_APPROVE=1` run over this evidence.
 
 Running `make run` does not by itself establish
 completion of the professor's requirements.
