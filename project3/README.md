@@ -223,6 +223,11 @@ AUTO_APPROVE=1 make run
 
 - The test review is recorded in the change log as `auto_approved_no_human`,
   so an automatic approval cannot be mistaken for a human one.
+- One proposal is never auto-approved: an AI change to the original
+  `SeasonSwitch.java`. It is rejected as `auto_rejected_code_repair`, and the
+  repair agent is told to fix the test instead. Only a person can approve it.
+- Every run first restores `java-original/.../SeasonSwitch.java` from
+  `app/SeasonSwitch.java`, so a code fix from an earlier run never carries over.
 - The refactor review is recorded as a plain `approved`. Check the terminal
   output or the run command to tell the two apart.
 - **Evidence for submission must come from a plain `make run`** with a person

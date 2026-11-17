@@ -204,7 +204,12 @@ class WorkflowRun:
             for name in (payload.get("ai_review_notes") or {}):
                 self.add_event("error", f"WARNING: the AI reviewer rejected the {name} tests 3 times; "
                                         "auto-approved without a person checking them.")
-            return {"approved": True, "feedback": "", "auto": True}
+            import main  # already loaded by the workflow thread
+            answer = main.auto_review_answer(payload)
+            if not answer["approved"]:
+                self.add_event("error", "AUTO_APPROVE=1: rejected the AI change to "
+                               f"{payload.get('proposed_target')}; asking for a test fix instead.")
+            return answer
         self.pending = payload
         self.status = "waiting"
         self.add_event("checkpoint", "awaiting human approval: "

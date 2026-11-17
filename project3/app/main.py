@@ -94,6 +94,9 @@ TEMPERATURE = 0
 MAX_TOKENS = 8000
 
 OUTPUT_DIR = BASE_DIR / "generated_tests"
+# The Maven copy of the program under test. A run starts from a clean copy of app/SeasonSwitch.java
+# here, so a code repair from an earlier run never leaks into the next one (real run 2026-11-16).
+ORIGINAL_PROJECT_SOURCE = BASE_DIR / "java-original" / "src" / "main" / "java" / "cse4392" / "SeasonSwitch.java"
 MERGER_JAR = BASE_DIR / "junit-merger" / "target" / "junit-merger-1.0.0.jar"
 
 # Logging: show on screen and save to generated_tests/agent_run.log
@@ -389,8 +392,27 @@ def extract_java(text: str) -> str:
     return (code[start.start():] if start else code).strip()
 
 
+def reset_original_project(source_path: Path, target: Path) -> bool:
+    """Copy the original program into the java-original Maven project if the copy there
+    differs. Returns True when it had to be reset.
+
+    The repair agent edits that copy, and nothing else put it back. On 2026-11-16 a failed
+    run's code fixes stayed there, so the next run tested a changed program.
+    Line endings are ignored when comparing (app/SeasonSwitch.java uses CRLF)."""
+    clean = source_path.read_bytes()
+    if target.is_file() and target.read_bytes().replace(b"\r\n", b"\n") == clean.replace(b"\r\n", b"\n"):
+        return False
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(clean)
+    return True
+
+
 def load_source(state: AgentState) -> dict:
-    return {"source_code": Path(state["source_path"]).read_text(encoding="utf-8")}
+    source_path = Path(state["source_path"])
+    if reset_original_project(source_path, ORIGINAL_PROJECT_SOURCE):
+        log.warning("java-original had a changed SeasonSwitch.java (left by an earlier run); "
+                    "restored it from %s.", source_path.name)
+    return {"source_code": source_path.read_text(encoding="utf-8")}
 
 
 # ---- Node 2: Equivalence Partitioning generator (Claude) ----
@@ -715,6 +737,7 @@ def review_tests(state: AgentState) -> dict:
                                if last_change.get("node") == "merge_tests" else []),
         "proposed_diff": last_change.get("diff", "") if pending else "",
         "review_context": state.get("review_context", ""),
+        "phase": state.get("phase", "original"),
         # Which file the proposal changes: a Java source name for a code fix, else the tests.
         "proposed_target": ((state.get("pending_code_repair") or {}).get("path")
                             or "the merged JUnit tests") if pending else "",
@@ -755,7 +778,8 @@ def review_tests(state: AgentState) -> dict:
             "time": datetime.now().isoformat(timespec="seconds"),
             "phase": state.get("phase"),
             "node": "review_tests",
-            "action": ("auto_approved_no_human" if decision.get("auto")
+            "action": (("auto_approved_no_human" if approved else "auto_rejected_code_repair")
+                       if decision.get("auto")
                        else "human_approved" if approved else "human_requested_changes"),
             "review_number": count,
             "feedback": feedback,
@@ -1217,6 +1241,32 @@ def run_workflow(answer_review, on_event=None) -> dict:
     return app.get_state(RUN_CONFIG).values
 
 
+AUTO_CODE_REPAIR_FEEDBACK = (
+    "Automatic run: changes to the original SeasonSwitch.java are not accepted without a person. "
+    "The original program is the fixture under test, so the failing tests are wrong. "
+    "Fix the TEST instead (target \"test\"): use only fields and methods that exist in "
+    "SeasonSwitch.java and trace the code for the expected values.")
+
+
+def is_original_code_repair(payload: dict) -> bool:
+    """True when a review asks to approve an AI change to the original program."""
+    target = str(payload.get("proposed_target") or "")
+    return (payload.get("review_context") == "repair"
+            and payload.get("phase", "original") == "original"
+            and target.endswith(".java") and target != "the merged JUnit tests")
+
+
+def auto_review_answer(payload: dict) -> dict:
+    """The answer AUTO_APPROVE gives instead of a person (plain run and terminal UI).
+
+    It approves everything except an AI change to the original program: a weak test
+    generator (Nova Micro, 2026-11-16) wrote tests for methods that do not exist, and
+    auto-approved code repairs rewrote SeasonSwitch.java to match them."""
+    if is_original_code_repair(payload):
+        return {"approved": False, "feedback": AUTO_CODE_REPAIR_FEEDBACK, "auto": True}
+    return {"approved": True, "feedback": "", "auto": True}
+
+
 def answer_on_terminal(payload: dict) -> dict:
     if os.environ.get("AUTO_APPROVE") == "1":
         # Testing shortcut only. Final evidence runs must use the real human review.
@@ -1224,7 +1274,11 @@ def answer_on_terminal(payload: dict) -> dict:
         for name in (payload.get("ai_review_notes") or {}):
             print(f"WARNING: the AI reviewer rejected the {name} tests 3 times; "
                   "auto-approved without a person checking them.")
-        return {"approved": True, "feedback": "", "auto": True}
+        answer = auto_review_answer(payload)
+        if not answer["approved"]:
+            print(f"AUTO_APPROVE=1: rejected the AI change to {payload.get('proposed_target')}; "
+                  "asking for a test fix instead.")
+        return answer
     return ask_human(payload)
 
 
