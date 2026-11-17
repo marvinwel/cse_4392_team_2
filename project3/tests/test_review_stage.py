@@ -21,7 +21,9 @@ def load(**extra):
         n.decorator_list = []          # drop @traceable
     env = {"re": re, "AgentState": dict, "MAX_REVIEW_REJECTIONS": 3, "MAX_HUMAN_REJECTIONS": 3,
            "log": logging.getLogger("test-review-stage"), "datetime": datetime,
-           "json": __import__("json"), "OUTPUT_DIR": ROOT / "generated_tests", **extra}
+           "json": __import__("json"), "OUTPUT_DIR": ROOT / "generated_tests",
+           "MODELS_USED": {"test_generator": "gen", "ai_reviewer": "rev", "refactor_repair_gap": "ref"},
+           **extra}
     exec(compile(ast.Module(body=nodes, type_ignores=[]), "app/main.py", "exec"), env)
     return env
 

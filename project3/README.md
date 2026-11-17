@@ -196,7 +196,7 @@ Approve? [y = approve / n = request changes]:
   (review 1) or to the refactor agent (review 2), and the review repeats.
 - Three change requests at the same review stop the run with the status
   `review_exhausted` (tests) or `refactor_review_exhausted` (refactoring).
-- Before review 1, Claude reviews the EP and BVA tests on its own. If it rejects
+- Before review 1, the AI reviewer checks the EP and BVA tests on its own. If it rejects
   them 3 times, the run does **not** stop: your review opens with a WARNING banner
   and the AI's last feedback, so check those points carefully before you approve.
 - Review 1 also pauses for every **repair or gap-test proposal**. The terminal
@@ -504,6 +504,8 @@ The run updates live. Press `O`, `G` or `D` to switch between the three views.
 - **WORKFLOW PROGRESS** lists the 11 steps: Done, Active, Pending, or Stopped.
 - Steps that call an AI model show which model, read from `app/main.py` when
   the run starts. Steps that need no model show nothing about models.
+- `generated_tests/agent_run.log` does the same: the first line lists the models,
+  each AI step's line names its model, and `change_log_<phase>.json` saves them under `models`.
 - When the workflow needs you, the pill at the top right says
   **WAITING FOR YOUR REVIEW**. Press `Enter` to open the review.
 
