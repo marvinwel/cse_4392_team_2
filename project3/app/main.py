@@ -113,7 +113,7 @@ for _handler in (logging.StreamHandler(),
     log.addHandler(_handler)
 
 generator_model = ChatBedrockConverse(
-    model=GOOGLE_MODEL,
+    model=CLAUDE_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=MAX_TOKENS,
@@ -122,7 +122,7 @@ generator_model = ChatBedrockConverse(
 # The reviewer answers in plain JSON and the review nodes read it.
 # This works with any model (Nova could not do tool calls), so switching models is one line.
 review_model = ChatBedrockConverse(
-    model=NOVA_MODEL,
+    model=CLAUDE_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=REVIEW_MAX_TOKENS,
