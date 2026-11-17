@@ -83,7 +83,8 @@ REFACTOR_MAX_TOKENS = 16000   # one reply holds every refactored file plus the a
 # every class (inner classes AC, Heater, Room and the new State classes) and main().
 # main()'s System.exit branches are covered through ExitTrap (app/java_helpers/).
 FULL_PROGRAM_SCOPE = {"include_classes": None, "exclude_methods": []}
-
+GOOGLE_MODEL = "google.gemma-3-27b-it"
+NOVA_MODEL = "amazon.nova-micro-v1:0"
 GENERATOR_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0"   # Qwen3 Coder 30B A3B: writes the tests
 CLAUDE_MODEL = "us.anthropic.claude-sonnet-4-6"
 # Reviewer: Claude (2026-11-16). Nova Micro gave contradictory feedback and stopped runs.
@@ -111,7 +112,7 @@ for _handler in (logging.StreamHandler(),
     log.addHandler(_handler)
 
 generator_model = ChatBedrockConverse(
-    model=CLAUDE_MODEL,
+    model=GOOGLE_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=MAX_TOKENS,
@@ -120,7 +121,7 @@ generator_model = ChatBedrockConverse(
 # The reviewer answers in plain JSON and the review nodes read it.
 # This works with any model (Nova could not do tool calls), so switching models is one line.
 review_model = ChatBedrockConverse(
-    model=REVIEW_MODEL,
+    model=NOVA_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=REVIEW_MAX_TOKENS,
