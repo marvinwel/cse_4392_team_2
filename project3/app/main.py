@@ -1,7 +1,8 @@
 """
 Team Assignment 3 - Multi-agent test generation for SeasonSwitch.
 
-Claude generates the tests and Claude reviews them; a person makes the final call.
+One model generates the tests and another reviews them; a person makes the final call.
+The models in use are set in section 1 and written to the log at the start of each run.
 EP and BVA tests are each reviewed on their own before they are merged.
 
     load_source --+-- ep_agent  -- review_ep  --+-- ep_done  --+
@@ -83,10 +84,11 @@ REFACTOR_MAX_TOKENS = 16000   # one reply holds every refactored file plus the a
 # every class (inner classes AC, Heater, Room and the new State classes) and main().
 # main()'s System.exit branches are covered through ExitTrap (app/java_helpers/).
 FULL_PROGRAM_SCOPE = {"include_classes": None, "exclude_methods": []}
-
+GOOGLE_MODEL = "google.gemma-3-27b-it"
+NOVA_MODEL = "amazon.nova-micro-v1:0"
 GENERATOR_MODEL = "qwen.qwen3-coder-30b-a3b-v1:0"   # Qwen3 Coder 30B A3B: writes the tests
 CLAUDE_MODEL = "us.anthropic.claude-sonnet-4-6"
-# Reviewer: Claude (2026-11-16). Nova Micro gave contradictory feedback and stopped runs.
+# The models actually used are the ones passed to generator_model, review_model and refactor_model below.
 REVIEW_MODEL = CLAUDE_MODEL
 REVIEW_MAX_TOKENS = 4000                            # review answers are short JSON
 REGION = "us-east-1"
@@ -94,6 +96,9 @@ TEMPERATURE = 0
 MAX_TOKENS = 8000
 
 OUTPUT_DIR = BASE_DIR / "generated_tests"
+# The Maven copy of the program under test. A run starts from a clean copy of app/SeasonSwitch.java
+# here, so a code repair from an earlier run never leaks into the next one (real run 2026-11-16).
+ORIGINAL_PROJECT_SOURCE = BASE_DIR / "java-original" / "src" / "main" / "java" / "cse4392" / "SeasonSwitch.java"
 MERGER_JAR = BASE_DIR / "junit-merger" / "target" / "junit-merger-1.0.0.jar"
 
 # Logging: show on screen and save to generated_tests/agent_run.log
@@ -108,7 +113,7 @@ for _handler in (logging.StreamHandler(),
     log.addHandler(_handler)
 
 generator_model = ChatBedrockConverse(
-    model=CLAUDE_MODEL,
+    model=GOOGLE_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=MAX_TOKENS,
@@ -117,7 +122,7 @@ generator_model = ChatBedrockConverse(
 # The reviewer answers in plain JSON and the review nodes read it.
 # This works with any model (Nova could not do tool calls), so switching models is one line.
 review_model = ChatBedrockConverse(
-    model=REVIEW_MODEL,
+    model=NOVA_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=REVIEW_MAX_TOKENS,
@@ -140,6 +145,20 @@ refactor_agent, review_refactor = build_refactor_nodes(
 # Repairs send back a whole Java file inside JSON, so they use the 16000-token model.
 repair_agent, generate_gap_tests = build_repair_nodes(refactor_model, BASE_DIR)
 apply_code_repair = build_apply_code_repair(BASE_DIR)
+
+
+def model_name(model) -> str:
+    """The Bedrock model id a model object calls, read the same way the terminal UI reads it."""
+    found = getattr(model, "model_id", None) or getattr(model, "model", None)
+    return found if isinstance(found, str) and found else "unknown model"
+
+
+# Which model each AI step uses. Read from the model objects, so the log is right after a switch.
+MODELS_USED = {
+    "test_generator": model_name(generator_model),       # EP and BVA agents
+    "ai_reviewer": model_name(review_model),              # review_ep, review_bva
+    "refactor_repair_gap": model_name(refactor_model),    # refactor, repair and gap-test agents
+}
 
 # Copied into every Maven test folder before a run; gap tests use it to cover main().
 EXIT_TRAP_SOURCE = BASE_DIR / "app" / "java_helpers" / "ExitTrap.java"
@@ -389,16 +408,36 @@ def extract_java(text: str) -> str:
     return (code[start.start():] if start else code).strip()
 
 
+def reset_original_project(source_path: Path, target: Path) -> bool:
+    """Copy the original program into the java-original Maven project if the copy there
+    differs. Returns True when it had to be reset.
+
+    The repair agent edits that copy, and nothing else put it back. On 2026-11-16 a failed
+    run's code fixes stayed there, so the next run tested a changed program.
+    Line endings are ignored when comparing (app/SeasonSwitch.java uses CRLF)."""
+    clean = source_path.read_bytes()
+    if target.is_file() and target.read_bytes().replace(b"\r\n", b"\n") == clean.replace(b"\r\n", b"\n"):
+        return False
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(clean)
+    return True
+
+
 def load_source(state: AgentState) -> dict:
-    return {"source_code": Path(state["source_path"]).read_text(encoding="utf-8")}
+    source_path = Path(state["source_path"])
+    if reset_original_project(source_path, ORIGINAL_PROJECT_SOURCE):
+        log.warning("java-original had a changed SeasonSwitch.java (left by an earlier run); "
+                    "restored it from %s.", source_path.name)
+    return {"source_code": source_path.read_text(encoding="utf-8")}
 
 
-# ---- Node 2: Equivalence Partitioning generator (Claude) ----
+# ---- Node 2: Equivalence Partitioning generator (generator_model) ----
 @traceable(name="Generate EP tests", run_type="tool")
 def generate_ep_tests(state: AgentState) -> dict:
     previous_tests = state.get("ep_tests", "")
     feedback = state.get("ep_feedback", "")
-    log.info("[EP] Claude %s Equivalence Partitioning tests...", "revising" if previous_tests else "generating")
+    log.info("[EP] %s %s Equivalence Partitioning tests...", MODELS_USED["test_generator"],
+             "revising" if previous_tests else "generating")
     response = (generate_prompt | generator_model).invoke({
         "method": EP_METHOD.format(class_name=state["class_name"]),
         "package_name": state["package_name"],
@@ -438,12 +477,13 @@ def generate_ep_tests(state: AgentState) -> dict:
     return {"ep_tests": new_tests, "change_log": [entry]}
 
 
-# ---- Node 3: Boundary Value generator (Qwen) ----
+# ---- Node 3: Boundary Value generator (generator_model) ----
 @traceable(name="Generate BVA tests", run_type="tool")
 def generate_bv_tests(state: AgentState) -> dict:
     previous_tests = state.get("bv_tests", "")
     feedback = state.get("bv_feedback", "")
-    log.info("[BVA] Claude %s Boundary Value Analysis tests...", "revising" if previous_tests else "generating")
+    log.info("[BVA] %s %s Boundary Value Analysis tests...", MODELS_USED["test_generator"],
+             "revising" if previous_tests else "generating")
     response = (generate_prompt | generator_model).invoke({
         "method": BV_METHOD.format(class_name=state["class_name"]),
         "package_name": state["package_name"],
@@ -487,7 +527,8 @@ def generate_bv_tests(state: AgentState) -> dict:
 @traceable(name="AI review EP tests")
 def review_ep_tests(state: AgentState) -> dict:
     count = state.get("ep_review_count", 0) + 1
-    log.info("[EP] Claude reviewing Equivalence Partitioning tests (review #%d)...", count)
+    log.info("[EP] %s reviewing Equivalence Partitioning tests (review #%d)...",
+             MODELS_USED["ai_reviewer"], count)
 
     response = (review_prompt | review_model).invoke({
         "technique": "Equivalence Partitioning",
@@ -546,7 +587,8 @@ def review_ep_tests(state: AgentState) -> dict:
 @traceable(name="AI review BVA tests")
 def review_bv_tests(state: AgentState) -> dict:
     count = state.get("bv_review_count", 0) + 1
-    log.info("[BVA] Claude reviewing Boundary Value Analysis tests (review #%d)...", count)
+    log.info("[BVA] %s reviewing Boundary Value Analysis tests (review #%d)...",
+             MODELS_USED["ai_reviewer"], count)
 
     response = (review_prompt | review_model).invoke({
         "technique": "Boundary Value Analysis",
@@ -715,6 +757,7 @@ def review_tests(state: AgentState) -> dict:
                                if last_change.get("node") == "merge_tests" else []),
         "proposed_diff": last_change.get("diff", "") if pending else "",
         "review_context": state.get("review_context", ""),
+        "phase": state.get("phase", "original"),
         # Which file the proposal changes: a Java source name for a code fix, else the tests.
         "proposed_target": ((state.get("pending_code_repair") or {}).get("path")
                             or "the merged JUnit tests") if pending else "",
@@ -755,7 +798,8 @@ def review_tests(state: AgentState) -> dict:
             "time": datetime.now().isoformat(timespec="seconds"),
             "phase": state.get("phase"),
             "node": "review_tests",
-            "action": ("auto_approved_no_human" if decision.get("auto")
+            "action": (("auto_approved_no_human" if approved else "auto_rejected_code_repair")
+                       if decision.get("auto")
                        else "human_approved" if approved else "human_requested_changes"),
             "review_number": count,
             "feedback": feedback,
@@ -809,7 +853,7 @@ def review_tests(state: AgentState) -> dict:
 # ---- Refactored phase: orchestration around Emily's nodes (Ryan) ----
 def run_refactor_agent(state: AgentState) -> dict:
     """Call Emily's refactor_agent; an unusable model reply is retried instead of stopping the run."""
-    log.info("[REFACTOR] Claude %s the State-pattern refactoring...",
+    log.info("[REFACTOR] %s %s the State-pattern refactoring...", MODELS_USED["refactor_repair_gap"],
              "revising" if state.get("refactored_files") else "generating")
     try:
         result = refactor_agent(state)
@@ -888,6 +932,7 @@ def save_change_log(state: AgentState) -> dict:
     log_file.write_text(json.dumps({
         "class_name": state.get("class_name"),
         "phase": phase,
+        "models": MODELS_USED,
         "workflow_status": state.get("workflow_status", "finished"),
         "ep_review_count": state.get("ep_review_count", 0),
         "bv_review_count": state.get("bv_review_count", 0),
@@ -1036,14 +1081,15 @@ def build_graph():
     graph.add_node("merge_tests", merge_tests)
     graph.add_node("review_tests", review_tests)
     graph.add_node("escalate_review", escalate_review)
-    graph.add_node("repair_agent", repair_agent)
+    graph.add_node("repair_agent", logged_node(repair_agent, "REPAIR", "proposing a fix for the failed run"))
     graph.add_node("apply_code_repair", apply_code_repair)
     # >>> PERSON 3 (Joseph) BEGIN: nodes
     graph.add_node("run_tests", run_tests_step)
     graph.add_node("check_coverage", check_coverage)
     graph.add_node("save_results", save_results)
     # <<< PERSON 3 (Joseph) END: nodes
-    graph.add_node("generate_gap_tests", generate_gap_tests)
+    graph.add_node("generate_gap_tests", logged_node(generate_gap_tests, "GAP",
+                                                     "writing tests for the missed branches"))
     graph.add_node("save_change_log", save_change_log)
     graph.add_node("refactor_agent", run_refactor_agent)
     graph.add_node("review_refactor", review_refactor)
@@ -1183,6 +1229,15 @@ def initial_state() -> dict:
     }
 
 
+def logged_node(node, tag: str, action: str):
+    """Write a start line with the model name for a node that does not log by itself."""
+    def run(state: AgentState) -> dict:
+        log.info("[%s] %s %s (%s phase)...", tag, MODELS_USED["refactor_repair_gap"], action,
+                 state.get("phase", "original"))
+        return node(state)
+    return run
+
+
 def run_workflow(answer_review, on_event=None) -> dict:
     """Run the whole graph and return the final state.
 
@@ -1198,6 +1253,8 @@ def run_workflow(answer_review, on_event=None) -> dict:
     """
     app = build_graph()
     payload = initial_state()
+    log.info("Models: test generator = %s | AI reviewer = %s | refactor, repair and gap tests = %s",
+             MODELS_USED["test_generator"], MODELS_USED["ai_reviewer"], MODELS_USED["refactor_repair_gap"])
     while True:
         for mode, chunk in app.stream(payload, config=RUN_CONFIG, stream_mode=["tasks", "updates"]):
             if on_event is None or mode != "tasks":
@@ -1217,6 +1274,32 @@ def run_workflow(answer_review, on_event=None) -> dict:
     return app.get_state(RUN_CONFIG).values
 
 
+AUTO_CODE_REPAIR_FEEDBACK = (
+    "Automatic run: changes to the original SeasonSwitch.java are not accepted without a person. "
+    "The original program is the fixture under test, so the failing tests are wrong. "
+    "Fix the TEST instead (target \"test\"): use only fields and methods that exist in "
+    "SeasonSwitch.java and trace the code for the expected values.")
+
+
+def is_original_code_repair(payload: dict) -> bool:
+    """True when a review asks to approve an AI change to the original program."""
+    target = str(payload.get("proposed_target") or "")
+    return (payload.get("review_context") == "repair"
+            and payload.get("phase", "original") == "original"
+            and target.endswith(".java") and target != "the merged JUnit tests")
+
+
+def auto_review_answer(payload: dict) -> dict:
+    """The answer AUTO_APPROVE gives instead of a person (plain run and terminal UI).
+
+    It approves everything except an AI change to the original program: a weak test
+    generator (Nova Micro, 2026-11-16) wrote tests for methods that do not exist, and
+    auto-approved code repairs rewrote SeasonSwitch.java to match them."""
+    if is_original_code_repair(payload):
+        return {"approved": False, "feedback": AUTO_CODE_REPAIR_FEEDBACK, "auto": True}
+    return {"approved": True, "feedback": "", "auto": True}
+
+
 def answer_on_terminal(payload: dict) -> dict:
     if os.environ.get("AUTO_APPROVE") == "1":
         # Testing shortcut only. Final evidence runs must use the real human review.
@@ -1224,7 +1307,11 @@ def answer_on_terminal(payload: dict) -> dict:
         for name in (payload.get("ai_review_notes") or {}):
             print(f"WARNING: the AI reviewer rejected the {name} tests 3 times; "
                   "auto-approved without a person checking them.")
-        return {"approved": True, "feedback": "", "auto": True}
+        answer = auto_review_answer(payload)
+        if not answer["approved"]:
+            print(f"AUTO_APPROVE=1: rejected the AI change to {payload.get('proposed_target')}; "
+                  "asking for a test fix instead.")
+        return answer
     return ask_human(payload)
 
 
