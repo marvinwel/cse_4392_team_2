@@ -122,7 +122,7 @@ generator_model = ChatBedrockConverse(
 # The reviewer answers in plain JSON and the review nodes read it.
 # This works with any model (Nova could not do tool calls), so switching models is one line.
 review_model = ChatBedrockConverse(
-    model=CLAUDE_MODEL,
+    model=GOOGLE_MODEL,
     region_name=REGION,
     temperature=TEMPERATURE,
     max_tokens=REVIEW_MAX_TOKENS,
@@ -319,16 +319,10 @@ BV_METHOD = """You are a software testing expert.
 Generate FUNCTIONAL test cases using BOUNDARY VALUE ANALYSIS.
 
 Method:
-1. Find every numeric comparison in {class_name} (e.g. temp > limit, x < max)
-   and every bounded range of values a variable can take (e.g. state constants 0..2).
-2. For each comparison against a value N, test N-1, N, and N+1, and say in the
-   comment whether the condition is true or false at exactly N.
-3. For each range MIN..MAX, test MIN and MAX (valid) and MIN-1 and MAX+1 (invalid).
-   Trace what the code really does with the invalid values.
-4. Do NOT invent boundaries for things that have no numeric comparison or range.
-5. Use field names instead of hard-coded numbers where possible
-   (e.g. coolTemp - 1 instead of 67).
-6. Write one test per boundary value.
+{bva_rules}
+Write one test per boundary value. Put each method's boundary tests on that method:
+a delegating method (one that only calls another method) gets ONE test showing it
+delegates, not a copy of every boundary test of the method it calls.
 
 Name every @Test method using the testBVA prefix.
 Example: testBVAHeatFromOff().
@@ -361,11 +355,27 @@ EP_CHECKS = """
 2. Representative values come from the MIDDLE of each class, not its edges.
 """
 
-BV_CHECKS = """
-1. Every numeric comparison against N is tested at N-1, N and N+1, and each comment
-   says whether the condition is true or false at exactly N.
-2. Every range MIN..MAX is tested at MIN, MAX, MIN-1 and MAX+1.
-3. No invented boundaries for things with no numeric comparison or range.
+# One set of BVA rules for both the generator and the reviewer. Before this, the generator
+# was told to test the state range 0..2 at -1 and 3, while the reviewer only had a vague
+# "no invented boundaries" rule. The reviewer flipped between "add state=-1/3" and
+# "remove state=-1/3" and rejected the BVA tests 3 times in every run (2026-11-19).
+BVA_RULES = """BVA rules (the tests must follow ALL of these):
+1. Every numeric comparison against a value N (e.g. room.temp > coolTemp,
+   room.temp < heatTemp) is tested at N-1, N and N+1, and each comment says
+   whether the condition is true or false at exactly N.
+2. The state constants OFF..HEAT ARE a bounded range (MIN = OFF, MAX = HEAT).
+   Test MIN and MAX, and the invalid values MIN-1 and MAX+1 (OFF - 1 and HEAT + 1).
+   These are required boundaries, not invented ones. No switch case matches
+   them, so the method changes nothing.
+3. Nothing else is a boundary: do not add boundaries for values that have no
+   numeric comparison or range.
+4. Use field names instead of hard-coded numbers (e.g. coolTemp - 1, HEAT + 1).
+5. Tests of DIFFERENT public methods with the same input are NOT duplicates.
+"""
+
+BV_CHECKS = BVA_RULES + """
+Check the tests against exactly these rules. Do not add requirements that are not
+listed here, and do not ask to remove tests that a rule above requires.
 """
 
 REVIEW_SYSTEM = """You are an expert Java JUnit 5 test reviewer.
@@ -485,7 +495,7 @@ def generate_bv_tests(state: AgentState) -> dict:
     log.info("[BVA] %s %s Boundary Value Analysis tests...", MODELS_USED["test_generator"],
              "revising" if previous_tests else "generating")
     response = (generate_prompt | generator_model).invoke({
-        "method": BV_METHOD.format(class_name=state["class_name"]),
+        "method": BV_METHOD.format(class_name=state["class_name"], bva_rules=BVA_RULES),
         "package_name": state["package_name"],
         "class_name": state["class_name"],
         "test_class_name": f"{state['class_name']}BVTest",
